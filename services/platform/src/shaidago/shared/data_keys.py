@@ -6,12 +6,13 @@ it (ADR-0003). Loading needs a role that can read the table.
 """
 
 import secrets
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
 from uuid import UUID
 
 import structlog
-from sqlalchemy import LargeBinary, Row, bindparam, text
+from sqlalchemy import ARRAY, LargeBinary, Row, Uuid, bindparam, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from shaidago.audit.events import AuditWriter
@@ -36,6 +37,10 @@ _LOAD = text(
     "SELECT id, purpose, owner_table, owner_id, wrapped_key, kek_version "
     "FROM app.data_keys WHERE id = :id"
 )
+_LOAD_MANY = text(
+    "SELECT id, purpose, owner_table, owner_id, wrapped_key, kek_version "
+    "FROM app.data_keys WHERE id = ANY(:ids)"
+).bindparams(bindparam("ids", type_=ARRAY(Uuid())))
 _BY_OWNER = text(
     "SELECT id FROM app.data_keys WHERE owner_table = :owner_table AND owner_id = :owner_id "
     "AND purpose = :purpose"
@@ -111,6 +116,14 @@ class DataKeyService:
         if row.wrapped_key is None:
             raise DataKeyDestroyedError
         return self._unwrap(row)
+
+    async def load_many(self, key_ids: Sequence[UUID]) -> dict[UUID, DataKey]:
+        """Load several keys in one query. A missing or destroyed key is simply absent."""
+        wanted = list(dict.fromkeys(key_ids))
+        if not wanted:
+            return {}
+        rows = (await self._session.execute(_LOAD_MANY, {"ids": wanted})).all()
+        return {row.id: self._unwrap(row) for row in rows if row.wrapped_key is not None}
 
     async def find(self, owner_table: str, owner_id: UUID, purpose: str) -> UUID | None:
         row = (

@@ -59,6 +59,14 @@ Every credential failure (unknown, wrong, deleted, or in backoff) is the same 40
 
 A reviewer's questions appear on the tracking lookup (`follow_up_questions`: `question_id`, `text`, and `state` of `open`, `answered`, `skipped`, or `unsafe`); answers are never returned. `POST /v1/report-status:answer-follow-up` (with `Idempotency-Key`) takes `question_id`, `kind` (`answered`, `skipped`, or `unsafe`), `answer` (only with `answered`, up to 2000 characters), and exactly one credential: a tracking `code`, or a `handle` with its `passphrase`. It answers only a question about the caller's own report, once. Every other case (someone else's question, unknown, already answered, withdrawn, bad credential) is one generic problem: 404 `tracking_code_not_recognised` for a code, 403 `invalid_reporter_credentials` for a handle. The answer is encrypted before storage. Answering the last open question of a report that needs information resumes review.
 
+## Reviewer queue and report detail
+
+Every route needs a reviewer session (`X-Shaidago-Session`) and a role holding the capability; every response is `no-store`.
+
+- `GET /v1/reviewer/reports` returns a page of triage rows, oldest first: `report_id`, `project_slug`, `concern_category`, `risk_level`, `status`, `version`, `created_at`, `status_updated_at`, `has_contact`, `evidence_count`, `open_follow_ups`. No text, contact, handle, or evidence detail. Filters: `status` (repeatable), `risk_level`, `concern_category`, `project`. `limit` defaults to 20 (cap 50); a `cursor` only works for the same filters (`400 invalid_cursor` otherwise); unknown parameters are `422`.
+- `GET /v1/reviewer/reports/{report_id}` returns the report with its decrypted description, status history, follow-up questions and answers, evidence metadata (`evidence_id`, name, type, size, sanitation and scan state; never an object key or URL), and the reviewer-only handle track record. `include_contact=true` additionally returns the contact; it needs the `contact_read` capability and is audited by the database before the value is returned. An unknown report is `404 not_found`. Each view writes a `report_detail_viewed` audit event holding identifiers only.
+- `version` is the token later commands send back to prove they acted on the current state.
+
 ## Errors
 
 Every error is `application/problem+json`, `Cache-Control: no-store`, with `type`, `title`, `status`, `code`, `detail`, `request_id`, and, for validation failures, `errors` (`field` and rule `code`, never the submitted value). The `code` is the stable contract; the BFF localises display text from it.

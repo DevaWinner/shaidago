@@ -795,6 +795,8 @@ Implement reviewer list/detail services and endpoints with cursor pagination, al
 - Evidence metadata never includes raw object keys or permanent URLs.
 - Query count is bounded; add integration tests preventing N+1 regressions.
 
+> **Execution status (2026-09-19): complete.** `GET /v1/reviewer/reports` (queue: triage fields only, oldest first, allowlisted filters, signed cursors, one statement per page) and `GET /v1/reviewer/reports/{id}` (detail: decrypted description and follow-up answers, evidence metadata without object keys, a contact only with `include_contact=true`, the new `contact_read` capability, and an audit event written by the database function `app.reviewer_read_contact` before any ciphertext returns) are proven by 16 integration tests against PostgreSQL 18 and the real reviewer role, including fixed statement counts (no N+1). Migration `0014_reviewer_queue` adds `reports.version` (raised by a trigger on any status or risk change) as the concurrency token for BE-071.
+
 ### BE-071 — Report state machine and append-only events
 
 1. Encode allowed transitions as one pure policy/state-machine module.

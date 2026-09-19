@@ -206,6 +206,38 @@
         "title": "CitationOut",
         "type": "object"
       },
+      "ContactOut": {
+        "properties": {
+          "channel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Channel"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "channel",
+          "value"
+        ],
+        "title": "ContactOut",
+        "type": "object"
+      },
       "CookieOut": {
         "description": "What the BFF must set; the API never sets cookies itself.",
         "properties": {
@@ -264,6 +296,52 @@
           "passphrase"
         ],
         "title": "Credentials",
+        "type": "object"
+      },
+      "EvidenceOut": {
+        "description": "Metadata only: no object key, no URL. Content is fetched through the download broker.",
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "evidence_id": {
+            "format": "uuid",
+            "title": "Evidence Id",
+            "type": "string"
+          },
+          "mime_type": {
+            "title": "Mime Type",
+            "type": "string"
+          },
+          "sanitation_state": {
+            "title": "Sanitation State",
+            "type": "string"
+          },
+          "scan_state": {
+            "title": "Scan State",
+            "type": "string"
+          },
+          "size_bytes": {
+            "title": "Size Bytes",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "display_name",
+          "mime_type",
+          "size_bytes",
+          "sanitation_state",
+          "scan_state",
+          "created_at"
+        ],
+        "title": "EvidenceOut",
         "type": "object"
       },
       "ExcerptOut": {
@@ -401,6 +479,60 @@
           "code"
         ],
         "title": "FieldErrorBody",
+        "type": "object"
+      },
+      "FollowUpOut": {
+        "properties": {
+          "answer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer"
+          },
+          "answer_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer Kind"
+          },
+          "asked_at": {
+            "format": "date-time",
+            "title": "Asked At",
+            "type": "string"
+          },
+          "question": {
+            "title": "Question",
+            "type": "string"
+          },
+          "question_id": {
+            "format": "uuid",
+            "title": "Question Id",
+            "type": "string"
+          },
+          "withdrawn": {
+            "title": "Withdrawn",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "question_id",
+          "question",
+          "asked_at",
+          "withdrawn",
+          "answer_kind",
+          "answer"
+        ],
+        "title": "FollowUpOut",
         "type": "object"
       },
       "FollowUpQuestion": {
@@ -937,6 +1069,100 @@
         "title": "ProjectTextOut",
         "type": "object"
       },
+      "QueueItemOut": {
+        "properties": {
+          "concern_category": {
+            "title": "Concern Category",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "evidence_count": {
+            "title": "Evidence Count",
+            "type": "integer"
+          },
+          "has_contact": {
+            "title": "Has Contact",
+            "type": "boolean"
+          },
+          "open_follow_ups": {
+            "title": "Open Follow Ups",
+            "type": "integer"
+          },
+          "project_slug": {
+            "title": "Project Slug",
+            "type": "string"
+          },
+          "report_id": {
+            "format": "uuid",
+            "title": "Report Id",
+            "type": "string"
+          },
+          "risk_level": {
+            "title": "Risk Level",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "status_updated_at": {
+            "format": "date-time",
+            "title": "Status Updated At",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "report_id",
+          "project_slug",
+          "concern_category",
+          "risk_level",
+          "status",
+          "version",
+          "created_at",
+          "status_updated_at",
+          "has_contact",
+          "evidence_count",
+          "open_follow_ups"
+        ],
+        "title": "QueueItemOut",
+        "type": "object"
+      },
+      "QueuePageOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/QueueItemOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "title": "QueuePageOut",
+        "type": "object"
+      },
       "ReadinessResponse": {
         "properties": {
           "components": {
@@ -965,6 +1191,113 @@
           "components"
         ],
         "title": "ReadinessResponse",
+        "type": "object"
+      },
+      "ReportDetailOut": {
+        "properties": {
+          "concern_category": {
+            "title": "Concern Category",
+            "type": "string"
+          },
+          "contact": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ContactOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/StatusEventOut"
+            },
+            "title": "Events",
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceOut"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "follow_ups": {
+            "items": {
+              "$ref": "#/components/schemas/FollowUpOut"
+            },
+            "title": "Follow Ups",
+            "type": "array"
+          },
+          "has_contact": {
+            "title": "Has Contact",
+            "type": "boolean"
+          },
+          "project_slug": {
+            "title": "Project Slug",
+            "type": "string"
+          },
+          "report_id": {
+            "format": "uuid",
+            "title": "Report Id",
+            "type": "string"
+          },
+          "risk_level": {
+            "title": "Risk Level",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "status_updated_at": {
+            "format": "date-time",
+            "title": "Status Updated At",
+            "type": "string"
+          },
+          "track_record": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TrackRecordOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "report_id",
+          "project_slug",
+          "concern_category",
+          "risk_level",
+          "status",
+          "version",
+          "created_at",
+          "status_updated_at",
+          "has_contact",
+          "description",
+          "events",
+          "follow_ups",
+          "evidence",
+          "track_record",
+          "contact"
+        ],
+        "title": "ReportDetailOut",
         "type": "object"
       },
       "ReportReceipt": {
@@ -1258,6 +1591,47 @@
         "title": "SourceOut",
         "type": "object"
       },
+      "StatusEventOut": {
+        "properties": {
+          "actor_type": {
+            "title": "Actor Type",
+            "type": "string"
+          },
+          "new_status": {
+            "title": "New Status",
+            "type": "string"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "previous_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Status"
+          },
+          "public_message": {
+            "title": "Public Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "previous_status",
+          "new_status",
+          "public_message",
+          "actor_type",
+          "occurred_at"
+        ],
+        "title": "StatusEventOut",
+        "type": "object"
+      },
       "StatusLookupRequest": {
         "additionalProperties": false,
         "properties": {
@@ -1314,6 +1688,34 @@
           "translation_status"
         ],
         "title": "SummaryTextOut",
+        "type": "object"
+      },
+      "TrackRecordOut": {
+        "properties": {
+          "closed": {
+            "title": "Closed",
+            "type": "integer"
+          },
+          "handle": {
+            "title": "Handle",
+            "type": "string"
+          },
+          "reports_total": {
+            "title": "Reports Total",
+            "type": "integer"
+          },
+          "verified_for_public_update": {
+            "title": "Verified For Public Update",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "handle",
+          "reports_total",
+          "verified_for_public_update",
+          "closed"
+        ],
+        "title": "TrackRecordOut",
         "type": "object"
       },
       "UpdateOut": {
@@ -2681,6 +3083,319 @@
         "summary": "Submit Report",
         "tags": [
           "reports"
+        ]
+      }
+    },
+    "/v1/reviewer/reports": {
+      "get": {
+        "operationId": "queue_v1_reviewer_reports_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "enum": [
+                      "received",
+                      "needs_information",
+                      "under_review",
+                      "verified_for_public_update",
+                      "referred",
+                      "closed"
+                    ],
+                    "type": "string"
+                  },
+                  "maxItems": 6,
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "risk_level",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "standard",
+                    "elevated",
+                    "high"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Risk Level"
+            }
+          },
+          {
+            "in": "query",
+            "name": "concern_category",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "no_visible_work",
+                    "incomplete_work",
+                    "unsafe_construction",
+                    "suspected_incorrect_status",
+                    "access_barrier",
+                    "other_concern"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Concern Category"
+            }
+          },
+          {
+            "in": "query",
+            "name": "project",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 120,
+                  "minLength": 1,
+                  "pattern": "^[a-z0-9-]+$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Limit"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 512,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueuePageOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Invalid pagination cursor."
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Queue",
+        "tags": [
+          "reviewer"
+        ]
+      }
+    },
+    "/v1/reviewer/reports/{report_id}": {
+      "get": {
+        "operationId": "detail_v1_reviewer_reports__report_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Report Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "include_contact",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Include Contact",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDetailOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Invalid pagination cursor."
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Detail",
+        "tags": [
+          "reviewer"
         ]
       }
     }

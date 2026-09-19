@@ -59,6 +59,8 @@ reports = Table(
     Column("status_updated_at", DateTime(timezone=True), nullable=False),
     Column("created_at", DateTime(timezone=True), nullable=False),
     Column("updated_at", DateTime(timezone=True), nullable=False),
+    # Optimistic-concurrency token; a trigger raises it when status or risk level changes (0014).
+    Column("version", Integer(), nullable=False, server_default=text("1")),
     PrimaryKeyConstraint("id"),
     Index("ix_reports_project_id", "project_id"),
     Index("ix_reports_status", "status", "created_at"),

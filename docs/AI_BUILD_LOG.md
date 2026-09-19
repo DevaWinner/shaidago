@@ -770,3 +770,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the record only; the review itself was the maintainer's.
 - **Prompt summary:** Maintainer confirmed they reviewed and approved the list.
 - **Human review:** Maintainer approved the word list on 2026-09-19.
+
+## 2026-09-19 — BE-070 Minimal-data queue and private detail projections
+
+- **Task:** BE-070 — Minimal-data queue and private detail projections.
+- **Outcome delivered:** Reviewer queue and report detail endpoints, a `contact_read` capability, revision `0014_reviewer_queue` (`reports.version` with a bump trigger; audited `app.reviewer_read_contact`), `DataKeyService.load_many`, and the `review/` package (`context`, `queue`, `detail`).
+- **Files changed:** `services/platform/migrations/versions/0014_reviewer_queue.py`, `src/shaidago/review/{__init__,context,queue,detail}.py`, `src/shaidago/api/v1/{reviewer_reports,__init__}.py`, `src/shaidago/auth/policy.py`, `src/shaidago/db/report_tables.py`, `src/shaidago/shared/data_keys.py`, tests (`test_reviewer_queue.py`, `reviewer_support.py`, `conftest.py`), `contracts/openapi.json`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** One column, one trigger, one `SECURITY DEFINER` function (execute granted to the reviewer role only). OpenAPI gains two reviewer paths.
+- **Security/privacy impact:** The queue exposes no report text, contact, handle, or object key. The reviewer role still cannot `SELECT` contacts; the only read path writes its audit row in the same transaction first. Contacts need an explicit query flag and their own capability. Detail decrypts only the description and answers. Responses are `no-store`.
+- **Failure behaviour verified:** no session and a disabled reviewer give the same 401; unknown or malformed report IDs are 404 or 422; bad filters, unknown parameters, and a cursor replayed under other filters are refused; an anonymous report yields `contact: null` even when asked; the public role cannot call the contact function or read contacts.
+- **Commands run and results:** `make backend-verify` exit 0 (791 passed); Circle 0 validators passed.
+- **Tests added or changed:** 16 integration tests, including statement counts that do not grow with page size, evidence, questions, or answers.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated and committed; `make openapi-check` is part of `backend-verify`.
+- **Known limitations/open decisions:** The queue is oldest first only (no configurable sort). Project shown by slug, not translated title. Handle track record appears only in detail.
+- **Commit/PR:** `feat: add the reviewer queue and private report detail`
+- **Next task may rely on:** `reports.version`, `ReviewContext`, `actor_of`, the reviewer test harness (`review_world`).
+- **AI assistance used:** Designed and wrote the migration, services, endpoints, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

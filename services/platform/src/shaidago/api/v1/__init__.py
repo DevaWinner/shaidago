@@ -2,7 +2,15 @@
 
 from fastapi import APIRouter
 
-from shaidago.api.v1 import auth, follow_ups, projects, report_status, reporter_handles, reports
+from shaidago.api.v1 import (
+    auth,
+    follow_ups,
+    projects,
+    report_status,
+    reporter_handles,
+    reports,
+    reviewer_reports,
+)
 
 router = APIRouter(prefix="/v1")
 router.include_router(auth.router)
@@ -12,3 +20,4 @@ router.include_router(reports.router)
 router.include_router(report_status.router)
 router.include_router(follow_ups.router)
 router.include_router(reporter_handles.router)
+router.include_router(reviewer_reports.router)
