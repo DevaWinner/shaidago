@@ -274,3 +274,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the Compose definition, Make targets, and static guards; ran the lifecycle checks.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-031 Async database kernel
+
+- **Task:** BE-031 — Async database kernel.
+- **Outcome delivered:** `shared/database.py` provides `build_engine`/`create_engine` (pooled, `pool_pre_ping`, UTC session, server-side statement timeout, connect timeout, application name) and a `Database` class with `unit_of_work()` (one session and one transaction per use case, commit on success, rollback on error), plus `open`/`close`/`check` so it is both a managed resource and a readiness probe. `create_configured_app` now registers the database for lifespan and readiness.
+- **Files changed:** `services/platform/src/shaidago/shared/{database,config}.py`, `api/main.py`, `Makefile` (integration and full-test targets read the infrastructure env file), `.github/workflows/backend.yml` (integration job with a pinned pgvector service container, plus `openapi-check` in the static job), `.env.example` (`DATABASE_STATEMENT_TIMEOUT_MS`); tests `tests/integration/{conftest,test_database_kernel,test_configured_app}.py`, `tests/unit/shared/test_database_translation.py`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** Unique, serialization, and deadlock errors (SQLSTATE 23505, 40001, 40P01) become the generic `conflict` problem with no SQL or driver text; every other database error, including other integrity violations, stays internal and returns the generic 500. Integration fixtures create and drop a disposable database per session.
+- **Failure behaviour verified (against PostgreSQL 18 from `make infra-up-core`):** commit on success; rollback on error; session `timezone` UTC, `statement_timeout` 5s, and application name applied; a 3-second `pg_sleep` cancelled by the server at 200 ms (SQLSTATE 57014); a unique violation raised at flush and one deferred until commit are both translated to a conflict; a missing-table error is not translated; the pool recovers after `pg_terminate_backend` killed its connection; `check()` passes on a live server and fails on a dead port; `close()` leaves zero connections in `pg_stat_activity`; through HTTP, readiness reports `database: ok` with the server up and `unavailable` (503) with it down, while liveness stays 200 and the API still starts.
+- **Commands run and results:** `make backend-verify` exit 0 (144 passed, including 12 integration tests) with the Compose database running; `make backend-integration` 12 passed. Circle 0 validators passed.
+- **Tests added or changed:** 12 integration tests, 3 unit tests for SQLSTATE translation.
+- **Generated artifacts checked:** OpenAPI unchanged (`make openapi-check` passes).
+- **Known limitations/open decisions:** One engine only; ADR-0003's separate public and reviewer pools arrive with BE-032 once the roles exist. Pools connect lazily, so a database that is down at startup shows as unready rather than preventing boot; the integration test asserts this. `Database.check` proves connectivity only; the migration-revision check belongs to BE-033. The integration CI job is written but has never run (no push); it uses a throwaway CI-only password.
+- **Commit/PR:** `feat: add async database kernel`
+- **Next task may rely on:** `Database.unit_of_work()` for every repository, the disposable-database integration fixtures, and the registered database readiness check.
+- **AI assistance used:** Designed the kernel, the translation policy, and the integration tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

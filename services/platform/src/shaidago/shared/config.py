@@ -113,6 +113,9 @@ class DatabaseSettings(_Section):
     connect_timeout_seconds: PositiveInt = Field(
         default=5, le=60, validation_alias="DATABASE_CONNECT_TIMEOUT_SECONDS"
     )
+    statement_timeout_ms: PositiveInt = Field(
+        default=5000, le=60_000, validation_alias="DATABASE_STATEMENT_TIMEOUT_MS"
+    )
 
     @field_validator("url")
     @classmethod

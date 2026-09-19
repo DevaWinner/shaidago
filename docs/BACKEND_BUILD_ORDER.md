@@ -400,6 +400,8 @@ Use named project-scoped volumes, explicit ports configurable for local use, res
 3. Translate known integrity/serialization errors into domain outcomes; unknown database errors remain internal.
 4. Add repository integration fixtures that create isolated transactions or disposable databases without hiding committed-transaction behaviour.
 
+> **Execution status (2026-09-19): complete.** The async engine, unit-of-work, SQLSTATE translation, pre-ping recovery, and readiness probe are proven against PostgreSQL 18 in 12 integration tests (`make backend-verify` exit 0, 144 passed). Separate public/reviewer pools wait for BE-032's roles.
+
 ### BE-032 — Roles, schemas, grants, and row security
 
 Create migration-managed roles or deployment SQL for:

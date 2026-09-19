@@ -35,15 +35,46 @@ jobs:
       - run: make backend-lint
       - run: make backend-typecheck
       - run: make backend-security
+      - run: make openapi-check
       - run: make backend-unit
 
-  # Service-backed integration jobs (PostgreSQL, Redis, MinIO, ClamAV) are added by the tasks
-  # that create the first integration tests (BE-030 onward); none is needed yet.
+  integration:
+    name: Integration tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: pgvector/pgvector:pg18@sha256:2ba9ca5f2e7daa0f0e7723cba1ee9167bab54efd3640516a44ac1a928dd67e7a
+        env:
+          POSTGRES_USER: shaidago
+          POSTGRES_PASSWORD: ci-only-throwaway-password
+          POSTGRES_DB: shaidago
+        ports:
+          - 55432:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U shaidago -d shaidago"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      POSTGRES_USER: shaidago
+      POSTGRES_PASSWORD: ci-only-throwaway-password
+      INFRA_POSTGRES_PORT: "55432"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: services/platform/uv.lock
+      - run: make backend-sync
+      - run: make backend-integration
+
+  # Redis, MinIO, and ClamAV service jobs are added by the tasks whose tests need them.
 
   backend-required:
     name: Backend required
     if: always()
-    needs: [static-and-unit]
+    needs: [static-and-unit, integration]
     runs-on: ubuntu-24.04
     steps:
       - name: Fail unless every required job succeeded
