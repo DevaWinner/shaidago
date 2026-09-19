@@ -5,10 +5,12 @@ Value lists are literal copies of ``contracts/controlled-vocabulary.json`` (chec
 revision 0004; this metadata lets autogenerate compare columns, keys, and indexes.
 """
 
+from pgvector.sqlalchemy import VECTOR
 from sqlalchemy import (
     Boolean,
     CheckConstraint,
     Column,
+    Computed,
     Date,
     DateTime,
     ForeignKey,
@@ -20,6 +22,7 @@ from sqlalchemy import (
     UniqueConstraint,
     Uuid,
 )
+from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy.schema import SchemaItem
 
 from shaidago.db.metadata import metadata
@@ -127,6 +130,15 @@ source_chunks = Table(
     Column("active", Boolean(), nullable=False),
     Column("created_at", DateTime(timezone=True), nullable=False),
     Column("updated_at", DateTime(timezone=True), nullable=False),
+    Column(
+        "search_vector",
+        TSVECTOR(),
+        Computed("to_tsvector('simple', content_text)", persisted=True),
+        nullable=True,
+    ),
+    Column("embedding", VECTOR(1536)),
+    Column("embedding_model", Text()),
+    Column("embedded_at", DateTime(timezone=True)),
     PrimaryKeyConstraint("id"),
     UniqueConstraint(
         "project_id",
@@ -149,8 +161,24 @@ source_chunks = Table(
         "chunker_version ~ '^[a-z0-9][a-z0-9-]*-v[0-9]+$'",
         name="chunker_version",
     ),
+    CheckConstraint(
+        "(embedding IS NULL AND embedding_model IS NULL AND embedded_at IS NULL) OR "
+        "(embedding IS NOT NULL AND embedding_model IS NOT NULL AND embedded_at IS NOT NULL)",
+        name="embedding_complete",
+    ),
+    CheckConstraint(
+        "embedding_model IS NULL OR char_length(embedding_model) BETWEEN 1 AND 100",
+        name="embedding_model",
+    ),
     Index("ix_source_chunks_project_active", "project_id", "active"),
     Index("ix_source_chunks_version", "source_version_id"),
+    Index("ix_source_chunks_search_vector", "search_vector", postgresql_using="gin"),
+    Index(
+        "ix_source_chunks_embedding_cosine",
+        "embedding",
+        postgresql_using="hnsw",
+        postgresql_ops={"embedding": "vector_cosine_ops"},
+    ),
     schema="app",
 )
 

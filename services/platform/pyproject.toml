@@ -22,6 +22,7 @@ dependencies = [
     "pikepdf>=10.13.0.post1",
     "boto3>=1.43.98",
     "python-multipart>=0.0.32",
+    "pgvector>=0.4.1", # SQLAlchemy vector type for the PostgreSQL retrieval corpus
 ]
 
 [dependency-groups]

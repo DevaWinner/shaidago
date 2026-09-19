@@ -45,7 +45,10 @@ _INSERT = text(
 _UPDATE = text(
     "UPDATE app.source_chunks SET source_id = :source, passage_start = :start, "
     "passage_end = :end, content_text = :content, text_sha256 = :sha, token_count = :tokens, "
-    "section_label = :section, chunker_version = :chunker, active = true, updated_at = :now "
+    "section_label = :section, chunker_version = :chunker, active = true, "
+    "embedding = CASE WHEN text_sha256 = :sha THEN embedding ELSE NULL END, "
+    "embedding_model = CASE WHEN text_sha256 = :sha THEN embedding_model ELSE NULL END, "
+    "embedded_at = CASE WHEN text_sha256 = :sha THEN embedded_at ELSE NULL END, updated_at = :now "
     "WHERE id = :id"
 )
 _DEACTIVATE_SURPLUS = text(

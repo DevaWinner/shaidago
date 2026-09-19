@@ -26,12 +26,12 @@ COMPOSE := docker compose --project-name shaidago --env-file $(INFRA_ENV) -f inf
 .DEFAULT_GOAL := help
 .PHONY: help backend-sync backend-format backend-format-check backend-lint backend-typecheck \
 	backend-unit backend-integration backend-contract backend-security backend-test backend-verify \
-	openapi-generate openapi-check migrate db-roles seed-demo reviewer-bootstrap kek-rotate infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
+	openapi-generate openapi-check migrate db-roles seed-demo embeddings reviewer-bootstrap kek-rotate infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
 
 help:
 	@echo "Backend targets: backend-sync backend-format backend-format-check backend-lint"
 	@echo "  backend-typecheck backend-unit backend-integration backend-contract"
-	@echo "  backend-security backend-test backend-verify openapi-generate openapi-check"
+	@echo "  backend-security backend-test backend-verify openapi-generate openapi-check embeddings"
 	@echo "Database targets: migrate db-roles reviewer-bootstrap (need make infra-up-core first)"
 	@echo "Infrastructure targets: infra-up infra-up-core infra-down infra-logs infra-clean"
 	@echo "  (need $(INFRA_ENV); copy .env.example first)"
@@ -94,6 +94,10 @@ seed-demo:
 
 reviewer-bootstrap:
 	$(RUN_WITH_ENV) python -m shaidago.auth.bootstrap
+
+# Explicit and credentialed: this is the only ordinary workflow that calls the embedding provider.
+embeddings:
+	$(RUN_WITH_ENV) python -m shaidago.retrieval.generate_embeddings
 
 # Rewraps data keys under the active KEK (resumable, idempotent, audited; never logs keys).
 kek-rotate:

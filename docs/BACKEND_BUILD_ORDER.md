@@ -877,6 +877,8 @@ Tests must try contact values, tracking code, handle, reviewer name, raw allegat
 - Fall back to keyword mode when embeddings are unavailable and return `retrieval_mode` honestly.
 - Test cross-project isolation, unavailable source exclusion, deterministic rank ties, empty corpus, and adversarial query length/Unicode.
 
+> **Execution status (2026-09-19): complete.** Migration `0019_hybrid_retrieval` adds generated full-text search, nullable 1,536-dimension embeddings, completeness checks, and GIN/HNSW indexes to the approved-source corpus. `retrieval/search.py` performs project-scoped reciprocal-rank fusion with stable tie ordering and reports keyword mode unless a same-model semantic rank actually participates; the live eligibility-rechecking view still excludes unavailable or unapproved sources. Seed processing only loads strict checked-in JSONL records keyed by exact chunk hash and otherwise announces keyword fallback, while `make embeddings` is the sole explicit credentialed provider workflow. Unit and PostgreSQL integration tests cover bounded Unicode queries and vectors, fixture validation, provider request shape without a live call, cross-project isolation, empty results, immediate availability loss, deterministic ties, model mismatch, and hybrid activation. `make backend-verify` passes with 1167 tests.
+
 ### BE-082 — OpenAI provider and strict schema
 
 Define a provider interface and Responses API adapter with configured model ID, timeout, retry classification, `store: false`, no tools, minimal passages, and opaque citation IDs.
