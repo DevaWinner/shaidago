@@ -1,6 +1,203 @@
 {
   "components": {
     "schemas": {
+      "CitationOut": {
+        "properties": {
+          "canonical_url": {
+            "title": "Canonical Url",
+            "type": "string"
+          },
+          "information_class": {
+            "enum": [
+              "official_source",
+              "independent_source",
+              "community_evidence_reviewed"
+            ],
+            "title": "Information Class",
+            "type": "string"
+          },
+          "location_label": {
+            "title": "Location Label",
+            "type": "string"
+          },
+          "passage": {
+            "title": "Passage",
+            "type": "string"
+          },
+          "publisher": {
+            "title": "Publisher",
+            "type": "string"
+          },
+          "retrieved_at": {
+            "format": "date-time",
+            "title": "Retrieved At",
+            "type": "string"
+          },
+          "source_id": {
+            "format": "uuid",
+            "title": "Source Id",
+            "type": "string"
+          },
+          "source_title": {
+            "title": "Source Title",
+            "type": "string"
+          },
+          "source_type": {
+            "title": "Source Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id",
+          "source_title",
+          "publisher",
+          "canonical_url",
+          "source_type",
+          "information_class",
+          "retrieved_at",
+          "passage",
+          "location_label"
+        ],
+        "title": "CitationOut",
+        "type": "object"
+      },
+      "ExcerptOut": {
+        "properties": {
+          "cited_by": {
+            "enum": [
+              "fact",
+              "update"
+            ],
+            "title": "Cited By",
+            "type": "string"
+          },
+          "item_id": {
+            "format": "uuid",
+            "title": "Item Id",
+            "type": "string"
+          },
+          "location_label": {
+            "title": "Location Label",
+            "type": "string"
+          },
+          "passage": {
+            "title": "Passage",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cited_by",
+          "item_id",
+          "passage",
+          "location_label"
+        ],
+        "title": "ExcerptOut",
+        "type": "object"
+      },
+      "FactOut": {
+        "properties": {
+          "ai_generated": {
+            "const": false,
+            "default": false,
+            "title": "Ai Generated",
+            "type": "boolean"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/CitationOut"
+            },
+            "title": "Citations",
+            "type": "array"
+          },
+          "effective_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective On"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "information_class": {
+            "enum": [
+              "official_source",
+              "independent_source",
+              "community_evidence_reviewed"
+            ],
+            "title": "Information Class",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "last_checked_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Checked On"
+          },
+          "statement": {
+            "title": "Statement",
+            "type": "string"
+          },
+          "verification_state": {
+            "enum": [
+              "verified_official",
+              "corroborated",
+              "community_reviewed",
+              "disputed",
+              "outdated"
+            ],
+            "title": "Verification State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "statement",
+          "effective_on",
+          "last_checked_on",
+          "verification_state",
+          "information_class",
+          "citations"
+        ],
+        "title": "FactOut",
+        "type": "object"
+      },
+      "FieldErrorBody": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "field": {
+            "title": "Field",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "code"
+        ],
+        "title": "FieldErrorBody",
+        "type": "object"
+      },
       "LiveResponse": {
         "properties": {
           "status": {
@@ -13,6 +210,384 @@
           "status"
         ],
         "title": "LiveResponse",
+        "type": "object"
+      },
+      "LocalityListOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/LocalityOut"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "LocalityListOut",
+        "type": "object"
+      },
+      "LocalityOut": {
+        "properties": {
+          "enabled_locales": {
+            "items": {
+              "enum": [
+                "en",
+                "ha",
+                "ig",
+                "yo"
+              ],
+              "type": "string"
+            },
+            "title": "Enabled Locales",
+            "type": "array"
+          },
+          "kind": {
+            "enum": [
+              "state",
+              "area_council"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "parent_slug": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Slug"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "name",
+          "kind",
+          "parent_slug",
+          "enabled_locales"
+        ],
+        "title": "LocalityOut",
+        "type": "object"
+      },
+      "ProblemDetails": {
+        "description": "OpenAPI description of the error body (the wire shape is built by ``problem_response``).",
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "errors": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FieldErrorBody"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errors"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Id"
+          },
+          "status": {
+            "title": "Status",
+            "type": "integer"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "title",
+          "status",
+          "code",
+          "detail"
+        ],
+        "title": "ProblemDetails",
+        "type": "object"
+      },
+      "ProjectDetailOut": {
+        "properties": {
+          "category": {
+            "enum": [
+              "health",
+              "education",
+              "water_sanitation",
+              "roads_public_works",
+              "other_public_service"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "facts": {
+            "items": {
+              "$ref": "#/components/schemas/FactOut"
+            },
+            "title": "Facts",
+            "type": "array"
+          },
+          "last_checked_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Checked On"
+          },
+          "locality_slug": {
+            "title": "Locality Slug",
+            "type": "string"
+          },
+          "public_status": {
+            "enum": [
+              "unknown",
+              "planned",
+              "procurement",
+              "in_progress",
+              "on_hold",
+              "completed",
+              "cancelled"
+            ],
+            "title": "Public Status",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "text": {
+            "$ref": "#/components/schemas/ProjectTextOut"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "updates": {
+            "items": {
+              "$ref": "#/components/schemas/UpdateOut"
+            },
+            "title": "Updates",
+            "type": "array"
+          }
+        },
+        "required": [
+          "slug",
+          "locality_slug",
+          "category",
+          "public_status",
+          "last_checked_on",
+          "updated_at",
+          "text",
+          "facts",
+          "updates"
+        ],
+        "title": "ProjectDetailOut",
+        "type": "object"
+      },
+      "ProjectPageOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectSummaryOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "title": "ProjectPageOut",
+        "type": "object"
+      },
+      "ProjectSummaryOut": {
+        "properties": {
+          "category": {
+            "enum": [
+              "health",
+              "education",
+              "water_sanitation",
+              "roads_public_works",
+              "other_public_service"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "last_checked_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Checked On"
+          },
+          "locality_slug": {
+            "title": "Locality Slug",
+            "type": "string"
+          },
+          "public_status": {
+            "enum": [
+              "unknown",
+              "planned",
+              "procurement",
+              "in_progress",
+              "on_hold",
+              "completed",
+              "cancelled"
+            ],
+            "title": "Public Status",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "text": {
+            "$ref": "#/components/schemas/SummaryTextOut"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "locality_slug",
+          "category",
+          "public_status",
+          "last_checked_on",
+          "updated_at",
+          "text"
+        ],
+        "title": "ProjectSummaryOut",
+        "type": "object"
+      },
+      "ProjectTextOut": {
+        "properties": {
+          "is_fallback": {
+            "title": "Is Fallback",
+            "type": "boolean"
+          },
+          "promised_deliverable": {
+            "title": "Promised Deliverable",
+            "type": "string"
+          },
+          "requested_locale": {
+            "enum": [
+              "en",
+              "ha",
+              "ig",
+              "yo"
+            ],
+            "title": "Requested Locale",
+            "type": "string"
+          },
+          "reviewed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewed At"
+          },
+          "served_locale": {
+            "enum": [
+              "en",
+              "ha",
+              "ig",
+              "yo"
+            ],
+            "title": "Served Locale",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "translation_status": {
+            "enum": [
+              "reviewed",
+              "machine_assisted"
+            ],
+            "title": "Translation Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "summary",
+          "served_locale",
+          "is_fallback",
+          "translation_status",
+          "requested_locale",
+          "promised_deliverable",
+          "reviewed_at"
+        ],
+        "title": "ProjectTextOut",
         "type": "object"
       },
       "ReadinessResponse": {
@@ -43,6 +618,212 @@
           "components"
         ],
         "title": "ReadinessResponse",
+        "type": "object"
+      },
+      "SourceExcerptsOut": {
+        "properties": {
+          "excerpts": {
+            "items": {
+              "$ref": "#/components/schemas/ExcerptOut"
+            },
+            "title": "Excerpts",
+            "type": "array"
+          },
+          "source": {
+            "$ref": "#/components/schemas/SourceOut"
+          }
+        },
+        "required": [
+          "source",
+          "excerpts"
+        ],
+        "title": "SourceExcerptsOut",
+        "type": "object"
+      },
+      "SourceOut": {
+        "properties": {
+          "availability": {
+            "title": "Availability",
+            "type": "string"
+          },
+          "availability_checked_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Checked At"
+          },
+          "canonical_url": {
+            "title": "Canonical Url",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "information_class": {
+            "enum": [
+              "official_source",
+              "independent_source",
+              "community_evidence_reviewed"
+            ],
+            "title": "Information Class",
+            "type": "string"
+          },
+          "publisher": {
+            "title": "Publisher",
+            "type": "string"
+          },
+          "source_type": {
+            "title": "Source Type",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "canonical_url",
+          "title",
+          "publisher",
+          "source_type",
+          "information_class",
+          "availability",
+          "availability_checked_at"
+        ],
+        "title": "SourceOut",
+        "type": "object"
+      },
+      "SummaryTextOut": {
+        "properties": {
+          "is_fallback": {
+            "title": "Is Fallback",
+            "type": "boolean"
+          },
+          "served_locale": {
+            "enum": [
+              "en",
+              "ha",
+              "ig",
+              "yo"
+            ],
+            "title": "Served Locale",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "translation_status": {
+            "enum": [
+              "reviewed",
+              "machine_assisted"
+            ],
+            "title": "Translation Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "summary",
+          "served_locale",
+          "is_fallback",
+          "translation_status"
+        ],
+        "title": "SummaryTextOut",
+        "type": "object"
+      },
+      "UpdateOut": {
+        "properties": {
+          "ai_generated": {
+            "const": false,
+            "default": false,
+            "title": "Ai Generated",
+            "type": "boolean"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/CitationOut"
+            },
+            "title": "Citations",
+            "type": "array"
+          },
+          "effective_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective On"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "information_class": {
+            "enum": [
+              "official_source",
+              "independent_source",
+              "community_evidence_reviewed"
+            ],
+            "title": "Information Class",
+            "type": "string"
+          },
+          "last_checked_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Checked On"
+          },
+          "statement": {
+            "title": "Statement",
+            "type": "string"
+          },
+          "verification_state": {
+            "enum": [
+              "verified_official",
+              "corroborated",
+              "community_reviewed",
+              "disputed",
+              "outdated"
+            ],
+            "title": "Verification State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "statement",
+          "effective_on",
+          "last_checked_on",
+          "verification_state",
+          "information_class",
+          "citations"
+        ],
+        "title": "UpdateOut",
         "type": "object"
       }
     }
@@ -92,6 +873,350 @@
         "summary": "Ready",
         "tags": [
           "health"
+        ]
+      }
+    },
+    "/v1/localities": {
+      "get": {
+        "operationId": "list_localities_v1_localities_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalityListOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          }
+        },
+        "summary": "List Localities",
+        "tags": [
+          "projects"
+        ]
+      }
+    },
+    "/v1/projects": {
+      "get": {
+        "operationId": "list_projects_v1_projects_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "locality",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 80,
+                  "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Locality"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "health",
+                    "education",
+                    "water_sanitation",
+                    "roads_public_works",
+                    "other_public_service"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "unknown",
+                    "planned",
+                    "procurement",
+                    "in_progress",
+                    "on_hold",
+                    "completed",
+                    "cancelled"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "verification",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "verified_official",
+                    "corroborated",
+                    "community_reviewed",
+                    "disputed",
+                    "outdated"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Verification"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 100,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Limit"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 512,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectPageOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          }
+        },
+        "summary": "List Projects",
+        "tags": [
+          "projects"
+        ]
+      }
+    },
+    "/v1/projects/{slug}": {
+      "get": {
+        "operationId": "get_project_v1_projects__slug__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "maxLength": 80,
+              "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDetailOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          }
+        },
+        "summary": "Get Project",
+        "tags": [
+          "projects"
+        ]
+      }
+    },
+    "/v1/projects/{slug}/sources/{source_id}": {
+      "get": {
+        "operationId": "get_project_source_v1_projects__slug__sources__source_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "maxLength": 80,
+              "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+              "title": "Slug",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "source_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Source Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceExcerptsOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          }
+        },
+        "summary": "Get Project Source",
+        "tags": [
+          "projects"
         ]
       }
     }

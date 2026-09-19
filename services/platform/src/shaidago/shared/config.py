@@ -107,8 +107,23 @@ class AppSettings(_Section):
         return self.environment in DEPLOYED_ENVIRONMENTS
 
 
+def _validate_database_url(value: SecretStr) -> SecretStr:
+    try:
+        parsed = make_url(value.get_secret_value())
+    except ArgumentError as error:
+        raise ValueError("not a valid database URL") from error
+    if parsed.drivername != "postgresql+psycopg":
+        raise ValueError("driver must be postgresql+psycopg")
+    if not parsed.host or not parsed.database:
+        raise ValueError("host and database name are required")
+    return value
+
+
 class DatabaseSettings(_Section):
+    """``url`` is the migration owner (tools only); the API connects as the role URLs (ADR-0003)."""
+
     url: SecretStr = Field(validation_alias="DATABASE_URL")
+    public_url: SecretStr = Field(validation_alias="DATABASE_URL_PUBLIC")
     pool_size: PositiveInt = Field(default=5, le=50, validation_alias="DATABASE_POOL_SIZE")
     connect_timeout_seconds: PositiveInt = Field(
         default=5, le=60, validation_alias="DATABASE_CONNECT_TIMEOUT_SECONDS"
@@ -117,21 +132,16 @@ class DatabaseSettings(_Section):
         default=5000, le=60_000, validation_alias="DATABASE_STATEMENT_TIMEOUT_MS"
     )
 
-    @field_validator("url")
+    @field_validator("url", "public_url")
     @classmethod
     def _parse_url(cls, value: SecretStr) -> SecretStr:
-        try:
-            parsed = make_url(value.get_secret_value())
-        except ArgumentError as error:
-            raise ValueError("not a valid database URL") from error
-        if parsed.drivername != "postgresql+psycopg":
-            raise ValueError("driver must be postgresql+psycopg")
-        if not parsed.host or not parsed.database:
-            raise ValueError("host and database name are required")
-        return value
+        return _validate_database_url(value)
 
     def sqlalchemy_url(self) -> URL:
         return make_url(self.url.get_secret_value())
+
+    def public_sqlalchemy_url(self) -> URL:
+        return make_url(self.public_url.get_secret_value())
 
 
 class RedisSettings(_Section):
@@ -334,6 +344,7 @@ def _secret_values(settings: Settings) -> dict[str, str]:
     }
     values = {
         "DATABASE_URL": settings.database.url,
+        "DATABASE_URL_PUBLIC": settings.database.public_url,
         "REDIS_URL": settings.redis.url,
         "OBJECT_STORE_ACCESS_KEY_ID": settings.storage.access_key_id,
         "OBJECT_STORE_SECRET_ACCESS_KEY": settings.storage.secret_access_key,
@@ -393,6 +404,9 @@ def _deployment_problems(settings: Settings) -> list[str]:
         problems.append("SESSION_COOKIE_SECURE: must be true in staging and production")
     if settings.storage.bucket_is_public:
         problems.append("OBJECT_STORE_BUCKET_IS_PUBLIC: evidence buckets must be private")
+    owner_user = settings.database.sqlalchemy_url().username
+    if settings.database.public_sqlalchemy_url().username == owner_user:
+        problems.append("DATABASE_URL_PUBLIC: must use a different login than DATABASE_URL")
     problems.extend(
         f"{name}: placeholder value refused in staging and production"
         for name, value in _secret_values(settings).items()

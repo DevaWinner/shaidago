@@ -19,11 +19,18 @@ def create_configured_app() -> FastAPI:
         environment=settings.app.environment,
         level=settings.observability.log_level,
     )
-    database = Database(
-        create_engine(settings.database, application_name=settings.app.service_name)
+    # The running API never uses the migration owner: public reads go through shaidago_public.
+    public = Database(
+        create_engine(
+            settings.database,
+            application_name=settings.app.service_name,
+            url=settings.database.public_sqlalchemy_url(),
+        )
     )
-    revision_check = MigrationRevisionCheck(database, expected_head())
+    revision_check = MigrationRevisionCheck(public, expected_head())
     return create_app(
         settings,
-        Dependencies(resources=(database,), health_checks=(database, revision_check)),
+        Dependencies(
+            resources=(public,), health_checks=(public, revision_check), public_database=public
+        ),
     )

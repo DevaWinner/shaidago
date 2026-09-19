@@ -520,6 +520,8 @@ Requirements:
 - ETag or cache metadata changes when the public projection changes;
 - DTO allowlists contain no private identifiers, reviewer identity, raw storage key, or internal notes.
 
+> **Execution status (2026-09-19): complete.** Four public endpoints with cursor pagination, allowlisted filters, ETag revalidation, honest locale fallback, and uniform not-found are proven by 33 end-to-end tests on a seeded synthetic catalogue (`make backend-verify` exit 0, 329 passed); the regenerated contract is committed. The API uses the restricted public role.
+
 ### BE-045 — Public contract and query quality
 
 1. Add indexes justified by the list/detail query plans.
