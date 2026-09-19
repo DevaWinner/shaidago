@@ -59,6 +59,37 @@ Every credential failure (unknown, wrong, deleted, or in backoff) is the same 40
 
 A reviewer's questions appear on the tracking lookup (`follow_up_questions`: `question_id`, `text`, and `state` of `open`, `answered`, `skipped`, or `unsafe`); answers are never returned. `POST /v1/report-status:answer-follow-up` (with `Idempotency-Key`) takes `question_id`, `kind` (`answered`, `skipped`, or `unsafe`), `answer` (only with `answered`, up to 2000 characters), and exactly one credential: a tracking `code`, or a `handle` with its `passphrase`. It answers only a question about the caller's own report, once. Every other case (someone else's question, unknown, already answered, withdrawn, bad credential) is one generic problem: 404 `tracking_code_not_recognised` for a code, 403 `invalid_reporter_credentials` for a handle. The answer is encrypted before storage. Answering the last open question of a report that needs information resumes review.
 
+## Reviewer queue and report detail
+
+Every route needs a reviewer session (`X-Shaidago-Session`) and a role holding the capability; every response is `no-store`.
+
+- `GET /v1/reviewer/reports` returns a page of triage rows, oldest first: `report_id`, `project_slug`, `concern_category`, `risk_level`, `status`, `version`, `created_at`, `status_updated_at`, `has_contact`, `evidence_count`, `open_follow_ups`. No text, contact, handle, or evidence detail. Filters: `status` (repeatable), `risk_level`, `concern_category`, `project`. `limit` defaults to 20 (cap 50); a `cursor` only works for the same filters (`400 invalid_cursor` otherwise); unknown parameters are `422`.
+- `GET /v1/reviewer/reports/{report_id}` returns the report with its decrypted description, status history, follow-up questions and answers, evidence metadata (`evidence_id`, name, type, size, sanitation and scan state; never an object key or URL), and the reviewer-only handle track record. `include_contact=true` additionally returns the contact; it needs the `contact_read` capability and is audited by the database before the value is returned. An unknown report is `404 not_found`. Each view writes a `report_detail_viewed` audit event holding identifiers only.
+- `version` is the token later commands send back to prove they acted on the current state.
+
+## Reviewer decisions
+
+- `POST /v1/reviewer/reports/{report_id}/status-transitions` takes `command`, `expected_status`, `expected_version` (from the detail response), and optionally `internal_reason` (private, encrypted, never shown to the reporter; required for `reopen`) and `reporter_message` (shown on tracking; a fixed default is used when omitted). The commands and the states they leave are the `report_status` machine in `contracts/controlled-vocabulary.json`. A view that is no longer current is `409 report_version_conflict`; a command that does not exist from the current status for the caller (including the reporter-only `record_follow_up`) is `409 report_status_transition_not_allowed` and is audited. Every response says `published: false`: a decision never publishes text.
+- `POST /v1/reviewer/reports/{report_id}/follow-up-questions` (`201`, `question_id`) adds a question the reporter sees on tracking (5 to 500 characters, at most 10 open, not on a closed report). `POST .../follow-up-questions/{question_id}:withdraw` withdraws one (`204`). Neither changes the report's status.
+
+## Reviewer notes
+
+- `POST /v1/reviewer/reports/{report_id}/notes` with `{body}` (plain text up to 4000 characters; markup such as `<b>` or `<script>` is `422 markup_not_allowed`) returns `201` with `note_id` and `created_at`. Notes are append-only: there is no edit or delete, and a correction is a new note.
+- `GET /v1/reviewer/reports/{report_id}/notes` pages notes oldest first (`limit`, `cursor`) with `note_id`, `created_at`, the author's reviewer identifier, and the decrypted `body` (`null` if its key was destroyed). Notes never appear on tracking, the public API, or the report detail. Responses are `no-store`; creation is audited by note ID only.
+
+## Reviewer evidence download
+
+`GET /v1/reviewer/reports/{report_id}/evidence/{evidence_id}/content` returns the sanitised file as an attachment (`Content-Disposition: attachment`, the stored type, `Cache-Control: no-store`, `X-Content-Type-Options: nosniff`, a sandboxing `Content-Security-Policy`, and `X-Evidence-Scan-State`: `clean` or `not_scanned_demo` on the hosted demo). There is no signed URL: access is checked on every request, the decision is audited before any byte is read (`report_evidence_download_granted` or `_denied`, IDs only), and the object key never leaves the service. An unknown report, an unknown file, and a file that belongs to another report are the same `404 not_found`; bytes that fail the recorded size and SHA-256 check are never served (`503`).
+
+## Reviewer public updates
+
+Publishing is a separate act from any status change, with its own record.
+
+- `POST /v1/reviewer/reports/{report_id}/public-updates` creates a private draft (`201`) from `statement` (10 to 2000 characters, no markup), `effective_on`, optional `last_checked_on` (not in the future), `verification_state`, and 1 to 5 `citations` (`source_version_id`, an exact `passage` of that approved version, and `location_label`; the offset is computed). The report must currently be `verified_for_public_update` (`409 public_update_report_not_verified`). The response is a preview.
+- `GET .../public-updates/{update_id}` returns the preview: `update` is the public projection exactly as `GET /v1/projects/{slug}` would show it (same model, same ID), `issues` lists what blocks publication (`field` and stable `code`), `can_publish`, `report_status`, `report_version`, and `preview_digest`. Issues include unmet citation, date, and verification rules; tracking codes, handles, contact values or any email or phone-like text, reviewer names, and six-word runs copied from the report, answers, or notes (`report_text`); and guarded words such as `corrupt`, `fraud`, `complete`, or `abandoned` that no cited passage contains (`unsupported_term_<word>`).
+- `POST .../public-updates/{update_id}:publish` with `{preview_digest}` confirms that exact preview. A digest that no longer matches (the text, a source, or the report changed) is `409 preview_stale`; a report no longer verified is `409 public_update_report_not_verified`; a draft already published or withdrawn is `409 public_update_not_draft`; unmet requirements are `422 publication_incomplete` with the same issue codes. On success (`200`) the public update and its citations are written in one transaction with an audit event; the report's status is not changed.
+- `POST .../public-updates/{update_id}:withdraw` (`204`) withdraws a draft. `GET .../public-updates` lists the report's drafts (at most 50).
+
 ## Errors
 
 Every error is `application/problem+json`, `Cache-Control: no-store`, with `type`, `title`, `status`, `code`, `detail`, `request_id`, and, for validation failures, `errors` (`field` and rule `code`, never the submitted value). The `code` is the stable contract; the BFF localises display text from it.
@@ -69,7 +100,7 @@ Every error is `application/problem+json`, `Cache-Control: no-store`, with `type
 | 401 | `unauthenticated` | Missing or invalid internal credential (identical for every cause) |
 | 403 | `forbidden` | Not permitted |
 | 404 | `not_found` | Unknown resource or route |
-| 405 | `method_not_allowed` | Method not supported |
+| 405 | `method_not_allowed` | Method not supported (`Allow` lists every method the path supports) |
 | 409 | `conflict` | Conflicts with current state |
 | 413 | `payload_too_large` | Body over the limit |
 | 415 | `unsupported_media_type` | Content type not accepted |

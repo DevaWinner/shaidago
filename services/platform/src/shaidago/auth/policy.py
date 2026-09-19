@@ -17,6 +17,7 @@ from shaidago.shared.problems import FORBIDDEN, ProblemError
 class Capability(StrEnum):
     QUEUE_READ = "queue_read"
     REPORT_DETAIL_READ = "report_detail_read"
+    CONTACT_READ = "contact_read"
     EVIDENCE_DOWNLOAD = "evidence_download"
     NOTE_WRITE = "note_write"
     STATUS_TRANSITION = "status_transition"
@@ -33,6 +34,7 @@ _ADMIN: Final = frozenset({"admin"})
 POLICY: Final[Mapping[Capability, frozenset[str]]] = {
     Capability.QUEUE_READ: _BOTH,
     Capability.REPORT_DETAIL_READ: _BOTH,
+    Capability.CONTACT_READ: _BOTH,
     Capability.EVIDENCE_DOWNLOAD: _BOTH,
     Capability.NOTE_WRITE: _BOTH,
     Capability.STATUS_TRANSITION: _BOTH,

@@ -59,6 +59,8 @@ reports = Table(
     Column("status_updated_at", DateTime(timezone=True), nullable=False),
     Column("created_at", DateTime(timezone=True), nullable=False),
     Column("updated_at", DateTime(timezone=True), nullable=False),
+    # Optimistic-concurrency token; a trigger raises it when status or risk level changes (0014).
+    Column("version", Integer(), nullable=False, server_default=text("1")),
     PrimaryKeyConstraint("id"),
     Index("ix_reports_project_id", "project_id"),
     Index("ix_reports_status", "status", "created_at"),
@@ -97,6 +99,10 @@ report_status_events = Table(
     Column("actor_type", Text(), nullable=False),
     Column("actor_id", Uuid()),
     Column("occurred_at", DateTime(timezone=True), nullable=False),
+    # Private encrypted reason for a reviewer decision (0015); tracking never reads these.
+    Column("reason_ciphertext", LargeBinary()),
+    Column("reason_key_id", Uuid(), _fk("app.data_keys.id", "RESTRICT")),
+    Column("reason_schema_version", Integer()),
     PrimaryKeyConstraint("id"),
     Index("ix_report_status_events_report_id", "report_id", "occurred_at"),
     schema="app",
@@ -190,5 +196,22 @@ report_follow_up_answers = Table(
         name="fk_report_follow_up_answers_question",
         ondelete="CASCADE",
     ),
+    schema="app",
+)
+
+
+# Encrypted, append-only reviewer notes (BE-072); checks, policies, and the trigger are in 0016.
+report_notes = Table(
+    "report_notes",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column("report_id", Uuid(), _fk("app.reports.id", "CASCADE"), nullable=False),
+    Column("author_id", Uuid(), _fk("app.reviewers.id", "SET NULL")),
+    Column("body_ciphertext", LargeBinary(), nullable=False),
+    Column("data_key_id", Uuid(), _fk("app.data_keys.id", "RESTRICT"), nullable=False),
+    Column("schema_version", Integer(), nullable=False),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    PrimaryKeyConstraint("id"),
+    Index("ix_report_notes_report_id", "report_id", "created_at"),
     schema="app",
 )

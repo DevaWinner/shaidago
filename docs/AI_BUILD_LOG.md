@@ -770,3 +770,93 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the record only; the review itself was the maintainer's.
 - **Prompt summary:** Maintainer confirmed they reviewed and approved the list.
 - **Human review:** Maintainer approved the word list on 2026-09-19.
+
+## 2026-09-19 — BE-070 Minimal-data queue and private detail projections
+
+- **Task:** BE-070 — Minimal-data queue and private detail projections.
+- **Outcome delivered:** Reviewer queue and report detail endpoints, a `contact_read` capability, revision `0014_reviewer_queue` (`reports.version` with a bump trigger; audited `app.reviewer_read_contact`), `DataKeyService.load_many`, and the `review/` package (`context`, `queue`, `detail`).
+- **Files changed:** `services/platform/migrations/versions/0014_reviewer_queue.py`, `src/shaidago/review/{__init__,context,queue,detail}.py`, `src/shaidago/api/v1/{reviewer_reports,__init__}.py`, `src/shaidago/auth/policy.py`, `src/shaidago/db/report_tables.py`, `src/shaidago/shared/data_keys.py`, tests (`test_reviewer_queue.py`, `reviewer_support.py`, `conftest.py`), `contracts/openapi.json`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** One column, one trigger, one `SECURITY DEFINER` function (execute granted to the reviewer role only). OpenAPI gains two reviewer paths.
+- **Security/privacy impact:** The queue exposes no report text, contact, handle, or object key. The reviewer role still cannot `SELECT` contacts; the only read path writes its audit row in the same transaction first. Contacts need an explicit query flag and their own capability. Detail decrypts only the description and answers. Responses are `no-store`.
+- **Failure behaviour verified:** no session and a disabled reviewer give the same 401; unknown or malformed report IDs are 404 or 422; bad filters, unknown parameters, and a cursor replayed under other filters are refused; an anonymous report yields `contact: null` even when asked; the public role cannot call the contact function or read contacts.
+- **Commands run and results:** `make backend-verify` exit 0 (791 passed); Circle 0 validators passed.
+- **Tests added or changed:** 16 integration tests, including statement counts that do not grow with page size, evidence, questions, or answers.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated and committed; `make openapi-check` is part of `backend-verify`.
+- **Known limitations/open decisions:** The queue is oldest first only (no configurable sort). Project shown by slug, not translated title. Handle track record appears only in detail.
+- **Commit/PR:** `feat: add the reviewer queue and private report detail`
+- **Next task may rely on:** `reports.version`, `ReviewContext`, `actor_of`, the reviewer test harness (`review_world`).
+- **AI assistance used:** Designed and wrote the migration, services, endpoints, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-071 Report state machine and append-only events
+
+- **Task:** BE-071 — Report state machine and append-only events.
+- **Outcome delivered:** A pure state machine, an audited decision service and endpoint with optimistic concurrency, an encrypted private reason kept apart from the reporter-facing message, and reviewer follow-up question authoring and withdrawal.
+- **Files changed:** `services/platform/migrations/versions/0015_status_event_reason.py`, `src/shaidago/review/{state_machine,decisions,follow_up_questions,detail}.py`, `src/shaidago/api/v1/{reviewer_decisions,reviewer_reports,__init__}.py`, `src/shaidago/shared/problems.py`, `src/shaidago/db/report_tables.py`, tests (`tests/unit/review/test_state_machine.py`, `tests/integration/test_report_decisions.py`), `contracts/openapi.json`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** Three nullable reason columns with a check (all or none, reviewer or admin actor) on `report_status_events`. OpenAPI gains three reviewer paths and two problem codes.
+- **Security/privacy impact:** The private reason is ciphertext under its own data key and is read only by the reviewer detail; the tracking function selects only `public_message`. Audit details hold identifiers, command names, and versions, never text. A refused command is audited in its own transaction because the refused transaction rolls back. The state machine denies by default (unknown status, command, or actor).
+- **Failure behaviour verified:** stale status or version (nothing written); every disallowed pair (409, unchanged state); reporter-only command refused for a reviewer; bad text, unknown command or status, extra fields (422 before any write); no session (401), no CSRF (403), unknown report (404); four concurrent decisions apply exactly once; history cannot be updated or deleted by the reviewer role; a reporter answer that resumes review still raises the version.
+- **Commands run and results:** `make backend-verify` exit 0 (1056 passed); Circle 0 validators passed. A first run found the new POST route lacked a documented `400`, fixed at the cause.
+- **Tests added or changed:** 244 unit cases (full status x command x actor matrix, contract parity) and 13 integration tests.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated; `make openapi-check` is part of `backend-verify`.
+- **Known limitations/open decisions:** The event time is the later of the API clock and the newest event plus one microsecond, so a reviewer event is never reordered behind history; a reporter answer arriving with a clock earlier than that still fails closed at the database (BE-067's documented limit). `reporter_message` is free text a reviewer is responsible for keeping free of private detail; only length and character rules bound it. No rate limit yet (BE-100).
+- **Commit/PR:** `feat: add the report state machine and audited reviewer decisions`
+- **Next task may rely on:** `review.decisions.decide`, the encrypted event reason, and `report_version_conflict` semantics.
+- **AI assistance used:** Designed and wrote the migration, state machine, service, endpoints, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-072 Encrypted reviewer notes
+
+- **Task:** BE-072 — Encrypted reviewer notes.
+- **Outcome delivered:** Append-only notes encrypted per note, create and list endpoints with pagination, and a correct `Allow` header for paths that carry several methods.
+- **Files changed:** `services/platform/migrations/versions/0016_report_notes.py`, `src/shaidago/review/notes.py`, `src/shaidago/api/v1/{reviewer_notes,__init__}.py`, `src/shaidago/api/errors.py`, `src/shaidago/db/report_tables.py`, tests (`test_report_notes.py`, `tests/unit/api/test_errors.py`), `contracts/openapi.json`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** One table with forced row security (reviewer and owner only; the public role has no privilege), an append-only trigger that allows only foreign-key cascades to delete. OpenAPI gains two paths.
+- **Security/privacy impact:** Note text is ciphertext under a per-note key that can be shredded alone; markup is refused so a note can never be rendered as HTML; audit and logs carry the note ID only. The public role cannot read the table, and no view, tracking function, or public projection selects from it.
+- **Failure behaviour verified:** empty, oversized, markup, and control-character bodies and extra fields are 422 with nothing stored; no session 401, no CSRF 403, unknown report 404; a cursor from another report is 400; the reviewer and owner roles cannot update or directly delete a note; a destroyed key returns the note with `body: null`.
+- **Commands run and results:** `make backend-verify` exit 0 (1065 passed); Circle 0 validators passed. The contract test caught a wrong `Allow` header on a path with two methods (Starlette reports only the first route's methods); fixed once in the error boundary using the generated contract.
+- **Tests added or changed:** 9 integration tests; the error-boundary unit test now covers a path with two methods.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated; `make openapi-check` passes inside `backend-verify`.
+- **Known limitations/open decisions:** Notes cannot be searched. The `Allow` header is computed from the generated contract, which is built once on the first 405. Reading notes is not separately audited (the detail view is).
+- **Commit/PR:** `feat: add encrypted append-only reviewer notes`
+- **Next task may rely on:** `review/notes.py` and the `report_notes` table for any later reviewer commentary.
+- **AI assistance used:** Designed and wrote the migration, service, endpoints, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-073 Evidence download broker
+
+- **Task:** BE-073 — Evidence download broker.
+- **Outcome delivered:** An authorised, audited download endpoint that streams the sanitised evidence with forced-download headers and an integrity check.
+- **Files changed:** `services/platform/src/shaidago/review/evidence.py`, `src/shaidago/api/v1/{reviewer_evidence,__init__}.py`, `src/shaidago/api/{dependencies,main}.py`, tests (`tests/unit/review/test_evidence.py`, `tests/integration/test_evidence_download.py`, `reviewer_support.py`), `contracts/openapi.json`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None to the schema. OpenAPI gains one path; `Dependencies` gains `evidence_store`.
+- **Security/privacy impact:** Streaming through the API removes the signed-URL token from the design. Access is deny-by-default (capability, active session, evidence must belong to the named report), audited before the read, and unsafe or mismatched bytes are never served. Headers forbid rendering, caching, and sniffing. The object key and any storage location stay server side.
+- **Failure behaviour verified:** see the build order note; unsafe-state serving is refused by `is_servable` (unit) and cannot be produced through the database because of its check constraint.
+- **Commands run and results:** `make backend-verify` exit 0 (1093 passed); Circle 0 validators passed.
+- **Tests added or changed:** 20 unit and 8 integration tests.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated; `make openapi-check` passes.
+- **Known limitations/open decisions:** The whole file (at most 10 MB) is read into memory before it is sent; no `Range` support; no per-reviewer download rate limit yet (BE-100). A short-lived signed URL was considered and not chosen because a streamed response has no bearer token to expire.
+- **Commit/PR:** `feat: add the audited reviewer evidence download broker`
+- **Next task may rely on:** `evidence_store` in `Dependencies` and `review/evidence.py` rules.
+- **AI assistance used:** Designed and wrote the broker and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-074 Separate public-update publication transaction
+
+- **Task:** BE-074 — Separate public-update publication transaction.
+- **Outcome delivered:** Reviewer-authored public-update drafts, an exact preview with a confirmation digest, and one database function that publishes the update with its citations atomically.
+- **Files changed:** `services/platform/migrations/versions/0017_public_updates.py`, `src/shaidago/review/{publication,private_references,detail}.py`, `src/shaidago/api/v1/{reviewer_publication,__init__}.py`, `src/shaidago/api/errors.py`, `src/shaidago/shared/problems.py`, `src/shaidago/db/source_tables.py`, tests (`test_public_update_publication.py`, `tests/unit/review/test_private_references.py`), `contracts/openapi.json`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** Two tables (forced row security; reviewer and owner only), a guard trigger making a draft's content fixed and its state terminal after publish or withdraw, and `app.publish_public_update` (execute for the reviewer role only). The reviewer role gained no privilege on `project_updates` or `update_citations`. OpenAPI gains five paths and three problem codes.
+- **Security/privacy impact:** The link between a public update and its report exists only in a table no public role can read; the public row carries none and shares the draft's ID so the previewed ID is the published ID. Private text is decrypted in memory only to check the statement (a contact read is audited like any other). The publish function re-checks state under locks, so a status change racing a publication either finishes first (and the publication is refused) or after (and the publication stands). Nothing here is called by a status change, worker, or AI path.
+- **Failure behaviour verified:** see the build order note. A first full run showed the contract test catching a route ambiguity (`GET .../{id}:publish` matched the preview route and answered 401 instead of 405); the preview route now takes a `uuid`-typed parameter. The same run showed the `Allow` index matching parameters across a colon; fixed.
+- **Commands run and results:** `make backend-verify` exit 0 (1143 passed); Circle 0 validators passed.
+- **Tests added or changed:** 14 integration tests and 36 unit tests (every branch of the private-reference and guarded-wording checks).
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated; `make openapi-check` passes.
+- **Known limitations/open decisions:** Neutrality of the statement is the reviewer's responsibility; the deterministic checks are a floor (the guarded word list is a reviewable constant and will produce false blocks, for example on "not complete" without a passage). Refused publication attempts are not audited (only successes, drafts, and withdrawals). Drafts cannot be edited (withdraw and create a new one). Previewing decrypts the report's private material each time.
+- **Commit/PR:** `feat: add separately authored, previewed, citation-backed public update publication`
+- **Next task may rely on:** `app.project_updates` rows created only through `app.publish_public_update` for report-derived updates, and the reviewer test harness `review_world`.
+- **AI assistance used:** Designed and wrote the migration, service, checks, endpoints, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

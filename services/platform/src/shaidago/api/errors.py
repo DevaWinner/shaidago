@@ -1,5 +1,6 @@
 """The single boundary that turns every exception into a safe problem response."""
 
+import re
 from typing import cast
 
 import structlog
@@ -19,6 +20,8 @@ from shaidago.shared.problems import (
     problem_response,
 )
 
+HTTP_METHOD_NOT_ALLOWED = 405
+_HTTP_METHODS = frozenset({"get", "put", "post", "delete", "options", "head", "patch", "trace"})
 _logger = structlog.get_logger("shaidago.errors")
 
 
@@ -60,9 +63,46 @@ async def _handle_validation(request: Request, error: Exception) -> Response:
     return _respond(request, VALIDATION_FAILED, field_errors=field_errors)
 
 
+_PARAMETER = re.compile(r"\\\{[^/]+?\\\}")
+
+
+def _method_index(app: FastAPI) -> list[tuple[re.Pattern[str], frozenset[str]]]:
+    """Path patterns with every method the contract lists for them, built once per app.
+
+    Starlette reports only the first partially matching route's methods, which is wrong when one
+    path has separate routes per method (a list and a create). The generated contract is the
+    public, stable record of which methods each path supports.
+    """
+    cached: list[tuple[re.Pattern[str], frozenset[str]]] | None = getattr(
+        app.state, "method_index", None
+    )
+    if cached is not None:
+        return cached
+    index: list[tuple[re.Pattern[str], frozenset[str]]] = []
+    for template, item in app.openapi().get("paths", {}).items():
+        # A path parameter never contains "/" or ":" (a ":" starts an explicit command suffix).
+        pattern = re.compile("^" + _PARAMETER.sub("[^/:]+", re.escape(template)) + "$")
+        methods = {name.upper() for name in item if name in _HTTP_METHODS}
+        if "GET" in methods:
+            methods.add("HEAD")
+        index.append((pattern, frozenset(methods)))
+    app.state.method_index = index
+    return index
+
+
+def _allowed_methods(request: Request) -> str | None:
+    methods: set[str] = set()
+    for pattern, allowed in _method_index(request.app):
+        if pattern.match(request.url.path):
+            methods |= allowed
+    return ", ".join(sorted(methods)) or None
+
+
 async def _handle_http(request: Request, error: Exception) -> Response:
     http_error = cast("StarletteHTTPException", error)  # registered for this type only
     allow = (http_error.headers or {}).get("Allow")
+    if http_error.status_code == HTTP_METHOD_NOT_ALLOWED:
+        allow = _allowed_methods(request) or allow
     headers = {"Allow": allow} if allow else {}
     return _respond(request, problem_for_status(http_error.status_code), headers=headers)
 

@@ -795,6 +795,8 @@ Implement reviewer list/detail services and endpoints with cursor pagination, al
 - Evidence metadata never includes raw object keys or permanent URLs.
 - Query count is bounded; add integration tests preventing N+1 regressions.
 
+> **Execution status (2026-09-19): complete.** `GET /v1/reviewer/reports` (queue: triage fields only, oldest first, allowlisted filters, signed cursors, one statement per page) and `GET /v1/reviewer/reports/{id}` (detail: decrypted description and follow-up answers, evidence metadata without object keys, a contact only with `include_contact=true`, the new `contact_read` capability, and an audit event written by the database function `app.reviewer_read_contact` before any ciphertext returns) are proven by 16 integration tests against PostgreSQL 18 and the real reviewer role, including fixed statement counts (no N+1). Migration `0014_reviewer_queue` adds `reports.version` (raised by a trigger on any status or risk change) as the concurrency token for BE-071.
+
 ### BE-071 — Report state machine and append-only events
 
 1. Encode allowed transitions as one pure policy/state-machine module.
@@ -806,9 +808,13 @@ Implement reviewer list/detail services and endpoints with cursor pagination, al
 
 Generate a transition matrix test covering every allowed and denied state/role pair.
 
+> **Execution status (2026-09-19): complete.** The pure state machine `review/state_machine.py` (a literal copy of the contract, parity-tested), the decision service `review/decisions.py`, and `POST /v1/reviewer/reports/{id}/status-transitions` apply one command with the caller's expected status and version, one append-only event, and the projection in one transaction; a stale view is `409 report_version_conflict`. Migration `0015_status_event_reason` adds an encrypted private reason to the event, kept apart from the reporter-facing message, and reopening requires one. Reviewer follow-up question authoring and withdrawal (the endpoint BE-067 left for this task) are included. Evidence: a 6 x 8 status-and-command matrix over HTTP for both roles and a 6 x 8 x 5 unit matrix of status, command, and actor (all against the contract); concurrency (four simultaneous decisions on one version apply once); refused commands audited; history immutable even for the reviewer role; 1056 tests passing under `make backend-verify`.
+
 ### BE-072 — Encrypted reviewer notes
 
 Implement create/read notes with independent encryption, author/time metadata, append-only semantics, role checks, pagination if needed, and no public/tracking serialization path. Do not support arbitrary HTML. Audit note creation without logging content.
+
+> **Execution status (2026-09-19): complete.** Migration `0016_report_notes`, `review/notes.py`, and `api/v1/reviewer_notes.py` add append-only notes, each encrypted under its own data key, with author and time, cursor pagination, plain-text-only bodies (markup is refused), and an audit event that records the note ID only. 9 integration tests prove ciphertext at rest, ordering and paging, refusal of markup and control characters, session and CSRF requirements, no note text in tracking, public API, detail, or logs, no public-role access, no edit or delete even by the owner role, and a shredded key leaving the note present but unreadable. The same change fixed the 405 `Allow` header for paths that have separate routes per method (found by the contract test).
 
 ### BE-073 — Evidence download broker
 
@@ -818,6 +824,8 @@ Implement create/read notes with independent encryption, author/time metadata, a
 4. Force `Content-Disposition: attachment`, safe filename, private/no-store caching, and restrictive content type.
 5. Audit the download decision, not URL/token.
 6. Test expiry, replay after expiry, wrong report, inactive reviewer, unsafe evidence state, and no object-key leakage.
+
+> **Execution status (2026-09-19): complete.** `GET /v1/reviewer/reports/{report_id}/evidence/{evidence_id}/content` streams the sanitised file through the authorised endpoint instead of issuing a signed URL (the task allows either), so no token or storage URL exists to leak, replay, or outlive the session. Authorisation and the audit decision are committed before any byte is read; only sanitised evidence of an allowed type with a known scan state is served; the stored size and SHA-256 are re-checked; headers force `attachment`, `no-store`, `nosniff`, a sandboxing CSP, and expose `X-Evidence-Scan-State` so the hosted demo's `not_scanned_demo` label is visible. 8 integration and 20 unit tests cover session expiry and replay after it, a disabled reviewer, another report's file, unknown IDs (one identical 404), hostile file names, tampered and missing bytes (503, decision still audited), and no object key in any reviewer response. An unsafe-state row cannot be built through the database (its check constraint refuses it), so that refusal is covered by unit tests of `is_servable` plus the existing constraint tests.
 
 ### BE-074 — Separate public-update publication transaction
 
@@ -832,6 +840,8 @@ Create `public_updates` and a publication service:
 
 Tests must try contact values, tracking code, handle, reviewer name, raw allegation, private source, stale preview, concurrent status change, and missing citation.
 
+> **Execution status (2026-09-19): complete.** Migration `0017_public_updates`, `review/{publication,private_references}.py`, and `api/v1/reviewer_publication.py` add reviewer-authored drafts (`app.public_updates`, with the private report link kept only there, and `app.public_update_citations`), an exact preview built from the public API's own `UpdateOut` model, a preview digest the reviewer must quote to confirm, and one `SECURITY DEFINER` function (`app.publish_public_update`) that re-checks the draft state, report status, and report version under row locks and writes the public update (same ID as the draft) and its citations with the audit event in one transaction. Guards: private references (tracking code, handle, contact or any email or phone-like text, reviewer name, six-word runs copied from the report, answers, or notes) and guarded wording (corrupt, fraud, complete, abandoned and similar) that no cited passage contains block publication; citations must be exact passages of approved versions. 14 integration and 36 unit tests cover a publish that matches the public API output exactly, a status change that publishes nothing, each private-material case, a source rejected or a status changed after the preview, a concurrent status change, publish-once and withdraw, database-level refusal of shortcuts, and access control.
+
 ### Circle 7 exit gate
 
 - Reviewer queue/detail obey least privilege and bounded queries.
@@ -839,6 +849,8 @@ Tests must try contact values, tracking code, handle, reviewer name, raw allegat
 - Notes and downloads are private, encrypted/short-lived, and audited safely.
 - Publication requires a distinct authored update, exact preview, citations, and explicit confirmation.
 - No report/status operation implicitly publishes text.
+
+> **Gate status (2026-09-19): closed.** Reviewer queue and detail show triage fields only and use a fixed number of statements (BE-070 tests). Every status, command, and actor combination is tested against the contract, over HTTP for both roles and as a 240-case unit matrix (BE-071). Notes are encrypted per note and append-only, downloads are streamed through an authorised, audited endpoint with no storage URL, and neither appears in tracking, the public API, or logs (BE-072, BE-073). Publication needs a distinct authored update, an exact preview quoted by digest, approved exact-passage citations, and a separate explicit confirmation, and no status or report operation publishes text (BE-074). `make backend-verify` passed with 1143 tests. Two deliberate readings of the gate: "short-lived" downloads are met by having no bearer token at all (the response is authorised on every request and ends with the session), and the guarded-wording check is a deterministic floor, not a judgement of neutrality, which stays the reviewer's responsibility at the preview step.
 
 ## 11. Circle 8 — grounded project retrieval and Q&A
 

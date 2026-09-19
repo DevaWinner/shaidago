@@ -99,6 +99,38 @@ INVALID_REPORTER_CREDENTIALS: Final = Problem(
     "Reporter credentials not accepted",
     "The handle and passphrase were not accepted.",
 )
+REPORT_TRANSITION_NOT_ALLOWED: Final = Problem(
+    409,
+    "report_status_transition_not_allowed",
+    "Status change not allowed",
+    "That change is not allowed from the report's current status.",
+)
+# The reviewer acted on a view that is no longer current; they must reload before deciding again.
+REPORT_VERSION_CONFLICT: Final = Problem(
+    409,
+    "report_version_conflict",
+    "Report has changed",
+    "The report changed since it was loaded. Reload it and try again.",
+)
+PUBLIC_UPDATE_REPORT_NOT_VERIFIED: Final = Problem(
+    409,
+    "public_update_report_not_verified",
+    "Report not verified for a public update",
+    "The report is not currently marked as verified for a public update.",
+)
+PUBLIC_UPDATE_NOT_DRAFT: Final = Problem(
+    409,
+    "public_update_not_draft",
+    "Public update is not a draft",
+    "This public update was already published or withdrawn.",
+)
+# The reviewer confirmed something other than what would now be published.
+PREVIEW_STALE: Final = Problem(
+    409,
+    "preview_stale",
+    "Preview is out of date",
+    "What would be published has changed since the preview. Review the new preview first.",
+)
 METHOD_NOT_ALLOWED: Final = Problem(
     405, "method_not_allowed", "Method not allowed", "This method is not supported here."
 )

@@ -82,5 +82,6 @@ def create_configured_app() -> FastAPI:
             reviewer_database=reviewer,
             rate_limiter=limiter,
             evidence_pipeline=pipeline,
+            evidence_store=store,
         ),
     )
