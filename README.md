@@ -8,7 +8,7 @@ The hackathon pilot covers Abuja's AMAC and Bwari Area Councils. The public expe
 
 ## Repository status
 
-**Backend release gate in progress.** `services/platform` contains the FastAPI application, reviewed migrations, restricted database roles, deterministic tests, production container, staging configuration, and the frozen frontend contract. The Next.js application under `apps/web` has not been scaffolded yet, so this repository does not currently claim to provide the complete runnable product.
+**Backend release gate in progress.** `services/platform` contains the FastAPI application, reviewed migrations, restricted database roles, deterministic tests, production container, staging configuration, and the frozen frontend contract. `apps/web` now has a pinned, strict Next.js foundation that builds without reaching the private API; product routes, BFF handlers, locale messages, and visible surfaces are not implemented yet, so this repository does not claim to provide the complete runnable product.
 
 The remaining backend gates are explicit: human source and language review, live-provider evidence,
 a complete private-network staging smoke, and the first green hosted CI run for the release branch.

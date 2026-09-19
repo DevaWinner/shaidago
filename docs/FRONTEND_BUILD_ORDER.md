@@ -326,6 +326,8 @@ Plan for this contract to survive as the first emitted body comment in the root 
 
 ### FE-020 — Scaffold the pnpm workspace and Next.js app
 
+> **Execution status (2026-09-20): complete.** Root pnpm workspace configuration and the strict `apps/web` Next.js 16.3.5/React 19.3.0 package are pinned in `pnpm-lock.yaml`. A clean frozen install, `tsc --noEmit`, and `next build` all pass with `API_INTERNAL_URL=http://127.0.0.1:1`; the non-visual scaffold performs no API fetch.
+
 1. Create root `package.json`, `pnpm-workspace.yaml`, pinned `packageManager`, `.nvmrc`, and `apps/web` package.
 2. Pin Node 24 LTS and Next.js/React/TypeScript lines from the accepted plan; commit `pnpm-lock.yaml`.
 3. Configure strict TypeScript including no unchecked indexed access, exact optional properties where compatible, and no emitted JS from typecheck.

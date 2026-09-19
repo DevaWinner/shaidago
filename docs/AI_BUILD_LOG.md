@@ -1475,3 +1475,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Refused to invent a visual identity and recorded the exact human inputs required by the accepted build order.
 - **Prompt summary:** Use the frontend loop and continue after the Circle 0 gate.
 - **Human review:** required; maintainer visual-direction decision pending.
+
+## 2026-09-20 — FE-020 deterministic web foundation
+
+- **Task:** FE-020 — Scaffold the pnpm workspace and Next.js app.
+- **User outcome delivered:** A clean clone can install a separately managed, strict Next.js foundation and build it while the private API URL is deliberately unreachable; no product UI or BFF route is implied by the scaffold.
+- **Routes/components changed:** Added the root pnpm workspace/runtime pin and a non-visual `apps/web` App Router root layout/page, strict TypeScript configuration, standalone Next output, package scripts, and web README.
+- **Backend operations/contract version:** No backend operation or generated contract changed. The scaffold has no API fetch, client API configuration, BFF route, or browser-to-backend path.
+- **Public/private data handled:** No runtime data flow exists. The `server-only` package is installed for future server modules; the foundation exposes no private URL, credential, provider, storage detail, report, or fixture in a client graph.
+- **States implemented:** No product UI state changed. The placeholder page returns no visible product surface until human visual direction and later route tasks are complete.
+- **Accessibility evidence:** No visible interactive component was introduced. The root document has semantic `html`/`body`; landmarks, errors, locale routing, and visible surfaces remain later tasks.
+- **Locales reviewed:** No locale route, catalog, or translated copy was added. The root document uses `en` only as a temporary scaffold and does not claim language support.
+- **Performance/cache impact:** Standalone output is enabled; the scaffold makes no build-time/network API call, has no images/fonts/analytics, and introduces no product cache. The production build succeeds with an unreachable internal API URL.
+- **Dependencies:** Added Next 16.3.5 (MIT; App Router/BFF runtime), React/React DOM 19.3.0 (MIT; rendering runtime), TypeScript 5.9.3 (Apache-2.0; strict checking), `server-only` 0.0.1 (MIT; future client-import boundary), and matching MIT DefinitelyTyped packages. Exact versions are locked by pnpm; no dependency is added for a capability the accepted stack does not require.
+- **Commands run and results:** `pnpm clean --lockfile`; `pnpm install --lockfile-only`; `pnpm install --frozen-lockfile` from empty `node_modules`; `API_INTERNAL_URL=http://127.0.0.1:1 pnpm --dir apps/web typecheck`; `API_INTERNAL_URL=http://127.0.0.1:1 pnpm --dir apps/web build`; and `pnpm audit --prod --audit-level high` all passed (no known production dependency vulnerability). The first candidate `@types/node@24.13.6` failed pnpm's release-age policy and was replaced with compatible `24.12.0`; no policy exemption was committed.
+- **Screenshots/traces/artifacts checked:** Inspected the standalone build output and generated Next types; `.next` and `node_modules` remain ignored. No visual surface exists to screenshot.
+- **Known limitations/open decisions:** FE-021 adds lint/test/E2E/a11y tooling and root `make web-*` targets. FE-022–FE-024 add error boundaries, environment validation/bundle proof, and CI. Human visual direction remains required before visible product UI.
+- **Commit/PR:** `build: scaffold the strict Next.js web foundation`
+- **Next task may rely on:** Node 24.20.0, pnpm 12.4.2, the committed lockfile, `apps/web` package scripts, strict compiler settings, standalone output, and proof that the base build does not require the private API.
+- **AI assistance used:** Selected/pinned the accepted stack versions, created the minimal non-visual foundation, diagnosed the supply-chain age-policy failure, and refused to retain the tool-added policy exemption.
+- **Prompt summary:** Use the frontend loop and continue with the eligible web foundation task.
+- **Human review:** none yet; unattended run, pending maintainer review.
