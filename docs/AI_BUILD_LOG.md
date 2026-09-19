@@ -642,3 +642,22 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the schema, triggers, writer, and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-064 Streaming evidence sanitation pipeline
+
+- **Task:** BE-064 — Streaming evidence sanitation pipeline.
+- **Outcome delivered:** `shaidago/files/` with `rules` (limits, type sniffing, polyglot check, file-name sanitising), `sanitise` (Pillow and pikepdf), `scanner` (clamd INSTREAM client, demo, and EICAR test scanners), `storage` (S3 adapter for MinIO/R2 and an in-memory double), and `pipeline` (`EvidencePipeline`, startup sweep).
+- **Files changed:** `services/platform/src/shaidago/files/*`, `src/shaidago/shared/config.py` (`CLAMD_HOST`, `CLAMD_PORT`), `.env.example`, `tests/unit/files/test_evidence_pipeline.py`, `tests/integration/test_evidence_storage.py`, `pyproject.toml`, `uv.lock`.
+- **Schema/contract changes:** None. OpenAPI unchanged.
+- **Dependencies added (build order 1.3):** `pikepdf` (MPL-2.0; strips and rewrites PDFs per ADR-0006), `boto3` (Apache-2.0; S3 API for MinIO locally and R2 hosted; no live R2 call was made), `python-multipart` (Apache-2.0; multipart parsing for BE-063), dev-only `boto3-stubs[s3]` (types). `pip-audit` reported no known vulnerabilities; lockfile updated.
+- **Security/privacy impact:** The raw upload exists only in a private temp file that is deleted on success, rejection, timeout, and a failing stream. The size cap is enforced while streaming. The type comes from magic bytes; a declared type that disagrees is refused. Images are decoded under a pixel limit and re-encoded fresh, so EXIF, GPS, and XMP cannot survive. PDFs lose metadata, embedded files, scripts, actions, forms, and annotations, and the output is re-checked. Raw bytes and the stored artifact are both scanned; any scanner error or timeout rejects the file. `not_deployed` scanning is refused in production. Object keys are 128 random bits, uploaded with attachment disposition. Rejections carry only a stable reason code.
+- **Failure behaviour verified:** GPS EXIF canary removed; MIME spoof; EICAR; oversized stream (reading stops near the cap); decompression bomb; encrypted, over-long, malformed, and malicious PDFs; SVG, HTML, and executable uploads; script and PDF polyglots; truncated JPEG and PNG; scanner failure, refusal, timeout, and every clamd reply; storage timeout and unreachable store; sanitiser timeout; broken stream. Every rejection leaves the scratch directory empty and stores nothing. A real process pool and a real MinIO round trip also passed.
+- **Commands run and results:** `make backend-verify` exit 0 (663 passed). `make backend-integration` exit 0 (254 passed). Circle 0 validators passed.
+- **Tests added or changed:** 34 unit and 2 integration tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** ClamAV was never started locally, so the client is proven only against a local protocol double. A timed-out sanitise call frees the request but the worker process finishes its job. Files are held in memory (10 MB cap) for the sanitiser and scanner. The pipeline returns metadata; writing the `evidence_files` row and the report link is BE-063.
+- **Commit/PR:** `feat: add the streaming evidence sanitation pipeline`
+- **Next task may rely on:** `EvidencePipeline.process` returning a `StoredEvidence` that matches the `evidence_files` constraints.
+- **AI assistance used:** Designed and wrote the pipeline, adapters, and adversarial tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

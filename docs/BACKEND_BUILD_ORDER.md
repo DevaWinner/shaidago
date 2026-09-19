@@ -696,6 +696,8 @@ Build an explicit state machine:
 
 Mandatory fixtures: GPS EXIF, MIME spoof, EICAR, oversized image, decompression bomb, encrypted/malicious PDF, SVG script, truncated file, scanner timeout, storage timeout. Prove no raw artifact remains.
 
+> **Execution status (2026-09-19): complete.** `shaidago/files/` streams uploads to a bounded temp file, sniffs, scans, sanitises in an executor, scans again, and stores only the sanitised artifact under a random key; every mandatory fixture is covered by 34 unit tests and a MinIO round trip, and the scratch directory is proven empty after each outcome. The ClamAV daemon itself was not started here: the client is tested against a protocol-faithful local server, and a live clamd run stays pending.
+
 ### BE-065 — Tracking status lookup
 
 Implement `POST /v1/report-status:lookup` with code in the body:

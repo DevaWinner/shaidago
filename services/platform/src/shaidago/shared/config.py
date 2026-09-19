@@ -167,6 +167,8 @@ class StorageSettings(_Section):
     secret_access_key: SecretStr = Field(validation_alias="OBJECT_STORE_SECRET_ACCESS_KEY")
     bucket_is_public: bool = Field(default=False, validation_alias="OBJECT_STORE_BUCKET_IS_PUBLIC")
     scanner_mode: ScannerMode = Field(default="clamd", validation_alias="SCANNER_MODE")
+    clamd_host: str = Field(default="127.0.0.1", validation_alias="CLAMD_HOST")
+    clamd_port: int = Field(default=3310, ge=1, le=65535, validation_alias="CLAMD_PORT")
 
     @field_validator("endpoint_url")
     @classmethod

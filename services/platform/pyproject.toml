@@ -19,6 +19,9 @@ dependencies = [
     "httpx",            # outbound HTTP client for provider and public-fetch adapters
     "pillow",           # bounded image decoding and metadata-free re-encoding
     "pypdf",            # bounded PDF parsing for evidence sanitation
+    "pikepdf>=10.13.0.post1",
+    "boto3>=1.43.98",
+    "python-multipart>=0.0.32",
 ]
 
 [dependency-groups]
@@ -36,6 +39,7 @@ dev = [
     "httpx2",           # Starlette TestClient transport (httpx is deprecated there)
     "pyyaml>=6.0.3",
     "types-pyyaml>=6.0.12.20260906",
+    "boto3-stubs[s3]>=1.43.98",
 ]
 
 [build-system]
