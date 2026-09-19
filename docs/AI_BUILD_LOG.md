@@ -1225,3 +1225,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Ran the scanners, triaged the findings, and wrote the workflow and record.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-106 Retention, deletion, and operational privacy
+
+- **Task:** BE-106 — Retention, deletion, and operational privacy.
+- **Outcome delivered:** An operator retention command with purges, crypto-shredding, and an access-review list, and a retention policy document with explicit limitations.
+- **Files changed:** `services/platform/src/shaidago/retention/{__init__,purge,__main__}.py`, `Makefile`, `tests/integration/test_retention.py`, `docs/RETENTION.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** Shredding makes private content unreadable by destroying its keys; history and audit stay; nothing runs from the API.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `make backend-verify`; Circle 0 validators.
+- **Tests added or changed:** 5 integration tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** No compliance claim; report and audit retention periods, backup configuration, and scheduling of the purge are open. Report-scoped discovery runs are not deleted (the run guard forbids direct deletes and they hold no private text). Shredding needs the object store credentials to delete evidence objects.
+- **Commit/PR:** `feat: add retention purges, report crypto-shredding, and a retention policy`
+- **Next task may rely on:** the retention command for the runbooks in BE-113.
+- **AI assistance used:** Designed and wrote the module, command, tests, and policy.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

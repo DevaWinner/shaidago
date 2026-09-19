@@ -1156,6 +1156,8 @@ Implement or document enforceable prototype policies for:
 
 Do not claim GDPR/NDPA or whistleblower compliance from technical controls alone. The production gate remains closed pending legal/privacy and operational assessment.
 
+> **Execution status (2026-09-19): complete for the prototype controls; the production gate stays closed.** `shaidago/retention/` and `make retention-purge` (`python -m shaidago.retention`) delete expired reviewer sessions (7 days after expiry or revocation) and idempotency records, sweep abandoned upload scratch files older than an hour, crypto-shred a report on request or after a configured age (every data key protecting its description, contact, notes, answers, status reasons, and discovery decision reasons is destroyed, contact ciphertext is cleared, evidence objects and rows are deleted, status history and audit events are kept, published updates are untouched, and it is idempotent and audited by counts only), and list reviewers with no recent sign-in for an access review. 5 integration tests prove the deletions and the survivors, that a shredded report's description, contact, note, and reasons are unreadable while its history remains, that only closed reports past the age are shredded, and that reruns change nothing. `docs/RETENTION.md` states each policy and its limitation and makes no compliance claim: report retention periods, audit retention, backups (not configured; restoring an older backup resurrects shredded keys, so the runbook is to re-shred reports that have a `report_shredded` audit event), provider-side retention, and scheduling of the purge command are decisions and operations still open for the production gate.
+
 ### Circle 10 exit gate
 
 - Threat fixtures, contract fuzzing, leak snapshots, concurrency, and failure injection pass.
@@ -1163,6 +1165,8 @@ Do not claim GDPR/NDPA or whistleblower compliance from technical controls alone
 - Security scans have no unowned blocker.
 - Cache headers and public/private DTO paths are explicitly proven.
 - Retention limitations are specific and visible.
+
+> **Gate status (2026-09-19): closed with two named open items.** Threat fixtures, contract fuzzing (public and authenticated reviewer APIs), leak canaries, concurrency, and failure injection pass (BE-100 to BE-103), and they found and fixed real defects (an unbounded fixed-window limiter, an unhandled key-version outage, and concurrent migrators colliding). Performance is measured against budgets declared beforehand, with statement counts flat as data grows (BE-104). Cache headers are enforced for every response and proven for all 37 operations (BE-101). Retention limitations are specific and visible (`docs/RETENTION.md`). `make backend-verify` passed with 1995 tests. **Open:** CodeQL (hosted, first run pending) and Trivy (needs the container from BE-110) have not run, so the security scanning criterion is met for the tools that could run and not yet for those two; no high or critical finding is open. The production launch gate remains closed pending legal, privacy, and operational review.
 
 ## 14. Circle 11 — containers, Railway topology, migrations, and runbooks
 
