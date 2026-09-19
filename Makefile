@@ -26,7 +26,7 @@ COMPOSE := docker compose --project-name shaidago --env-file $(INFRA_ENV) -f inf
 .DEFAULT_GOAL := help
 .PHONY: help backend-sync backend-format backend-format-check backend-lint backend-typecheck \
 	backend-unit backend-integration backend-contract backend-security backend-test backend-verify \
-	openapi-generate openapi-check migrate db-roles seed-demo embeddings reviewer-bootstrap kek-rotate infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
+	openapi-generate openapi-check migrate db-roles seed-demo embeddings reviewer-bootstrap kek-rotate worker infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
 
 help:
 	@echo "Backend targets: backend-sync backend-format backend-format-check backend-lint"
@@ -131,3 +131,7 @@ infra-clean: infra-check-env
 		echo "infra-clean deletes ShaidaGo's local Docker volumes."; \
 		echo "Re-run with CONFIRM_DESTROY_SHAIDAGO_DATA=yes to proceed."; exit 1; }
 	$(COMPOSE) --profile scanner down --volumes --remove-orphans
+
+# The background worker (needs Redis, the database, and DATABASE_URL_WORKER in the environment).
+worker:
+	$(RUN_WITH_ENV) dramatiq shaidago.worker.entry --queues discovery --processes 1 --threads 2

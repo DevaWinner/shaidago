@@ -125,6 +125,8 @@ class DatabaseSettings(_Section):
     url: SecretStr = Field(validation_alias="DATABASE_URL")
     public_url: SecretStr = Field(validation_alias="DATABASE_URL_PUBLIC")
     reviewer_url: SecretStr = Field(validation_alias="DATABASE_URL_REVIEWER")
+    # The background worker connects as shaidago_worker; the API processes never use this URL.
+    worker_url: SecretStr | None = Field(default=None, validation_alias="DATABASE_URL_WORKER")
     pool_size: PositiveInt = Field(default=5, le=50, validation_alias="DATABASE_POOL_SIZE")
     connect_timeout_seconds: PositiveInt = Field(
         default=5, le=60, validation_alias="DATABASE_CONNECT_TIMEOUT_SECONDS"
@@ -133,10 +135,15 @@ class DatabaseSettings(_Section):
         default=5000, le=60_000, validation_alias="DATABASE_STATEMENT_TIMEOUT_MS"
     )
 
-    @field_validator("url", "public_url", "reviewer_url")
+    @field_validator("url", "public_url", "reviewer_url", "worker_url")
     @classmethod
-    def _parse_url(cls, value: SecretStr) -> SecretStr:
-        return _validate_database_url(value)
+    def _parse_url(cls, value: SecretStr | None) -> SecretStr | None:
+        return None if value is None else _validate_database_url(value)
+
+    def worker_sqlalchemy_url(self) -> URL:
+        if self.worker_url is None:
+            raise ValueError("DATABASE_URL_WORKER is required to run the worker")
+        return make_url(self.worker_url.get_secret_value())
 
     def sqlalchemy_url(self) -> URL:
         return make_url(self.url.get_secret_value())

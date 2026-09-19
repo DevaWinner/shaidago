@@ -956,6 +956,8 @@ Score citation validity and policy deterministically. Human language reviewers r
 4. Persist stage, attempt, timestamps, safe failure code, and progress counters in PostgreSQL.
 5. Propagate request/run ID into structured worker logs through the same redactor.
 
+> **Execution status (2026-09-19): complete.** Migration `0021_discovery_runs` (with a guard trigger enforcing the `discovery_status` machine and fixed run scope), `worker/{envelope,machine,store,process,broker,pipeline,entry}.py`, `DATABASE_URL_WORKER`, and `make worker` add a Dramatiq worker on namespaced Redis queues with bounded exponential retries, time and age limits, a dead-letter queue, and an `on_retry_exhausted` actor that marks the run `failed` with `retries_exhausted`. A job message is an identifier-only envelope (`extra` forbidden, so no private field can be added). A run's stage, attempts, lease, and progress live in PostgreSQL; each step is its own committed unit of work, a lease makes duplicate delivery a no-op, and a crash resumes from the persisted status. 16 integration tests (real worker role) and 313 unit cases (envelope, the discovery machine against the contract, and Dramatiq delivery, invalid messages, retries, and dead-lettering on the stub broker) cover them. Worker-message request-ID propagation is provided as a bound `run_id` in structured logs; the discovery stages themselves (`worker/pipeline.py` currently fails closed with `pipeline_not_configured`) arrive with BE-091 to BE-095. Running against a live Redis broker was not exercised in this run.
+
 ### BE-091 — Privacy-safe query planner
 
 Build allowlisted public project terms from project name, public locality, authority, category, public dates, and neutral incident concepts.

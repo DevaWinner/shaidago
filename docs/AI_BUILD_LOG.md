@@ -973,3 +973,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the synthetic cross-locale corpus, deterministic scenario expansion/scoring, review-state guards, safe aggregate report, opt-in live runner, tests, and documentation; it did not perform human language review.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** Required and pending. Fluent reviewers must review all four locale packs and record each preservation dimension before this task or Circle 8 can be marked complete.
+
+## 2026-09-19 — BE-090 Dramatiq broker and job envelope
+
+- **Task:** BE-090 — Dramatiq broker and job envelope.
+- **Outcome delivered:** A worker process with identifier-only jobs, persisted run stage and lease, idempotent redelivery, bounded retries, dead-lettering, and a visible exhausted state.
+- **Files changed:** `services/platform/migrations/versions/0021_discovery_runs.py`, `src/shaidago/db/{discovery_tables,registry}.py`, `src/shaidago/worker/*`, `src/shaidago/shared/config.py`, tests (`tests/unit/worker/*`, `tests/integration/{discovery_support,test_discovery_worker}.py`), `.env.example`, `Makefile`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** `app.discovery_runs` with row security (owner, worker, reviewer; no public role) and a guard trigger; the worker role may update only progress and lifecycle columns, reviewers may insert runs and request cancellation. No OpenAPI change. New optional setting `DATABASE_URL_WORKER`.
+- **Security/privacy impact:** The message schema cannot carry private data. The worker uses its own restricted role and cannot create runs or edit their approved query. A finished run is immutable at the database.
+- **Failure behaviour verified:** duplicate concurrent delivery, expired versus live lease, a crash between stages (no repeated `start_search`), permanent failure code, attempt cap, finished and unknown runs, cancellation before and between stages (retrieved counts kept), exhausted retries, illegal edges refused for the worker role, and unprivileged writes refused.
+- **Commands run and results:** `make backend-verify` exit 0 (1543 passed); Circle 0 validators run at the end of the circle.
+- **Tests added or changed:** 16 integration tests; unit tests for the envelope, machine, and broker.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** Not exercised against a real Redis broker; the stub broker covers delivery, retry, and dead-letter semantics. The pipeline stages are placeholders that fail closed. The lease is 300 seconds with no renewal, so a stage longer than that could be taken over (stages are idempotent, so the effect is repeated work, not corruption).
+- **Commit/PR:** `feat: add the discovery worker, job envelope, and run lifecycle`
+- **Next task may rely on:** `RunStore`, `process_run`, and the `DiscoveryPipeline` protocol.
+- **AI assistance used:** Designed and wrote the migration, worker modules, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
