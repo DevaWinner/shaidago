@@ -165,3 +165,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the factory, lifecycle helper, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-022 Internal caller authentication
+
+- **Task:** BE-022 — Internal caller authentication.
+- **Outcome delivered:** A pure-ASGI middleware, installed outermost by `create_app`, requires `Authorization: Bearer <caller-id>.<secret>` on every HTTP request except `/health/live` and answers every failure with one generic 401 problem response. `web` is the only identity (ADR-0002); its current and previous secrets come from configuration.
+- **Files changed:** `services/platform/src/shaidago/auth/{__init__,internal}.py`, `shared/problems.py` (the shared problem shape, extended by BE-024), `api/app.py`; tests `tests/unit/auth/test_internal_auth.py` and updated docs tests.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** Unknown, malformed, wrong-caller, and removed credentials never reach a router, including for unknown paths, so path existence is not disclosed. Comparison uses `hmac.compare_digest` for both the current and previous secret on every attempt, with a decoy for unknown callers. Logs record the event only, never the caller claim or secret. The middleware refuses WebSocket scopes.
+- **Failure behaviour verified:** 13 parametrised bad-header cases return an identical body, `application/problem+json`, `WWW-Authenticate: Bearer`, and `Cache-Control: no-store`, and no route handler runs. The previous credential works only while configured. Only `/health/live` is exempt; `/health/ready`, `/openapi.json`, and unknown paths are denied.
+- **Commands run and results:** From `services/platform`: `ruff format`, `ruff check`, `pyright` (0 errors), `pytest` (79 passed). Circle 0 validators passed.
+- **Tests added or changed:** Auth tests as above; app-factory docs tests now send the credential.
+- **Generated artifacts checked:** None.
+- **Known limitations/open decisions:** ADR-0002 exempts only `/health/live`, so interactive docs in development need the bearer header. Forwarded-header handling after authentication is BE-023. The 401 carries no request ID until BE-023. There is no worker identity because the worker does not call the API (ADR-0001). Timing behaviour is asserted by construction (calls counted), not by measurement.
+- **Commit/PR:** `feat: authenticate internal API callers`
+- **Next task may rely on:** `request.state.caller_id` on authenticated requests, and `Problem`/`problem_response` for error bodies.
+- **AI assistance used:** Designed the middleware, decoy comparison, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

@@ -330,6 +330,8 @@ The API is private but must not trust network location alone.
 
 Do not confuse internal caller authentication with reviewer authentication or report tracking credentials.
 
+> **Execution status (2026-09-19): complete.** `InternalAuthMiddleware` runs before every router; `tests/unit/auth/test_internal_auth.py` covers missing, malformed, wrong-caller, rotated, retired, and valid credentials (79 passing tests, Ruff and Pyright strict clean). No worker identity exists because the worker does not call the API (ADR-0001).
+
 ### BE-023 — Request context and structured logging
 
 1. Accept a syntactically valid inbound request ID from the trusted BFF or generate a UUIDv7.

@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 from fastapi import FastAPI
 
 from shaidago.api import v1
+from shaidago.auth.internal import InternalAuthMiddleware, InternalCallerRegistry
 from shaidago.shared.lifecycle import open_resources
 
 if TYPE_CHECKING:
@@ -37,4 +38,9 @@ def create_app(settings: Settings, dependencies: Dependencies) -> FastAPI:
     app.state.settings = settings
     app.state.dependencies = dependencies
     app.include_router(v1.router)
+    # Added last so it is outermost: caller authentication runs before every router and any
+    # other middleware that reads forwarded context.
+    app.add_middleware(
+        InternalAuthMiddleware, registry=InternalCallerRegistry.from_settings(settings.auth)
+    )
     return app

@@ -5,11 +5,13 @@ from fastapi.testclient import TestClient
 
 from shaidago.api.dependencies import Dependencies
 from shaidago.api.main import create_configured_app
-from tests.factories import build_settings, build_test_app, development_environ
+from tests.factories import CREDENTIAL, build_settings, build_test_app, development_environ
 from tests.unit.shared.test_lifecycle import Recorder
 
 if TYPE_CHECKING:
     import pytest
+
+AUTH = {"Authorization": f"Bearer web.{CREDENTIAL}"}
 
 
 def test_importing_the_factory_does_no_io_and_builds_no_app() -> None:
@@ -26,14 +28,14 @@ def test_lifespan_opens_resources_on_start_and_closes_them_on_stop() -> None:
 
 
 def test_docs_are_available_when_configuration_enables_them() -> None:
-    client = TestClient(build_test_app(build_settings(DOCS_ENABLED="true")))
+    client = TestClient(build_test_app(build_settings(DOCS_ENABLED="true")), headers=AUTH)
     assert client.get("/openapi.json").status_code == 200
     assert client.get("/docs").status_code == 200
 
 
 def test_docs_routes_are_absent_when_disabled_but_the_schema_still_generates() -> None:
     app = build_test_app(build_settings(DOCS_ENABLED="false"))
-    client = TestClient(app)
+    client = TestClient(app, headers=AUTH)
     assert client.get("/openapi.json").status_code == 404
     assert client.get("/docs").status_code == 404
     assert app.openapi()["info"]["title"] == "ShaidaGo platform API"
