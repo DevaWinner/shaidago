@@ -7,6 +7,7 @@ from alembic import context
 from sqlalchemy import create_engine, pool
 from sqlalchemy.engine import Connection
 
+from shaidago.db.metadata import include_object
 from shaidago.db.registry import metadata
 from shaidago.shared.config import DatabaseSettings
 
@@ -18,13 +19,6 @@ if config.config_file_name is not None:
 target_metadata = metadata
 
 MANAGED_SCHEMAS = frozenset({"app", "public_api"})
-
-
-def include_object(
-    _object: object, name: str | None, type_: str, _reflected: bool, _compare_to: object
-) -> bool:
-    # Alembic's own version table is not part of the model.
-    return not (type_ == "table" and name == "alembic_version")
 
 
 def _url() -> str:

@@ -10,9 +10,11 @@ from collections.abc import Mapping
 
 import psycopg
 from psycopg import sql
+from sqlalchemy.engine import make_url
+from sqlalchemy.exc import ArgumentError
 
 from shaidago.db.roles import login_statement
-from shaidago.shared.config import DEPLOYED_ENVIRONMENTS, PLACEHOLDER_PREFIX, DatabaseSettings
+from shaidago.shared.config import DEPLOYED_ENVIRONMENTS, PLACEHOLDER_PREFIX
 
 PASSWORD_VARIABLES = {
     "shaidago_public": "DB_PASSWORD_PUBLIC",
@@ -24,7 +26,13 @@ PASSWORD_VARIABLES = {
 
 def provision(environ: Mapping[str, str]) -> list[str]:
     """Return the roles enabled, or raise ``ValueError`` naming the variable at fault."""
-    settings = DatabaseSettings.model_validate(environ)
+    owner_url = environ.get("DATABASE_URL", "")
+    if not owner_url:
+        raise ValueError("DATABASE_URL is not set")
+    try:
+        parsed_url = make_url(owner_url)
+    except ArgumentError:
+        raise ValueError("DATABASE_URL is not a valid database URL") from None
     deployed = environ.get("APP_ENV") in DEPLOYED_ENVIRONMENTS
     statements: list[tuple[str, sql.Composed]] = []
     for role, variable in PASSWORD_VARIABLES.items():
@@ -37,7 +45,7 @@ def provision(environ: Mapping[str, str]) -> list[str]:
             statements.append((role, login_statement(role, password)))
         except ValueError as error:
             raise ValueError(f"{variable}: {error}") from None
-    url = settings.sqlalchemy_url().render_as_string(hide_password=False).replace("+psycopg", "")
+    url = parsed_url.render_as_string(hide_password=False).replace("+psycopg", "")
     with psycopg.connect(url, autocommit=False) as connection:
         for _role, statement in statements:
             connection.execute(statement)

@@ -62,10 +62,12 @@ select = [
 # moving imports behind TYPE_CHECKING breaks dependency injection and model validation.
 
 [tool.ruff.lint.per-file-ignores]
+# Revisions assemble DDL from module-level constants, never from input.
+"migrations/**" = ["S608"]
 # Assertions are the point of a test, literal HTTP status codes read best inline, and the
 # "passwords" in tests are synthetic canaries that prove redaction, and test SQL is built
-# from fixed strings.
-"tests/**" = ["S101", "S105", "S106", "S608", "PLR2004"]
+# from fixed strings, kept on one line (E501) so each statement reads as a unit.
+"tests/**" = ["S101", "S105", "S106", "S608", "PLR2004", "E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["shaidago"]

@@ -3,7 +3,7 @@
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from importlib.metadata import version
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from fastapi import FastAPI
 
@@ -12,6 +12,7 @@ from shaidago.api.errors import register_exception_handlers
 from shaidago.auth.internal import InternalAuthMiddleware, InternalCallerRegistry
 from shaidago.shared.context import RequestContextMiddleware
 from shaidago.shared.lifecycle import open_resources
+from shaidago.shared.problems import declare_problem_media_type
 
 if TYPE_CHECKING:
     from shaidago.api.dependencies import Dependencies
@@ -40,6 +41,7 @@ def create_app(settings: Settings, dependencies: Dependencies) -> FastAPI:
     app.state.settings = settings
     app.state.dependencies = dependencies
     register_exception_handlers(app)
+    _document_problem_media_types(app)
     app.include_router(health.router)
     app.include_router(v1.router)
     # Middleware order is outermost-last: authentication must run before request context so
@@ -51,3 +53,14 @@ def create_app(settings: Settings, dependencies: Dependencies) -> FastAPI:
         new_request_id=dependencies.new_request_id,
     )
     return app
+
+
+def _document_problem_media_types(app: FastAPI) -> None:
+    default_openapi = app.openapi
+
+    def openapi() -> dict[str, Any]:
+        if app.openapi_schema is None:
+            app.openapi_schema = declare_problem_media_type(default_openapi())
+        return app.openapi_schema
+
+    app.openapi = openapi  # type: ignore[method-assign]  # documented FastAPI customisation point

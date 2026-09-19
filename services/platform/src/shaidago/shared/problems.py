@@ -65,6 +65,12 @@ ALREADY_RECEIVED: Final = Problem(
     "Already received",
     "This request was already received and its result is no longer available.",
 )
+PUBLICATION_INCOMPLETE: Final = Problem(
+    422,
+    "publication_incomplete",
+    "Publication requirements not met",
+    "The evidence required to publish this item is incomplete.",
+)
 UNAUTHENTICATED: Final = Problem(
     401, "unauthenticated", "Authentication required", "The request could not be authenticated."
 )
@@ -182,3 +188,19 @@ def problem_response(
         media_type=PROBLEM_MEDIA_TYPE,
         headers={"Cache-Control": "no-store", **(headers or {})},
     )
+
+
+def declare_problem_media_type(schema: dict[str, Any]) -> dict[str, Any]:
+    """Document every error response as ``application/problem+json``, as it is really sent.
+
+    FastAPI documents a response model under ``application/json``; error bodies use the RFC 9457
+    media type, so the generated contract is rewritten to match.
+    """
+    for operations in schema.get("paths", {}).values():
+        for operation in operations.values():
+            for status, response in operation.get("responses", {}).items():
+                content = response.get("content", {})
+                is_error = status.isdigit() and int(status) >= HTTPStatus.BAD_REQUEST
+                if is_error and "application/json" in content:
+                    content[PROBLEM_MEDIA_TYPE] = content.pop("application/json")
+    return schema

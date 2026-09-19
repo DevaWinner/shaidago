@@ -1,0 +1,122 @@
+{
+  "localities": {
+    "items": [
+      {
+        "enabled_locales": [
+          "str"
+        ],
+        "kind": "str",
+        "name": "str",
+        "parent_slug": "null",
+        "slug": "str"
+      }
+    ]
+  },
+  "project_detail": {
+    "category": "str",
+    "facts": [
+      {
+        "ai_generated": "bool",
+        "citations": [
+          {
+            "canonical_url": "str",
+            "information_class": "str",
+            "location_label": "str",
+            "passage": "str",
+            "publisher": "str",
+            "retrieved_at": "str",
+            "source_id": "str",
+            "source_title": "str",
+            "source_type": "str"
+          }
+        ],
+        "effective_on": "str",
+        "id": "str",
+        "information_class": "str",
+        "kind": "str",
+        "last_checked_on": "null",
+        "statement": "str",
+        "verification_state": "str"
+      }
+    ],
+    "last_checked_on": "null",
+    "locality_slug": "str",
+    "public_status": "str",
+    "slug": "str",
+    "text": {
+      "is_fallback": "bool",
+      "promised_deliverable": "str",
+      "requested_locale": "str",
+      "reviewed_at": "str",
+      "served_locale": "str",
+      "summary": "str",
+      "title": "str",
+      "translation_status": "str"
+    },
+    "updated_at": "str",
+    "updates": [
+      {
+        "ai_generated": "bool",
+        "citations": [
+          {
+            "canonical_url": "str",
+            "information_class": "str",
+            "location_label": "str",
+            "passage": "str",
+            "publisher": "str",
+            "retrieved_at": "str",
+            "source_id": "str",
+            "source_title": "str",
+            "source_type": "str"
+          }
+        ],
+        "effective_on": "str",
+        "id": "str",
+        "information_class": "str",
+        "last_checked_on": "null",
+        "statement": "str",
+        "verification_state": "str"
+      }
+    ]
+  },
+  "project_list": {
+    "items": [
+      {
+        "category": "str",
+        "last_checked_on": "null",
+        "locality_slug": "str",
+        "public_status": "str",
+        "slug": "str",
+        "text": {
+          "is_fallback": "bool",
+          "served_locale": "str",
+          "summary": "str",
+          "title": "str",
+          "translation_status": "str"
+        },
+        "updated_at": "str"
+      }
+    ],
+    "next_cursor": "null"
+  },
+  "project_source": {
+    "excerpts": [
+      {
+        "cited_by": "str",
+        "item_id": "str",
+        "location_label": "str",
+        "passage": "str"
+      }
+    ],
+    "source": {
+      "availability": "str",
+      "availability_checked_at": "str",
+      "canonical_url": "str",
+      "id": "str",
+      "information_class": "str",
+      "publisher": "str",
+      "source_type": "str",
+      "title": "str"
+    }
+  }
+}

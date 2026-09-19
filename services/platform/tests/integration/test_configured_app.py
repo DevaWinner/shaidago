@@ -18,6 +18,7 @@ def configure(monkeypatch: pytest.MonkeyPatch, url: URL) -> None:
     for name, value in development_environ().items():
         monkeypatch.setenv(name, value)
     monkeypatch.setenv("DATABASE_URL", url.render_as_string(hide_password=False))
+    monkeypatch.setenv("DATABASE_URL_PUBLIC", url.render_as_string(hide_password=False))
     monkeypatch.setenv("DATABASE_CONNECT_TIMEOUT_SECONDS", "1")
 
 

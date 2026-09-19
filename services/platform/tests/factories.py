@@ -19,6 +19,7 @@ def development_environ() -> dict[str, str]:
     return {
         "APP_ENV": "development",
         "DATABASE_URL": "postgresql+psycopg://app:dbpass-canary@localhost:5432/shaidago",
+        "DATABASE_URL_PUBLIC": "postgresql+psycopg://shaidago_public:public-canary@localhost:5432/shaidago",
         "REDIS_URL": "redis://localhost:6379/0",
         "OBJECT_STORE_ENDPOINT_URL": "http://localhost:9000",
         "OBJECT_STORE_BUCKET": "evidence-dev",

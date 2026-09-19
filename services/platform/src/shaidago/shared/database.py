@@ -64,9 +64,12 @@ def build_engine(
     )
 
 
-def create_engine(settings: DatabaseSettings, *, application_name: str) -> AsyncEngine:
+def create_engine(
+    settings: DatabaseSettings, *, application_name: str, url: URL | None = None
+) -> AsyncEngine:
+    """Engine from settings; ``url`` selects a role (the owner URL is the default)."""
     return build_engine(
-        settings.sqlalchemy_url(),
+        url or settings.sqlalchemy_url(),
         application_name=application_name,
         statement_timeout_ms=settings.statement_timeout_ms,
         connect_timeout_seconds=settings.connect_timeout_seconds,

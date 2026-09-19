@@ -80,6 +80,15 @@ def test_malformed_values_fail_fast(name: str, value: str) -> None:
     assert any(problem.startswith(f"{name}:") for problem in error.problems)
 
 
+def test_deployed_public_database_login_must_differ_from_the_migration_owner() -> None:
+    same = "postgresql+psycopg://app:x@localhost:5432/shaidago"
+    environ = production_environ() | {"DATABASE_URL": same, "DATABASE_URL_PUBLIC": same}
+    assert (
+        "DATABASE_URL_PUBLIC: must use a different login than DATABASE_URL"
+        in failure(environ).problems
+    )
+
+
 def test_active_key_versions_must_exist_in_their_rings() -> None:
     environ = development_environ() | {
         "ENCRYPTION_ACTIVE_KEK_VERSION": "kek-9",

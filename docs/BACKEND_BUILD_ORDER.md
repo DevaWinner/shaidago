@@ -466,6 +466,8 @@ Create migrations, ORM mappings, domain types, repositories, and services for:
 
 Constraints enforce unique slugs, supported locale values, non-future last-checked dates unless explicitly allowed for scheduled data, and no public project without at least one approved locale representation. Repositories return explicit projections, not ORM entities.
 
+> **Execution status (2026-09-19): complete.** Three tables, the deferred English-source-text rule, and public views are proven by 19 PostgreSQL integration tests plus vocabulary parity tests (`make backend-verify` exit 0, 246 passed). No rows were seeded; the repository never labels fallback text as translated.
+
 ### BE-041 — Sources, immutable versions, and citations
 
 Implement `sources`, `source_versions`, `project_facts`, `fact_citations`, `project_updates`, and `update_citations`.
@@ -481,11 +483,15 @@ Rules:
 
 Add database constraints where feasible and service-level checks where cross-row conditions require them. Add mutation tests proving incomplete publication fails closed.
 
+> **Execution status (2026-09-19): complete.** Six tables, exact-passage citations, immutable content-addressed versions, database-backstopped fail-closed publication, and citation-complete public views are proven by 45 PostgreSQL test cases plus unit tests (`make backend-verify` exit 0, 284 passed). Reviewer identity, audit events, and reviewer-role write grants come with Circle 5 to 7.
+
 ### BE-042 — Escalation routes and trust vocabulary
 
 Implement locality/category/locale escalation records with organisation, instructions, source/verification date, non-emergency disclaimer, validity window, and active state. Do not seed an unverified phone number, address, or protection promise.
 
 Expose public trust metadata: information class, verification state, source dates, last checked, translation status, and AI-generated explanation label.
+
+> **Execution status (2026-09-19): complete.** Cited, dated, validity-windowed escalation routes with no contact columns and honest locale fallback are proven by 14 PostgreSQL and unit tests (`make backend-verify` exit 0, 295 passed). No route was seeded.
 
 ### BE-043 — Idempotent evidence-backed seed pipeline
 
@@ -495,6 +501,8 @@ Expose public trust metadata: information class, verification state, source date
 4. Refuse production unless an explicit, separately named production seed mode exists; demo seed must refuse non-local/test targets by default.
 5. Print counts added/updated/unchanged and evidence gaps without private values.
 6. Run twice and prove identical database state on the second run.
+
+> **Execution status (2026-09-19): blocked.** Blocked on BE-001 (the verified source register, deferred by the maintainer); no seed data may be invented. The tables and constraints the seed targets exist. Unblock: supply the verified register with real public sources and exact passages, reviewed locale text or honest machine-assisted status, and escalation guidance.
 
 ### BE-044 — Public list and detail services
 
@@ -514,6 +522,8 @@ Requirements:
 - ETag or cache metadata changes when the public projection changes;
 - DTO allowlists contain no private identifiers, reviewer identity, raw storage key, or internal notes.
 
+> **Execution status (2026-09-19): complete.** Four public endpoints with cursor pagination, allowlisted filters, ETag revalidation, honest locale fallback, and uniform not-found are proven by 33 end-to-end tests on a seeded synthetic catalogue (`make backend-verify` exit 0, 329 passed); the regenerated contract is committed. The API uses the restricted public role.
+
 ### BE-045 — Public contract and query quality
 
 1. Add indexes justified by the list/detail query plans.
@@ -522,6 +532,8 @@ Requirements:
 4. Add Schemathesis/property tests for malformed cursors, unknown filters, oversized values, Unicode, and response schema.
 5. Add snapshot/denylist tests proving private field names and values cannot appear in any public DTO.
 
+> **Execution status (2026-09-19): complete.** Indexes are justified by committed plan evidence, the contract is property-tested with Schemathesis (which found and led to fixing two contract gaps), and response shapes are snapshot- and denylist-guarded (`make backend-verify` exit 0, 333 passed).
+
 ### Circle 4 exit gate
 
 - Seed command is valid, idempotent, and refuses unsafe targets.
@@ -529,6 +541,8 @@ Requirements:
 - Every displayed fact/update resolves to an approved citation.
 - Public endpoints are paginated, indexed, contract-tested, and contain no private data.
 - Generated OpenAPI is committed with no unexplained diff.
+
+> **Gate status (2026-09-19): open.** Met: public endpoints are paginated, indexed with committed plan evidence, contract-tested with Schemathesis, snapshot- and denylist-guarded, and contain no private data; every displayed fact and update resolves to an approved citation (enforced by database triggers and proven adversarially); locale fallback is labelled honestly; the generated OpenAPI is committed and `make openapi-check` is part of `make backend-verify` (333 passing tests). **Not met:** the seed command and the six real cited projects. BE-001 (the verified source register) is deferred by the maintainer, so BE-043 is blocked and no project, source, escalation route, or translation exists outside synthetic tests. The Circle 4 exit criteria "six cited projects load" and "seed command is valid, idempotent, and refuses unsafe targets" stay open until then, together with the Circle 0 gate.
 
 ## 8. Circle 5 — reviewer identity, sessions, and authorisation
 
