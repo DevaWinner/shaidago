@@ -558,6 +558,8 @@ Requirements:
 4. Refuse duplicate identifiers and weak/demo defaults outside development/test.
 5. Make disablement revoke active sessions transactionally.
 
+> **Execution status (2026-09-19): partial.** Reviewer users, the append-only audit log, Argon2id hashing with rehash-on-success, and an idempotent bootstrap are proven (`make backend-verify` exit 0, 58 new tests). Step 5, disablement revoking active sessions, is delivered with the session store in BE-051.
+
 ### BE-051 — Opaque sessions and cookie contract
 
 1. Generate at least 256 bits of session entropy.

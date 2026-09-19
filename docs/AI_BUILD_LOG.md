@@ -460,3 +460,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Assessed the dependency and recorded the blocker.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-050 Reviewer user and bootstrap path
+
+- **Task:** BE-050 — Reviewer user and bootstrap path.
+- **Outcome delivered:** Revision `0007_reviewers_audit` (reviewers and an append-only audit log), Argon2id hashing with central parameters and a rehash-on-success path, identifier normalisation, `ReviewerService.create`, an `AuditWriter`, and an idempotent bootstrap command (`make reviewer-bootstrap`).
+- **Files changed:** `services/platform/migrations/versions/0007_reviewers_audit.py`, `src/shaidago/db/{reviewer_tables,registry}.py`, `src/shaidago/auth/{passwords,reviewers,bootstrap}.py`, `src/shaidago/audit/{__init__,events}.py`, `Makefile`, `.env.example`, tests `tests/unit/auth/test_passwords_and_identifiers.py`, `tests/integration/test_reviewers.py`.
+- **Schema/contract changes:** `app.reviewers` (identifier unique and format-checked, role in reviewer/admin, state in active/disabled, hash must be `$argon2id$`, credential version) and `app.audit_events` (actor, event, subject, outcome, request ID, JSON details) with triggers that refuse UPDATE, DELETE, and TRUNCATE for everyone including the owner. Grants: the reviewer role may read reviewers and update only the credential, state, and sign-in columns; reviewer and worker roles may insert audit events. OpenAPI unchanged.
+- **Security/privacy impact:** Only an Argon2id hash is stored (OWASP-minimum parameters: 19 MiB, t=2, p=1), never the password; an unknown identifier still costs one verification against a decoy hash. Deployed environments refuse placeholder or demo passwords; every environment refuses passwords under 12 or over 256 characters. Audit details pass through the central redactor before storage, and the creation event holds only the role. The bootstrap command reads credentials from the environment, never overwrites an existing user, and its error messages name variables, not values. Identifiers are pseudonymous handles, not required to be email addresses.
+- **Failure behaviour verified (PostgreSQL 18, 58 new tests):** hashes are salted and free of the password; stale-parameter hashes are replaced only after a successful verification; weak, oversized, and deployed-placeholder passwords and malformed identifiers create nothing; duplicate identifiers conflict regardless of case; the database rejects bad roles, states, identifiers, and non-Argon2id hashes; the audit log refuses update, delete, and truncate even as owner and stores neither the password nor the identifier nor an IP-like value from a canary; the public, worker, and read-only roles are denied on reviewers, and the reviewer role cannot change a role, rename, delete, or insert; bootstrap creates once, leaves an existing password untouched, and refuses seven kinds of unusable input.
+- **Commands run and results:** `make backend-verify` exit 0; Circle 0 validators passed.
+- **Tests added or changed:** 12 unit and 21 integration cases (58 with parametrisation and properties).
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** Step 5, "disablement revokes active sessions transactionally", waits for the session store and is delivered by BE-051. The state vocabulary is `active` and `disabled` (a disabled account is one an administrator has locked); no automatic lockout exists, so an attacker cannot lock a reviewer out. The Argon2 parameters are code constants, not settings. The rehash path is implemented and unit-tested but only exercised by sign-in in BE-054. No password-change or admin-reset endpoint exists yet.
+- **Commit/PR:** `feat: add reviewer users, audit log, and bootstrap command`
+- **Next task may rely on:** `PasswordVerifier`, `find_reviewer`, `ReviewerService`, `AuditWriter`, and the reviewer table with `credential_version` for session binding.
+- **AI assistance used:** Designed the schema, hashing policy, bootstrap, and adversarial tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
