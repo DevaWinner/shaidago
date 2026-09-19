@@ -22,3 +22,17 @@ metadata = MetaData(naming_convention=NAMING_CONVENTION)
 
 class Base(DeclarativeBase):
     metadata = metadata
+
+
+# Alembic cannot compare partial or expression indexes, so autogenerate skips these by name.
+# `tests/integration/test_migrations.py` asserts their exact definitions from `pg_indexes`.
+UNCOMPARABLE_INDEXES = frozenset({"ix_projects_public_recent", "ix_project_translations_search"})
+
+
+def include_object(
+    _object: object, name: str | None, type_: str, _reflected: bool, _compare_to: object
+) -> bool:
+    """Filter for Alembic comparison: skip the version table and the uncomparable indexes."""
+    if type_ == "table" and name == "alembic_version":
+        return False
+    return not (type_ == "index" and name in UNCOMPARABLE_INDEXES)

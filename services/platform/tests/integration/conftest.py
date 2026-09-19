@@ -19,6 +19,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 from shaidago.db.provision import PASSWORD_VARIABLES, provision
 from shaidago.db.revision import alembic_config
 from shaidago.shared.database import Database, build_engine
+from tests.integration.public_catalogue import client, seed
 
 
 def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
@@ -109,3 +110,7 @@ def role_urls(
         yield {
             role: owner.set(username=role, password=password + role) for role in PASSWORD_VARIABLES
         } | {"owner": owner}
+
+
+# Re-exported so pytest registers the shared catalogue fixture for every integration module.
+__all__ = ["client", "seed"]

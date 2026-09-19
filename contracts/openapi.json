@@ -341,6 +341,52 @@
         "type": "object"
       },
       "ProjectDetailOut": {
+        "description": "Project text, status, and cited facts. The example is synthetic, not a real record.",
+        "examples": [
+          {
+            "category": "health",
+            "facts": [
+              {
+                "ai_generated": false,
+                "citations": [
+                  {
+                    "canonical_url": "https://synthetic.example/source",
+                    "information_class": "official_source",
+                    "location_label": "section 1",
+                    "passage": "An invented passage.",
+                    "publisher": "Synthetic Publisher",
+                    "retrieved_at": "2026-09-01T09:00:00Z",
+                    "source_id": "018f0000-0000-7000-8000-000000000001",
+                    "source_title": "Synthetic source",
+                    "source_type": "government_publication"
+                  }
+                ],
+                "effective_on": "2026-03-01",
+                "id": "018f0000-0000-7000-8000-000000000001",
+                "information_class": "official_source",
+                "kind": "opening",
+                "statement": "An invented statement.",
+                "verification_state": "verified_official"
+              }
+            ],
+            "last_checked_on": "2026-09-01",
+            "locality_slug": "synthetic-council",
+            "public_status": "planned",
+            "slug": "synthetic-example-clinic",
+            "text": {
+              "is_fallback": false,
+              "promised_deliverable": "An invented deliverable for illustration.",
+              "requested_locale": "en",
+              "reviewed_at": "2026-09-01T09:00:00Z",
+              "served_locale": "en",
+              "summary": "An invented record used only to illustrate the response shape.",
+              "title": "Synthetic example clinic",
+              "translation_status": "reviewed"
+            },
+            "updated_at": "2026-09-01T09:00:00Z",
+            "updates": []
+          }
+        ],
         "properties": {
           "category": {
             "enum": [
@@ -424,6 +470,28 @@
         "type": "object"
       },
       "ProjectPageOut": {
+        "description": "A page of summaries. The example is synthetic and describes no real project.",
+        "examples": [
+          {
+            "items": [
+              {
+                "category": "health",
+                "last_checked_on": "2026-09-01",
+                "locality_slug": "synthetic-council",
+                "public_status": "planned",
+                "slug": "synthetic-example-clinic",
+                "text": {
+                  "is_fallback": false,
+                  "served_locale": "en",
+                  "summary": "An invented record used only to illustrate the response shape.",
+                  "title": "Synthetic example clinic",
+                  "translation_status": "reviewed"
+                },
+                "updated_at": "2026-09-01T09:00:00Z"
+              }
+            ]
+          }
+        ],
         "properties": {
           "items": {
             "items": {
@@ -890,9 +958,29 @@
             },
             "description": "Successful Response"
           },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Invalid pagination cursor."
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Missing or invalid internal credential."
+          },
           "404": {
             "content": {
-              "application/json": {
+              "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -902,7 +990,7 @@
           },
           "422": {
             "content": {
-              "application/json": {
+              "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -1075,9 +1163,29 @@
             },
             "description": "Successful Response"
           },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Invalid pagination cursor."
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Missing or invalid internal credential."
+          },
           "404": {
             "content": {
-              "application/json": {
+              "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -1087,7 +1195,7 @@
           },
           "422": {
             "content": {
-              "application/json": {
+              "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -1129,9 +1237,29 @@
             },
             "description": "Successful Response"
           },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Invalid pagination cursor."
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Missing or invalid internal credential."
+          },
           "404": {
             "content": {
-              "application/json": {
+              "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -1141,7 +1269,7 @@
           },
           "422": {
             "content": {
-              "application/json": {
+              "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -1193,9 +1321,29 @@
             },
             "description": "Successful Response"
           },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Invalid pagination cursor."
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Missing or invalid internal credential."
+          },
           "404": {
             "content": {
-              "application/json": {
+              "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
@@ -1205,7 +1353,7 @@
           },
           "422": {
             "content": {
-              "application/json": {
+              "application/problem+json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }

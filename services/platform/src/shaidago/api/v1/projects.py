@@ -7,11 +7,12 @@ records all return the same ``not_found`` problem.
 
 import hashlib
 from datetime import date, datetime
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, cast
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Path, Query, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
+from pydantic.config import JsonDict
 
 from shaidago.api.dependencies import Dependencies, get_dependencies, get_settings
 from shaidago.projects.catalogue import (
@@ -54,6 +55,8 @@ VerificationState = Literal[
 SourceClass = Literal["official_source", "independent_source", "community_evidence_reviewed"]
 CACHE_CONTROL = "public, max-age=60"
 PROBLEMS: dict[int | str, dict[str, Any]] = {
+    400: {"model": ProblemDetails, "description": "Invalid pagination cursor."},
+    401: {"model": ProblemDetails, "description": "Missing or invalid internal credential."},
     404: {"model": ProblemDetails},
     422: {"model": ProblemDetails},
 }
@@ -105,7 +108,34 @@ class ProjectSummaryOut(BaseModel):
     text: SummaryTextOut
 
 
+_SYNTHETIC_ID = "018f0000-0000-7000-8000-000000000001"
+_SYNTHETIC_TEXT: dict[str, Any] = {
+    "title": "Synthetic example clinic",
+    "summary": "An invented record used only to illustrate the response shape.",
+    "served_locale": "en",
+    "is_fallback": False,
+    "translation_status": "reviewed",
+}
+_SYNTHETIC_SUMMARY: dict[str, Any] = {
+    "slug": "synthetic-example-clinic",
+    "locality_slug": "synthetic-council",
+    "category": "health",
+    "public_status": "planned",
+    "last_checked_on": "2026-09-01",
+    "updated_at": "2026-09-01T09:00:00Z",
+    "text": _SYNTHETIC_TEXT,
+}
+
+
 class ProjectPageOut(BaseModel):
+    """A page of summaries. The example is synthetic and describes no real project."""
+
+    model_config = ConfigDict(
+        json_schema_extra=cast(
+            "JsonDict", {"examples": [{"items": [_SYNTHETIC_SUMMARY], "next_cursor": None}]}
+        )
+    )
+
     items: list[ProjectSummaryOut]
     next_cursor: str | None
 
@@ -158,6 +188,53 @@ class UpdateOut(BaseModel):
 
 
 class ProjectDetailOut(BaseModel):
+    """Project text, status, and cited facts. The example is synthetic, not a real record."""
+
+    model_config = ConfigDict(
+        json_schema_extra=cast(
+            "JsonDict",
+            {
+                "examples": [
+                    {
+                        **_SYNTHETIC_SUMMARY,
+                        "text": {
+                            **_SYNTHETIC_TEXT,
+                            "requested_locale": "en",
+                            "promised_deliverable": "An invented deliverable for illustration.",
+                            "reviewed_at": "2026-09-01T09:00:00Z",
+                        },
+                        "facts": [
+                            {
+                                "id": _SYNTHETIC_ID,
+                                "kind": "opening",
+                                "statement": "An invented statement.",
+                                "effective_on": "2026-03-01",
+                                "last_checked_on": None,
+                                "verification_state": "verified_official",
+                                "information_class": "official_source",
+                                "ai_generated": False,
+                                "citations": [
+                                    {
+                                        "source_id": _SYNTHETIC_ID,
+                                        "source_title": "Synthetic source",
+                                        "publisher": "Synthetic Publisher",
+                                        "canonical_url": "https://synthetic.example/source",
+                                        "source_type": "government_publication",
+                                        "information_class": "official_source",
+                                        "retrieved_at": "2026-09-01T09:00:00Z",
+                                        "passage": "An invented passage.",
+                                        "location_label": "section 1",
+                                    }
+                                ],
+                            }
+                        ],
+                        "updates": [],
+                    }
+                ]
+            },
+        )
+    )
+
     slug: str
     locality_slug: str
     category: Category

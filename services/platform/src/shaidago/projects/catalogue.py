@@ -16,7 +16,7 @@ from shaidago.projects.models import SOURCE_LOCALE, Locale
 
 MAX_QUERY_CHARS = 100
 
-_LIST = text(
+LIST_PROJECTS_SQL = text(
     """
     SELECT p.id, p.slug, p.locality_slug, p.category, p.public_status, p.last_checked_on,
            p.updated_at,
@@ -34,9 +34,11 @@ _LIST = text(
       AND (CAST(:verification AS text) IS NULL OR EXISTS (
             SELECT 1 FROM public_api.project_facts f
             WHERE f.project_slug = p.slug AND f.verification_state = :verification))
-      AND (CAST(:q AS text) IS NULL OR to_tsvector(
-            'simple', COALESCE(tl.title, te.title) || ' ' || COALESCE(tl.summary, te.summary))
-            @@ plainto_tsquery('simple', :q))
+      AND (CAST(:q AS text) IS NULL OR EXISTS (
+            SELECT 1 FROM public_api.project_translations st
+            WHERE st.project_id = p.id AND st.locale IN (:locale, 'en')
+              AND to_tsvector('simple', st.title || ' ' || st.summary)
+                  @@ plainto_tsquery('simple', :q)))
       AND (CAST(:after_updated AS timestamptz) IS NULL
            OR (p.updated_at, p.id) < (CAST(:after_updated AS timestamptz), CAST(:after_id AS uuid)))
     ORDER BY p.updated_at DESC, p.id DESC
@@ -158,7 +160,7 @@ class PublicCatalogue:
         return list(
             (
                 await self._session.execute(
-                    _LIST,
+                    LIST_PROJECTS_SQL,
                     {
                         "locale": locale,
                         "locality": filters.locality,

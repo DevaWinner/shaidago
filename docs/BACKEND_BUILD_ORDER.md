@@ -530,6 +530,8 @@ Requirements:
 4. Add Schemathesis/property tests for malformed cursors, unknown filters, oversized values, Unicode, and response schema.
 5. Add snapshot/denylist tests proving private field names and values cannot appear in any public DTO.
 
+> **Execution status (2026-09-19): complete.** Indexes are justified by committed plan evidence, the contract is property-tested with Schemathesis (which found and led to fixing two contract gaps), and response shapes are snapshot- and denylist-guarded (`make backend-verify` exit 0, 333 passed).
+
 ### Circle 4 exit gate
 
 - Seed command is valid, idempotent, and refuses unsafe targets.
@@ -537,6 +539,8 @@ Requirements:
 - Every displayed fact/update resolves to an approved citation.
 - Public endpoints are paginated, indexed, contract-tested, and contain no private data.
 - Generated OpenAPI is committed with no unexplained diff.
+
+> **Gate status (2026-09-19): open.** Met: public endpoints are paginated, indexed with committed plan evidence, contract-tested with Schemathesis, snapshot- and denylist-guarded, and contain no private data; every displayed fact and update resolves to an approved citation (enforced by database triggers and proven adversarially); locale fallback is labelled honestly; the generated OpenAPI is committed and `make openapi-check` is part of `make backend-verify` (333 passing tests). **Not met:** the seed command and the six real cited projects. BE-001 (the verified source register) is deferred by the maintainer, so BE-043 is blocked and no project, source, escalation route, or translation exists outside synthetic tests. The Circle 4 exit criteria "six cited projects load" and "seed command is valid, idempotent, and refuses unsafe targets" stay open until then, together with the Circle 0 gate.
 
 ## 8. Circle 5 — reviewer identity, sessions, and authorisation
 

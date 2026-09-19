@@ -20,7 +20,7 @@ def test_schema_describes_health_routes_and_no_secret_material() -> None:
     schema = build_openapi()
     assert {"/health/live", "/health/ready"} <= set(schema["paths"])
     rendered = render_openapi()
-    for forbidden in ("change-me", "postgresql", "localhost", "credential"):
+    for forbidden in ("change-me", "postgresql", "localhost", "openapi-schema-only", "Y2hhbmdl"):
         assert forbidden not in rendered
 
 

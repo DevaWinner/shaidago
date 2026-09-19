@@ -10,7 +10,7 @@ from sqlalchemy import Column, ForeignKey, Integer, MetaData, String, Table, cre
 from sqlalchemy.engine import URL
 from sqlalchemy.schema import CreateTable
 
-from shaidago.db.metadata import NAMING_CONVENTION
+from shaidago.db.metadata import NAMING_CONVENTION, include_object
 from shaidago.db.migration_helpers import read_versioned_sql
 from shaidago.db.registry import metadata
 from shaidago.db.revision import alembic_config, expected_head
@@ -23,12 +23,6 @@ APPLICATION_ROLES = {
     "shaidago_worker",
     "shaidago_readonly_ops",
 }
-
-
-def exclude_version_table(
-    _object: object, name: str | None, type_: str, _reflected: bool, _compare_to: object
-) -> bool:
-    return not (type_ == "table" and name == "alembic_version")
 
 
 def render(url: URL) -> str:
@@ -108,7 +102,7 @@ def test_migrated_database_matches_model_metadata(empty_url: URL) -> None:
                 opts={
                     "compare_type": True,
                     "include_schemas": True,
-                    "include_object": exclude_version_table,
+                    "include_object": include_object,
                 },
             )
             assert compare_metadata(context, metadata) == []
@@ -172,3 +166,19 @@ def test_naming_convention_names_every_constraint_and_index() -> None:
 def test_edited_baseline_sql_is_refused() -> None:
     with pytest.raises(RuntimeError, match="edited after"):
         read_versioned_sql("0001_security_baseline.sql", "0" * 64)
+
+
+def test_partial_and_expression_indexes_have_the_documented_definitions(empty_url: URL) -> None:
+    command.upgrade(alembic_config(render(empty_url)), "head")
+    rows = query(
+        empty_url,
+        "SELECT indexname, indexdef FROM pg_indexes WHERE schemaname = 'app' AND indexname "
+        "IN ('ix_projects_public_recent', 'ix_project_translations_search')",
+    )
+    definitions = {str(row[0]): str(row[1]) for row in rows}
+    recent = definitions["ix_projects_public_recent"]
+    assert "(updated_at DESC, id DESC)" in recent
+    assert "visibility = 'public'" in recent
+    search = definitions["ix_project_translations_search"]
+    assert "USING gin" in search
+    assert "to_tsvector('simple'::regconfig, ((title || ' '::text) || summary))" in search

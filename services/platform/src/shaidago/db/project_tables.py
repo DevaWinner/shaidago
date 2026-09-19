@@ -17,6 +17,7 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     Uuid,
+    text,
 )
 
 from shaidago.db.metadata import metadata
@@ -96,6 +97,13 @@ projects = Table(
     Index("ix_projects_locality_id", "locality_id"),
     schema="app",
 )
+# Serves the public list order (newest first) without a sort; see docs/evidence/BE-045.
+Index(
+    "ix_projects_public_recent",
+    projects.c.updated_at.desc(),
+    projects.c.id.desc(),
+    postgresql_where=text("visibility = 'public'"),
+)
 
 project_translations = Table(
     "project_translations",
@@ -120,4 +128,11 @@ project_translations = Table(
     ),
     CheckConstraint("title <> '' AND summary <> ''", name="text_not_empty"),
     schema="app",
+)
+# Serves the public full-text filter; the expression must match the query exactly.
+Index(
+    "ix_project_translations_search",
+    text("to_tsvector('simple', title || ' ' || summary)"),
+    postgresql_using="gin",
+    _table=project_translations,
 )
