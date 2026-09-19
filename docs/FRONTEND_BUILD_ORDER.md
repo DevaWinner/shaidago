@@ -171,6 +171,8 @@ Colocate a component with a feature when it has one domain owner. Promote it to 
 
 ### FE-001 — Route and user-journey inventory
 
+> **Execution status (2026-09-20): complete.** [`FRONTEND_ROUTE_MATRIX.md`](FRONTEND_ROUTE_MATRIX.md) defines all twelve routes, seven journey sequences, operation dependencies, render/cache/auth rules, locale/canonical/robots policy, material states, safe interruption, and route handoffs.
+
 Create a route matrix covering:
 
 - `/{locale}` landing;

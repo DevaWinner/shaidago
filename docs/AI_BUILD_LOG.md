@@ -1347,3 +1347,17 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Result:** FE-001 may define the detailed route/journey matrix without inventing backend fields. The evidence register's unresolved human-audit gaps remain visible and are not misrepresented as frontend work.
 - **AI assistance used:** Reconciled product, frontend build order, OpenAPI, controlled vocabulary, source register, and backend handoff into one validated authority map; updated stale product evidence wording to match repository reality.
 - **Prompt summary:** Create a frontend branch from the maintainer's in-progress backend branch and begin the frontend build order while leaving backend gate-closing work out of scope.
+
+## 2026-09-20 — FE-001 route and user-journey inventory
+
+- **Task:** FE-001 — Route and user-journey inventory.
+- **Outcome delivered:** All twelve required routes and seven complete journey sequences now define audience, job, primary action, handoff, backend operations, rendering/cache/authentication, locale/canonical/robots policy, material states, and interruption recovery.
+- **Files changed:** `docs/FRONTEND_ROUTE_MATRIX.md`, `docs/FRONTEND_BUILD_ORDER.md`, `docs/README.md`, `scripts/validate_frontend_route_matrix.py`, and this log.
+- **Contract/schema impact:** No runtime contract changed. The matrix covers every non-health OpenAPI operation and keeps Source Scout embedded in project/reviewer detail as accepted.
+- **Security/privacy impact:** Private/one-time credentials are excluded from paths, queries, canonical metadata, prefetch, and offline caches. Reviewer and reporter routes are dynamic, no-store, and noindex; hidden/unknown public records retain safe not-found handling.
+- **Accessibility/localisation impact:** Each route names locale source, no-JavaScript/public behavior, keyboard/error states, and handoff/focus responsibility. Actual UI and translations remain future tasks.
+- **Verification:** `python3 scripts/validate_frontend_route_matrix.py --self-test` checks all twelve route IDs/patterns, all 35 non-health operations, seven journey rows, the exit gate, and negative cases for missing route, secret-in-path, and missing operation.
+- **Human review:** The route plan follows the maintainer-approved product and backend handoff; interaction and visual presentation remain open to review.
+- **Result:** FE-002 can define shared state fixtures per surface without inventing routes or navigation behavior.
+- **AI assistance used:** Converted the implementation plan and backend handoff into an App Router ownership and recovery matrix with explicit public/private boundaries.
+- **Prompt summary:** Continue the frontend build order from the maintainer's updated backend branch.
