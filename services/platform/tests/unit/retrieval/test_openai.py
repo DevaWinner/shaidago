@@ -31,7 +31,7 @@ def request() -> GroundedAnswerRequest:
     )
 
 
-def answer_text(*, generated_at: str | None = None) -> str:
+def answer_text(*, generated_at: str | None = None, locale: str = "en") -> str:
     return json.dumps(
         {
             "answer": "The synthetic clinic opened on 1 March.",
@@ -44,6 +44,7 @@ def answer_text(*, generated_at: str | None = None) -> str:
             "insufficient_evidence": False,
             "confidence_note": "The supplied passage covers the opening date only.",
             "generated_at": generated_at or generated_at_text(NOW),
+            "locale": locale,
         }
     )
 
@@ -207,12 +208,19 @@ async def test_refusal_or_provider_added_action_is_a_policy_failure(
 
 async def test_malformed_schema_and_application_timestamp_mismatch_are_non_retryable() -> None:
     bad_timestamp = answer_text(generated_at="2026-09-19T17:00:01.000000Z")
-    responses = iter([response_body("{}"), response_body(bad_timestamp)])
+    wrong_locale = answer_text(locale="ha")
+    responses = iter(
+        [response_body("{}"), response_body(bad_timestamp), response_body(wrong_locale)]
+    )
     provider, client = await call_with(
         httpx.MockTransport(lambda _request: httpx.Response(200, json=next(responses)))
     )
     try:
-        for code in ("provider_invalid_schema", "provider_invalid_timestamp"):
+        for code in (
+            "provider_invalid_schema",
+            "provider_invalid_timestamp",
+            "provider_wrong_locale",
+        ):
             with pytest.raises(LanguageModelError) as raised:
                 await provider.answer(request())
             assert raised.value.retry_class is RetryClass.NON_RETRYABLE

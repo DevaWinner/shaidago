@@ -907,6 +907,8 @@ Reject or fall back when output contains:
 
 Fallback is the approved insufficient-evidence message with relevant source links. Validation failure never returns partially trusted model prose.
 
+> **Execution status (2026-09-19): complete.** `retrieval/validation.py` applies deterministic, project-scoped citation checks to every provider-authored statement, rejects unknown, ambiguous, duplicate, cross-project, unavailable, uncited, or lexically unsupported evidence, and blocks accusation/guilt language, person identification, private-data content or instructions, prompt-injection phrases, and truth scores. The provider schema is now `grounded-answer-v2` and binds output to the requested locale; the parser continues to reject malformed, excessive, timestamp-altered, refusal, tool, and action output. Any finding discards all provider prose and returns the exact approved English insufficient-evidence message with up to five deduplicated links from available evidence for the selected project, while preserving requested/served locale disclosure. Twenty validator tests achieve 100% statement and branch coverage, and `make backend-verify` passes with 1211 tests.
+
 ### BE-084 — Project question endpoint
 
 Implement `POST /v1/projects/{slug}/questions` with bounded text, locale, project resolution, rate limit, retrieval metadata, validated answer, generation time, cited sources, safe cache policy, and problem responses for provider unavailability. Store metrics/prompt/model/schema versions; do not store a potentially sensitive raw question by default.

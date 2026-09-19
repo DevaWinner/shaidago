@@ -58,7 +58,7 @@ def test_fingerprint_is_stable_and_application_timestamp_is_not_fixture_identity
     later = NOW.replace(hour=18)
     assert request_fingerprint(request()) == request_fingerprint(request(now=later))
     assert request_fingerprint(request()) == (
-        "09febe0a1ebb180864ff1d3d8b7869897a66382473761a0bb1ecf8c348e372d0"
+        "c529460c4cac87d62a2762da6dedaf829b391e2acfff1a584fa9cc26eaee771f"
     )
 
 

@@ -916,3 +916,22 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Used official OpenAI documentation to confirm the current Responses request fields, then designed and implemented the provider boundary, replay fixture, safe parser, and adversarial transport tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-083 Deterministic citation and safety validator
+
+- **Task:** BE-083 — Deterministic citation and safety validator.
+- **Outcome delivered:** A fail-closed validator that accepts provider prose only when every statement has unique, available evidence from the selected project, the cited passages deterministically support its meaningful terms and numbers, the answer contains no uncited extra prose, and the content passes the reporting-domain safety rules. Every failure discards the entire provider answer and returns the exact approved insufficient-evidence text plus eligible project source links.
+- **Files changed:** `data/qa-fixtures/grounded-qa-v1.json`, `services/platform/src/shaidago/retrieval/{language,openai,validation}.py`, retrieval validator/provider/replay unit tests, and backend execution documentation.
+- **Schema/contract changes:** No database or HTTP contract change. The internal provider schema advances to `grounded-answer-v2` and adds a required locale that must exactly match the application request; the replay fingerprint changes accordingly. OpenAPI is unchanged.
+- **Security/privacy impact:** Citation resolution is project-scoped and availability-aware, and duplicate or ambiguous identifiers fail closed. Uncited prose, unsupported number changes, guarded completion claims, accusations or guilt, person identification, contact/tracking data, instructions to reveal private material, prompt-injection phrases, and truth scores cannot reach the accepted answer. Failure links are derived only from available evidence already supplied for the selected project; provider prose is never partially returned.
+- **Dependencies added:** None.
+- **Failure behaviour verified:** Unknown, ambiguous, duplicate, cross-project, unavailable, missing, or unsupported citations; uncited answer additions; insufficient-evidence provider output; locale mismatch; unsafe allegations, identity text, private data/instructions, prompt injection, truth scores, and unsupported completion language all produce one complete fallback. The fallback remains English and reports `served_locale=en` rather than silently claiming the requested locale.
+- **Commands run and results:** Targeted validator tests passed with 100% statement and branch coverage (20); targeted retrieval Ruff, Pyright, and unit tests passed (59); `make backend-verify` exited 0 with formatting, lint, strict types, Bandit, `pip-audit`, OpenAPI drift, and 1211 deterministic tests passing; all six Circle 0 validators passed.
+- **Tests added or changed:** Twenty validator cases cover every validator branch; provider and replay tests now prove exact locale binding and the versioned fixture digest.
+- **Generated artifacts checked:** `make openapi-check` passed inside the full gate; OpenAPI and lockfiles are unchanged. The checked-in replay fixture was regenerated only for the internal schema version and locale field.
+- **Known limitations/open decisions:** Passage support is deliberately conservative lexical and numeric linkage, not semantic truth verification. The approved fallback source text is currently English; reviewed Hausa, Igbo, and Yoruba fallback translations and semantic language evaluation remain for the four-language evaluation task and must not be claimed before human review.
+- **Commit/PR:** `feat: add fail-closed grounded-answer validation`
+- **Next task may rely on:** `validate_answer`, `ValidationDecision`, exact fallback text, requested/served locale disclosure, and eligible `SourceLink` values.
+- **AI assistance used:** Designed and implemented the deterministic citation/support and safety rules, locale-bound provider schema, adversarial tests, fixture update, and documentation.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

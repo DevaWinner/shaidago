@@ -14,7 +14,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_valida
 from shaidago.projects.models import Locale
 
 PROMPT_VERSION = "grounded-qa-v1"
-SCHEMA_VERSION = "grounded-answer-v1"
+SCHEMA_VERSION = "grounded-answer-v2"
 MAX_PASSAGES = 5
 MAX_FIXTURE_BYTES = 256 * 1024
 QA_FIXTURES_ROOT = Path(__file__).parents[5] / "data" / "qa-fixtures"
@@ -84,6 +84,7 @@ class _StructuredAnswer(BaseModel):
     insufficient_evidence: bool
     confidence_note: str = Field(min_length=1, max_length=500)
     generated_at: str = Field(min_length=20, max_length=40)
+    locale: Locale
 
 
 class _FixtureAnswer(BaseModel):
@@ -93,6 +94,7 @@ class _FixtureAnswer(BaseModel):
     statements: tuple[AnswerStatement, ...] = Field(max_length=8)
     insufficient_evidence: bool
     confidence_note: str = Field(min_length=1, max_length=500)
+    locale: Locale
 
 
 class _FixtureRecord(BaseModel):
@@ -116,6 +118,7 @@ class GroundedAnswer:
     insufficient_evidence: bool
     confidence_note: str
     generated_at: datetime
+    locale: Locale
 
 
 @dataclass(frozen=True)
@@ -142,7 +145,12 @@ def structured_answer_schema() -> dict[str, object]:
     return _StructuredAnswer.model_json_schema()
 
 
-def parse_structured_answer(raw: str, *, expected_generated_at: datetime) -> GroundedAnswer:
+def parse_structured_answer(
+    raw: str,
+    *,
+    expected_generated_at: datetime,
+    expected_locale: Locale,
+) -> GroundedAnswer:
     try:
         parsed = _StructuredAnswer.model_validate_json(raw)
     except ValidationError as error:
@@ -150,12 +158,15 @@ def parse_structured_answer(raw: str, *, expected_generated_at: datetime) -> Gro
     expected = generated_at_text(expected_generated_at)
     if parsed.generated_at != expected:
         raise LanguageModelError("provider_invalid_timestamp", RetryClass.NON_RETRYABLE)
+    if parsed.locale != expected_locale:
+        raise LanguageModelError("provider_wrong_locale", RetryClass.NON_RETRYABLE)
     return GroundedAnswer(
         answer=parsed.answer,
         statements=parsed.statements,
         insufficient_evidence=parsed.insufficient_evidence,
         confidence_note=parsed.confidence_note,
         generated_at=expected_generated_at,
+        locale=parsed.locale,
     )
 
 
@@ -223,7 +234,11 @@ class FixtureLanguageModel:
             separators=(",", ":"),
         )
         return LanguageModelResult(
-            answer=parse_structured_answer(raw, expected_generated_at=request.generated_at),
+            answer=parse_structured_answer(
+                raw,
+                expected_generated_at=request.generated_at,
+                expected_locale=request.locale,
+            ),
             model_id=self.model_id,
             prompt_version=PROMPT_VERSION,
             schema_version=SCHEMA_VERSION,
