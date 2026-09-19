@@ -117,7 +117,7 @@ Classification is attached to the data, not the component holding it. Moving pri
 | Boundary | Direction | Authentication/validation requirement | Permitted payload class |
 | --- | --- | --- | --- |
 | TB-01 | Z-00 → Z-10 | TLS, same origin, origin/CSRF for cookie mutations, browser/body/rate limits | Explicit browser request schema only. |
-| TB-02 | Z-10 → Z-20 | Private network plus the internal-service credential defined by ADR; request ID and trusted forwarded context are signed/bound | Validated request fields; BFF cannot assert domain authorisation. |
+| TB-02 | Z-10 → Z-20 | Private network plus the per-caller internal-service credential from [ADR-0002](decisions/0002-bff-authority-split-and-internal-service-authentication.md); forwarded request ID, locale, and client HMAC are read only after caller authentication | Validated request fields; BFF cannot assert domain authorisation. |
 | TB-03 | Z-20/Z-30 → Z-40 | TLS and least-privilege database role selected per process/use case | Parameterised queries and explicit projections. |
 | TB-04 | Z-20 ↔ Z-50 | Authenticated TLS, namespaced queue/rate keys, TTL and payload schema | Opaque IDs, job versions, counters, leases; no private bodies. |
 | TB-05 | Z-20/Z-30 ↔ Z-60 | Scoped service credential or short-lived signed operation | Sanitised bytes and minimal safe metadata only. |
@@ -126,7 +126,7 @@ Classification is attached to the data, not the component holding it. Moving pri
 | TB-08 | All trusted zones → Z-90 | Central structured-logging/metrics adapters with sensitive-field denylist | A-20 and approved aggregate counters only. |
 | TB-09 | Z-00 → Z-60 | Short-lived reviewer-only signed download after API authorisation and audit | One sanitised artifact; attachment response; no list/write ability. |
 
-The exact TB-02 internal-service mechanism is an irreversible architecture choice owned by BE-004. Until its ADR is accepted and implemented, “private hostname” alone is not authentication.
+TB-02 uses per-caller bearer credentials with `current`/`previous` rotation, verified before any router runs ([ADR-0002](decisions/0002-bff-authority-split-and-internal-service-authentication.md)). The worker does not call the API. Until BE-022 implements and tests this, “private hostname” alone is not authentication.
 
 ## 6. Critical data flows
 

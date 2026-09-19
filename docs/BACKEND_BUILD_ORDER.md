@@ -199,6 +199,8 @@ Create `docs/THREAT_MODEL.md` with:
 
 ### BE-004 — Record backend architecture decisions
 
+> **Execution status (2026-09-19): complete.** Eight accepted records are in `docs/decisions/` with an index; `scripts/validate_decisions.py --self-test` enforces structure, numbering, index accuracy, topic coverage, and task references. ADR-0005 also resolves how BE-063's idempotent replay returns a tracking code that is never stored.
+
 Create accepted ADRs under `docs/decisions/` for decisions that are difficult to reverse:
 
 - modular monolith with API and worker entry points;
@@ -213,6 +215,8 @@ Create accepted ADRs under `docs/decisions/` for decisions that are difficult to
 Each ADR includes context, decision, alternatives, consequences, migration impact, status, and links to enforcing tests.
 
 ### Circle 0 exit gate
+
+> **Gate status (2026-09-19): open.** BE-000, BE-002, BE-003, and BE-004 are complete. The gate closes when deferred BE-001 delivers the six-project source register and its validator, immediately before BE-043. Circle 1 may start because it depends on no source evidence.
 
 - Six-project source register is manually reviewable.
 - State/value tables contain no ambiguous or missing transition.

@@ -24,6 +24,7 @@ If implementation reveals a conflict, do not silently choose one version. Correc
 | [`BACKEND_BUILD_ORDER.md`](BACKEND_BUILD_ORDER.md) | Execution specification | In what exact order should the API, worker, persistence, security, and operations be implemented and proven? |
 | [`FRONTEND_BUILD_ORDER.md`](FRONTEND_BUILD_ORDER.md) | Execution specification | In what exact order should the UI/BFF, visual system, four-language experience, PWA, and reviewer surfaces be implemented and proven? |
 | [`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md) | Active control | Which backend task and proof owns every accepted capability, acceptance criterion, journey, and non-goal? |
+| [`decisions/`](decisions/README.md) | Accepted decision records | Which hard-to-reverse backend choices are binding, what was rejected, and which tasks enforce them? |
 | [`THREAT_MODEL.md`](THREAT_MODEL.md) | Design contract | Which data is private or secret, where may it flow, how is it deleted, and which task proves each control? |
 | [`CONTROLLED_VOCABULARY.md`](CONTROLLED_VOCABULARY.md) | Generated active contract | Which machine values, actors, transitions, audit events, visibility rules, and failure codes are permitted? |
 | [`AI_BUILD_LOG.md`](AI_BUILD_LOG.md) | Active log | Where did AI assist, what was reviewed, and what was the result? |
@@ -36,7 +37,7 @@ Create these when the corresponding build gate produces real evidence; do not ad
 - `TRUST_MODEL.md` and `PRIVACY_AND_SAFETY.md` when their controls are implemented and tested. `THREAT_MODEL.md` already exists as the BE-003 design contract and is updated as controls land.
 - `API.md` when the first OpenAPI contract is generated.
 - `DEMO_SCRIPT.md` when the end-to-end scenario is working.
-- architecture decision records under `decisions/` when a durable choice changes the accepted plan.
+- further architecture decision records under `decisions/` when a durable choice changes the accepted plan.
 
 ## Documentation standards
 
