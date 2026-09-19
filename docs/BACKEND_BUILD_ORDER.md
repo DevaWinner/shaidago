@@ -243,6 +243,8 @@ Each ADR includes context, decision, alternatives, consequences, migration impac
 - **Verification:** `uv sync --all-groups --frozen`, Ruff check/format check, Pyright, and pytest collection all succeed.
 - **Do not:** add domain tables, provider calls, or placeholder secrets.
 
+> **Execution status (2026-09-19): complete.** `services/platform` has a pinned Python 3.14 project with a committed `uv.lock`; from an empty `.venv`, `uv sync --all-groups --frozen`, Ruff check and format check, Pyright strict, and pytest (one package-import test) all pass locally. Provider SDKs (OpenAI, S3) and `python-multipart` are deliberately absent until their owning circles. `psycopg` and `dramatiq` are LGPL-3.0 (used as unmodified, dynamically linked libraries); `hypothesis` is MPL-2.0; `pip-audit` reported no known vulnerabilities.
+
 ### BE-011 — Establish canonical backend commands
 
 Add Make targets or scripts with one implementation behind each name:

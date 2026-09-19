@@ -77,7 +77,7 @@ Start with the [documentation index](docs/README.md).
 
 ## Development
 
-There are no executable setup commands yet. Gate 1 will add the pnpm workspace, Python project, lockfiles, Docker Compose services, migrations, seed command, and canonical root `make` targets. Until those artifacts exist, commands shown in the implementation plan are target interfaces rather than working claims.
+`services/platform` now has a pinned Python toolchain (see its README); the root `make` targets do not exist yet. Gate 1 will add the pnpm workspace, Python project, lockfiles, Docker Compose services, migrations, seed command, and canonical root `make` targets. Until those artifacts exist, commands shown in the implementation plan are target interfaces rather than working claims.
 
 When implementation starts, the separate stacks remain independently owned:
 

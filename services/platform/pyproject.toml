@@ -1,0 +1,87 @@
+[project]
+name = "shaidago-platform"
+version = "0.0.0"
+description = "ShaidaGo private API and background worker (FastAPI modular monolith)."
+readme = "README.md"
+requires-python = ">=3.14,<3.15"
+license = "MIT"
+dependencies = [
+    "fastapi",          # HTTP API framework and OpenAPI generation
+    "uvicorn",          # ASGI server for the api entry point
+    "pydantic-settings", # typed environment configuration validated at startup
+    "sqlalchemy[asyncio]", # async ORM/Core for request paths
+    "psycopg[binary,pool]", # PostgreSQL 18 driver (psycopg 3) with pooling
+    "alembic",          # reviewed schema migrations
+    "dramatiq[redis]",  # bounded background jobs on Redis
+    "structlog",        # structured JSON logging with a central denylist processor
+    "cryptography",     # envelope encryption (AES-GCM) and key wrapping
+    "argon2-cffi",      # Argon2id hashing for reviewer and handle credentials
+    "httpx",            # outbound HTTP client for provider and public-fetch adapters
+    "pillow",           # bounded image decoding and metadata-free re-encoding
+    "pypdf",            # bounded PDF parsing for evidence sanitation
+]
+
+[dependency-groups]
+dev = [
+    "ruff",
+    "pyright",
+    "pytest",
+    "pytest-asyncio",
+    "pytest-cov",
+    "hypothesis",
+    "testcontainers",
+    "schemathesis",
+    "bandit",
+    "pip-audit",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/shaidago"]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF", "S", "T20", "PT", "ASYNC",
+    "DTZ", "PL", "TID", "PERF", "RET", "ARG", "PTH", "TCH", "FAST",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Assertions are the point of a test.
+"tests/**" = ["S101"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["shaidago"]
+
+[tool.pyright]
+include = ["src", "tests"]
+pythonVersion = "3.14"
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "-ra --strict-markers --strict-config"
+markers = [
+    "integration: needs PostgreSQL/Redis/MinIO via Docker",
+    "security: adversarial or trust-boundary test",
+    "live: opt-in live provider test, never run in CI",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["shaidago"]
