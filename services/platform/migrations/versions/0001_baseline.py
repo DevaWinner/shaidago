@@ -17,12 +17,16 @@ branch_labels = None
 depends_on = None
 
 BASELINE_SQL = "0001_security_baseline.sql"
-BASELINE_SHA256 = "de2596f8beebaba9744afdca9bdcf7dccd65276f49bd799fd7a921d7e5a91fbb"
+BASELINE_SHA256 = "6575fa77a8dc4194f13454420783ddc75e83a39cf6bba1dc443726cb38ed7320"
 
 
 def upgrade() -> None:
     op.execute("CREATE EXTENSION IF NOT EXISTS vector")
     run_sql_script(read_versioned_sql(BASELINE_SQL, BASELINE_SHA256))
+    # Later revisions run as shaidago_owner (SET LOCAL ROLE), which must be able to update the
+    # version table. Transfer it, giving the owner the schema privileges the transfer needs.
+    op.execute("GRANT USAGE, CREATE ON SCHEMA public TO shaidago_owner")
+    op.execute("ALTER TABLE public.alembic_version OWNER TO shaidago_owner")
     # Readiness reads the applied revision through whichever application role the API uses.
     op.execute(
         "GRANT SELECT ON TABLE public.alembic_version TO "

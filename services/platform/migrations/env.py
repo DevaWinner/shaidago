@@ -7,14 +7,14 @@ from alembic import context
 from sqlalchemy import create_engine, pool
 from sqlalchemy.engine import Connection
 
-from shaidago.db.metadata import metadata
+from shaidago.db.registry import metadata
 from shaidago.shared.config import DatabaseSettings
 
 config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name, disable_existing_loggers=False)
 
-# Each table module is imported here by the task that creates it, so it registers on `metadata`.
+# `registry` imports every table module so its tables register on `metadata`.
 target_metadata = metadata
 
 MANAGED_SCHEMAS = frozenset({"app", "public_api"})

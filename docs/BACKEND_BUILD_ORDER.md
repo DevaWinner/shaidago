@@ -439,12 +439,16 @@ Implement and test:
 
 These primitives must exist before any create/list endpoint uses a local alternative.
 
+> **Execution status (2026-09-19): complete.** Clock, monotonic UUIDv7, signed cursors, and idempotency (sealed replay, conflict, expiry, concurrent duplicates) are proven by Hypothesis property tests and PostgreSQL integration tests (`make backend-verify` exit 0, 227 passed). The tests also exposed and led to two corrections in the BE-032 and BE-033 baseline, recorded in the build log.
+
 ### Circle 3 exit gate
 
 - Compose services become healthy and shut down cleanly.
 - Empty-to-head migration and schema drift checks pass.
 - Every database role is proven by allow/deny integration tests.
 - Shared ID, time, cursor, and idempotency primitives have deterministic property tests.
+
+> **Gate status (2026-09-19): open, one named gap.** Evidence: empty database to head, head to one revision down and up, head to base and back, repeat upgrade, and model drift all pass against PostgreSQL 18 (`tests/integration/test_migrations.py`); every application role is proven by allow/deny tests through real logins, on synthetic probe tables and on the real idempotency functions (`test_database_roles.py`, `test_idempotency.py`); the ID, clock, cursor, and idempotency primitives have Hypothesis property tests; `make backend-verify` exit 0 with 227 passing tests, and `make migrate` then `make db-roles` prepare a database end to end. **Gap:** the ClamAV service is defined but was never started (the Docker VM had about 2.6 GB free alongside unrelated containers), so "Compose services become healthy" is proven for PostgreSQL, Redis, and MinIO only. CI has also never run. The grant model for the real report, contact, and evidence tables remains to be proven by their owning tasks.
 
 ## 7. Circle 4 — public accountability domain and APIs
 

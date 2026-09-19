@@ -9,8 +9,9 @@ from sqlalchemy import Column, ForeignKey, Integer, MetaData, String, Table, cre
 from sqlalchemy.engine import URL
 from sqlalchemy.schema import CreateTable
 
-from shaidago.db.metadata import NAMING_CONVENTION, metadata
+from shaidago.db.metadata import NAMING_CONVENTION
 from shaidago.db.migration_helpers import read_versioned_sql
+from shaidago.db.registry import metadata
 from shaidago.db.revision import alembic_config, expected_head
 from tests.integration.conftest import disposable_database
 
@@ -74,12 +75,24 @@ def test_second_upgrade_is_a_no_op(empty_url: URL) -> None:
     assert applied_revision(empty_url) == [expected_head()]
 
 
-def test_head_can_step_down_and_up_again(empty_url: URL) -> None:
+def test_head_can_step_down_one_revision_and_up_again(empty_url: URL) -> None:
     config = alembic_config(render(empty_url))
     command.upgrade(config, "head")
     command.downgrade(config, "-1")
+    assert applied_revision(empty_url) == ["0001_baseline"]
+    assert query(empty_url, "SELECT to_regclass('app.idempotency_records')") == [(None,)]
+    command.upgrade(config, "head")
+    assert applied_revision(empty_url) == [expected_head()]
+
+
+def test_every_revision_can_be_undone_back_to_an_empty_database_and_redone(
+    empty_url: URL,
+) -> None:
+    config = alembic_config(render(empty_url))
+    command.upgrade(config, "head")
+    command.downgrade(config, "base")
     assert query(empty_url, "SELECT version_num FROM alembic_version") == []
-    assert query(empty_url, "SELECT 1 FROM pg_namespace WHERE nspname = 'app'") == []
+    assert query(empty_url, "SELECT nspname FROM pg_namespace WHERE nspname = 'app'") == []
     command.upgrade(config, "head")
     assert applied_revision(empty_url) == [expected_head()]
 

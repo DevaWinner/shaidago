@@ -173,6 +173,7 @@ class CryptoSettings(_Section):
     tracking_pepper_ring: SecretStr = Field(validation_alias="TRACKING_PEPPERS")
     active_tracking_pepper_version: str = Field(validation_alias="TRACKING_ACTIVE_PEPPER_VERSION")
     idempotency_pepper: SecretStr = Field(validation_alias="IDEMPOTENCY_PEPPER")
+    cursor_hmac_key: SecretStr = Field(validation_alias="CURSOR_HMAC_KEY")
 
     @field_validator("kek_ring", "tracking_pepper_ring")
     @classmethod
@@ -180,11 +181,14 @@ class CryptoSettings(_Section):
         KeyRing.parse(value.get_secret_value())
         return value
 
-    @field_validator("idempotency_pepper")
+    @field_validator("idempotency_pepper", "cursor_hmac_key")
     @classmethod
     def _check_pepper(cls, value: SecretStr) -> SecretStr:
         _decode_single_key(value.get_secret_value())
         return value
+
+    def cursor_key(self) -> bytes:
+        return _decode_single_key(self.cursor_hmac_key.get_secret_value())
 
     def kek_keys(self) -> KeyRing:
         return KeyRing.parse(self.kek_ring.get_secret_value())
@@ -336,6 +340,7 @@ def _secret_values(settings: Settings) -> dict[str, str]:
         "ENCRYPTION_KEKS": settings.crypto.kek_ring,
         "TRACKING_PEPPERS": settings.crypto.tracking_pepper_ring,
         "IDEMPOTENCY_PEPPER": settings.crypto.idempotency_pepper,
+        "CURSOR_HMAC_KEY": settings.crypto.cursor_hmac_key,
         "INTERNAL_WEB_CREDENTIAL_CURRENT": settings.auth.web_credential_current,
         "SESSION_HMAC_KEY": settings.auth.session_hmac_key,
     }

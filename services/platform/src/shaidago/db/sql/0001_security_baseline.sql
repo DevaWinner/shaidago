@@ -57,8 +57,9 @@ ALTER DEFAULT PRIVILEGES FOR ROLE shaidago_owner IN SCHEMA app
     REVOKE ALL ON TABLES FROM PUBLIC;
 ALTER DEFAULT PRIVILEGES FOR ROLE shaidago_owner IN SCHEMA app
     REVOKE ALL ON SEQUENCES FROM PUBLIC;
-ALTER DEFAULT PRIVILEGES FOR ROLE shaidago_owner IN SCHEMA app
-    REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;
+-- Functions get EXECUTE for PUBLIC from the global default, and a schema-scoped REVOKE cannot
+-- remove that, so the revoke is global for objects the owner creates.
+ALTER DEFAULT PRIVILEGES FOR ROLE shaidago_owner REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;
 -- Views in "public_api" are readable by the application roles; a view may project public
 -- columns only, and reviewers of every migration check that.
 ALTER DEFAULT PRIVILEGES FOR ROLE shaidago_owner IN SCHEMA public_api
