@@ -275,12 +275,16 @@ Targets must fail on the first failed child command, use no developer-global pac
 5. Upload coverage and logs only after the central redaction test exists; until then, keep artifacts minimal.
 6. Prove the workflow on the repository branch before making it required.
 
+> **Execution status (2026-09-19): partial.** `.github/workflows/backend.yml` is written with `contents: read` permissions, `actions/checkout` v7.0.1 and `astral-sh/setup-uv` v10.1.0 pinned by full commit SHA (resolved read-only through the GitHub API), a lockfile-keyed uv cache only, and one aggregate `Backend required` job over the static/unit job. The YAML parses locally, but no linter such as actionlint was available and **the workflow has never run: CI green is pending** because pushing is a maintainer action. Service-backed integration jobs and coverage/log upload are deliberately absent until BE-030 and the redaction test (BE-023). The maintainer should note that the `paths` filter means a required check would not report on unrelated pull requests; decide that before marking `Backend required` as required.
+
 ### Circle 1 exit gate
 
 - Frozen install works from a clean environment.
 - Static checks and empty tests are green locally and in CI.
 - `uv.lock` changes only when dependencies change.
 - No backend command depends on an undeclared global tool.
+
+> **Gate status (2026-09-19): open.** Met locally: frozen install from an empty `.venv`, green static checks and tests through `make backend-verify`, `uv lock --check` clean, and the only global tools are `make` and `uv`. Missing: green CI on the repository branch (BE-012), which needs a maintainer push.
 
 ## 5. Circle 2 — runtime kernel, configuration, errors, and observability
 
