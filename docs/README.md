@@ -24,6 +24,7 @@ If implementation reveals a conflict, do not silently choose one version. Correc
 | [`BACKEND_BUILD_ORDER.md`](BACKEND_BUILD_ORDER.md) | Execution specification | In what exact order should the API, worker, persistence, security, and operations be implemented and proven? |
 | [`FRONTEND_BUILD_ORDER.md`](FRONTEND_BUILD_ORDER.md) | Execution specification | In what exact order should the UI/BFF, visual system, four-language experience, PWA, and reviewer surfaces be implemented and proven? |
 | [`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md) | Active control | Which backend task and proof owns every accepted capability, acceptance criterion, journey, and non-goal? |
+| [`CONTROLLED_VOCABULARY.md`](CONTROLLED_VOCABULARY.md) | Generated active contract | Which machine values, actors, transitions, audit events, visibility rules, and failure codes are permitted? |
 | [`AI_BUILD_LOG.md`](AI_BUILD_LOG.md) | Active log | Where did AI assist, what was reviewed, and what was the result? |
 
 ## Planned evidence documents

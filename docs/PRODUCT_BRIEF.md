@@ -176,7 +176,7 @@ Provide English, Hausa, Igbo, and Yoruba for essential interface text, safety gu
 
 1. User selects “Report a concern.”
 2. The form explains privacy, what will happen, and what not to upload.
-3. User chooses a category such as no visible work, incomplete work, unsafe construction, suspected false status, access barrier, or another concern.
+3. User chooses a category such as no visible work, incomplete work, unsafe construction, suspected incorrect status, access barrier, or another concern.
 4. User describes what they observed and may attach a photo or document.
 5. The app removes available image metadata and shows a preview.
 6. The user chooses anonymous submission or optional contact details.
@@ -228,7 +228,8 @@ Every item should carry one of these labels:
 - Awaiting verification
 - Disputed
 - Outdated
-- Source unavailable
+
+Source availability is a separate field, not a verification result. A source can become unavailable without erasing what a reviewer previously verified from its preserved version. The canonical machine values and transitions are defined in [`CONTROLLED_VOCABULARY.md`](CONTROLLED_VOCABULARY.md).
 
 ### 8.3 Required source metadata
 
@@ -360,7 +361,7 @@ Follow-up questions must request only information that is necessary, safe, and r
 - Separate sections for supported facts, reported claims, contradictions, and unknowns.
 - Suggested follow-up questions that the user or reviewer can answer, skip, or mark unsafe.
 - Reviewer controls to attach, reject, or defer a discovered source.
-- Discovery status: `queued`, `searching`, `analysing`, `needs review`, `complete`, or `failed`.
+- Discovery status: `queued`, `searching`, `analysing`, `needs_review`, `complete`, `failed`, or `cancelled`.
 
 ### Accessibility and language
 

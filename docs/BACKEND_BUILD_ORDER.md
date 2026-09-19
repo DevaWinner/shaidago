@@ -163,6 +163,8 @@ Domain modules use the same internal layers where needed: `models.py` for domain
 
 ### BE-002 — Freeze controlled vocabularies and state machines
 
+> **Execution status (2026-09-19): complete.** The canonical values are in `contracts/controlled-vocabulary.json`; `docs/CONTROLLED_VOCABULARY.md` is its generated review view, and the dependency-free validator enforces value and transition integrity.
+
 Document machine values, display meanings, allowed transitions, terminal states, and who may perform each transition for:
 
 - project categories and public project status;

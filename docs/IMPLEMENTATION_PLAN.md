@@ -373,7 +373,7 @@ Public corroboration is worded as a reviewer finding, not a count of people: "A 
 
 ### Reviewer publication
 
-- Allowed state transitions are a backend state machine: `received -> needs_information | under_review | closed`; `under_review -> verified_for_public_update | referred | closed`; reopening is an explicit audited transition.
+- Allowed transitions are defined by the backend-owned contract in [`CONTROLLED_VOCABULARY.md`](CONTROLLED_VOCABULARY.md). It includes `received -> needs_information | under_review | closed`, the complete review paths, and explicit audited reopening; unlisted transitions fail closed.
 - A status event does not publish report text.
 - A reviewer writes a separate neutral `public_update`, links approved evidence/citations, previews exactly what the public will see, and confirms publication.
 - The publication transaction checks role, report state, attachment safety, citation visibility, and prohibited private-field references before inserting a public timeline update.

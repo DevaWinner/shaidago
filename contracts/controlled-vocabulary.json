@@ -1,0 +1,399 @@
+{
+  "schema_version": 1,
+  "contract_id": "shaidago-controlled-vocabulary",
+  "effective_date": "2026-09-19",
+  "machine_value_pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$",
+  "actors": [
+    "system",
+    "worker",
+    "reviewer",
+    "admin",
+    "reporter"
+  ],
+  "vocabularies": {
+    "project_category": {
+      "kind": "classification",
+      "values": [
+        {"value": "health", "meaning": "Health facilities, equipment, or public-health services."},
+        {"value": "education", "meaning": "Schools, learning facilities, equipment, or education services."},
+        {"value": "water_sanitation", "meaning": "Water supply, drainage, toilets, waste, or sanitation works."},
+        {"value": "roads_public_works", "meaning": "Roads, bridges, street infrastructure, or other public works."},
+        {"value": "other_public_service", "meaning": "A sourced public service project that does not fit another category."}
+      ],
+      "change_policy": "reviewer_or_admin_reclassification_with_audit"
+    },
+    "project_public_status": {
+      "kind": "state",
+      "values": [
+        {"value": "unknown", "meaning": "Approved evidence does not establish a current delivery state."},
+        {"value": "planned", "meaning": "An approved source records an intention, allocation, or plan; procurement or physical delivery is not established."},
+        {"value": "procurement", "meaning": "An approved source establishes an active tender, award, or contracting stage."},
+        {"value": "in_progress", "meaning": "Approved evidence establishes that delivery work has started and is not recorded as complete."},
+        {"value": "on_hold", "meaning": "An approved source explicitly states that delivery is paused, suspended, or stopped temporarily."},
+        {"value": "completed", "meaning": "An approved source explicitly records completion; this does not independently prove quality or service availability."},
+        {"value": "cancelled", "meaning": "An approved source explicitly records cancellation or permanent termination."}
+      ],
+      "initial_state": "unknown",
+      "terminal_states": [],
+      "change_policy": "reviewer_or_admin_with_approved_citation_and_append_only_update"
+    },
+    "information_class": {
+      "kind": "classification",
+      "values": [
+        {"value": "official_source", "meaning": "Material published by a government institution or recognised public body."},
+        {"value": "independent_source", "meaning": "Material published by a credible media, civic, research, or oversight organisation."},
+        {"value": "community_evidence_reviewed", "meaning": "Community-submitted evidence assessed and approved for the stated public use."},
+        {"value": "community_report_unverified", "meaning": "Private community information awaiting review; never public."},
+        {"value": "ai_generated_explanation", "meaning": "A generated explanation grounded in citations; never an independent source."}
+      ],
+      "change_policy": "derived_from_source_and_review_context"
+    },
+    "source_type": {
+      "kind": "classification",
+      "values": [
+        {"value": "government_publication", "meaning": "Government webpage, release, gazette, register, or administrative publication."},
+        {"value": "budget_document", "meaning": "Government budget, appropriation, implementation, or expenditure document."},
+        {"value": "procurement_record", "meaning": "Tender, award, contract, no-objection, or procurement register."},
+        {"value": "audit_oversight_report", "meaning": "Audit, legislative, regulator, court, or formal oversight record."},
+        {"value": "independent_media", "meaning": "Established news or specialist media reporting."},
+        {"value": "civic_research", "meaning": "Recognised civil-society, academic, or research publication."},
+        {"value": "community_evidence", "meaning": "Private community-supplied evidence eligible only after human review."},
+        {"value": "other_public_source", "meaning": "A public source that does not fit another type; requires a reviewer note."}
+      ],
+      "change_policy": "reviewer_or_admin_classification_with_audit"
+    },
+    "source_review_state": {
+      "kind": "state",
+      "values": [
+        {"value": "pending", "meaning": "The source has not been approved or rejected."},
+        {"value": "in_review", "meaning": "A reviewer is assessing provenance, relevance, rights, and supporting passages."},
+        {"value": "approved", "meaning": "A reviewer approved the source for its explicitly recorded scope."},
+        {"value": "rejected", "meaning": "A reviewer rejected the source for use; the decision and reason remain auditable."},
+        {"value": "superseded", "meaning": "A newer immutable source version replaces this version for current use."}
+      ],
+      "initial_state": "pending",
+      "terminal_states": [],
+      "change_policy": "state_machine"
+    },
+    "source_availability": {
+      "kind": "state",
+      "values": [
+        {"value": "unchecked", "meaning": "No bounded availability check has completed."},
+        {"value": "available", "meaning": "The source was retrievable at the recorded last-checked time."},
+        {"value": "temporarily_unavailable", "meaning": "Retrieval failed in a way that may be transient."},
+        {"value": "access_restricted", "meaning": "The source now requires access the platform must not bypass."},
+        {"value": "permanently_unavailable", "meaning": "Repeated checks or an authoritative response establish that the source is no longer retrievable."}
+      ],
+      "initial_state": "unchecked",
+      "terminal_states": [],
+      "change_policy": "bounded_system_check_or_reviewer_confirmation"
+    },
+    "verification_state": {
+      "kind": "state",
+      "values": [
+        {"value": "awaiting_verification", "meaning": "Evidence has not yet passed the applicable human verification rule."},
+        {"value": "verified_official", "meaning": "The specific fact is directly supported by an approved official source passage."},
+        {"value": "corroborated", "meaning": "The specific fact is supported by at least two approved, materially independent sources."},
+        {"value": "community_reviewed", "meaning": "The specific community evidence was reviewed and approved for the stated use."},
+        {"value": "disputed", "meaning": "Approved sources materially conflict and the conflict remains unresolved."},
+        {"value": "outdated", "meaning": "The evidence is authentic but no longer adequate to describe the current position."}
+      ],
+      "initial_state": "awaiting_verification",
+      "terminal_states": [],
+      "change_policy": "reviewer_or_admin_with_citations_and_audit"
+    },
+    "report_concern_category": {
+      "kind": "classification",
+      "values": [
+        {"value": "no_visible_work", "meaning": "The reporter did not observe expected work at the relevant public location."},
+        {"value": "incomplete_work", "meaning": "The reporter observed work they believe is incomplete."},
+        {"value": "unsafe_construction", "meaning": "The reporter observed a construction-related safety concern."},
+        {"value": "suspected_incorrect_status", "meaning": "The reporter believes a published status may not match their observation."},
+        {"value": "access_barrier", "meaning": "The reporter observed a barrier to using the promised public service."},
+        {"value": "other_concern", "meaning": "A relevant concern that does not fit another category."}
+      ],
+      "change_policy": "reporter_selects_reviewer_may_reclassify_with_audit"
+    },
+    "report_risk_level": {
+      "kind": "state",
+      "values": [
+        {"value": "standard", "meaning": "No elevated safety or sensitivity indicator has been recorded."},
+        {"value": "elevated", "meaning": "The report needs priority or restricted handling because of a recorded safety or sensitivity factor."},
+        {"value": "high", "meaning": "The report presents a serious recorded safety or sensitivity factor requiring the approved escalation guidance; ShaidaGo is not an emergency service."}
+      ],
+      "initial_state": "standard",
+      "terminal_states": [],
+      "change_policy": "system_may_flag_reviewer_or_admin_confirms_and_changes"
+    },
+    "report_status": {
+      "kind": "state",
+      "values": [
+        {"value": "received", "meaning": "The private report was accepted and has not entered substantive review."},
+        {"value": "needs_information", "meaning": "Review cannot proceed without a specific, safe follow-up answer."},
+        {"value": "under_review", "meaning": "An authorised reviewer is assessing the report and evidence."},
+        {"value": "verified_for_public_update", "meaning": "A reviewer found sufficient evidence to author a separate public-safe update; nothing is published automatically."},
+        {"value": "referred", "meaning": "A reviewer recorded referral through an approved route without promising an external response."},
+        {"value": "closed", "meaning": "No further internal review action is planned unless an authorised reviewer explicitly reopens the report."}
+      ],
+      "initial_state": "received",
+      "terminal_states": [],
+      "quiescent_states": ["closed"],
+      "change_policy": "state_machine"
+    },
+    "evidence_sanitation_state": {
+      "kind": "state",
+      "values": [
+        {"value": "pending", "meaning": "The upload is accepted into bounded temporary processing but is not available."},
+        {"value": "processing", "meaning": "Type validation and metadata or active-content removal are running."},
+        {"value": "sanitised", "meaning": "A safe derivative was produced; malware policy still applies separately."},
+        {"value": "rejected", "meaning": "The upload violates the accepted file policy and no persistent artifact is created."},
+        {"value": "failed", "meaning": "Sanitation could not complete safely and no artifact is available."}
+      ],
+      "initial_state": "pending",
+      "terminal_states": ["sanitised", "rejected", "failed"],
+      "change_policy": "state_machine"
+    },
+    "malware_scan_state": {
+      "kind": "state",
+      "values": [
+        {"value": "pending", "meaning": "The sanitised artifact is waiting for the configured scan policy."},
+        {"value": "scanning", "meaning": "The configured scanner is processing the sanitised artifact."},
+        {"value": "clean", "meaning": "The configured scanner found no known malware in the scanned artifact."},
+        {"value": "malware_detected", "meaning": "The scanner detected malware; the artifact is never made available."},
+        {"value": "scan_failed", "meaning": "The required scan did not complete; the artifact remains unavailable."},
+        {"value": "not_scanned_demo", "meaning": "The hosted fictional-data demo intentionally has no scanner; this mode is forbidden in production and is visible to reviewers."}
+      ],
+      "initial_state": "pending",
+      "terminal_states": ["clean", "malware_detected", "scan_failed", "not_scanned_demo"],
+      "change_policy": "state_machine"
+    },
+    "discovery_status": {
+      "kind": "state",
+      "values": [
+        {"value": "queued", "meaning": "The run is durable and waiting for worker capacity."},
+        {"value": "searching", "meaning": "The worker is finding and safely fetching permitted public sources."},
+        {"value": "analysing", "meaning": "Retrieved inert passages are being deduplicated and analysed."},
+        {"value": "needs_review", "meaning": "Automated validation or a safety rule requires reviewer action before completion."},
+        {"value": "complete", "meaning": "The run completed; each result remains discovered and unverified until separately reviewed."},
+        {"value": "failed", "meaning": "Bounded retries were exhausted or a non-retryable failure occurred."},
+        {"value": "cancelled", "meaning": "An authorised actor stopped future work; already retrieved results remain reviewable."}
+      ],
+      "initial_state": "queued",
+      "terminal_states": ["complete", "failed", "cancelled"],
+      "change_policy": "state_machine"
+    },
+    "discovered_source_disposition": {
+      "kind": "state",
+      "values": [
+        {"value": "not_reviewed", "meaning": "No reviewer decision has been recorded."},
+        {"value": "attached", "meaning": "A reviewer attached the source to the approved source workflow; fact approval remains separate."},
+        {"value": "rejected", "meaning": "A reviewer rejected the source with an auditable reason."},
+        {"value": "deferred", "meaning": "A reviewer postponed a final decision and recorded what remains unresolved."}
+      ],
+      "initial_state": "not_reviewed",
+      "terminal_states": [],
+      "change_policy": "state_machine"
+    },
+    "translation_status": {
+      "kind": "state",
+      "values": [
+        {"value": "reviewed", "meaning": "A fluent human reviewer approved the translation for this version."},
+        {"value": "machine_assisted", "meaning": "Automation helped produce the text and fluent human approval is not recorded."},
+        {"value": "unavailable", "meaning": "No translation is available; the UI must label any source-locale fallback honestly."}
+      ],
+      "initial_state": "unavailable",
+      "terminal_states": [],
+      "change_policy": "translation_review_workflow"
+    }
+  },
+  "state_machines": {
+    "project_public_status": {
+      "failure_code": "project_status_transition_not_allowed",
+      "transitions": [
+        {"from": "unknown", "command": "record_planned", "actors": ["reviewer", "admin"], "to": "planned", "audit_event": "project_status_recorded", "public_visibility": "after_transaction"},
+        {"from": "unknown", "command": "record_procurement", "actors": ["reviewer", "admin"], "to": "procurement", "audit_event": "project_status_recorded", "public_visibility": "after_transaction"},
+        {"from": "unknown", "command": "record_in_progress", "actors": ["reviewer", "admin"], "to": "in_progress", "audit_event": "project_status_recorded", "public_visibility": "after_transaction"},
+        {"from": "unknown", "command": "record_on_hold", "actors": ["reviewer", "admin"], "to": "on_hold", "audit_event": "project_status_recorded", "public_visibility": "after_transaction"},
+        {"from": "unknown", "command": "record_completed", "actors": ["reviewer", "admin"], "to": "completed", "audit_event": "project_status_recorded", "public_visibility": "after_transaction"},
+        {"from": "unknown", "command": "record_cancelled", "actors": ["reviewer", "admin"], "to": "cancelled", "audit_event": "project_status_recorded", "public_visibility": "after_transaction"},
+        {"from": "planned", "command": "correct_to_unknown", "actors": ["reviewer", "admin"], "to": "unknown", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "planned", "command": "record_procurement", "actors": ["reviewer", "admin"], "to": "procurement", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "planned", "command": "record_in_progress", "actors": ["reviewer", "admin"], "to": "in_progress", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "planned", "command": "record_on_hold", "actors": ["reviewer", "admin"], "to": "on_hold", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "planned", "command": "record_completed", "actors": ["reviewer", "admin"], "to": "completed", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "planned", "command": "record_cancelled", "actors": ["reviewer", "admin"], "to": "cancelled", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "procurement", "command": "correct_to_unknown", "actors": ["reviewer", "admin"], "to": "unknown", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "procurement", "command": "correct_to_planned", "actors": ["reviewer", "admin"], "to": "planned", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "procurement", "command": "record_in_progress", "actors": ["reviewer", "admin"], "to": "in_progress", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "procurement", "command": "record_on_hold", "actors": ["reviewer", "admin"], "to": "on_hold", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "procurement", "command": "record_completed", "actors": ["reviewer", "admin"], "to": "completed", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "procurement", "command": "record_cancelled", "actors": ["reviewer", "admin"], "to": "cancelled", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "in_progress", "command": "correct_to_unknown", "actors": ["reviewer", "admin"], "to": "unknown", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "in_progress", "command": "correct_to_planned", "actors": ["reviewer", "admin"], "to": "planned", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "in_progress", "command": "correct_to_procurement", "actors": ["reviewer", "admin"], "to": "procurement", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "in_progress", "command": "record_on_hold", "actors": ["reviewer", "admin"], "to": "on_hold", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "in_progress", "command": "record_completed", "actors": ["reviewer", "admin"], "to": "completed", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "in_progress", "command": "record_cancelled", "actors": ["reviewer", "admin"], "to": "cancelled", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "on_hold", "command": "correct_to_unknown", "actors": ["reviewer", "admin"], "to": "unknown", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "on_hold", "command": "correct_to_planned", "actors": ["reviewer", "admin"], "to": "planned", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "on_hold", "command": "record_procurement", "actors": ["reviewer", "admin"], "to": "procurement", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "on_hold", "command": "record_in_progress", "actors": ["reviewer", "admin"], "to": "in_progress", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "on_hold", "command": "record_completed", "actors": ["reviewer", "admin"], "to": "completed", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "on_hold", "command": "record_cancelled", "actors": ["reviewer", "admin"], "to": "cancelled", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "completed", "command": "correct_to_unknown", "actors": ["reviewer", "admin"], "to": "unknown", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "completed", "command": "correct_to_planned", "actors": ["reviewer", "admin"], "to": "planned", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "completed", "command": "correct_to_procurement", "actors": ["reviewer", "admin"], "to": "procurement", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "completed", "command": "correct_to_in_progress", "actors": ["reviewer", "admin"], "to": "in_progress", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "completed", "command": "correct_to_on_hold", "actors": ["reviewer", "admin"], "to": "on_hold", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "completed", "command": "correct_to_cancelled", "actors": ["reviewer", "admin"], "to": "cancelled", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "cancelled", "command": "correct_to_unknown", "actors": ["reviewer", "admin"], "to": "unknown", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "cancelled", "command": "record_restarted", "actors": ["reviewer", "admin"], "to": "planned", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "cancelled", "command": "record_reprocurement", "actors": ["reviewer", "admin"], "to": "procurement", "audit_event": "project_status_changed", "public_visibility": "after_transaction"},
+        {"from": "cancelled", "command": "correct_to_in_progress", "actors": ["reviewer", "admin"], "to": "in_progress", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "cancelled", "command": "correct_to_on_hold", "actors": ["reviewer", "admin"], "to": "on_hold", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"},
+        {"from": "cancelled", "command": "correct_to_completed", "actors": ["reviewer", "admin"], "to": "completed", "audit_event": "project_status_corrected", "public_visibility": "after_transaction"}
+      ]
+    },
+    "source_review_state": {
+      "failure_code": "source_review_transition_not_allowed",
+      "transitions": [
+        {"from": "pending", "command": "start_review", "actors": ["reviewer", "admin"], "to": "in_review", "audit_event": "source_review_started", "public_visibility": "none"},
+        {"from": "in_review", "command": "approve", "actors": ["reviewer", "admin"], "to": "approved", "audit_event": "source_approved", "public_visibility": "eligible_after_fact_publication"},
+        {"from": "in_review", "command": "reject", "actors": ["reviewer", "admin"], "to": "rejected", "audit_event": "source_rejected", "public_visibility": "none"},
+        {"from": "approved", "command": "reopen_review", "actors": ["reviewer", "admin"], "to": "in_review", "audit_event": "source_review_reopened", "public_visibility": "none"},
+        {"from": "approved", "command": "supersede", "actors": ["reviewer", "admin"], "to": "superseded", "audit_event": "source_superseded", "public_visibility": "historical_only"},
+        {"from": "rejected", "command": "reopen_review", "actors": ["reviewer", "admin"], "to": "in_review", "audit_event": "source_review_reopened", "public_visibility": "none"},
+        {"from": "superseded", "command": "reopen_review", "actors": ["admin"], "to": "in_review", "audit_event": "source_review_reopened", "public_visibility": "none"}
+      ]
+    },
+    "source_availability": {
+      "failure_code": "source_availability_transition_not_allowed",
+      "transitions": [
+        {"from": "unchecked", "command": "record_available", "actors": ["system", "reviewer", "admin"], "to": "available", "audit_event": "source_availability_checked", "public_visibility": "immediate"},
+        {"from": "unchecked", "command": "record_temporary_failure", "actors": ["system", "reviewer", "admin"], "to": "temporarily_unavailable", "audit_event": "source_availability_checked", "public_visibility": "immediate"},
+        {"from": "unchecked", "command": "record_access_restriction", "actors": ["system", "reviewer", "admin"], "to": "access_restricted", "audit_event": "source_availability_checked", "public_visibility": "immediate"},
+        {"from": "available", "command": "record_temporary_failure", "actors": ["system", "reviewer", "admin"], "to": "temporarily_unavailable", "audit_event": "source_availability_changed", "public_visibility": "immediate"},
+        {"from": "available", "command": "record_access_restriction", "actors": ["system", "reviewer", "admin"], "to": "access_restricted", "audit_event": "source_availability_changed", "public_visibility": "immediate"},
+        {"from": "temporarily_unavailable", "command": "record_available", "actors": ["system", "reviewer", "admin"], "to": "available", "audit_event": "source_availability_changed", "public_visibility": "immediate"},
+        {"from": "temporarily_unavailable", "command": "confirm_permanently_unavailable", "actors": ["reviewer", "admin"], "to": "permanently_unavailable", "audit_event": "source_availability_changed", "public_visibility": "immediate"},
+        {"from": "temporarily_unavailable", "command": "record_access_restriction", "actors": ["system", "reviewer", "admin"], "to": "access_restricted", "audit_event": "source_availability_changed", "public_visibility": "immediate"},
+        {"from": "access_restricted", "command": "record_available", "actors": ["system", "reviewer", "admin"], "to": "available", "audit_event": "source_availability_changed", "public_visibility": "immediate"},
+        {"from": "access_restricted", "command": "confirm_permanently_unavailable", "actors": ["reviewer", "admin"], "to": "permanently_unavailable", "audit_event": "source_availability_changed", "public_visibility": "immediate"},
+        {"from": "permanently_unavailable", "command": "record_available", "actors": ["reviewer", "admin"], "to": "available", "audit_event": "source_availability_corrected", "public_visibility": "immediate"}
+      ]
+    },
+    "verification_state": {
+      "failure_code": "verification_transition_not_allowed",
+      "transitions": [
+        {"from": "awaiting_verification", "command": "verify_official", "actors": ["reviewer", "admin"], "to": "verified_official", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "awaiting_verification", "command": "record_corroboration", "actors": ["reviewer", "admin"], "to": "corroborated", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "awaiting_verification", "command": "approve_community_evidence", "actors": ["reviewer", "admin"], "to": "community_reviewed", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "verified_official", "command": "record_corroboration", "actors": ["reviewer", "admin"], "to": "corroborated", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "verified_official", "command": "mark_disputed", "actors": ["reviewer", "admin"], "to": "disputed", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "verified_official", "command": "mark_outdated", "actors": ["reviewer", "admin"], "to": "outdated", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "community_reviewed", "command": "record_corroboration", "actors": ["reviewer", "admin"], "to": "corroborated", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "corroborated", "command": "mark_disputed", "actors": ["reviewer", "admin"], "to": "disputed", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "corroborated", "command": "mark_outdated", "actors": ["reviewer", "admin"], "to": "outdated", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "community_reviewed", "command": "mark_disputed", "actors": ["reviewer", "admin"], "to": "disputed", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "community_reviewed", "command": "mark_outdated", "actors": ["reviewer", "admin"], "to": "outdated", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "disputed", "command": "resolve_as_official", "actors": ["reviewer", "admin"], "to": "verified_official", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "disputed", "command": "resolve_as_corroborated", "actors": ["reviewer", "admin"], "to": "corroborated", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "disputed", "command": "mark_outdated", "actors": ["reviewer", "admin"], "to": "outdated", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "outdated", "command": "replace_with_awaiting_evidence", "actors": ["reviewer", "admin"], "to": "awaiting_verification", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "outdated", "command": "verify_official", "actors": ["reviewer", "admin"], "to": "verified_official", "audit_event": "verification_changed", "public_visibility": "after_transaction"},
+        {"from": "outdated", "command": "record_corroboration", "actors": ["reviewer", "admin"], "to": "corroborated", "audit_event": "verification_changed", "public_visibility": "after_transaction"}
+      ]
+    },
+    "report_risk_level": {
+      "failure_code": "report_risk_transition_not_allowed",
+      "transitions": [
+        {"from": "standard", "command": "raise_to_elevated", "actors": ["system", "reviewer", "admin"], "to": "elevated", "audit_event": "report_risk_changed", "public_visibility": "private"},
+        {"from": "standard", "command": "raise_to_high", "actors": ["system", "reviewer", "admin"], "to": "high", "audit_event": "report_risk_changed", "public_visibility": "private"},
+        {"from": "elevated", "command": "raise_to_high", "actors": ["reviewer", "admin"], "to": "high", "audit_event": "report_risk_changed", "public_visibility": "private"},
+        {"from": "elevated", "command": "lower_to_standard", "actors": ["reviewer", "admin"], "to": "standard", "audit_event": "report_risk_changed", "public_visibility": "private"},
+        {"from": "high", "command": "lower_to_elevated", "actors": ["reviewer", "admin"], "to": "elevated", "audit_event": "report_risk_changed", "public_visibility": "private"},
+        {"from": "high", "command": "lower_to_standard", "actors": ["reviewer", "admin"], "to": "standard", "audit_event": "report_risk_changed", "public_visibility": "private"}
+      ]
+    },
+    "report_status": {
+      "failure_code": "report_status_transition_not_allowed",
+      "transitions": [
+        {"from": "received", "command": "request_information", "actors": ["reviewer", "admin"], "to": "needs_information", "audit_event": "report_status_changed", "public_visibility": "tracking_projection_only"},
+        {"from": "received", "command": "start_review", "actors": ["reviewer", "admin"], "to": "under_review", "audit_event": "report_status_changed", "public_visibility": "tracking_projection_only"},
+        {"from": "received", "command": "close", "actors": ["reviewer", "admin"], "to": "closed", "audit_event": "report_status_changed", "public_visibility": "tracking_projection_only"},
+        {"from": "needs_information", "command": "record_follow_up", "actors": ["reporter"], "to": "under_review", "audit_event": "report_follow_up_received", "public_visibility": "tracking_projection_only"},
+        {"from": "needs_information", "command": "resume_review", "actors": ["reviewer", "admin"], "to": "under_review", "audit_event": "report_status_changed", "public_visibility": "tracking_projection_only"},
+        {"from": "needs_information", "command": "close", "actors": ["reviewer", "admin"], "to": "closed", "audit_event": "report_status_changed", "public_visibility": "tracking_projection_only"},
+        {"from": "under_review", "command": "request_information", "actors": ["reviewer", "admin"], "to": "needs_information", "audit_event": "report_status_changed", "public_visibility": "tracking_projection_only"},
+        {"from": "under_review", "command": "verify_for_public_update", "actors": ["reviewer", "admin"], "to": "verified_for_public_update", "audit_event": "report_status_changed", "public_visibility": "tracking_projection_only"},
+        {"from": "under_review", "command": "refer", "actors": ["reviewer", "admin"], "to": "referred", "audit_event": "report_status_changed", "public_visibility": "tracking_projection_only"},
+        {"from": "under_review", "command": "close", "actors": ["reviewer", "admin"], "to": "closed", "audit_event": "report_status_changed", "public_visibility": "tracking_projection_only"},
+        {"from": "verified_for_public_update", "command": "resume_review", "actors": ["reviewer", "admin"], "to": "under_review", "audit_event": "report_status_reopened", "public_visibility": "tracking_projection_only"},
+        {"from": "verified_for_public_update", "command": "refer", "actors": ["reviewer", "admin"], "to": "referred", "audit_event": "report_status_changed", "public_visibility": "tracking_projection_only"},
+        {"from": "verified_for_public_update", "command": "close", "actors": ["reviewer", "admin"], "to": "closed", "audit_event": "report_status_changed", "public_visibility": "tracking_projection_only"},
+        {"from": "referred", "command": "resume_review", "actors": ["reviewer", "admin"], "to": "under_review", "audit_event": "report_status_reopened", "public_visibility": "tracking_projection_only"},
+        {"from": "referred", "command": "close", "actors": ["reviewer", "admin"], "to": "closed", "audit_event": "report_status_changed", "public_visibility": "tracking_projection_only"},
+        {"from": "closed", "command": "reopen", "actors": ["reviewer", "admin"], "to": "under_review", "audit_event": "report_status_reopened", "public_visibility": "tracking_projection_only"}
+      ]
+    },
+    "evidence_sanitation_state": {
+      "failure_code": "evidence_sanitation_transition_not_allowed",
+      "transitions": [
+        {"from": "pending", "command": "start", "actors": ["worker"], "to": "processing", "audit_event": "evidence_sanitation_started", "public_visibility": "private"},
+        {"from": "pending", "command": "reject", "actors": ["worker"], "to": "rejected", "audit_event": "evidence_rejected", "public_visibility": "private"},
+        {"from": "processing", "command": "complete", "actors": ["worker"], "to": "sanitised", "audit_event": "evidence_sanitised", "public_visibility": "private"},
+        {"from": "processing", "command": "reject", "actors": ["worker"], "to": "rejected", "audit_event": "evidence_rejected", "public_visibility": "private"},
+        {"from": "processing", "command": "fail", "actors": ["worker"], "to": "failed", "audit_event": "evidence_sanitation_failed", "public_visibility": "private"}
+      ]
+    },
+    "malware_scan_state": {
+      "failure_code": "malware_scan_transition_not_allowed",
+      "transitions": [
+        {"from": "pending", "command": "start", "actors": ["worker"], "to": "scanning", "audit_event": "malware_scan_started", "public_visibility": "private"},
+        {"from": "pending", "command": "record_demo_exception", "actors": ["system"], "to": "not_scanned_demo", "audit_event": "malware_scan_demo_exception_recorded", "public_visibility": "reviewer_only"},
+        {"from": "scanning", "command": "record_clean", "actors": ["worker"], "to": "clean", "audit_event": "malware_scan_completed", "public_visibility": "private"},
+        {"from": "scanning", "command": "record_detection", "actors": ["worker"], "to": "malware_detected", "audit_event": "malware_detected", "public_visibility": "private"},
+        {"from": "scanning", "command": "fail", "actors": ["worker"], "to": "scan_failed", "audit_event": "malware_scan_failed", "public_visibility": "private"}
+      ]
+    },
+    "discovery_status": {
+      "failure_code": "discovery_transition_not_allowed",
+      "transitions": [
+        {"from": "queued", "command": "start_search", "actors": ["worker"], "to": "searching", "audit_event": "discovery_search_started", "public_visibility": "scope_safe_progress"},
+        {"from": "queued", "command": "cancel", "actors": ["reporter", "reviewer", "admin"], "to": "cancelled", "audit_event": "discovery_cancelled", "public_visibility": "scope_safe_progress"},
+        {"from": "queued", "command": "fail", "actors": ["worker"], "to": "failed", "audit_event": "discovery_failed", "public_visibility": "scope_safe_progress"},
+        {"from": "searching", "command": "start_analysis", "actors": ["worker"], "to": "analysing", "audit_event": "discovery_analysis_started", "public_visibility": "scope_safe_progress"},
+        {"from": "searching", "command": "cancel", "actors": ["reporter", "reviewer", "admin"], "to": "cancelled", "audit_event": "discovery_cancelled", "public_visibility": "scope_safe_progress"},
+        {"from": "searching", "command": "fail", "actors": ["worker"], "to": "failed", "audit_event": "discovery_failed", "public_visibility": "scope_safe_progress"},
+        {"from": "analysing", "command": "complete", "actors": ["worker"], "to": "complete", "audit_event": "discovery_completed", "public_visibility": "scope_safe_result"},
+        {"from": "analysing", "command": "require_review", "actors": ["worker"], "to": "needs_review", "audit_event": "discovery_review_required", "public_visibility": "scope_safe_progress"},
+        {"from": "analysing", "command": "cancel", "actors": ["reporter", "reviewer", "admin"], "to": "cancelled", "audit_event": "discovery_cancelled", "public_visibility": "scope_safe_progress"},
+        {"from": "analysing", "command": "fail", "actors": ["worker"], "to": "failed", "audit_event": "discovery_failed", "public_visibility": "scope_safe_progress"},
+        {"from": "needs_review", "command": "approve_completion", "actors": ["reviewer", "admin"], "to": "complete", "audit_event": "discovery_review_completed", "public_visibility": "scope_safe_result"},
+        {"from": "needs_review", "command": "reject_run", "actors": ["reviewer", "admin"], "to": "failed", "audit_event": "discovery_failed", "public_visibility": "scope_safe_progress"},
+        {"from": "needs_review", "command": "cancel", "actors": ["reviewer", "admin"], "to": "cancelled", "audit_event": "discovery_cancelled", "public_visibility": "scope_safe_progress"}
+      ]
+    },
+    "discovered_source_disposition": {
+      "failure_code": "discovered_source_decision_not_allowed",
+      "transitions": [
+        {"from": "not_reviewed", "command": "attach", "actors": ["reviewer", "admin"], "to": "attached", "audit_event": "discovered_source_attached", "public_visibility": "not_automatic"},
+        {"from": "not_reviewed", "command": "reject", "actors": ["reviewer", "admin"], "to": "rejected", "audit_event": "discovered_source_rejected", "public_visibility": "none"},
+        {"from": "not_reviewed", "command": "defer", "actors": ["reviewer", "admin"], "to": "deferred", "audit_event": "discovered_source_deferred", "public_visibility": "none"},
+        {"from": "deferred", "command": "attach", "actors": ["reviewer", "admin"], "to": "attached", "audit_event": "discovered_source_attached", "public_visibility": "not_automatic"},
+        {"from": "deferred", "command": "reject", "actors": ["reviewer", "admin"], "to": "rejected", "audit_event": "discovered_source_rejected", "public_visibility": "none"},
+        {"from": "attached", "command": "reconsider", "actors": ["reviewer", "admin"], "to": "deferred", "audit_event": "discovered_source_reconsidered", "public_visibility": "none"},
+        {"from": "rejected", "command": "reconsider", "actors": ["reviewer", "admin"], "to": "deferred", "audit_event": "discovered_source_reconsidered", "public_visibility": "none"}
+      ]
+    },
+    "translation_status": {
+      "failure_code": "translation_transition_not_allowed",
+      "transitions": [
+        {"from": "unavailable", "command": "record_machine_assisted", "actors": ["reviewer", "admin"], "to": "machine_assisted", "audit_event": "translation_status_changed", "public_visibility": "label_required"},
+        {"from": "machine_assisted", "command": "approve_review", "actors": ["reviewer", "admin"], "to": "reviewed", "audit_event": "translation_reviewed", "public_visibility": "immediate"},
+        {"from": "reviewed", "command": "invalidate_after_source_change", "actors": ["system", "reviewer", "admin"], "to": "unavailable", "audit_event": "translation_invalidated", "public_visibility": "label_required"},
+        {"from": "machine_assisted", "command": "invalidate", "actors": ["reviewer", "admin"], "to": "unavailable", "audit_event": "translation_invalidated", "public_visibility": "label_required"}
+      ]
+    }
+  }
+}
