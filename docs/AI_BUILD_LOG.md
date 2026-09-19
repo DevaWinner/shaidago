@@ -1449,3 +1449,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Mirrored the proven backend loop structure, then adapted it to the frontend's Server Component/BFF boundary, state-matrix proof, four-locale requirements, and mandatory human visual-direction gate.
 - **Prompt summary:** Create a frontend loop equivalent to the backend loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — Frontend circle branch and commit naming rule
+
+- **Task:** Repository developer workflow — frontend circle isolation and naming.
+- **User outcome delivered:** Every frontend build-order circle now receives an outcome-named branch in the form `frontend/<circle-goal>`, while commits continue to describe their delivered outcome without roadmap labels, circle numbers, or task IDs.
+- **Routes/components changed:** No runtime route, component, BFF handler, or client bundle changed. The active Circle 0 branch is `frontend/contract-inventory`.
+- **Backend operations/contract version:** No backend operation or contract changed.
+- **Public/private data handled:** No data flow changed.
+- **States implemented:** No product UI state changed.
+- **Accessibility evidence:** No UI changed.
+- **Locales reviewed:** No message or translation changed.
+- **Performance/cache impact:** No runtime cache or bundle changed.
+- **Commands run and results:** Confirmed the previous branch was clean and created `frontend/contract-inventory` from its committed frontend baseline; no remote branch was modified.
+- **Screenshots/traces/artifacts checked:** Reviewed the frontend loop's branch creation, task commit, and circle-transition rules; no rendered surface exists to inspect.
+- **Known limitations/open decisions:** Existing `frontend-build` history remains preserved and unchanged. The frontend loop creates later circle branches only after the previous circle's recorded baseline exists.
+- **Commit/PR:** `docs: standardise frontend work branches`
+- **Next task may rely on:** Outcome-named, circle-isolated frontend branches and concise outcome-based commit subjects.
+- **AI assistance used:** Added the requested branch/commit convention and moved the active Circle 0 checkout to its compliant branch without rewriting or deleting history.
+- **Prompt summary:** Require a frontend branch per circle and exclude roadmap names from branch names and commits.
+- **Human review:** none yet; pending maintainer review.
