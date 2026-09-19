@@ -149,6 +149,8 @@ Domain modules use the same internal layers where needed: `models.py` for domain
 
 ### BE-001 — Build the verified source register
 
+> **Execution status (2026-09-19): deferred by maintainer.** Complete this task as part of the evidence-backed demo seeding work immediately before BE-043. The deferral changes execution order only: BE-001 remains a prerequisite for BE-043 and the Circle 0 exit gate remains open until the register and validator pass.
+
 1. Create `docs/SOURCE_REGISTER.md` or an equivalently reviewable structured register.
 2. Select six public projects: three AMAC and three Bwari, spanning at least health, education, water, and road/public works.
 3. For each fact, capture the source URL/document reference, publisher, publication date, exact page/section/passage, retrieval date, content hash where permitted, reuse constraints, and unresolved gap.
