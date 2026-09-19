@@ -1,6 +1,7 @@
 """Public reads of localities and projects, through the ``public_api`` views only."""
 
 from typing import cast, get_args
+from uuid import UUID
 
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -25,6 +26,7 @@ _PROJECT = text(
     "SELECT id, slug, locality_slug, category, public_status, last_checked_on, updated_at "
     "FROM public_api.projects WHERE slug = :slug"
 )
+_PROJECT_ID = text("SELECT id FROM public_api.projects WHERE slug = :slug")
 _TEXT = text(
     "SELECT locale, title, summary, promised_deliverable, translation_status, reviewed_at "
     "FROM public_api.project_translations WHERE project_id = :project_id AND locale = ANY(:locales)"
@@ -50,6 +52,11 @@ class PublicProjectRepository:
             )
             for row in rows
         ]
+
+    async def resolve_project_id(self, slug: str) -> UUID | None:
+        """The internal ID of a public project, for a private report to reference."""
+        row = (await self._session.execute(_PROJECT_ID, {"slug": slug})).one_or_none()
+        return None if row is None else UUID(str(row.id))
 
     async def get_project(self, slug: str, locale: Locale) -> PublicProject | None:
         """The public project in ``locale``; absent, hidden, or untranslatable gives ``None``."""

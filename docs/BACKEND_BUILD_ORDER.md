@@ -680,6 +680,8 @@ Implement `POST /v1/reports`:
 
 Test concurrent duplicate submission and transaction rollback at each failure boundary.
 
+> **Execution status (2026-09-19): complete.** `POST /v1/reports` is implemented in `api/v1/reports.py` with 30 integration tests against PostgreSQL and the public role: anonymous and contact reports, per-attachment outcomes with the report still accepted, replay and conflict, concurrent duplicates, declared and streamed size caps, rate limiting, and rollback (plus file discard) at the unknown-project, evidence-insert, and duplicate-tracking-code boundaries. OpenAPI regenerated. The BFF does not exist yet, so the client HMAC header is exercised directly.
+
 ### BE-064 — Streaming evidence sanitation pipeline
 
 Build an explicit state machine:

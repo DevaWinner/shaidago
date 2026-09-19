@@ -10,7 +10,7 @@ import hashlib
 import os
 import tempfile
 from collections.abc import AsyncIterable, Callable
-from concurrent.futures import Executor
+from concurrent.futures import Executor, ProcessPoolExecutor
 from dataclasses import dataclass
 from functools import partial
 from pathlib import Path
@@ -104,6 +104,10 @@ class EvidencePipeline:
             scan_state=scan_state,
         )
 
+    async def discard(self, object_key: str) -> None:
+        """Remove a stored artifact whose database row was never committed."""
+        await self._store.delete(object_key)
+
     async def _spool(self, chunks: AsyncIterable[bytes]) -> Path:
         """Write the stream to a private temp file, refusing as soon as the cap is crossed."""
         handle, name = await asyncio.to_thread(
@@ -140,3 +144,19 @@ def sweep_stale_uploads(scratch_dir: Path | None = None) -> int:
         leftover.unlink(missing_ok=True)
         removed += 1
     return removed
+
+
+class SanitiserPool:
+    """Process pool for image and PDF work, so a hostile file cannot block the event loop.
+
+    Decoding untrusted files in a separate process also keeps a parser crash away from the API.
+    """
+
+    def __init__(self, workers: int = 2) -> None:
+        self.executor: Executor = ProcessPoolExecutor(max_workers=workers)
+
+    async def open(self) -> None:
+        """Workers start on first use."""
+
+    async def close(self) -> None:
+        self.executor.shutdown(wait=False, cancel_futures=True)

@@ -36,6 +36,15 @@ Both endpoints are for the trusted BFF only; the BFF, not the API, sets the brow
 - `DELETE /v1/auth/sessions/current` revokes the session (`204`).
 - Every later reviewer request carries the session token in `X-Shaidago-Session` and, for state-changing methods, the CSRF token in `X-Shaidago-Csrf` (`403 csrf_invalid` otherwise). The API never reads cookies, and the internal service credential is never reviewer authority (`401 unauthenticated` without a session; `403 forbidden` when the role lacks the capability).
 
+## Private report submission
+
+`POST /v1/reports` (multipart, `Idempotency-Key` required) stores a private report. Fields: `project_slug`, `concern_category`, `description` (10 to 8000 characters), optional `contact_channel` (`email`, `phone`, `messaging_app`) with `contact_value` (both or neither), and up to three `attachments` (10 MB each, JPEG, PNG, WebP, or PDF). Reports are anonymous unless a contact is given, and nothing is published.
+
+- The body is capped while it streams (413 `payload_too_large`); other content types get 415; invalid fields get 422 naming the field and rule only, never the submitted value.
+- The 201 receipt holds the tracking code (shown once), `status: received`, `published: false`, `contact_saved`, and one outcome per attachment (`position`, `kept`, and a stable `reason`). A report is accepted even when an attachment is refused, and the receipt says which. No internal ID, name, or content is echoed.
+- Retrying with the same key and request within the replay window returns the identical receipt with `Idempotency-Replayed: true`; the same key with a different request is 409 `idempotency_conflict`.
+- Submissions are rate limited per client (429 with `Retry-After`). Every response is `Cache-Control: no-store`.
+
 ## Errors
 
 Every error is `application/problem+json`, `Cache-Control: no-store`, with `type`, `title`, `status`, `code`, `detail`, `request_id`, and, for validation failures, `errors` (`field` and rule `code`, never the submitted value). The `code` is the stable contract; the BFF localises display text from it.

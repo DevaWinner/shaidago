@@ -206,6 +206,9 @@ class CryptoSettings(_Section):
     def cursor_key(self) -> bytes:
         return _decode_single_key(self.cursor_hmac_key.get_secret_value())
 
+    def idempotency_key(self) -> bytes:
+        return _decode_single_key(self.idempotency_pepper.get_secret_value())
+
     def kek_keys(self) -> KeyRing:
         return KeyRing.parse(self.kek_ring.get_secret_value())
 

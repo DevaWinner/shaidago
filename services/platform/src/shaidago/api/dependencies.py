@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from fastapi import Request
 
 from shaidago.auth.passwords import PasswordVerifier
+from shaidago.files.pipeline import EvidencePipeline
 from shaidago.shared.clock import Clock, SystemClock
 from shaidago.shared.config import Settings
 from shaidago.shared.context import new_request_id
@@ -35,6 +36,8 @@ class Dependencies:
     ids: IdGenerator = field(default_factory=Uuid7Generator)
     password_verifier: PasswordVerifier = field(default_factory=PasswordVerifier)
     rate_limiter: RateLimiter | None = None
+    # None means attachments cannot be processed; reports are still accepted without them.
+    evidence_pipeline: EvidencePipeline | None = None
 
 
 def get_settings(request: Request) -> Settings:

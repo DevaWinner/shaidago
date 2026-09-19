@@ -13,6 +13,7 @@ from uuid import UUID
 from sqlalchemy import LargeBinary, bindparam, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from shaidago.files.pipeline import StoredEvidence
 from shaidago.reports.tracking import CHECKSUM_VERSION, TrackingCode, lookup_key
 from shaidago.shared.clock import Clock
 from shaidago.shared.crypto import FieldCipher, field_context
@@ -73,6 +74,13 @@ _TRACKING = text(
 _DESCRIPTION = text(
     "SELECT description_ciphertext, description_key_id, schema_version FROM app.reports "
     "WHERE id = :id"
+)
+
+
+_EVIDENCE = text(
+    "INSERT INTO app.evidence_files (id, report_id, object_key, display_name, sniffed_mime, "
+    "size_bytes, sha256, sanitation_state, scan_state, created_at) VALUES (:id, :report, :key, "
+    ":name, :mime, :size, :sha, :sanitation, :scan, :now)"
 )
 
 
@@ -165,6 +173,24 @@ class ReportWriter:
             },
         )
         return report_id
+
+    async def attach_evidence(self, report_id: UUID, stored: StoredEvidence) -> None:
+        """Record a sanitised, stored file. The database refuses anything else."""
+        await self._session.execute(
+            _EVIDENCE,
+            {
+                "id": self._ids.new(),
+                "report": report_id,
+                "key": stored.object_key,
+                "name": stored.display_name,
+                "mime": stored.mime_type,
+                "size": stored.size_bytes,
+                "sha": stored.sha256,
+                "sanitation": stored.sanitation_state,
+                "scan": stored.scan_state,
+                "now": self._clock.now(),
+            },
+        )
 
 
 async def read_description(

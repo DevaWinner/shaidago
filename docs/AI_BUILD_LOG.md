@@ -661,3 +661,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the pipeline, adapters, and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-063 Multipart report submission
+
+- **Task:** BE-063 — Multipart report submission.
+- **Outcome delivered:** `POST /v1/reports` (`api/v1/reports.py`), evidence rows through `ReportWriter.attach_evidence`, `PublicProjectRepository.resolve_project_id`, a managed sanitiser process pool and evidence pipeline wired into `api/main.py`.
+- **Files changed:** `services/platform/src/shaidago/api/{v1/reports,v1/__init__,dependencies,main}.py`, `src/shaidago/files/pipeline.py`, `src/shaidago/projects/repository.py`, `src/shaidago/reports/persistence.py`, `src/shaidago/shared/config.py`, `tests/integration/test_report_submission.py`, `contracts/openapi.json`, `docs/API.md`.
+- **Schema/contract changes:** OpenAPI gains `POST /v1/reports` and its receipt model. No migration.
+- **Security/privacy impact:** The public role writes with insert-only access; nothing is read back. The body is capped on the bytes received, not only on Content-Length, before multipart parsing. Only the sniffed evidence types are kept, and each attachment gets a stable outcome code without its name or content. Field errors never echo submitted values or unexpected field names. The response and stored rows hold no IP, user agent, client HMAC, project slug, or internal report ID. The receipt is sealed for replay under the caller's own key; a replay never re-processes files. Contact is optional, validated by channel, and never identity.
+- **Failure behaviour verified:** missing, malformed, and reused keys; unknown project, bad category, short and long description, half a contact, bad email and phone, unexpected fields, too many files; non-multipart bodies; declared and chunked oversize bodies; rate limit with `Retry-After`; concurrent duplicate submissions create one report; an unknown project leaves no report or idempotency record and the key stays usable; a database refusal of an evidence row rolls back the report, keys, and tracking key and removes the uploaded object; a duplicate tracking code returns a conflict without echoing the code and rolls back the second report.
+- **Commands run and results:** `make backend-integration` exit 0 (283 passed); `make backend-verify` exit 0 (692 passed); `make openapi-generate` then `make openapi-check` clean; Circle 0 validators passed.
+- **Tests added or changed:** 30 integration tests.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated and committed.
+- **Known limitations/open decisions:** Files are processed while the idempotency transaction is open, so slow files hold a connection for up to their time limits (three files at most). A crash between upload and commit can leave an unreferenced, unguessable object; a retention sweep is not built yet. The request-body schema in OpenAPI is hand-declared because FastAPI cannot describe streamed multipart with per-file limits, so it must be kept in step with `parse_submission`. No BFF exists to forward the client HMAC header, so the rate limit key falls back to `unknown` for direct calls. Reporter handles are BE-066.
+- **Commit/PR:** `feat: add multipart private report submission`
+- **Next task may rely on:** A tracking code that is generated once and stored only as a keyed lookup HMAC, ready for the BE-065 lookup function.
+- **AI assistance used:** Designed and wrote the endpoint and adversarial tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
