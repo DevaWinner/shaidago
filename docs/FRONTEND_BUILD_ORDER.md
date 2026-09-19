@@ -213,6 +213,8 @@ Every state gets a stable MSW/fixture name shared by component and E2E tests. Do
 
 ### FE-003 — Content and range inventory
 
+> **Execution status (2026-09-20): complete.** [`FRONTEND_CONTENT_RANGE_INVENTORY.md`](FRONTEND_CONTENT_RANGE_INVENTORY.md) and its synthetic JSON fixture source provide minimum, typical, and maximum range cases for every requested public/private surface. The validator prevents source-register leakage, private/one-time fixture fields, undocumented currency/tracking-history UI, and incomplete locale/discovery coverage.
+
 Record realistic minimum/typical/maximum ranges:
 
 - project title, locality, institution, contractor, fact count, source count, timeline length, currency/dates;

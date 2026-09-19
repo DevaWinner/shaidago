@@ -1415,3 +1415,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Added the requested branch/commit convention and moved the active Circle 0 checkout to its compliant branch without rewriting or deleting history.
 - **Prompt summary:** Require a frontend branch per circle and exclude roadmap names from branch names and commits.
 - **Human review:** none yet; pending maintainer review.
+
+## 2026-09-20 — FE-003 content and range inventory
+
+- **Task:** FE-003 — Content and range inventory.
+- **User outcome delivered:** A deterministic, validated minimum/typical/maximum content contract now gives later frontend work safe layout fixtures for public projects/sources, four-language labels, private reporting, tracking, reviewer work, and Source Scout.
+- **Routes/components changed:** No runtime route or component changed. Added `data/frontend-content-range-fixtures.json`, `docs/FRONTEND_CONTENT_RANGE_INVENTORY.md`, and `scripts/validate_frontend_content_ranges.py` for future directory, detail, source, report, tracking, reviewer, and discovery tests.
+- **Backend operations/contract version:** No generated API contract changed; the inventory is constrained by OpenAPI `0.0.0`, frontend fixture schema `1`, and the documented handoff. It marks currency and reporter-visible tracking history as not exposed by the current public/tracking contracts rather than creating fields.
+- **Public/private data handled:** Every fixture is marked synthetic and contains no source-register project/source/fact, report, allegation, identifier, contact value, tracking code, passphrase, session token, CSRF token, signed URL, or file bytes. Private form/reviewer entries are metadata-only local test inputs and never cacheable.
+- **States implemented:** Size fixtures complement, but do not replace, the 304 stable UI state fixtures. The registry names minimum/typical/maximum cases for each shared surface and preserves distinct unavailable, validation, offline, and recovery states for later tests.
+- **Accessibility evidence:** The inventory specifies long-label wrapping, explicit unknown/omitted values, text status, keyboard/error association, 200% zoom, reduced motion, mobile, and desktop evidence required when components consume a fixture.
+- **Locales reviewed:** English is source-locale layout copy; Hausa, Igbo, and Yoruba long labels are explicitly marked machine-assisted and unreviewed. No fluent review or production safety copy is claimed.
+- **Performance/cache impact:** No runtime bundle/cache changed. Recipes are deterministic metadata, avoid file bytes, and must be loaded only by local test code once the web package exists; private fixture cases are prohibited from browser/service-worker/persistent caches and artifacts.
+- **Commands run and results:** `make frontend-contract-check`; `python3 scripts/validate_frontend_content_ranges.py --self-test`; `python3 scripts/validate_frontend_traceability.py --self-test`; `python3 scripts/validate_frontend_route_matrix.py --self-test`; `python3 scripts/validate_frontend_state_matrix.py --self-test`; and the six existing Circle 0 validators all passed. No planned web command was run because `apps/web` does not exist yet.
+- **Screenshots/traces/artifacts checked:** Reviewed the JSON fixture source, generated-free inventory, source-register title separation, documented API field boundaries, and final diff. No rendered frontend exists yet.
+- **Known limitations/open decisions:** Fixture recipes are not generated client data and need a future test-factory adapter. Currency UI and reporter-visible status history remain prohibited until an approved contract adds them. Circle 1 visual direction and fluent-language review remain human decisions.
+- **Commit/PR:** `docs: define frontend content range fixtures`
+- **Next task may rely on:** Stable `content.<surface>.<tier>` names, explicit safe data classifications, contract-absence markers, and three layout-density targets for every requested content family.
+- **AI assistance used:** Derived a contract-safe fixture taxonomy from the frontend handoff and task requirements; added an adversarial validator rather than using source-register data as plausible-looking UI content.
+- **Prompt summary:** Use the frontend loop and work the next frontend task.
+- **Human review:** none yet; unattended run, pending maintainer review.
