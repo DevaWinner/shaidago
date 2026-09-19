@@ -1361,3 +1361,17 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Result:** FE-002 can define shared state fixtures per surface without inventing routes or navigation behavior.
 - **AI assistance used:** Converted the implementation plan and backend handoff into an App Router ownership and recovery matrix with explicit public/private boundaries.
 - **Prompt summary:** Continue the frontend build order from the maintainer's updated backend branch.
+
+## 2026-09-20 — FE-002 frontend state and fixture matrices
+
+- **Task:** FE-002 — Complete state matrices.
+- **Outcome delivered:** A stable fixture namespace and 34-state vocabulary now cover 304 explicitly expanded UI fixtures across 28 public, Q&A, reporting, tracking, handle, reviewer, publication, evidence, and Source Scout surfaces.
+- **Files changed:** `docs/FRONTEND_STATE_MATRIX.md`, `docs/FRONTEND_BUILD_ORDER.md`, `docs/README.md`, `scripts/validate_frontend_state_matrix.py`, and this log.
+- **Contract/schema impact:** Generated transport fixtures remain unchanged. UI fixtures compose their eight documented transport scenarios with browser, locale, cache, connectivity, and interaction context.
+- **Security/privacy impact:** Public cached-offline and private unavailable-offline behavior are distinct. Unknown mutation completion preserves idempotency; credentials/private data never gain a cache fallback; session, CSRF, Origin, forbidden, conflict, and provider failures have separate recovery.
+- **Accessibility/localisation impact:** State rules cover focus, busy semantics, useful announcements, field-error association, text-not-colour status, long/min/max content, partial translations, machine-assisted labels, no-JavaScript public baselines, and safe locale preservation.
+- **Verification:** `python3 scripts/validate_frontend_state_matrix.py --self-test` validates the exact 34-state catalogue, at least 180 expanded fixtures (304 present), all 28 surfaces, all eight transport scenarios, the seven-item exit gate, and three negative mutations.
+- **Human review:** The maintainer directed execution of the frontend order. Visible copy, visual treatment, and fluent-language review remain future human decisions.
+- **Result:** FE-003 may size content fixtures against stable state names; later component and E2E tests must consume these names rather than invent local error labels.
+- **AI assistance used:** Separated materially different recovery paths and converted backend response semantics into implementation-ready UI fixture contracts.
+- **Prompt summary:** Continue the frontend Circle 0 inventory from the updated backend handoff.

@@ -192,6 +192,8 @@ For each route define: audience, primary job, primary action, required backend o
 
 ### FE-002 — Complete state matrices
 
+> **Execution status (2026-09-20): complete.** [`FRONTEND_STATE_MATRIX.md`](FRONTEND_STATE_MATRIX.md) defines the shared state semantics and 304 stable UI fixture names across 28 async surfaces, including public/private offline separation, idempotent recovery, reviewer security failures, and Source Scout lifecycle behavior.
+
 For each async feature, enumerate fixtures and UI behaviour for:
 
 - first load and revalidation;
