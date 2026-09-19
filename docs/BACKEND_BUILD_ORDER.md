@@ -631,6 +631,8 @@ Implement AES-256-GCM field encryption with:
 
 Use known-answer, tamper, wrong-context, wrong-key, and rotation tests. Production documentation must state the later KMS migration path.
 
+> **Execution status (2026-09-19): complete.** AES-256-GCM envelope encryption with authenticated context, per-purpose data keys wrapped by versioned KEKs, crypto-shredding, and a resumable audited rotation command are proven by a known-answer vector and 26 tests including PostgreSQL rotation and tamper matrices (`make backend-verify` exit 0, 531 passed). The KMS adapter itself is future work, documented in `docs/KEY_MANAGEMENT.md`.
+
 ### BE-061 — Private report persistence
 
 Create `reports`, `report_contacts`, `report_status_events`, `report_tracking_keys`, and `evidence_files` with the constraints in the implementation plan.
@@ -652,6 +654,8 @@ Implement `SG-XXXXX-XXXXX-XXXXX-XXXXX-C` using 100 random bits of Crockford Base
 4. Store only `HMAC-SHA-256(server_pepper, normalised_code)` plus checksum version and safe lookup metadata.
 5. Show the raw code exactly once in the create response.
 6. Property-test round trips, typo detection, entropy source calls, normalisation, and collision handling.
+
+> **Execution status (2026-09-19): partial.** Code generation, strict normalisation with a Luhn mod 32 check (every single-symbol typo detected; transposition misses measured under 5%), redacting code objects, and the keyed lookup hash with pepper ordering are proven by 30 tests (`make backend-verify` exit 0, 561 passed). The tracking-key table, indexed lookup, and one-time create response depend on BE-061 and BE-063 and are not built.
 
 ### BE-063 — Multipart report submission
 
