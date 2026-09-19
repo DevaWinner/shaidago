@@ -29,6 +29,7 @@ from shaidago.shared.problems import (
 
 router = APIRouter(prefix="/projects", tags=["projects"])
 PROBLEMS: dict[int | str, dict[str, Any]] = {
+    400: {"model": ProblemDetails},
     401: {"model": ProblemDetails},
     404: {"model": ProblemDetails},
     422: {"model": ProblemDetails},
