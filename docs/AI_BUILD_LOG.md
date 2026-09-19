@@ -219,6 +219,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the catalogue, handlers, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+- **Correction (same day):** BE-024 was committed after Ruff, Pyright, and pytest but before `make backend-verify` was run. The full gate then failed in Bandit (B101) because the exception handlers used `assert` for type narrowing, which is stripped under `python -O`. Fixed in `fix: replace assert narrowing in exception handlers` by using `cast`; `make backend-verify` then passed (exit 0, 117 tests).
 
 ## 2026-09-19 — BE-025 Health and readiness
 

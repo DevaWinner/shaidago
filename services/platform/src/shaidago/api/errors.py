@@ -1,5 +1,7 @@
 """The single boundary that turns every exception into a safe problem response."""
 
+from typing import cast
+
 import structlog
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
@@ -38,27 +40,31 @@ def _respond(
 
 
 async def _handle_problem(request: Request, error: Exception) -> Response:
-    assert isinstance(error, ProblemError)  # noqa: S101 - registered only for this type
-    return _respond(request, error.problem, field_errors=error.field_errors, headers=error.headers)
+    problem_error = cast("ProblemError", error)  # registered for this exact type only
+    return _respond(
+        request,
+        problem_error.problem,
+        field_errors=problem_error.field_errors,
+        headers=problem_error.headers,
+    )
 
 
 async def _handle_validation(request: Request, error: Exception) -> Response:
-    assert isinstance(error, RequestValidationError)  # noqa: S101 - registered only for this type
+    validation_error = cast("RequestValidationError", error)  # registered for this type only
     # Pydantic messages and inputs can echo submitted values, so only the location and the
     # stable rule type are returned.
     field_errors = tuple(
         FieldError(field=".".join(str(part) for part in item["loc"]), code=str(item["type"]))
-        for item in error.errors()
+        for item in validation_error.errors()
     )
     return _respond(request, VALIDATION_FAILED, field_errors=field_errors)
 
 
 async def _handle_http(request: Request, error: Exception) -> Response:
-    assert isinstance(error, StarletteHTTPException)  # noqa: S101 - registered only for this type
-    headers = (
-        {"Allow": error.headers["Allow"]} if error.headers and "Allow" in error.headers else {}
-    )
-    return _respond(request, problem_for_status(error.status_code), headers=headers)
+    http_error = cast("StarletteHTTPException", error)  # registered for this type only
+    allow = (http_error.headers or {}).get("Allow")
+    headers = {"Allow": allow} if allow else {}
+    return _respond(request, problem_for_status(http_error.status_code), headers=headers)
 
 
 async def _handle_unexpected(request: Request, error: Exception) -> Response:
