@@ -18,6 +18,7 @@ from shaidago.shared.health import HealthCheck
 from shaidago.shared.ids import IdGenerator, Uuid7Generator
 from shaidago.shared.lifecycle import ManagedResource
 from shaidago.shared.ratelimit import RateLimiter
+from shaidago.worker.queue import JobQueue
 
 
 @dataclass(frozen=True)
@@ -45,6 +46,8 @@ class Dependencies:
     evidence_pipeline: EvidencePipeline | None = None
     # Private evidence bytes for the reviewer download broker; None means downloads are unavailable.
     evidence_store: ObjectStore | None = None
+    # Where discovery jobs are sent; None means runs cannot be started (503).
+    job_queue: JobQueue | None = None
     # Floor for tracking lookups so a hit and a miss take about the same time.
     lookup_minimum_seconds: float = 0.25
 

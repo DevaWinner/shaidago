@@ -5,7 +5,8 @@ from datetime import datetime, timedelta
 from typing import Final
 from uuid import UUID
 
-from sqlalchemy import text
+from sqlalchemy import bindparam, text
+from sqlalchemy.dialects.postgresql import JSONB
 
 from shaidago.audit.events import AuditWriter
 from shaidago.shared.clock import Clock
@@ -26,7 +27,7 @@ _ACQUIRE = text(
 _LOAD = text(
     "SELECT id, scope, project_id, report_id, status, attempts, cancel_requested, failure_code, "
     "provider_mode, demo_replay, query_text, results_found, fetched_count, analysed_count, "
-    "version FROM app.discovery_runs WHERE id = :id"
+    "version, query_text FROM app.discovery_runs WHERE id = :id"
 )
 _TRANSITION = text(
     "UPDATE app.discovery_runs SET status = :new, updated_at = :now, "
@@ -44,6 +45,10 @@ _PROGRESS = text(
     "UPDATE app.discovery_runs SET results_found = :found, fetched_count = :fetched, "
     "analysed_count = :analysed, updated_at = :now WHERE id = :id"
 )
+_SAVE_ANALYSIS = text(
+    "UPDATE app.discovery_runs SET analysis = :analysis, model_id = :model, "
+    "prompt_version = :prompt, updated_at = :now WHERE id = :id"
+).bindparams(bindparam("analysis", type_=JSONB))
 _RELEASE = text(
     "UPDATE app.discovery_runs SET lease_owner = NULL, lease_expires_at = NULL, updated_at = :now "
     "WHERE id = :id AND lease_owner = :owner "
@@ -67,6 +72,7 @@ class RunView:
     fetched_count: int
     analysed_count: int
     version: int
+    query_text: str | None
 
 
 class RunStore:
@@ -109,7 +115,7 @@ class RunStore:
         return RunView(
             row.id, row.scope, row.project_id, row.report_id, row.status, row.attempts,
             row.cancel_requested, row.failure_code, row.provider_mode, row.demo_replay,
-            row.results_found, row.fetched_count, row.analysed_count, row.version,
+            row.results_found, row.fetched_count, row.analysed_count, row.version, row.query_text,
         )  # fmt: skip
 
     async def transition(
@@ -160,6 +166,25 @@ class RunStore:
                 {"id": run_id, "found": found, "fetched": fetched, "analysed": analysed,
                  "now": self._clock.now()},
             )  # fmt: skip
+
+    @property
+    def ids(self) -> IdGenerator:
+        return self._ids
+
+    async def save_analysis(
+        self, run_id: UUID, payload: dict[str, object], *, model_id: str, prompt_version: str
+    ) -> None:
+        async with self._database.unit_of_work() as session:
+            await session.execute(
+                _SAVE_ANALYSIS,
+                {
+                    "id": run_id,
+                    "analysis": payload,
+                    "model": model_id,
+                    "prompt": prompt_version,
+                    "now": self._clock.now(),
+                },
+            )
 
     async def release(self, run_id: UUID, owner: str) -> None:
         async with self._database.unit_of_work() as session:

@@ -26,6 +26,7 @@ from shaidago.shared.database import Database, build_engine
 from shaidago.shared.ratelimit import InMemoryRateLimiter
 from tests.factories import CREDENTIAL, build_settings
 from tests.integration.public_catalogue import PUBLISH_AT, Seed
+from tests.integration.reviewer_support import RecordingQueue
 
 
 class WithCredential:
@@ -60,6 +61,7 @@ def api_schema(role_urls: dict[str, URL], seed: Seed) -> Any:
             clock=clock,
             rate_limiter=InMemoryRateLimiter(clock),
             language_model=FixtureLanguageModel.from_path(QA_FIXTURES_ROOT / "grounded-qa-v1.json"),
+            job_queue=RecordingQueue(),
         ),
     )
     return schemathesis.openapi.from_asgi("/openapi.json", WithCredential(app))

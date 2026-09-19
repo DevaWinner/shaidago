@@ -6,7 +6,6 @@ once at process start, the way the API's ``create_configured_app`` does. The wor
 """
 
 import os
-from typing import Final
 from uuid import UUID
 
 from shaidago.shared.clock import SystemClock
@@ -18,8 +17,6 @@ from shaidago.worker.broker import DiscoveryActors, build_redis_broker, register
 from shaidago.worker.pipeline import build_pipeline
 from shaidago.worker.process import Outcome, fail_exhausted, process_run
 from shaidago.worker.store import RunStore
-
-CONFIG_VERSION: Final = "discovery-v1"
 
 
 def create_worker() -> tuple[object, DiscoveryActors]:

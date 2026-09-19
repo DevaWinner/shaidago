@@ -28,17 +28,38 @@ from tests.integration.report_support import CLIENT, START, Harness, png, report
 
 FAST = PasswordVerifier(PasswordPolicy(time_cost=1, memory_cost_kib=1024, parallelism=1))
 PASSWORD = "a-long-enough-reviewer-password"
-SETTINGS = {"RATE_SUBMISSION_PER_HOUR": "1000"}
+SETTINGS = {
+    "RATE_SUBMISSION_PER_HOUR": "1000",
+    "DISCOVERY_PUBLIC_DAILY_RUNS": "3",
+    "RATE_DISCOVERY_REVIEWER_PER_HOUR": "3",
+}
 INTERNAL = {"Authorization": f"Bearer web.{CREDENTIAL}", "X-Shaidago-Client-Hmac": CLIENT}
+
+
+class RecordingQueue:
+    """A job queue that records run IDs; tests run the worker themselves."""
+
+    def __init__(self) -> None:
+        self.run_ids: list[uuid.UUID] = []
+
+    async def enqueue_discovery(self, run_id: uuid.UUID) -> None:
+        self.run_ids.append(run_id)
 
 
 class ReviewWorld:
     """One app serving both the public submission path and the reviewer routes."""
 
-    def __init__(
-        self, app: Any, owner: Database, store: InMemoryObjectStore, clock: ManualClock, slug: str
+    def __init__(  # noqa: PLR0913, PLR0917 - the world is assembled from its parts
+        self,
+        app: Any,
+        owner: Database,
+        store: InMemoryObjectStore,
+        clock: ManualClock,
+        slug: str,
+        queue: RecordingQueue,
     ) -> None:
         self.app, self.owner, self.store, self.clock, self.slug = app, owner, store, clock, slug
+        self.queue = queue
         self.settings = build_settings(**SETTINGS)
         self.public = Harness(app, owner, store, slug)
 
@@ -147,6 +168,7 @@ def build_world(
     )
     engines += [owner, public, reviewer]
     store = InMemoryObjectStore()
+    queue = RecordingQueue()
     pool = ThreadPoolExecutor(max_workers=2)
     pipeline = EvidencePipeline(
         PipelineParts(EicarScanner(), store, pool), limits=FileLimits(max_dimension=64)
@@ -161,6 +183,7 @@ def build_world(
             rate_limiter=InMemoryRateLimiter(clock),
             evidence_pipeline=pipeline,
             evidence_store=store,
+            job_queue=queue,
         ),
     )
-    return ReviewWorld(app, Database(owner), store, clock, slug), pool
+    return ReviewWorld(app, Database(owner), store, clock, slug, queue), pool

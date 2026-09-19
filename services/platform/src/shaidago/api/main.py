@@ -20,6 +20,7 @@ from shaidago.shared.health import HealthCheck
 from shaidago.shared.logging import configure_logging
 from shaidago.shared.probes import CallableProbe
 from shaidago.shared.ratelimit import RedisRateLimiter
+from shaidago.worker.queue import build_producer_queue
 
 
 def create_configured_app() -> FastAPI:
@@ -98,5 +99,6 @@ def create_configured_app() -> FastAPI:
             language_model=language_model,
             evidence_pipeline=pipeline,
             evidence_store=store,
+            job_queue=build_producer_queue(settings.redis.url.get_secret_value()),
         ),
     )

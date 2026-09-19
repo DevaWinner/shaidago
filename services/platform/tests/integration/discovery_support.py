@@ -41,8 +41,9 @@ class Discovery:
             await session.execute(
                 text(
                     "INSERT INTO app.discovery_runs (id, scope, project_id, status, attempts, "
-                    "cancel_requested, provider_mode, demo_replay, created_at, updated_at) VALUES "
-                    "(:id, :scope, :project, :status, :attempts, :cancel, 'replay', true, :now, :now)"
+                    "cancel_requested, query_text, provider_mode, demo_replay, created_at, updated_at) "
+                    "VALUES (:id, :scope, :project, :status, :attempts, :cancel, :query, 'replay', "
+                    "true, :now, :now)"
                 ),
                 {
                     "id": run_id,
@@ -51,6 +52,7 @@ class Discovery:
                     "status": fields["status"],
                     "attempts": fields["attempts"],
                     "cancel": fields["cancel"],
+                    "query": fields.get("query"),
                     "now": self.clock.now(),
                 },
             )

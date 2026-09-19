@@ -1081,3 +1081,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the analysis module, adapters, and tests; found and fixed the shared false positive.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-096 Discovery run APIs and state transitions
+
+- **Task:** BE-096 — Discovery run APIs and state transitions.
+- **Outcome delivered:** Public and reviewer run APIs, the real search-fetch-extract-analyse pipeline, replay and live provider selection, a job queue for the API, and reviewer decisions on discovered sources.
+- **Files changed:** `services/platform/migrations/versions/0023_discovery_review.py`, `src/shaidago/discovery/{pipeline,service,providers,pages,dispositions}.py`, `src/shaidago/worker/{queue,pipeline,store,envelope,entry}.py`, `src/shaidago/api/v1/{discovery,reviewer_discovery,__init__}.py`, `src/shaidago/api/{dependencies,main}.py`, `src/shaidago/db/discovery_tables.py`, tests (`test_discovery_api.py`, `test_discovery_pipeline.py`, `tests/unit/discovery/test_dispositions_and_providers.py`, harness updates), `contracts/openapi.json`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** Two public views, a function for creating public runs, a function for attaching a source, decision columns and a guard trigger, an encrypted follow-up answers table. OpenAPI gains 9 paths.
+- **Security/privacy impact:** Public and private discovery cannot cross by ID, DTO, or view; reviewer approval is bound to the exact query digest; attach yields only a pending source; decisions and answers are encrypted; the worker still cannot read reports.
+- **Failure behaviour verified:** see the build order note. A first full run showed the daily-budget query counting runs on later days (a test artefact of moving the clock, fixed by bounding the day), the decision key being reused for a second decision on one source (each decision now has its own key), and the contract fuzzer needing a queue in its app.
+- **Commands run and results:** `make backend-verify` exit 0 (1934 passed).
+- **Tests added or changed:** 18 API, 9 pipeline, 85 unit.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated; `make openapi-check` passes.
+- **Known limitations/open decisions:** Public cancel and public follow-up answers from the plan are intentionally not offered (a shared anonymous run must not be steerable); the maintainer should confirm. Live search, fetch, and analysis were not exercised. A job lost after commit is recovered only by the next public request (public runs) or a reviewer retry; there is no background sweeper. `needs_review` is entered only for invalid analysis or a missing replay fixture. Decision reasons are visible only to reviewers via decryption not yet exposed by an endpoint.
+- **Commit/PR:** `feat: add the discovery run APIs, pipeline, and reviewer source decisions`
+- **Next task may rely on:** the run lifecycle and replay providers, ready for fixtures (BE-097).
+- **AI assistance used:** Designed and wrote the migration, pipeline, services, endpoints, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

@@ -13,6 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 ENVELOPE_VERSION: Final = 1
 ACTOR_NAME: Final = "run_discovery"
 QUEUE_NAME: Final = "discovery"
+CONFIG_VERSION: Final = "discovery-v1"
 
 
 class JobEnvelope(BaseModel):

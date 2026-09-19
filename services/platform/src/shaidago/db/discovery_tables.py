@@ -9,6 +9,7 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    LargeBinary,
     PrimaryKeyConstraint,
     Table,
     Text,
@@ -105,6 +106,12 @@ discovered_sources = Table(
     Column("last_retrieved_at", DateTime(timezone=True), nullable=False),
     Column("created_at", DateTime(timezone=True), nullable=False),
     Column("updated_at", DateTime(timezone=True), nullable=False),
+    # Reviewer decision (0023): attaching creates a pending source, never an approved one.
+    Column("attached_source_id", Uuid(), ForeignKey("app.sources.id", ondelete="SET NULL")),
+    Column("decided_by", Uuid(), ForeignKey("app.reviewers.id", ondelete="SET NULL")),
+    Column("decided_at", DateTime(timezone=True)),
+    Column("decision_reason_ciphertext", LargeBinary()),
+    Column("decision_key_id", Uuid(), ForeignKey("app.data_keys.id", ondelete="RESTRICT")),
     PrimaryKeyConstraint("id"),
     Index(
         "uq_discovered_sources_scope_url",
@@ -142,5 +149,26 @@ discovered_source_sightings = Table(
         "discovered_source_id", "run_id", name="uq_discovered_source_sightings_source_run"
     ),
     Index("ix_discovered_source_sightings_run_id", "run_id"),
+    schema="app",
+)
+
+discovery_follow_up_answers = Table(
+    "discovery_follow_up_answers",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column(
+        "run_id", Uuid(), ForeignKey("app.discovery_runs.id", ondelete="CASCADE"), nullable=False
+    ),
+    Column("question_index", Integer(), nullable=False),
+    Column("kind", Text(), nullable=False),
+    Column("answer_ciphertext", LargeBinary()),
+    Column("data_key_id", Uuid(), ForeignKey("app.data_keys.id", ondelete="RESTRICT")),
+    Column("schema_version", Integer(), nullable=False),
+    Column("answered_by", Uuid(), ForeignKey("app.reviewers.id", ondelete="SET NULL")),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    PrimaryKeyConstraint("id"),
+    UniqueConstraint(
+        "run_id", "question_index", name="uq_discovery_follow_up_answers_run_question"
+    ),
     schema="app",
 )
