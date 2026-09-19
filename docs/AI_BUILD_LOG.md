@@ -1279,3 +1279,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Provisioned staging with the Railway CLI, exercised rotation and rollback, wrote the smoke script and records.
 - **Prompt summary:** Unattended backend build loop; maintainer authorised the Railway deploy.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-120 Canonical backend verification
+
+- **Task:** BE-120 — Canonical backend verification.
+- **Outcome delivered:** The local and hosted backend gates share `make backend-verify`; it checks the frozen environment, formatting, lint, strict types, all deterministic test layers with an enforced backend branch-coverage floor, OpenAPI drift, static and dependency security, while the separate container target retains the image/runtime/Trivy proof.
+- **Files changed:** `Makefile`, `.github/workflows/backend.yml`, `services/platform/README.md`, `docs/BACKEND_BUILD_ORDER.md`, `docs/AI_BUILD_LOG.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** The gate excludes live provider tests, runs public/private leak and role-boundary suites, fails below 85% total branch coverage, audits dependencies, and scans code; it introduces no data flow.
+- **Failure behaviour verified:** Every stage stops the gate on a non-zero result; contract drift, a coverage result below 85%, a known dependency vulnerability, or a deterministic test failure blocks the build.
+- **Commands run and results:** `make backend-verify` exited 0: frozen sync, Ruff format and lint, Pyright (0 errors), 1,997 deterministic tests passed with one live test deselected and 94.03% total branch coverage, OpenAPI check passed, Bandit passed, and `pip-audit` found no known vulnerability.
+- **Tests added or changed:** No behaviour tests; the full suite now runs with coverage measurement and an 85% failure threshold.
+- **Generated artifacts checked:** `make openapi-check` passed inside the canonical gate.
+- **Known limitations/open decisions:** The branch has not been published, so its first GitHub CI run is pending. The test suite proves empty-to-head migrations in an isolated database; the developer's persistent local volumes were not destroyed merely to call the surrounding services clean.
+- **Commit/PR:** `ci: enforce the canonical backend release gate`.
+- **Next task may rely on:** one local command and one CI command covering every deterministic backend layer, with container verification remaining explicit because it needs Docker.
+- **AI assistance used:** Completed the in-progress gate, added the measurable coverage floor, aligned CI with the canonical target, ran it, and recorded the remaining hosted evidence honestly.
+- **Prompt summary:** Continue Circle 12 from the existing branch and in-progress work.
+- **Human review:** None yet; unattended run, pending maintainer review.

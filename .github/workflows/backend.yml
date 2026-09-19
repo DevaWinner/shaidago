@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "services/platform/**"
+      - "contracts/openapi.json"
       - "Makefile"
       - ".github/workflows/backend.yml"
   push:
@@ -39,7 +40,7 @@ jobs:
       - run: make backend-unit
 
   integration:
-    name: Integration tests
+    name: Canonical backend verification
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     services:
@@ -107,8 +108,7 @@ jobs:
           done
           docker logs clamav
           echo "ClamAV did not become ready" && exit 1
-      - run: make backend-sync
-      - run: make backend-integration
+      - run: make backend-verify
 
   backend-required:
     name: Backend required

@@ -1261,6 +1261,8 @@ Run public project read, anonymous fictional submission, tracking, reviewer tran
 
 ### BE-120 — Canonical backend verification
 
+> **Execution status (2026-09-19): blocked.** The implementation and local evidence are complete: `make backend-verify` now runs the frozen sync, Ruff, strict Pyright, all deterministic test layers with an enforced 85% branch-coverage floor, OpenAPI drift, Bandit, and `pip-audit`; it passed locally with 1,997 tests and 94.03% total branch coverage. The backend CI job invokes that exact target with its service containers, and `make container-verify` exposes the existing image/runtime/Trivy proof. Completion still needs the first green CI run for this branch; publishing the branch is a maintainer hard stop. The integration suite creates an empty database and proves empty-to-head migrations without deleting local developer data.
+
 Make `make backend-verify` run, in a documented order:
 
 1. frozen dependency sync check;

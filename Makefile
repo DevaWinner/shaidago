@@ -26,7 +26,7 @@ COMPOSE := docker compose --project-name shaidago --env-file $(INFRA_ENV) -f inf
 .DEFAULT_GOAL := help
 .PHONY: help backend-sync backend-format backend-format-check backend-lint backend-typecheck \
 	backend-unit backend-integration backend-contract backend-security backend-test backend-verify \
-	openapi-generate openapi-check migrate db-roles seed-demo embeddings reviewer-bootstrap kek-rotate retention-purge worker infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
+	openapi-generate openapi-check migrate db-roles seed-demo embeddings reviewer-bootstrap kek-rotate retention-purge worker container-verify infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
 
 help:
 	@echo "Backend targets: backend-sync backend-format backend-format-check backend-lint"
@@ -66,7 +66,7 @@ backend-security:
 
 # All deterministic backend tests; live provider tests are excluded.
 backend-test:
-	@$(call run_layer,$(RUN_WITH_ENV),tests)
+	@$(call run_layer,$(RUN_WITH_ENV),tests --cov=shaidago --cov-branch --cov-report=term --cov-fail-under=85)
 
 # The contract is generated from the FastAPI app with synthetic settings: no environment,
 # database, or provider is needed.
@@ -76,8 +76,15 @@ openapi-generate:
 openapi-check:
 	$(RUN) python -m shaidago.api.openapi --output ../../contracts/openapi.json --check
 
-backend-verify: backend-sync backend-format-check backend-lint backend-typecheck backend-security \
-	openapi-check backend-test
+# The canonical backend gate, in this order (BE-120):
+#   1 frozen dependency sync   2 Ruff format check and lint   3 Pyright strict
+#   4 every deterministic test layer with branch coverage >= 85%: unit/property, migration and
+#     drift, service-backed integration and role tests, Schemathesis contract fuzzing, adversarial
+#     and leak suites, and replay/evaluation fixtures (live tests are excluded)
+#   5 committed OpenAPI diff check   6 Bandit and pip-audit
+# `make container-verify` adds the image build, checks, and Trivy scan (needs Docker).
+backend-verify: backend-sync backend-format-check backend-lint backend-typecheck backend-test \
+	openapi-check backend-security
 
 # Applies Alembic revisions as the migration owner (DATABASE_URL). Idempotent.
 migrate:
@@ -136,6 +143,10 @@ infra-clean: infra-check-env
 # For deleting a report's private content see `python -m shaidago.retention shred-report <id>`.
 retention-purge:
 	$(RUN_WITH_ENV) python -m shaidago.retention purge
+
+# Builds the image and proves its properties, including the Trivy scan (needs Docker and infra).
+container-verify:
+	TRIVY=1 scripts/verify-container.sh
 
 # The background worker (needs Redis, the database, and DATABASE_URL_WORKER in the environment).
 worker:
