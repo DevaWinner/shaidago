@@ -1,0 +1,491 @@
+{
+  "schema_version": 1,
+  "contract_id": "shaidago-source-register",
+  "prepared_on": "2026-09-19",
+  "scope": "Pilot: Abuja, AMAC and Bwari Area Councils",
+  "method": "Each source was requested once on the retrieval date. A passage counts as verified only if it appears, word for word, in the visible text of the retrieved page (tags removed, whitespace collapsed). raw_page_sha256 hashes the exact bytes received and will differ if the site changes its markup; the passage hash is the stable evidence. Sources that blocked the request were not bypassed.",
+  "fictional_label": "FICTIONAL REPORT FIXTURE",
+  "sources": [
+    {
+      "id": "S-PUNCH-2025-06",
+      "url": "https://punchng.com/fg-constructed-150km-fct-satellite-towns-roads-in-one-year-wike/",
+      "title": "150km FCT Roads Built: Wike Announces New Infrastructure",
+      "publisher": "Punch Newspapers",
+      "source_type": "independent_media",
+      "information_class": "independent_source",
+      "published_on": "2025-06-23",
+      "retrieved_on": "2026-09-19",
+      "retrieval": "http_200_full_page",
+      "raw_page_sha256": "7605871bbe264a9ded4214b726801b70c9a30a899e14ece011f7473471d28794",
+      "availability": "available",
+      "reuse_constraints": "Copyrighted news article. Only short cited excerpts are kept; no licence terms were checked."
+    },
+    {
+      "id": "S-NATION-2025-01",
+      "url": "https://thenationonlineng.net/over-n100bn-spent-on-bwari-road-projects-education-security-wike/",
+      "title": "Over N100bn spent on Bwari road projects, education, security – Wike",
+      "publisher": "The Nation Newspaper",
+      "source_type": "independent_media",
+      "information_class": "independent_source",
+      "published_on": "2025-01-24",
+      "retrieved_on": "2026-09-19",
+      "retrieval": "http_200_full_page",
+      "raw_page_sha256": "950158e3cc040b41091a0b0d3cf93e9089490ded61727fe41d05c71fb2abc116",
+      "availability": "available",
+      "reuse_constraints": "Copyrighted news article. Only short cited excerpts are kept; no licence terms were checked."
+    },
+    {
+      "id": "S-ABUJATIMES-2026-07",
+      "url": "https://abujatimes.com.ng/tinubu-commissions-water-supply-network-project-in-bwari/",
+      "title": "Tinubu commissions water supply network project in Bwari",
+      "publisher": "Abuja Times",
+      "source_type": "independent_media",
+      "information_class": "independent_source",
+      "published_on": "2026-07-15",
+      "retrieved_on": "2026-09-19",
+      "retrieval": "http_200_full_page",
+      "raw_page_sha256": "0ad70e5a3ddfa4950d1477bd76d4a17fc7f2c6ddabd29d93c3bc7b48da5761e9",
+      "availability": "available",
+      "reuse_constraints": "Copyrighted news article. Only short cited excerpts are kept; no licence terms were checked."
+    },
+    {
+      "id": "S-FCTUBEB-HOME",
+      "url": "https://fctubeb.gov.ng/",
+      "title": "FCT Universal Basic Education Board website",
+      "publisher": "FCT Universal Basic Education Board (per the page; not independently confirmed)",
+      "source_type": "government_publication",
+      "information_class": "official_source",
+      "published_on": null,
+      "retrieved_on": "2026-09-19",
+      "retrieval": "direct_request_blocked_http_403_firewall; homepage read once through a summarising fetch tool (no raw bytes)",
+      "raw_page_sha256": null,
+      "availability": "access_restricted",
+      "reuse_constraints": "Not checked. The register does not bypass the access block."
+    },
+    {
+      "id": "S-HOSPITALBOOK-BWARI",
+      "url": "https://thehospitalbook.com/bwari-town-primary-health-center/",
+      "title": "Bwari Town Primary Health Center (facility listing)",
+      "publisher": "The Hospital Book",
+      "source_type": "other_public_source",
+      "information_class": "independent_source",
+      "published_on": null,
+      "retrieved_on": "2026-09-19",
+      "retrieval": "blocked_http_403_challenge_page",
+      "raw_page_sha256": null,
+      "availability": "access_restricted",
+      "reuse_constraints": "Not checked; a commercial directory. The register does not bypass the access block."
+    }
+  ],
+  "projects": [
+    {
+      "id": "AMAC-01",
+      "locality": "AMAC",
+      "title": "Saburi I and II Access Road",
+      "category": "roads_public_works",
+      "proposed_public_status": "completed",
+      "status_basis": "A source reports the minister saying the road was completed and inaugurated; one media source only, so a reviewer must confirm.",
+      "last_checked_on": "2026-09-19",
+      "facts": [
+        {
+          "id": "AMAC-01-F1",
+          "statement": "Punch reports that the FCT minister described a 5km access road to Saburi I and II in Abuja Municipal Area Council as one of a list of roads completed and inaugurated.",
+          "sources": [
+            {
+              "source_id": "S-PUNCH-2025-06",
+              "passages": [
+                {
+                  "text": "I want to inform you that these roads have all been completed and inaugurated.",
+                  "sha256": "0db033efd9d96b6e41a0005d41a44a34a357c16804c1410f327cfc7513f2adf1"
+                },
+                {
+                  "text": "Others are the 5km access road to Saburi I and II in Abuja Municipal Area Council and another 5-kilometre road in Abaji Area Council.",
+                  "sha256": "8e28a3f42056fd780934e6c4cfd657c74205d1526b0dc2168bc65add4c8b2b19"
+                }
+              ]
+            }
+          ],
+          "evidence_status": "exact_passage_verified",
+          "proposed_verification_state": "awaiting_verification",
+          "seed_eligibility": "eligible_as_cited_draft",
+          "note": "One independent media source, reporting the minister's statement."
+        }
+      ],
+      "unresolved_gaps": [
+        "The road's budget or contract value is not stated in the source.",
+        "The user-supplied phrase 'emergency satellite town interventions' does not appear in the fetched passages and is not used."
+      ],
+      "fictional_reports": [
+        {
+          "label": "FICTIONAL REPORT FIXTURE",
+          "demo_only": true,
+          "concern_category": "incomplete_work",
+          "text": "A community submission claims that heavy rains have washed away a section of the road shoulder near Saburi II.",
+          "maintainer_review": "The wording refers to a real place or facility; decide whether to make it generic before any use."
+        }
+      ]
+    },
+    {
+      "id": "AMAC-02",
+      "locality": "AMAC",
+      "title": "Karshi Model Smart School",
+      "category": "education",
+      "proposed_public_status": "unknown",
+      "status_basis": "No delivery status was verified.",
+      "last_checked_on": "2026-09-19",
+      "facts": [
+        {
+          "id": "AMAC-02-F1",
+          "statement": "A headline on the FCT UBEB website, dated 12 March 2026, says its chairman commended progress at Karshi Model Smart School.",
+          "sources": [
+            {
+              "source_id": "S-FCTUBEB-HOME",
+              "passages": [],
+              "claimed_passage_not_verified": "The Acting Executive Chairman of the FCT Universal Basic Education Board (FCT-UBEB), Lady Florence Wenegieme, has reaffirmed the Board's commitment to strengthening innovative learning environments ... at Karshi Model Smart School."
+            }
+          ],
+          "evidence_status": "not_verified",
+          "proposed_verification_state": "awaiting_verification",
+          "seed_eligibility": "not_eligible",
+          "note": "Only the headline 'FCT UBEB Chairman commends progress at Karshi Model Smart School' with the date '12th March, 2026' was seen, and only through a summarising fetch tool. The longer passage came with the submitted draft and was not seen. Direct access returns HTTP 403."
+        }
+      ],
+      "unresolved_gaps": [
+        "No enrollment or launch date was seen.",
+        "The exact article text could not be retrieved."
+      ],
+      "fictional_reports": [
+        {
+          "label": "FICTIONAL REPORT FIXTURE",
+          "demo_only": true,
+          "concern_category": "incomplete_work",
+          "text": "An anonymous report indicates that digital learning equipment has been delivered but remains uninstalled in the main hall.",
+          "maintainer_review": "The wording refers to a real place or facility; decide whether to make it generic before any use."
+        }
+      ]
+    },
+    {
+      "id": "AMAC-03",
+      "locality": "AMAC",
+      "title": "Junior Secondary School, Lokogoma: toilets and desks",
+      "category": "water_sanitation",
+      "proposed_public_status": "unknown",
+      "status_basis": "No delivery status was verified.",
+      "last_checked_on": "2026-09-19",
+      "facts": [
+        {
+          "id": "AMAC-03-F1",
+          "statement": "The submitted draft says a Rotary club renovated and built 10 toilets and donated 120 desks at Junior Secondary School, Lokogoma.",
+          "sources": [
+            {
+              "source_id": "S-FCTUBEB-HOME",
+              "passages": [],
+              "claimed_passage_not_verified": "Rotary Club of Abuja Sapphire Renovates, Builds 10 Toilets and Donates 120 Desks to Junior Secondary School, Lokogoma."
+            }
+          ],
+          "evidence_status": "not_verified",
+          "proposed_verification_state": "awaiting_verification",
+          "seed_eligibility": "not_eligible",
+          "note": "The passage was searched for on the FCT UBEB homepage through a summarising fetch tool and was not found there; direct access returns HTTP 403. A different page of the site may carry it."
+        }
+      ],
+      "unresolved_gaps": [
+        "The source page for this claim has not been located.",
+        "Water supply for the toilets is not stated in anything seen."
+      ],
+      "fictional_reports": [
+        {
+          "label": "FICTIONAL REPORT FIXTURE",
+          "demo_only": true,
+          "concern_category": "access_barrier",
+          "text": "A submission claims that despite the new toilets, the school's primary borehole pump is currently dysfunctional.",
+          "maintainer_review": "The wording refers to a real place or facility; decide whether to make it generic before any use."
+        }
+      ]
+    },
+    {
+      "id": "BWARI-01",
+      "locality": "Bwari",
+      "title": "Bwari Township Water Supply Network",
+      "category": "water_sanitation",
+      "proposed_public_status": "unknown",
+      "status_basis": "The source says the network was commissioned. Commissioning is not recorded as completion, so no completion is claimed.",
+      "last_checked_on": "2026-09-19",
+      "facts": [
+        {
+          "id": "BWARI-01-F1",
+          "statement": "Abuja Times reports that the President commissioned the 198-kilometre Bwari Township Water Supply Network Project in the FCT (article dated 15 July 2026).",
+          "sources": [
+            {
+              "source_id": "S-ABUJATIMES-2026-07",
+              "passages": [
+                {
+                  "text": "President Bola Ahmed Tinubu has commissioned the 198-kilometre Bwari Township Water Supply Network Project in the Federal Capital Territory (FCT)",
+                  "sha256": "db18729198bed70598f4538bd2e04ada29634393d0f99124f69a3fae82f7b8ee"
+                }
+              ]
+            }
+          ],
+          "evidence_status": "exact_passage_verified",
+          "proposed_verification_state": "awaiting_verification",
+          "seed_eligibility": "eligible_as_cited_draft",
+          "note": "One independent media source."
+        },
+        {
+          "id": "BWARI-01-F2",
+          "statement": "Abuja Times quotes the President as saying the network, constructed by China Geo-engineering Construction (CGC) Nigeria Limited, connects Bwari Township and surrounding communities to the Lower Usuma Dam.",
+          "sources": [
+            {
+              "source_id": "S-ABUJATIMES-2026-07",
+              "passages": [
+                {
+                  "text": "Tinubu explained that the newly commissioned water supply network, constructed by China Geo-engineering Construction (CGC) Nigeria Limited, connects Bwari Township and surrounding communities directly to the Lower Usuma Dam, the FCT’s primary source of treated water.",
+                  "sha256": "48c9542240743b446b01387df4d66e8a926fd6ae583c44e30af222c95665a8a2"
+                }
+              ]
+            }
+          ],
+          "evidence_status": "exact_passage_verified",
+          "proposed_verification_state": "awaiting_verification",
+          "seed_eligibility": "eligible_as_cited_draft",
+          "note": "One independent media source."
+        }
+      ],
+      "unresolved_gaps": [
+        "The contract cost is not stated in the passages used.",
+        "The submitted draft's phrase 'to improve access to clean water' is not in the source; the article says the President described it as a step towards improving residents' quality of life."
+      ],
+      "fictional_reports": [
+        {
+          "label": "FICTIONAL REPORT FIXTURE",
+          "demo_only": true,
+          "concern_category": "incomplete_work",
+          "text": "Residents report that while main pipes are laid, lateral connections to individual streets in Ushafa are incomplete.",
+          "maintainer_review": "The wording refers to a real place or facility; decide whether to make it generic before any use."
+        }
+      ]
+    },
+    {
+      "id": "BWARI-02",
+      "locality": "Bwari",
+      "title": "Gaba-Tokulo Road",
+      "category": "roads_public_works",
+      "proposed_public_status": "completed",
+      "status_basis": "Two publishers report the road as completed and commissioned; both report the minister's statements.",
+      "last_checked_on": "2026-09-19",
+      "facts": [
+        {
+          "id": "BWARI-02-F1",
+          "statement": "Punch reports the minister listing a 7.2 km Gaba and Tokulo Road in Bwari Area Council among roads completed and inaugurated.",
+          "sources": [
+            {
+              "source_id": "S-PUNCH-2025-06",
+              "passages": [
+                {
+                  "text": "I want to inform you that these roads have all been completed and inaugurated.",
+                  "sha256": "0db033efd9d96b6e41a0005d41a44a34a357c16804c1410f327cfc7513f2adf1"
+                },
+                {
+                  "text": "He identified the roads as the 9km Paikon Kore to Ibwa Road in Gwagwalada Area Council, and 7.2 km Gaba and Tokulo Road in Bwari Area Council.",
+                  "sha256": "341057fa03a7403a299635fe2fb36280684c199d301dda60aec7d051f57c1157"
+                }
+              ]
+            }
+          ],
+          "evidence_status": "exact_passage_verified",
+          "proposed_verification_state": "awaiting_verification",
+          "seed_eligibility": "eligible_as_cited_draft",
+          "note": "One media source for the length. The 7.2 km figure is in this article, not in The Nation's."
+        },
+        {
+          "id": "BWARI-02-F2",
+          "statement": "The Nation quotes the minister as saying the Gaba-Tokulo road project alone cost the government no less than N7 billion.",
+          "sources": [
+            {
+              "source_id": "S-NATION-2025-01",
+              "passages": [
+                {
+                  "text": "“This Gaba-Tokulo road project alone cost the government no less than N7 billion. Since we flagged it off in January 2024, we ensured prompt payments, which allowed for timely completion without delays or abandoned contracts,” Wike stated.",
+                  "sha256": "6febd8fa17c21ef227b5c65a8639f8322ff65ffb7def244e462fd3e04acdd923"
+                }
+              ]
+            }
+          ],
+          "evidence_status": "exact_passage_verified",
+          "proposed_verification_state": "awaiting_verification",
+          "seed_eligibility": "eligible_as_cited_draft",
+          "note": "A quoted figure of cost to the government; it is not a contract value."
+        },
+        {
+          "id": "BWARI-02-F3",
+          "statement": "The Nation and Punch each report that the Gaba-Tokulo road in Bwari was commissioned or completed and inaugurated.",
+          "sources": [
+            {
+              "source_id": "S-NATION-2025-01",
+              "passages": [
+                {
+                  "text": "Speaking during the commissioning of the Gaba-Tokulo road project in Bwari, Wike emphasised the administration’s commitment to delivering tangible development to every area council.",
+                  "sha256": "f44a2c5324b0454e8deaab979da24db14f16f32ea61627bcdcea6e0b6d89d146"
+                }
+              ]
+            },
+            {
+              "source_id": "S-PUNCH-2025-06",
+              "passages": [
+                {
+                  "text": "I want to inform you that these roads have all been completed and inaugurated.",
+                  "sha256": "0db033efd9d96b6e41a0005d41a44a34a357c16804c1410f327cfc7513f2adf1"
+                },
+                {
+                  "text": "He identified the roads as the 9km Paikon Kore to Ibwa Road in Gwagwalada Area Council, and 7.2 km Gaba and Tokulo Road in Bwari Area Council.",
+                  "sha256": "341057fa03a7403a299635fe2fb36280684c199d301dda60aec7d051f57c1157"
+                }
+              ]
+            }
+          ],
+          "evidence_status": "exact_passage_verified",
+          "proposed_verification_state": "corroborated",
+          "seed_eligibility": "eligible_as_cited_draft",
+          "note": "Two publishers, but both report the same minister; whether they are materially independent needs reviewer judgement."
+        },
+        {
+          "id": "BWARI-02-F4",
+          "statement": "The Nation reports that the contractor was directed to provide streetlights on the road beyond the initial contract scope.",
+          "sources": [
+            {
+              "source_id": "S-NATION-2025-01",
+              "passages": [
+                {
+                  "text": "He also commended Setraco, the construction company, for delivering a high-quality road project, adding that the contractor has been directed to also provide streetlights on the road, beyond the initial scope of the contract.",
+                  "sha256": "269234dee9ad7603b5480579087b2966f8f194ab3805b30cfbe649799cdd3262"
+                }
+              ]
+            }
+          ],
+          "evidence_status": "exact_passage_verified",
+          "proposed_verification_state": "awaiting_verification",
+          "seed_eligibility": "eligible_as_cited_draft",
+          "note": "A directive, not a report that streetlights exist."
+        }
+      ],
+      "unresolved_gaps": [
+        "No date is given for the streetlights.",
+        "The article also mentions a plan to extend the road to Kawu; no timeline is stated.",
+        "The submitted draft's 'contract cost of N7 billion' is worded here as the quoted cost to the government."
+      ],
+      "fictional_reports": [
+        {
+          "label": "FICTIONAL REPORT FIXTURE",
+          "demo_only": true,
+          "concern_category": "incomplete_work",
+          "text": "A reviewer notes a submission claiming the promised streetlights along the road have not been installed.",
+          "maintainer_review": "The wording refers to a real place or facility; decide whether to make it generic before any use."
+        }
+      ]
+    },
+    {
+      "id": "BWARI-03",
+      "locality": "Bwari",
+      "title": "Bwari Town Primary Health Center, Kuduru",
+      "category": "health",
+      "proposed_public_status": "unknown",
+      "status_basis": "No delivery status was verified.",
+      "last_checked_on": "2026-09-19",
+      "facts": [
+        {
+          "id": "BWARI-03-F1",
+          "statement": "The submitted draft says a public Primary Health Care Centre is listed in Kuduru, Bwari, with facility code 37/02/1/1/1/0005, medical, paediatric and antenatal services, and 8 beds.",
+          "sources": [
+            {
+              "source_id": "S-HOSPITALBOOK-BWARI",
+              "passages": [],
+              "claimed_passage_not_verified": "The Bwari Town Primary Health Center is a Public hospital, located at Kuduru, Bwari Local Government, FCT State. ... with facility code 37/02/1/1/1/0005 and registered as Primary Health Care Centre."
+            }
+          ],
+          "evidence_status": "not_verified",
+          "proposed_verification_state": "awaiting_verification",
+          "seed_eligibility": "not_eligible",
+          "note": "The page returned an HTTP 403 challenge and was not read. The bed count and the services were not in the submitted passage at all."
+        }
+      ],
+      "unresolved_gaps": [
+        "The listing could not be retrieved.",
+        "Staffing and drug stock are not in any source seen.",
+        "A government facility register would be a stronger source than a commercial directory."
+      ],
+      "fictional_reports": [
+        {
+          "label": "FICTIONAL REPORT FIXTURE",
+          "demo_only": true,
+          "concern_category": "access_barrier",
+          "text": "A submitted report states the facility is chronically understaffed on weekends, leaving only one community health worker on duty.",
+          "maintainer_review": "The wording refers to a real place or facility; decide whether to make it generic before any use."
+        }
+      ]
+    }
+  ],
+  "escalation_routes": [
+    {
+      "organisation": "Tracka / BudgIT",
+      "claimed_purpose": "independent civic monitoring and project tracking",
+      "status": "unverified_no_source",
+      "source_id": null,
+      "verified_on": null,
+      "note": "The submitted draft calls this 'verified' but supplies no source, date, or instructions. Not eligible for seeding; no contact detail is recorded."
+    },
+    {
+      "organisation": "Independent Corrupt Practices and Other Related Offences Commission (ICPC)",
+      "claimed_purpose": "suspected procurement fraud or contractor misconduct",
+      "status": "unverified_no_source",
+      "source_id": null,
+      "verified_on": null,
+      "note": "The submitted draft calls this 'verified' but supplies no source, date, or instructions. Not eligible for seeding; no contact detail is recorded."
+    },
+    {
+      "organisation": "FCT Public Complaints Commission",
+      "claimed_purpose": "administrative delays or service failures at Area Council level",
+      "status": "unverified_no_source",
+      "source_id": null,
+      "verified_on": null,
+      "note": "The submitted draft calls this 'verified' but supplies no source, date, or instructions. Not eligible for seeding; no contact detail is recorded."
+    },
+    {
+      "organisation": "Satellite Towns Development Department (STDD), FCTA",
+      "claimed_purpose": "infrastructure deficits in Bwari and AMAC satellite towns",
+      "status": "unverified_no_source",
+      "source_id": null,
+      "verified_on": null,
+      "note": "The submitted draft calls this 'verified' but supplies no source, date, or instructions. Not eligible for seeding; no contact detail is recorded."
+    }
+  ],
+  "translations": [
+    {
+      "project_id": "BWARI-01",
+      "locale": "en",
+      "text": "The 198-kilometre water supply network connecting Bwari Township to the Lower Usuma Dam was commissioned.",
+      "translation_status": "machine_assisted",
+      "note": "Submitted as reviewed, but no reviewer or date is recorded, so it is labelled machine_assisted. The clause 'to improve access to clean water' was removed because the source does not say it."
+    },
+    {
+      "project_id": "BWARI-01",
+      "locale": "ha",
+      "text": "An ƙaddamar da aikin rarraba ruwa mai tsawon kilomita 198 da ke haɗa garin Bwari da madatsar ruwa ta Lower Usuma.",
+      "translation_status": "machine_assisted",
+      "note": "Submitted text with the unsupported purpose clause removed. Not reviewed by a fluent speaker."
+    },
+    {
+      "project_id": "BWARI-01",
+      "locale": "ig",
+      "text": "E mepere netwọkụ mmiri dị kilomita 198 nke jikọtara obodo Bwari na Lower Usuma Dam.",
+      "translation_status": "machine_assisted",
+      "note": "Submitted text with the unsupported purpose clause removed. Not reviewed by a fluent speaker."
+    },
+    {
+      "project_id": "BWARI-01",
+      "locale": "yo",
+      "text": "Wọ́n ti ṣe ifilọlẹ iṣẹ́ omi to gùn to ibusọ 198 (198-kilometre) to so ìlú Bwari pọ̀ mọ́ idido omi Lower Usuma (Lower Usuma Dam).",
+      "translation_status": "machine_assisted",
+      "note": "Submitted text with the unsupported purpose clause removed. Not reviewed by a fluent speaker."
+    }
+  ]
+}

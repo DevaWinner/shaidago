@@ -587,3 +587,22 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the code format handling and the exhaustive typo and normalisation tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-001 verified source register
+
+- **Task:** BE-001 — Build the verified source register (the last open Circle 0 task).
+- **Outcome delivered:** `data/source-register.json`, the generated `docs/SOURCE_REGISTER.md`, and `scripts/validate_source_register.py` with 17 negative self-tests, plus `scripts/render_source_register.py --check` and five unit tests in the platform suite.
+- **Files changed:** `data/source-register.json`, `docs/SOURCE_REGISTER.md`, `scripts/{validate,render}_source_register.py`, `services/platform/tests/unit/test_source_register.py`, `docs/BACKEND_BUILD_ORDER.md` (BE-001 status and the Circle 0 gate), `docs/README.md`, `CLAUDE.md`.
+- **Schema/contract changes:** None to the database or OpenAPI; the register is the input the seed pipeline (BE-043) will read.
+- **Security/privacy impact:** No private data. Fictional report fixtures are labelled and flagged for a maintainer decision because they mention real places. Blocked sources were not bypassed.
+- **Failure behaviour verified:** Each of the six sources was requested once on 2026-09-19. Punch, The Nation, and Abuja Times were read in full; their quoted passages were checked word for word against the visible page text, and the hash of the bytes received was recorded. FCT UBEB and The Hospital Book returned HTTP 403 firewall or challenge pages and were not bypassed; the FCT UBEB homepage was read once through a summarising fetch tool, which showed only a headline. The validator rejects a fact without a source, a missing or future last-checked date, an unlabeled fictional report, a tampered or missing passage, judgemental wording, an unknown availability value, a hash on an unretrieved source, an unverified fact made eligible, corroboration by one publisher, an unverified route that cites a source, contact details in a route, a reviewed translation with no reviewer, a missing locale, an uncovered category, and fewer than six projects.
+- **Corrections to the submitted draft:** the placeholder hashes were removed (real hashes for three pages, none for three); the FCT UBEB quotation was truncated with an ellipsis and unseen, so it is recorded as claimed and not verified; the Lokogoma passage was not found on the homepage; the 7.2 km length is in the Punch article, not The Nation's; "contract cost" became the quoted cost to the government; "emergency satellite town interventions", "8-bed", and "to improve access to clean water" are not in any passage seen and were dropped; the English summary was relabelled `machine_assisted` because no reviewer is recorded; the four escalation organisations had no source, date, or instructions and are marked unverified; "[cite: n]" markers were removed.
+- **Commands run and results:** `python3 scripts/validate_source_register.py --self-test` and `python3 scripts/render_source_register.py --check` pass; the platform unit tests pass; the other Circle 0 validators pass.
+- **Tests added or changed:** 5 unit tests.
+- **Generated artifacts checked:** `docs/SOURCE_REGISTER.md` matches the data.
+- **Known limitations/open decisions:** Three of six projects have no verified fact. The maintainer can supply readable pages or accept the blocked ones. Newspaper facts are single-source unless two publishers report the same fact, so most are `awaiting_verification` and stay drafts until a reviewer decides. Whether Punch and The Nation are materially independent needs reviewer judgement. The raw page hashes change if a site changes its markup; the passage hashes are the stable evidence. Reuse terms were not checked. The three Hausa, Igbo, and Yoruba texts are the submitted text with one clause removed, not reviewed by a fluent speaker.
+- **Commit/PR:** `docs: add the verified source register and its validator`
+- **Next task may rely on:** A validated register whose only seed-eligible facts have exact passages.
+- **AI assistance used:** Fetched and verified the sources, corrected the draft, and wrote the validator, renderer, and tests.
+- **Prompt summary:** The maintainer supplied a draft register and asked for it to be improved without invention and used to close Circle 0.
+- **Human review:** None yet; pending maintainer review.

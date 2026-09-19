@@ -151,6 +151,8 @@ Domain modules use the same internal layers where needed: `models.py` for domain
 
 > **Execution status (2026-09-19): deferred by maintainer.** Complete this task as part of the evidence-backed demo seeding work immediately before BE-043. The deferral changes execution order only: BE-001 remains a prerequisite for BE-043 and the Circle 0 exit gate remains open until the register and validator pass.
 
+> **Execution status (2026-09-19): complete, with an evidence caveat.** `data/source-register.json` (rendered to `docs/SOURCE_REGISTER.md`) holds six projects, three AMAC and three Bwari, covering health, education, water, and roads, and `scripts/validate_source_register.py --self-test` rejects a fact without a source, a missing or future last-checked date, an unlabeled fictional report, a tampered passage, judgemental wording, and seven other faults. Each source was requested on 2026-09-19: **three (Punch, The Nation, Abuja Times) were read in full and seven facts have passages verified word for word; three (FCT UBEB twice, The Hospital Book) returned HTTP 403 and were not bypassed, so their three facts are recorded as not verified and are not eligible for seeding.** The supplied draft was corrected where the evidence did not support it (placeholder hashes replaced by real ones or none, a truncated quote, the 7.2 km figure moved to the Punch source, an unsupported purpose clause removed, English text no longer labelled reviewed, and four unsourced escalation routes marked unverified).
+
 1. Create `docs/SOURCE_REGISTER.md` or an equivalently reviewable structured register.
 2. Select six public projects: three AMAC and three Bwari, spanning at least health, education, water, and road/public works.
 3. For each fact, capture the source URL/document reference, publisher, publication date, exact page/section/passage, retrieval date, content hash where permitted, reuse constraints, and unresolved gap.
@@ -217,6 +219,8 @@ Each ADR includes context, decision, alternatives, consequences, migration impac
 ### Circle 0 exit gate
 
 > **Gate status (2026-09-19): open.** BE-000, BE-002, BE-003, and BE-004 are complete. The gate closes when deferred BE-001 delivers the six-project source register and its validator, immediately before BE-043. Circle 1 may start because it depends on no source evidence.
+
+> **Gate status (2026-09-19, updated): closed, with a caveat.** BE-001 delivered the register and its validator, so every exit criterion holds: the register is reviewable, the state tables and threat model are complete, the ADRs are accepted, and no code or seed may claim more than the register proves (only exact-passage facts are eligible). The caveat is evidence coverage, not structure: three of six projects have no verified fact until the maintainer supplies readable sources for the FCT UBEB and Hospital Book claims.
 
 - Six-project source register is manually reviewable.
 - State/value tables contain no ambiguous or missing transition.
