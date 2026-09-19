@@ -491,6 +491,8 @@ Implement locality/category/locale escalation records with organisation, instruc
 
 Expose public trust metadata: information class, verification state, source dates, last checked, translation status, and AI-generated explanation label.
 
+> **Execution status (2026-09-19): complete.** Cited, dated, validity-windowed escalation routes with no contact columns and honest locale fallback are proven by 14 PostgreSQL and unit tests (`make backend-verify` exit 0, 295 passed). No route was seeded.
+
 ### BE-043 — Idempotent evidence-backed seed pipeline
 
 1. Define versioned JSON schemas for projects, translations, facts, sources, versions, citations, updates, escalation routes, and clearly fictional report fixtures.

@@ -386,3 +386,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the tables, triggers, views, service, and adversarial tests; the tests found the trigger name bug.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-042 Escalation routes and trust vocabulary
+
+- **Task:** BE-042 — Escalation routes and trust vocabulary.
+- **Outcome delivered:** Revision `0005_escalation_routes` (table, deferred trigger, `public_api.escalation_routes` view), `EscalationRepository` (routes valid on a supplied date, most specific concern category first, requested locale preferred with an honestly flagged English fallback), and `shaidago.projects.trust` (`TrustMetadata` with information class, verification state, dates, translation status, and a separate AI flag).
+- **Files changed:** `services/platform/migrations/versions/0005_escalation_routes.py`, `src/shaidago/db/{escalation_tables,registry}.py`, `src/shaidago/projects/{escalation,trust}.py`, tests `tests/integration/test_escalation.py`, `tests/unit/projects/test_trust.py`.
+- **Schema/contract changes:** `app.escalation_routes` with a scope unique key (locality, category, locale, organisation; nulls not distinct), one trigger function, one view. `SELECT` for `shaidago_reviewer`. OpenAPI unchanged.
+- **Security/privacy impact:** No route is seeded and there is no phone, address, or email column, so a contact detail can appear only inside reviewed, cited instruction text. An active route must cite an approved or superseded source version (checked at commit) and carry a verification date not later than its write time and its own non-emergency disclaimer. The public role reads only the view, which omits internal IDs, the active flag, and timestamps. A locality with no verified route yields an empty list, never a default.
+- **Failure behaviour verified (PostgreSQL 18, 14 new tests):** active routes citing pending or rejected versions fail while approved and superseded pass and an inactive draft may cite a pending one; invalid category and locale, empty or over-long text, an inverted validity window, and a future verification date are rejected; uniqueness holds even with no category; lookups exclude expired, future, inactive, and other-category routes and order specific before general; Hausa is served where it exists and English is labelled as fallback where it does not; the trust helper refuses private or AI classes for a cited item and always flags AI text.
+- **Commands run and results:** `make backend-verify` exit 0 (295 passed). The drift check found a constraint name that PostgreSQL truncates and the metadata did not; it was fixed with an explicit short name. Circle 0 validators passed.
+- **Tests added or changed:** 11 integration and 3 unit tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** "Category" is read as the report concern category (`report_concern_category`), with an empty value meaning "any concern"; the maintainer may prefer project category. The non-emergency disclaimer is per-route reviewed text, so the platform ships no default wording and no translation of it. Exposing these values over HTTP is BE-044. Sources cited only by an escalation route are not in `cited_sources`, so BE-044 must decide how their metadata is served. No route data exists, and none may be seeded before the maintainer supplies verified guidance.
+- **Commit/PR:** `feat: add escalation routes and trust metadata`
+- **Next task may rely on:** `EscalationRepository.routes_for`, `TrustMetadata`, and the view for the public API.
+- **AI assistance used:** Designed the table, trigger, repository, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
