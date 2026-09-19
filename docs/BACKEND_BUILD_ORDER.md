@@ -306,6 +306,8 @@ Requirements:
 - `.env.example` documents purpose and safe placeholder, never a usable credential;
 - a settings test covers each fail-fast production invariant.
 
+> **Execution status (2026-09-19): complete.** `load_settings` validates nine typed sections and every fail-fast production and staging invariant is covered by `tests/unit/shared/test_config.py` (51 passing tests, Ruff and Pyright strict clean); `.env.example` is loaded by a test and refused in production.
+
 ### BE-021 — Application factory and lifespan
 
 1. Implement `create_app(settings, dependencies)` rather than constructing global I/O at import time.
