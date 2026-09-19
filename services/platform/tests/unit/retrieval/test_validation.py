@@ -300,3 +300,10 @@ def test_exact_non_english_answer_can_satisfy_the_locale_contract() -> None:
 
     assert result.used_provider_answer is True
     assert result.served_locale == "ha"
+
+
+def test_ordinary_prose_with_sg_inside_words_is_not_a_tracking_code() -> None:
+    from shaidago.retrieval.validation import safety_findings  # noqa: PLC0415
+
+    assert safety_findings("The two pages give different award dates and amounts.") == set()
+    assert "private_data" in safety_findings("Code SG-ABCDE-FGHJK-MNPQR-STVWX-2 was reported.")

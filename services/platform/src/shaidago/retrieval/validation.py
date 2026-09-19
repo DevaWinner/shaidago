@@ -18,7 +18,9 @@ MIN_SIGNIFICANT_CHARS: Final = 3
 _TOKENS: Final = re.compile(r"[^\W_]+", re.UNICODE)
 _EMAIL: Final = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
 _PHONE: Final = re.compile(r"(?:\+?\d[\s().-]?){9,}")
-_TRACKING: Final = re.compile(r"SG[0-9A-Z]{21}")
+_TRACKING: Final = re.compile(
+    r"(?<![A-Za-z0-9])S\W{0,2}G\W{0,2}(?:[0-9A-Z]\W{0,2}){21}(?![A-Za-z0-9])", re.I
+)
 _PERCENT_SCORE: Final = re.compile(r"\b(?:100|[1-9]?\d)\s*%")
 _PERSON_TITLE: Final = re.compile(
     r"\b(?:Mr|Mrs|Ms|Miss|Dr|Prof|Chief|Hon|Senator|Malam|Alhaji)\.?\s+[A-Z][^\W\d_]+"
@@ -173,14 +175,24 @@ def _safety_findings(value: str) -> set[str]:
         findings.add("accusation_or_guilt")
     if _PERSON_TITLE.search(value) or any(phrase in normal for phrase in _IDENTITY_PHRASES):
         findings.add("person_identification")
-    squeezed = re.sub(r"[^0-9A-Za-z]", "", value).upper()
-    if _EMAIL.search(value) or _PHONE.search(value) or _TRACKING.search(squeezed):
+    if _EMAIL.search(value) or _PHONE.search(value) or _TRACKING.search(value):
         findings.add("private_data")
     if any(phrase in normal for phrase in _FORBIDDEN_PHRASES):
         findings.add("private_data_instruction")
     if _PERCENT_SCORE.search(value) or "truth score" in normal:
         findings.add("truth_score")
     return findings
+
+
+def statement_supported(statement: str, passage: str) -> bool:
+    """Deterministic linkage: the statement is in the passage, or every number in it appears and
+    enough of its significant words do."""
+    return _supports(statement, passage, minimum=MIN_CITATION_COVERAGE)
+
+
+def safety_findings(value: str) -> set[str]:
+    """Stable finding codes for accusations, identification, private data, and truth scores."""
+    return _safety_findings(value)
 
 
 def _links(evidence: tuple[CitationEvidence, ...], project_id: UUID) -> tuple[SourceLink, ...]:

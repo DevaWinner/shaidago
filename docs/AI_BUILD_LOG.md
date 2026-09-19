@@ -1063,3 +1063,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the extraction, de-duplication, recorder, migration, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-095 Structured discovery analysis
+
+- **Task:** BE-095 — Structured discovery analysis.
+- **Outcome delivered:** A strict analysis schema, provider adapters (OpenAI and fixture), and a deterministic fail-closed validator.
+- **Files changed:** `services/platform/src/shaidago/discovery/analysis.py`, `src/shaidago/retrieval/{openai,validation}.py` (public `send`, `output_text`, `statement_supported`, `safety_findings`; tracking-code false-positive fix), `src/shaidago/review/private_references.py` (same fix), tests (`tests/unit/discovery/test_analysis.py`, regression tests), `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** The provider request holds only opaque IDs, publisher domains, and inert excerpts; injection-flagged pages should be excluded by the caller. Output is never trusted before validation; private terms are refused.
+- **Failure behaviour verified:** see the build order note. The tracking-code fix removes a class of false blocks (fail-closed, but wrong) in Q&A and publication text.
+- **Commands run and results:** `make backend-verify` exit 0 (1822 passed).
+- **Tests added or changed:** 32 new unit tests plus two regression tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** Not called against the live provider (hard stop). The stance-word list and personal-data question pattern are small reviewable constants. The `needs_review` status is entered only for invalid output; a valid analysis with contradictions completes and shows them, which the maintainer may want to change. The caller (BE-096) must exclude injection-flagged sources from passages.
+- **Commit/PR:** `feat: add validated structured discovery analysis`
+- **Next task may rely on:** `analyse_sources`, `SourcePassage`, `FixtureAnalyser`, and `OpenAIAnalyser`.
+- **AI assistance used:** Designed and wrote the analysis module, adapters, and tests; found and fixed the shared false positive.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

@@ -14,8 +14,14 @@ from typing import Final
 SHINGLE_WORDS: Final = 6
 _MIN_CONTACT_CHARS: Final = 3
 _MIN_PHONE_DIGITS: Final = 7
-_TRACKING_BODY: Final = re.compile(r"SG[0-9A-Z]{21}")
-_HANDLE_BODY: Final = re.compile(r"SGH[0-9A-Z]{8}")
+# A code starts at a token boundary (so "pages give ..." is not "SG" plus 21 letters) and may be
+# spaced, dashed, or punctuated between characters.
+_TRACKING_BODY: Final = re.compile(
+    r"(?<![A-Za-z0-9])S\W{0,2}G\W{0,2}(?:[0-9A-Z]\W{0,2}){21}(?![A-Za-z0-9])", re.I
+)
+_HANDLE_BODY: Final = re.compile(
+    r"(?<![A-Za-z0-9])S\W{0,2}G\W{0,2}H\W{0,2}(?:[0-9A-Z]\W{0,2}){8}(?![A-Za-z0-9])", re.I
+)
 _EMAIL: Final = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
 _PHONE: Final = re.compile(r"(?:\+?\d[\s().-]?){9,}")
 _WORDS: Final = re.compile(r"[a-z0-9]+")
@@ -92,9 +98,9 @@ def find_private_references(statement: str, private: PrivateContext) -> tuple[st
     """Stable finding codes for anything private in ``statement``; empty means none found."""
     found: set[str] = set()
     squeezed = re.sub(r"[^0-9A-Za-z]", "", statement).upper()
-    if _TRACKING_BODY.search(squeezed):
+    if _TRACKING_BODY.search(statement):
         found.add("tracking_code")
-    if _HANDLE_BODY.search(squeezed) or any(
+    if _HANDLE_BODY.search(statement) or any(
         re.sub(r"[^0-9A-Za-z]", "", h).upper() in squeezed for h in private.handles if h
     ):
         found.add("reporter_handle")
