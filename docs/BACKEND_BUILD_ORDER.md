@@ -579,6 +579,8 @@ Requirements:
 - Reject missing/mismatched origin proof with the same safe problem shape.
 - Never treat possession of the internal service credential as reviewer authorisation.
 
+> **Execution status (2026-09-19): complete.** The reviewer session and CSRF dependency, the separate reviewer database login, and the rule that the internal credential is never reviewer authority are proven by 9 integration tests (`make backend-verify` exit 0). Browser Origin checks remain the BFF's job.
+
 ### BE-053 — Role policy and authorisation tests
 
 Define explicit policies for reviewer queue read, report detail read, evidence download, notes, status transition, discovery, discovered-source decision, and public-update publication. Keep policy functions independent of HTTP.

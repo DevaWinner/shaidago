@@ -75,6 +75,9 @@ UNAUTHENTICATED: Final = Problem(
     401, "unauthenticated", "Authentication required", "The request could not be authenticated."
 )
 FORBIDDEN: Final = Problem(403, "forbidden", "Not permitted", "The request is not permitted.")
+CSRF_INVALID: Final = Problem(
+    403, "csrf_invalid", "Request not permitted", "The request could not be verified."
+)
 NOT_FOUND: Final = Problem(404, "not_found", "Not found", "The requested resource was not found.")
 METHOD_NOT_ALLOWED: Final = Problem(
     405, "method_not_allowed", "Method not allowed", "This method is not supported here."

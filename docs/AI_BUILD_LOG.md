@@ -497,3 +497,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the session model and its failure tests; the property and fuzz tests found the two bugs above.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-052 CSRF, origin, and internal boundary
+
+- **Task:** BE-052 — CSRF, origin, and internal boundary.
+- **Outcome delivered:** `authenticated_reviewer`, a FastAPI dependency that resolves the reviewer session from `X-Shaidago-Session` and requires the session-bound CSRF token in `X-Shaidago-Csrf` on every state-changing method; a `csrf_invalid` problem; a separate least-privilege `shaidago_reviewer` database engine (`DATABASE_URL_REVIEWER`); and injectable `reviewer_database` and `ids` dependencies.
+- **Files changed:** `services/platform/src/shaidago/api/{reviewer_auth,dependencies,main,openapi}.py`, `shared/{config,problems}.py`, `.env.example`, tests `tests/integration/test_reviewer_boundary.py` and updated factories and configured-app tests.
+- **Schema/contract changes:** None to the database. No route uses the dependency yet (BE-054 does); the contract is unchanged.
+- **Security/privacy impact:** The API reads the session only from the BFF header, never from cookies or the query string. The internal service credential is not reviewer authority: a valid credential without a session is `401 unauthenticated`, and a valid session without the credential never reaches the route. The CSRF token is HMAC-derived from the session token, so it is bound to one session and cannot be replayed from another. Session is checked before CSRF, so an anonymous caller cannot learn whether a CSRF token was right. Deployed environments must give the reviewer role a login distinct from the owner and the public role.
+- **Failure behaviour verified (9 integration tests, PostgreSQL 18):** reads succeed with a session and no CSRF and writes need it; a missing session, blank session, unknown token, revoked session, disabled reviewer, expired session, and non-ASCII header bytes all give the same 401 body; missing, blank, another session's, altered, non-ASCII, and session-token-as-CSRF values all give the same `403 csrf_invalid` body; a session in a cookie or query string is ignored; neither the session token nor the CSRF token appears in captured logs; a missing reviewer database is `503 dependency_unavailable`.
+- **Commands run and results:** `make backend-verify` exit 0; `make openapi-check` exit 0. Circle 0 validators passed.
+- **Tests added or changed:** 9 integration tests plus config test updates for the new setting.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** Browser `Origin` checks and the same-origin cookie itself belong to the Next.js BFF (frontend build order); the API receives no origin signal and does not pretend to. The CSRF header name and the session header name are chosen here and the BFF must match them. The reviewer engine is not part of readiness yet. The tests use probe routes; real reviewer routes arrive in Circle 7.
+- **Commit/PR:** `feat: add reviewer session and CSRF boundary`
+- **Next task may rely on:** `authenticated_reviewer` for every reviewer route, and `Principal.role` for policy checks.
+- **AI assistance used:** Designed the dependency and its adversarial tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

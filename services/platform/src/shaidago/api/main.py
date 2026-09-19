@@ -27,10 +27,20 @@ def create_configured_app() -> FastAPI:
             url=settings.database.public_sqlalchemy_url(),
         )
     )
+    reviewer = Database(
+        create_engine(
+            settings.database,
+            application_name=settings.app.service_name,
+            url=settings.database.reviewer_sqlalchemy_url(),
+        )
+    )
     revision_check = MigrationRevisionCheck(public, expected_head())
     return create_app(
         settings,
         Dependencies(
-            resources=(public,), health_checks=(public, revision_check), public_database=public
+            resources=(public, reviewer),
+            health_checks=(public, revision_check),
+            public_database=public,
+            reviewer_database=reviewer,
         ),
     )
