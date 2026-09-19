@@ -156,3 +156,60 @@ def _citation_table(name: str, parent: str, parent_column: str) -> Table:
 
 fact_citations = _citation_table("fact_citations", "project_facts", "fact_id")
 update_citations = _citation_table("update_citations", "project_updates", "update_id")
+
+
+# Reviewer-authored public updates and their citations (BE-074). The private link to the report
+# lives only here; checks, policies, the guard trigger, and the publish function are in 0017.
+public_updates = Table(
+    "public_updates",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column("report_id", Uuid(), ForeignKey("app.reports.id", ondelete="RESTRICT"), nullable=False),
+    Column(
+        "project_id", Uuid(), ForeignKey("app.projects.id", ondelete="RESTRICT"), nullable=False
+    ),
+    Column("statement", Text(), nullable=False),
+    Column("effective_on", Date(), nullable=False),
+    Column("last_checked_on", Date()),
+    Column("verification_state", Text(), nullable=False),
+    Column("state", Text(), nullable=False),
+    Column("authored_by", Uuid(), ForeignKey("app.reviewers.id", ondelete="SET NULL")),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    Column("updated_at", DateTime(timezone=True), nullable=False),
+    Column("published_by", Uuid(), ForeignKey("app.reviewers.id", ondelete="SET NULL")),
+    Column("published_at", DateTime(timezone=True)),
+    PrimaryKeyConstraint("id"),
+    Index("ix_public_updates_report_id", "report_id"),
+    schema="app",
+)
+
+public_update_citations = Table(
+    "public_update_citations",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column(
+        "public_update_id",
+        Uuid(),
+        ForeignKey("app.public_updates.id", ondelete="CASCADE"),
+        nullable=False,
+    ),
+    Column(
+        "source_version_id",
+        Uuid(),
+        ForeignKey("app.source_versions.id", ondelete="RESTRICT"),
+        nullable=False,
+    ),
+    Column("passage", Text(), nullable=False),
+    Column("location_label", Text(), nullable=False),
+    Column("passage_start", Integer(), nullable=False),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    PrimaryKeyConstraint("id"),
+    UniqueConstraint(
+        "public_update_id",
+        "source_version_id",
+        "location_label",
+        name="uq_public_update_citations_update_version_label",
+    ),
+    Index("ix_public_update_citations_source_version_id", "source_version_id"),
+    schema="app",
+)

@@ -840,6 +840,8 @@ Create `public_updates` and a publication service:
 
 Tests must try contact values, tracking code, handle, reviewer name, raw allegation, private source, stale preview, concurrent status change, and missing citation.
 
+> **Execution status (2026-09-19): complete.** Migration `0017_public_updates`, `review/{publication,private_references}.py`, and `api/v1/reviewer_publication.py` add reviewer-authored drafts (`app.public_updates`, with the private report link kept only there, and `app.public_update_citations`), an exact preview built from the public API's own `UpdateOut` model, a preview digest the reviewer must quote to confirm, and one `SECURITY DEFINER` function (`app.publish_public_update`) that re-checks the draft state, report status, and report version under row locks and writes the public update (same ID as the draft) and its citations with the audit event in one transaction. Guards: private references (tracking code, handle, contact or any email or phone-like text, reviewer name, six-word runs copied from the report, answers, or notes) and guarded wording (corrupt, fraud, complete, abandoned and similar) that no cited passage contains block publication; citations must be exact passages of approved versions. 14 integration and 36 unit tests cover a publish that matches the public API output exactly, a status change that publishes nothing, each private-material case, a source rejected or a status changed after the preview, a concurrent status change, publish-once and withdraw, database-level refusal of shortcuts, and access control.
+
 ### Circle 7 exit gate
 
 - Reviewer queue/detail obey least privilege and bounded queries.
@@ -847,6 +849,8 @@ Tests must try contact values, tracking code, handle, reviewer name, raw allegat
 - Notes and downloads are private, encrypted/short-lived, and audited safely.
 - Publication requires a distinct authored update, exact preview, citations, and explicit confirmation.
 - No report/status operation implicitly publishes text.
+
+> **Gate status (2026-09-19): closed.** Reviewer queue and detail show triage fields only and use a fixed number of statements (BE-070 tests). Every status, command, and actor combination is tested against the contract, over HTTP for both roles and as a 240-case unit matrix (BE-071). Notes are encrypted per note and append-only, downloads are streamed through an authorised, audited endpoint with no storage URL, and neither appears in tracking, the public API, or logs (BE-072, BE-073). Publication needs a distinct authored update, an exact preview quoted by digest, approved exact-passage citations, and a separate explicit confirmation, and no status or report operation publishes text (BE-074). `make backend-verify` passed with 1143 tests. Two deliberate readings of the gate: "short-lived" downloads are met by having no bearer token at all (the response is authorised on every request and ends with the session), and the guarded-wording check is a deterministic floor, not a judgement of neutrality, which stays the reviewer's responsibility at the preview step.
 
 ## 11. Circle 8 — grounded project retrieval and Q&A
 

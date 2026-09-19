@@ -842,3 +842,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the broker and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-074 Separate public-update publication transaction
+
+- **Task:** BE-074 — Separate public-update publication transaction.
+- **Outcome delivered:** Reviewer-authored public-update drafts, an exact preview with a confirmation digest, and one database function that publishes the update with its citations atomically.
+- **Files changed:** `services/platform/migrations/versions/0017_public_updates.py`, `src/shaidago/review/{publication,private_references,detail}.py`, `src/shaidago/api/v1/{reviewer_publication,__init__}.py`, `src/shaidago/api/errors.py`, `src/shaidago/shared/problems.py`, `src/shaidago/db/source_tables.py`, tests (`test_public_update_publication.py`, `tests/unit/review/test_private_references.py`), `contracts/openapi.json`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** Two tables (forced row security; reviewer and owner only), a guard trigger making a draft's content fixed and its state terminal after publish or withdraw, and `app.publish_public_update` (execute for the reviewer role only). The reviewer role gained no privilege on `project_updates` or `update_citations`. OpenAPI gains five paths and three problem codes.
+- **Security/privacy impact:** The link between a public update and its report exists only in a table no public role can read; the public row carries none and shares the draft's ID so the previewed ID is the published ID. Private text is decrypted in memory only to check the statement (a contact read is audited like any other). The publish function re-checks state under locks, so a status change racing a publication either finishes first (and the publication is refused) or after (and the publication stands). Nothing here is called by a status change, worker, or AI path.
+- **Failure behaviour verified:** see the build order note. A first full run showed the contract test catching a route ambiguity (`GET .../{id}:publish` matched the preview route and answered 401 instead of 405); the preview route now takes a `uuid`-typed parameter. The same run showed the `Allow` index matching parameters across a colon; fixed.
+- **Commands run and results:** `make backend-verify` exit 0 (1143 passed); Circle 0 validators passed.
+- **Tests added or changed:** 14 integration tests and 36 unit tests (every branch of the private-reference and guarded-wording checks).
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated; `make openapi-check` passes.
+- **Known limitations/open decisions:** Neutrality of the statement is the reviewer's responsibility; the deterministic checks are a floor (the guarded word list is a reviewable constant and will produce false blocks, for example on "not complete" without a passage). Refused publication attempts are not audited (only successes, drafts, and withdrawals). Drafts cannot be edited (withdraw and create a new one). Previewing decrypts the report's private material each time.
+- **Commit/PR:** `feat: add separately authored, previewed, citation-backed public update publication`
+- **Next task may rely on:** `app.project_updates` rows created only through `app.publish_public_update` for report-derived updates, and the reviewer test harness `review_world`.
+- **AI assistance used:** Designed and wrote the migration, service, checks, endpoints, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

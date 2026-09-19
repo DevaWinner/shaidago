@@ -112,6 +112,25 @@ REPORT_VERSION_CONFLICT: Final = Problem(
     "Report has changed",
     "The report changed since it was loaded. Reload it and try again.",
 )
+PUBLIC_UPDATE_REPORT_NOT_VERIFIED: Final = Problem(
+    409,
+    "public_update_report_not_verified",
+    "Report not verified for a public update",
+    "The report is not currently marked as verified for a public update.",
+)
+PUBLIC_UPDATE_NOT_DRAFT: Final = Problem(
+    409,
+    "public_update_not_draft",
+    "Public update is not a draft",
+    "This public update was already published or withdrawn.",
+)
+# The reviewer confirmed something other than what would now be published.
+PREVIEW_STALE: Final = Problem(
+    409,
+    "preview_stale",
+    "Preview is out of date",
+    "What would be published has changed since the preview. Review the new preview first.",
+)
 METHOD_NOT_ALLOWED: Final = Problem(
     405, "method_not_allowed", "Method not allowed", "This method is not supported here."
 )

@@ -80,7 +80,8 @@ def _method_index(app: FastAPI) -> list[tuple[re.Pattern[str], frozenset[str]]]:
         return cached
     index: list[tuple[re.Pattern[str], frozenset[str]]] = []
     for template, item in app.openapi().get("paths", {}).items():
-        pattern = re.compile("^" + _PARAMETER.sub("[^/]+", re.escape(template)) + "$")
+        # A path parameter never contains "/" or ":" (a ":" starts an explicit command suffix).
+        pattern = re.compile("^" + _PARAMETER.sub("[^/:]+", re.escape(template)) + "$")
         methods = {name.upper() for name in item if name in _HTTP_METHODS}
         if "GET" in methods:
             methods.add("HEAD")

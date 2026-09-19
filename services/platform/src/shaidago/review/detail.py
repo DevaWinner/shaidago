@@ -163,7 +163,7 @@ async def load_detail(
         field_context("reports", report.id, "description", report.schema_version),
     )
     follow_ups = [_follow_up(crypto, keys, q) for q in questions]
-    contact = await _read_contact(ctx, report_id, reviewer) if include_contact else None
+    contact = await read_contact(ctx, report_id, reviewer) if include_contact else None
     await AuditWriter(session, ctx.clock, ctx.ids).record(
         "report_detail_viewed",
         actor_type=reviewer.actor_type,
@@ -241,7 +241,7 @@ def _follow_up(crypto: ReviewContext, keys: dict[UUID, DataKey], q: Row[Any]) ->
     )
 
 
-async def _read_contact(
+async def read_contact(
     ctx: ReviewContext, report_id: UUID, reviewer: Reviewer
 ) -> ContactView | None:
     crypto = ctx

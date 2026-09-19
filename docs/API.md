@@ -81,6 +81,15 @@ Every route needs a reviewer session (`X-Shaidago-Session`) and a role holding t
 
 `GET /v1/reviewer/reports/{report_id}/evidence/{evidence_id}/content` returns the sanitised file as an attachment (`Content-Disposition: attachment`, the stored type, `Cache-Control: no-store`, `X-Content-Type-Options: nosniff`, a sandboxing `Content-Security-Policy`, and `X-Evidence-Scan-State`: `clean` or `not_scanned_demo` on the hosted demo). There is no signed URL: access is checked on every request, the decision is audited before any byte is read (`report_evidence_download_granted` or `_denied`, IDs only), and the object key never leaves the service. An unknown report, an unknown file, and a file that belongs to another report are the same `404 not_found`; bytes that fail the recorded size and SHA-256 check are never served (`503`).
 
+## Reviewer public updates
+
+Publishing is a separate act from any status change, with its own record.
+
+- `POST /v1/reviewer/reports/{report_id}/public-updates` creates a private draft (`201`) from `statement` (10 to 2000 characters, no markup), `effective_on`, optional `last_checked_on` (not in the future), `verification_state`, and 1 to 5 `citations` (`source_version_id`, an exact `passage` of that approved version, and `location_label`; the offset is computed). The report must currently be `verified_for_public_update` (`409 public_update_report_not_verified`). The response is a preview.
+- `GET .../public-updates/{update_id}` returns the preview: `update` is the public projection exactly as `GET /v1/projects/{slug}` would show it (same model, same ID), `issues` lists what blocks publication (`field` and stable `code`), `can_publish`, `report_status`, `report_version`, and `preview_digest`. Issues include unmet citation, date, and verification rules; tracking codes, handles, contact values or any email or phone-like text, reviewer names, and six-word runs copied from the report, answers, or notes (`report_text`); and guarded words such as `corrupt`, `fraud`, `complete`, or `abandoned` that no cited passage contains (`unsupported_term_<word>`).
+- `POST .../public-updates/{update_id}:publish` with `{preview_digest}` confirms that exact preview. A digest that no longer matches (the text, a source, or the report changed) is `409 preview_stale`; a report no longer verified is `409 public_update_report_not_verified`; a draft already published or withdrawn is `409 public_update_not_draft`; unmet requirements are `422 publication_incomplete` with the same issue codes. On success (`200`) the public update and its citations are written in one transaction with an audit event; the report's status is not changed.
+- `POST .../public-updates/{update_id}:withdraw` (`204`) withdraws a draft. `GET .../public-updates` lists the report's drafts (at most 50).
+
 ## Errors
 
 Every error is `application/problem+json`, `Cache-Control: no-store`, with `type`, `title`, `status`, `code`, `detail`, `request_id`, and, for validation failures, `errors` (`field` and rule `code`, never the submitted value). The `code` is the stable contract; the BFF localises display text from it.
