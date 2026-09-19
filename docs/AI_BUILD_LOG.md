@@ -1135,3 +1135,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the limiter, policy table, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-101 Cache and data-leak audit
+
+- **Task:** BE-101 — Cache and data-leak audit.
+- **Outcome delivered:** A cache-policy middleware with a four-path public allowlist, plus tests that enumerate every route and prove private responses are `no-store`.
+- **Files changed:** `services/platform/src/shaidago/api/{cache_policy,app}.py`, tests (`tests/unit/api/test_cache_policy.py`, `tests/integration/test_cache_audit.py`), `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None (responses already had explicit headers; the middleware is a backstop).
+- **Security/privacy impact:** A private response cannot leave with a public cache header even if a route is written wrongly.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `make backend-verify` exit 0 (1974 passed).
+- **Tests added or changed:** 14 unit and 3 integration tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** The BFF and any CDN must still honour these headers; that boundary is the frontend's and Circle 11's to prove. The allowlist is a regex table that must be updated if a public route is added.
+- **Commit/PR:** `feat: enforce an explicit cache policy on every response`
+- **Next task may rely on:** the allowlist as the single list of cacheable routes.
+- **AI assistance used:** Designed and wrote the middleware and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
