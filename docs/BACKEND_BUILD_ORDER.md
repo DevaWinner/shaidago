@@ -183,6 +183,8 @@ Choose lowercase snake-case machine values. Never reuse one value with two meani
 
 ### BE-003 — Classify data and draw trust boundaries
 
+> **Execution status (2026-09-19): complete.** `docs/THREAT_MODEL.md` is the reviewed design contract; `scripts/validate_threat_model.py --self-test` enforces asset, zone, flow, allowlist, lifecycle, STRIDE, and task-reference coverage. Every control it names remains planned until its owning task passes.
+
 Create `docs/THREAT_MODEL.md` with:
 
 1. Assets: public facts, private report text, contacts, handles, tracking codes, evidence, reviewer credentials, session tokens, encryption keys, provider keys, audit history.
