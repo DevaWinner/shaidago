@@ -1315,3 +1315,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Corrected the inherited generated-ID approach to comply with ADR-0007, built the fixture generator and enforcement, and wrote the frontend handoff semantics.
 - **Prompt summary:** Continue Circle 12 from the existing branch and in-progress work.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-122 Final backend evidence review
+
+- **Task:** BE-122 — Final backend evidence review.
+- **Outcome delivered:** A reproducible final evidence record, an implemented privacy/safety summary, an explicit public-schema private-field denylist, refreshed repository status/limitations, and a precise list of human/hosted release blockers.
+- **Files changed:** `services/platform/tests/contract/test_openapi.py`, `docs/{PRIVACY_AND_SAFETY,THREAT_MODEL,README,BACKEND_BUILD_ORDER,AI_BUILD_LOG}.md`, `docs/evidence/BE-122-final-backend-review.md`, `README.md`.
+- **Schema/contract changes:** None. A test now recursively inspects the successful public catalogue, Q&A, and public-discovery schemas and rejects private field names.
+- **Security/privacy impact:** Whole-history and tracked-file review found no real secret, contact, report, signed URL, raw credential, or unlabelled private fixture. The document separates implemented prototype controls from the human, provider, legal, and operational gates that still prohibit real data.
+- **Failure behaviour verified:** Public schemas fail the contract test if a forbidden private field becomes reachable. The existing runtime canaries prove private values remain absent from public/tracking/error responses and logs; cache auditing proves every documented route declares a policy.
+- **Commands run and results:** Gitleaks scanned 83 commits/about 3.67 MB with redaction and found no leak; candidate-pattern inventory was reviewed by file; 15 targeted contract/public-shape/public-canary/cache tests passed after rerunning with the required local environment; `make backend-verify` exited 0 with 2,000 tests passed, one live test deselected, 94.03% branch coverage, generated artifacts clean, Bandit clean, and no known audited dependency vulnerability; all six Circle 0 validators passed.
+- **Tests added or changed:** One recursive public-success-schema denylist test covering nine public operations; existing runtime public-shape, canary, and cache tests were rerun together.
+- **Generated artifacts checked:** OpenAPI and frontend fixtures remain drift-free; source-register and controlled-vocabulary rendered documents match their JSON sources.
+- **Known limitations/open decisions:** BE-122 remains blocked on a named/date-stamped human audit of all six projects, current source passages, public wording, and reuse terms. Locale human review, live providers, hosted CI, and the complete staging smoke also remain open; production and real report data remain prohibited.
+- **Commit/PR:** `docs: record the final backend privacy and evidence review`.
+- **Next task may rely on:** the automated release evidence and exact blocker list, but may not claim the backend final gate or production readiness closed.
+- **AI assistance used:** Ran the redacted repository/history review, classified synthetic candidates, added the public-schema guard, consolidated privacy evidence, and refused to substitute AI review for the required manual source audit.
+- **Prompt summary:** Continue Circle 12 from the existing branch and in-progress work.
+- **Human review:** None yet; unattended run, pending maintainer review.

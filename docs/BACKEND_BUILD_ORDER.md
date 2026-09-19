@@ -1301,6 +1301,8 @@ No frontend task should inspect ORM models or database tables to infer a UI cont
 
 ### BE-122 — Final backend evidence review
 
+> **Execution status (2026-09-19): blocked.** The automated review is complete and recorded in `docs/evidence/BE-122-final-backend-review.md`: a redacted Gitleaks scan found no leak across 83 commits; tracked-file candidate review found only synthetic/test/format values; public success schemas now have an explicit private-field denylist; runtime public canaries and response-shape/cache tests pass; all replay/demo artifacts are visibly fictional or synthetic; and `README.md`, `docs/{API,THREAT_MODEL,PRIVACY_AND_SAFETY}.md`, and the frontend handoff expose the current limitations. The source-register validator passes for six projects and the recorded passages, but this task cannot complete until a human reopens every source, checks the current exact passage/public wording and reuse terms, and records reviewer name and absolute date. AI review cannot satisfy that audit.
+
 1. Search tracked files and Git history for secrets, raw tracking codes, real contacts, report text, signed URLs, `.env`, and provider keys.
 2. Review public OpenAPI schemas for private field names and overbroad models.
 3. Confirm six projects and source links are accurate as of recorded last-check dates.
@@ -1309,6 +1311,8 @@ No frontend task should inspect ORM models or database tables to infer a UI cont
 6. Update README, API docs, threat/privacy docs, AI build log, and decision records.
 
 ### Backend final definition of done
+
+> **Gate status (2026-09-19): open.** Locally green: the canonical gate passes with 2,000 deterministic tests, 94.03% total branch coverage, generated OpenAPI/frontend fixtures without drift, empty-to-head and restricted-role migration checks, public DTO/log canaries, deterministic end-to-end journeys, session revocation, provider-outage fixtures, and visible owned limitations. The gate remains open for five external/human items: (1) a green GitHub CI/security run for this unpublished stack, (2) the BE-122 human source/reuse audit, (3) fluent review of all four BE-085 locale records, (4) explicitly authorised live OpenAI/Brave evidence, and (5) the complete BE-114 fictional staging smoke after a maintainer registers Railway SSH access. Circle 11 therefore also remains open; no production readiness or real-data claim is made.
 
 The backend is ready for the frontend build only when:
 

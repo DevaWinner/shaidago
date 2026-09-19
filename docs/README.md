@@ -26,6 +26,7 @@ If implementation reveals a conflict, do not silently choose one version. Correc
 | [`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md) | Active control | Which backend task and proof owns every accepted capability, acceptance criterion, journey, and non-goal? |
 | [`decisions/`](decisions/README.md) | Accepted decision records | Which hard-to-reverse backend choices are binding, what was rejected, and which tasks enforce them? |
 | [`THREAT_MODEL.md`](THREAT_MODEL.md) | Design contract | Which data is private or secret, where may it flow, how is it deleted, and which task proves each control? |
+| [`PRIVACY_AND_SAFETY.md`](PRIVACY_AND_SAFETY.md) | Implemented prototype controls | Which privacy controls exist, what evidence proves them, and what still blocks production? |
 | [`CONTROLLED_VOCABULARY.md`](CONTROLLED_VOCABULARY.md) | Generated active contract | Which machine values, actors, transitions, audit events, visibility rules, and failure codes are permitted? |
 | [`API.md`](API.md) | Active | How is the private API called, what does it return on error, and how is the OpenAPI contract generated and checked? |
 | [`KEY_MANAGEMENT.md`](KEY_MANAGEMENT.md) | Active | How are private-field keys held, rotated, destroyed, and later moved to a managed KMS? |
@@ -36,7 +37,7 @@ If implementation reveals a conflict, do not silently choose one version. Correc
 
 Create these when the corresponding build gate produces real evidence; do not add empty placeholders:
 
-- `TRUST_MODEL.md` and `PRIVACY_AND_SAFETY.md` when their controls are implemented and tested. `THREAT_MODEL.md` already exists as the BE-003 design contract and is updated as controls land.
+- `TRUST_MODEL.md` when the frontend trust explanation and presentation are implemented and tested. `THREAT_MODEL.md` is the design contract; `PRIVACY_AND_SAFETY.md` records implemented backend controls and limitations.
 - `DEMO_SCRIPT.md` when the end-to-end scenario is working.
 - further architecture decision records under `decisions/` when a durable choice changes the accepted plan.
 

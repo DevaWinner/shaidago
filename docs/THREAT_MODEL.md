@@ -1,13 +1,17 @@
 # Threat model and trust boundaries
 
 - **Task:** BE-003
-- **Version:** 1.0
+- **Version:** 1.1
 - **Reviewed baseline date:** 2026-09-19
 - **Pilot:** Abuja, limited to AMAC and Bwari Area Councils
 - **Environment constraint:** hackathon and hosted-demo data is fictional; production handling of real sensitive reports is closed
 - **Method:** asset and data-flow review with STRIDE threat enumeration
 
-This document is a design contract, not evidence that a control has been implemented. A control becomes real only when the named task, test, and deployment configuration pass. The product and security invariants in [`AGENTS.md`](../AGENTS.md), [`PRODUCT.md`](../PRODUCT.md), and [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) remain authoritative.
+This document is the design contract. Implemented prototype controls and their remaining production
+blockers are summarised in [`PRIVACY_AND_SAFETY.md`](PRIVACY_AND_SAFETY.md); a control is evidence-backed
+only when its named task, test, and deployment configuration pass. The product and security
+invariants in [`AGENTS.md`](../AGENTS.md), [`PRODUCT.md`](../PRODUCT.md), and
+[`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) remain authoritative.
 
 ## 1. Scope and security objectives
 
@@ -107,7 +111,7 @@ Classification is attached to the data, not the component holding it. Moving pri
 | Z-30 | Dramatiq worker and bounded temporary filesystem | Privileged job executor | ID-only jobs, authenticated queue, idempotency, sandboxed parsers, byte/time/resource limits, cleanup. |
 | Z-40 | PostgreSQL roles and schemas | Authoritative durable state | TLS, separate migration/public/reviewer/worker roles, grants/RLS/views, encryption, constraints, append-only histories. |
 | Z-50 | Redis queue/rate-limit store | Non-authoritative ephemeral infrastructure | TLS/auth, namespace isolation, TTLs, IDs/counters only, no report bodies or contacts. |
-| Z-60 | Private object storage | Private evidence store | Private bucket, random keys, scoped service role, encryption at rest, short signed downloads, lifecycle deletion. |
+| Z-60 | Private object storage | Private evidence store | Private bucket, random keys, scoped service role, encryption at rest, API-streamed authorised downloads, lifecycle deletion. |
 | Z-70 | Search and AI providers | External processor | Destination allowlists, timeout/budget caps, no private-report data, no provider authority, configured non-retention where supported. |
 | Z-80 | Public web/DNS/redirect targets | Hostile external content | SSRF controls, DNS and redirect revalidation, robots/terms/access rules, content/size/time limits, inert extraction. |
 | Z-90 | Logs, metrics, CI, and operator surfaces | Restricted operational zone | Central denylist, no bodies/secrets/signed URLs, bounded retention/cardinality, environment separation, masked CI secrets. |
@@ -120,13 +124,13 @@ Classification is attached to the data, not the component holding it. Moving pri
 | TB-02 | Z-10 → Z-20 | Private network plus the per-caller internal-service credential from [ADR-0002](decisions/0002-bff-authority-split-and-internal-service-authentication.md); forwarded request ID, locale, and client HMAC are read only after caller authentication | Validated request fields; BFF cannot assert domain authorisation. |
 | TB-03 | Z-20/Z-30 → Z-40 | TLS and least-privilege database role selected per process/use case | Parameterised queries and explicit projections. |
 | TB-04 | Z-20 ↔ Z-50 | Authenticated TLS, namespaced queue/rate keys, TTL and payload schema | Opaque IDs, job versions, counters, leases; no private bodies. |
-| TB-05 | Z-20/Z-30 ↔ Z-60 | Scoped service credential or short-lived signed operation | Sanitised bytes and minimal safe metadata only. |
+| TB-05 | Z-20/Z-30 ↔ Z-60 | Scoped service credential; object keys remain inside the service boundary | Sanitised bytes and minimal safe metadata only. |
 | TB-06 | Z-30 → Z-70 | Provider TLS/API credential, allowlisted schema, time/size/budget caps | Public-safe query or approved public passages only. |
 | TB-07 | Z-30 → Z-80 | SSRF-safe fetcher; validate scheme, port, DNS answers, redirects, content type, bytes, time, robots/access | Public URL and minimal safe fetch headers only. |
 | TB-08 | All trusted zones → Z-90 | Central structured-logging/metrics adapters with sensitive-field denylist | A-20 and approved aggregate counters only. |
-| TB-09 | Z-00 → Z-60 | Short-lived reviewer-only signed download after API authorisation and audit | One sanitised artifact; attachment response; no list/write ability. |
+| TB-09 | Z-00 → Z-10 → Z-20 → Z-60 | Reviewer session, capability and object integrity checked and audited on every request; API streams the object | One sanitised artifact; attachment response; no object key, URL, list, or write ability. |
 
-TB-02 uses per-caller bearer credentials with `current`/`previous` rotation, verified before any router runs ([ADR-0002](decisions/0002-bff-authority-split-and-internal-service-authentication.md)). The worker does not call the API. Until BE-022 implements and tests this, “private hostname” alone is not authentication.
+TB-02 uses per-caller bearer credentials with `current`/`previous` rotation, verified before any router runs ([ADR-0002](decisions/0002-bff-authority-split-and-internal-service-authentication.md)). The worker does not call the API. BE-022 implemented and tested this boundary; a private hostname alone is never authentication.
 
 ## 6. Critical data flows
 
@@ -179,15 +183,15 @@ flowchart LR
   B[Z-00 reviewer browser] -->|secure session| W[Z-10 BFF]
   W -->|service-authenticated request| A[Z-20 API]
   A -->|session HMAC + role/scope| D[(Z-40 PostgreSQL)]
-  A -->|audit + short grant| O[(Z-60 private storage)]
-  O -->|attachment, no-store| B
+  A -->|authorised read after audit| O[(Z-60 private storage)]
+  O -->|bytes + integrity metadata| A -->|attachment, no-store| W --> B
 ```
 
 | Edge | Allowlist | Mandatory controls | Explicitly forbidden |
 | --- | --- | --- | --- |
 | DF-03.1 browser → API through BFF | Opaque secure cookie, evidence ID, CSRF only if the operation mutates state | Session rotation/revocation; role and report-scope check; generic denial | Object key supplied by browser, report access based on authentication alone. |
 | DF-03.2 API → PostgreSQL | Session HMAC, privilege version, report/evidence metadata, sanitation/scan state | Deny by default; horizontal and vertical checks; transactionally append access audit | Decrypted report fields not needed for download decision. |
-| DF-03.3 API → storage/browser | One evidence object or short-lived signed GET bound to safe disposition | `Content-Disposition: attachment`; no-store; short expiry; no referrer leakage; clean or explicitly labelled demo state | Bucket listing/write, raw file, stable public URL, URL in logs/analytics. |
+| DF-03.3 API ↔ storage; API → BFF/browser | One evidence object streamed only after authorisation, audit, size/hash verification, and safe disposition | `Content-Disposition: attachment`; no-store; nosniff/sandbox headers; clean or explicitly labelled demo state | Bucket listing/write, raw file, object key, signed/stable public URL, URL in logs/analytics. |
 
 ### DF-04 — Public project Q&A
 
@@ -284,7 +288,7 @@ No production retention duration is invented for the hackathon. Production start
 | A-06/A-07 tracking credentials | Raw code never stored; keyed HMAC in restricted table | Never log/cache raw code; HMAC not an analytics identifier | Report owner; HMAC lasts only while tracking is offered | Delete HMAC and lookup metadata when report tracking ends/purge occurs; code cannot be recovered. |
 | A-08/A-09 handle credentials | Handle plus Argon2id passphrase hash; no identity/recovery fields | No passphrase logs/cache; handle excluded from public output | Reporter controls unlink; privacy owner controls environment retention | Delete handle/hash and unlink all reports; reports remain fully anonymous unless separately purged. |
 | A-10 raw uploads | Random temp path on encrypted/isolated bounded storage; never durable | No filenames/bytes in logs/cache | File-processing owner; request/job lifetime with a strict short maximum | Delete in `finally` on success, rejection, timeout, crash recovery, and cancellation; cleanup job verifies no orphan. |
-| A-11 sanitised evidence | Private object encryption plus restricted metadata; object key is random | No CDN/public cache, inline serving, analytics, or stable signed URL | Privacy/safety owner; same or shorter than parent report | Delete object first, verify absence, delete metadata/key reference, append content-free deletion audit. |
+| A-11 sanitised evidence | Private object encryption plus restricted metadata; object key is random | No CDN/public cache, inline serving, analytics, signed URL, or object key outside the API/storage boundary | Privacy/safety owner; same or shorter than parent report | Delete object first, verify absence, delete metadata/key reference, append content-free deletion audit. |
 | A-12 notes/follow-ups/risk | Separate encrypted fields/tables and restricted reviewer role | Never public, in metrics, error tracking, search, or public AI | Review operations/privacy owner; report retention with earlier deletion when purpose ends | Delete ciphertext/key reference; status/audit event keeps only non-sensitive state transition. |
 | A-13 report-scoped discovery | Restricted tables; sensitive answers encrypted; worker memory bounded | No public cache/index, raw query log, analytics, or public-run reuse | Privacy/safety owner; no longer than parent report unless a source is separately approved | Delete private run/query/analysis/answers. An independently approved public source version may remain, but all report linkage/private rationale is removed. |
 | A-14 reviewer password/role | Argon2id hash and restricted role table | Never log hash/password; auth response no-store | Security owner; account lifetime plus required audit period | Disable/revoke immediately; delete hash when account removal is allowed; preserve non-sensitive historical actor reference or tombstone. |
@@ -299,7 +303,8 @@ Backups must inherit the same classification, encryption, access, and expiry pol
 
 ## 9. STRIDE threats and mandatory verification
 
-Status is **planned** until the named implementation task produces passing evidence.
+The table is the mandatory control catalogue. Current implementation evidence and open items are
+recorded by the named tasks and summarised in [`PRIVACY_AND_SAFETY.md`](PRIVACY_AND_SAFETY.md).
 
 | ID | STRIDE | Threat and impact | Required control | Mandatory verification owner |
 | --- | --- | --- | --- | --- |
@@ -320,7 +325,7 @@ Status is **planned** until the named implementation task produces passing evide
 | TM-I04 | Information disclosure | Next.js/CDN/service worker caches private reviewer/tracking/discovery data. | No-store at API and BFF, dynamic rendering, cache bypass, service-worker exclusion. | BE-101 and FE-104/FE-116/FE-131: cache header, back-navigation, offline/cache inspection tests. |
 | TM-I05 | Information disclosure | Private report text or identifiers enter a search query. | Field allowlist, deterministic denylist, exact preview/approval, outbound capture. | BE-090/BE-091: 100% privacy-query-builder branches and adversarial PII/secret fixtures. |
 | TM-I06 | Information disclosure | Private/cross-project content enters AI context or provider storage. | Approved public chunks only, scope filter, minimal payload, `store: false`, provider spy. | BE-080/BE-081/BE-082/BE-095: private canaries, cross-project fixtures and request snapshot tests. |
-| TM-I07 | Information disclosure | Signed evidence URL leaks through referrer, logs, cache, or excessive lifetime. | Short expiry, no-store/referrer controls, attachment disposition, audit, no URL logs. | BE-073/BE-101: expiry, reuse, unauthorised, referrer/header and log-canary tests. |
+| TM-I07 | Information disclosure | Evidence bytes or an object key bypass reviewer authorisation or leak through logs/cache. | Authorise and audit every streamed request, verify object size/hash, no-store/nosniff/sandbox headers, attachment disposition, and no storage URL. | BE-073/BE-101: unauthorised/cross-report, integrity failure, response-header, cache and log-canary tests. |
 | TM-I08 | Information disclosure | Object key reveals reporter/project identity or permits enumeration. | Random opaque keys, private bucket, no listing grant, key-schema assertion. | BE-064: storage-spy assertions for key entropy/content and ACL/grant tests. |
 | TM-I09 | Information disclosure | Reporter handle becomes public identity or report-corroboration proof. | Reviewer-only track record, public exclusion, same-handle counts once, explicit explanatory copy. | BE-066/BE-074/BE-102: public projection and corroboration-count tests. |
 | TM-D01 | Denial of service | Oversized, compressed, malformed, or slow uploads exhaust BFF/API/worker. | Layered byte/file/count/time/decode limits, streaming/backpressure, bounded temp disk and concurrency. | BE-063/BE-064/BE-103: boundary, compression/decode bomb, slow stream and disk cleanup tests. |
@@ -345,7 +350,7 @@ The implementation must also include the complete adversarial sets below, even w
 - upload MIME spoofing, polyglots, EXIF/IPTC/XMP, encrypted/active PDFs, malware/scanner outage, decompression/decode bombs, temp cleanup, and storage spying;
 - SSRF IPv4/IPv6 variants, numeric/ambiguous hosts, userinfo, mixed DNS, rebinding, every redirect, metadata ranges, ports, content types, byte/time/decompression and concurrency limits;
 - prompt injection, unknown/cross-project/uncited citations, malformed schemas, more than five questions, private canaries, and deterministic insufficient-evidence fallback;
-- cache/CDN/service-worker exclusions for reviewer, tracking, Q&A bodies, private discovery, contacts, and signed evidence URLs; and
+- cache/CDN/service-worker exclusions for reviewer, tracking, Q&A bodies, private discovery, contacts, and evidence responses; and
 - log/error/metric/provider outbound canaries for every asset classified private or secret.
 
 Coverage floors from `AGENTS.md` apply. Tracking normalisation, public response allowlists, privacy-safe query builder, SSRF guard, citation validator, and report state machine require 100% branch coverage.
@@ -360,12 +365,13 @@ Coverage floors from `AGENTS.md` apply. Tracking normalisation, public response 
 | External provider retention/region/contract settings are not yet evidenced | Provider interface and minimum-data allowlist only | Production closed until settings and agreements are reviewed. |
 | Numeric private-data retention and backup expiry are not approved | Fictional demo data only; teardown purge; owners and deletion mechanics defined above | Production startup must fail without approved configuration/policy. |
 | A compromised reviewer can intentionally misuse authorised access | Least privilege, access audit, narrow queue/projections, revocation, no bulk export | Operational reviewer training/monitoring and incident process required before production. |
-| Browser/device compromise can capture a tracking code or viewed evidence | Display once, no storage, no-store, shared-device warnings, short signed downloads | Cannot be eliminated by the service; clearly communicate device risk. |
+| Browser/device compromise can capture a tracking code or viewed evidence | Display once, no storage, no-store, shared-device warnings, and per-request authorised evidence streaming | Cannot be eliminated by the service; clearly communicate device risk. |
 | ShaidaGo cannot verify identity or independent-person count for anonymous reports | Handles are optional/non-identifying and same-handle reports count once | Never present report count as proof or identity. |
 
 ## 12. Exit checklist and change control
 
-BE-003 is reviewable when all boxes below are supported by this document. Implementation remains future work.
+BE-003 is reviewable when all boxes below are supported by this document. Implementation evidence
+and residual release blockers are maintained in the build order and privacy/safety summary.
 
 - [x] Every required asset and actor has a classification and trust assumption.
 - [x] Browser, BFF, API, worker, database roles, Redis, object storage, providers, public fetch targets, and telemetry are separate zones.

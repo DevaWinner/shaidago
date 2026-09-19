@@ -8,9 +8,11 @@ The hackathon pilot covers Abuja's AMAC and Bwari Area Councils. The public expe
 
 ## Repository status
 
-**Backend implementation in progress.** `services/platform` contains the FastAPI application, reviewed migrations, restricted database roles, deterministic tests, and the backend capabilities marked complete in the build order. The Next.js application under `apps/web` has not been scaffolded yet, so this repository does not currently claim to provide the complete runnable product.
+**Backend release gate in progress.** `services/platform` contains the FastAPI application, reviewed migrations, restricted database roles, deterministic tests, production container, staging configuration, and the frozen frontend contract. The Next.js application under `apps/web` has not been scaffolded yet, so this repository does not currently claim to provide the complete runnable product.
 
-The current backend milestone is approved-source retrieval and grounded Q&A. Public seed facts remain limited to the exact evidence and caveats recorded in the source register.
+The remaining backend gates are explicit: human source and language review, live-provider evidence,
+a complete private-network staging smoke, and the first green hosted CI run for the release branch.
+Public seed facts remain limited to the exact evidence and caveats recorded in the source register.
 
 ## The problem
 
@@ -73,6 +75,7 @@ Start with the [documentation index](docs/README.md).
 | [AGENTS.md](AGENTS.md) | Repository-wide implementation and code-review rules for coding agents |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Human contribution workflow and pull-request expectations |
 | [SECURITY.md](SECURITY.md) | Private vulnerability reporting and prototype data policy |
+| [Privacy and safety](docs/PRIVACY_AND_SAFETY.md) | Implemented privacy controls, evidence, and production blockers |
 | [AI build log](docs/AI_BUILD_LOG.md) | Transparent record of AI-assisted engineering work and human review status |
 
 ## Development
@@ -84,6 +87,14 @@ When implementation starts, the separate stacks remain independently owned:
 - `pnpm` manages `apps/web`.
 - `uv` manages `services/platform`.
 - root `make` targets orchestrate cross-stack judge workflows only.
+
+## Known limitations
+
+This remains a fictional-data prototype, not an emergency service. Three source-register projects
+have no verified fact, multilingual Q&A copy awaits fluent human review, live OpenAI/Brave evidence
+has not been run, the hosted demo has no malware scanner, the complete staging smoke is pending,
+and production is closed until legal, privacy, security, and operational review. See the
+[`BE-122 evidence review`](docs/evidence/BE-122-final-backend-review.md) for the exact release items.
 
 ## Contributing and security
 
