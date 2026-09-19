@@ -860,3 +860,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the migration, service, checks, endpoints, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-080 Approved source chunk pipeline
+
+- **Task:** BE-080 — Approved source chunk pipeline.
+- **Outcome delivered:** Deterministic source chunking and a worker refresh service whose only input is a database view of public-project citations to approved, currently available source versions. Chunks keep exact offsets, hashes, token counts, language, section context, chunker version, and current active state; unchanged refreshes keep the same rows and ineligible material is deactivated.
+- **Files changed:** `services/platform/migrations/versions/0018_approved_source_chunks.py`, `src/shaidago/retrieval/{__init__,chunking,corpus}.py`, `src/shaidago/db/source_tables.py`, test support plus `tests/unit/retrieval/test_chunking.py` and `tests/integration/test_source_chunks.py`, `docs/{IMPLEMENTATION_PLAN,BACKEND_BUILD_ORDER,AI_BUILD_LOG}.md`.
+- **Schema/contract changes:** `source_versions.language` is an immutable four-locale field (existing rows default to the English source locale). New `app.source_chunks`, an internal approved-document view, and `public_api.source_chunks` carry the corpus; OpenAPI is unchanged.
+- **Security/privacy impact:** The worker cannot read source tables or any report table; it reads only the security-barrier approved-document view and may insert/update, but not delete, corpus rows. A security-definer trigger checks active rows against the immutable source text and current eligibility. The public view repeats eligibility at read time, so stale flags cannot expose an unavailable, unapproved, non-public, cross-project, or private record.
+- **Failure behaviour verified:** Forged chunk text is rejected at the database boundary; the public role cannot read the corpus table; the worker cannot delete chunks; source language cannot be rewritten; draft claims and pending versions never enter the corpus; availability or approval loss hides and deactivates existing chunks, and re-eligibility reuses the row.
+- **Commands run and results:** Targeted retrieval unit tests passed (5); targeted corpus integration tests passed (4); migration/source regressions passed (41); `make backend-verify` exited 0 (1152 passed); all six Circle 0 validators passed.
+- **Tests added or changed:** Five unit tests and four integration tests; source-version fixture inserts now supply the appended language column.
+- **Generated artifacts checked:** `make openapi-check` passed inside `backend-verify`; OpenAPI was unchanged. Metadata drift, empty-to-head, every-revision downgrade/upgrade, and one-step rollback tests passed.
+- **Known limitations/open decisions:** Current reviewed source versions default to English because the source register contains English evidence; adding a differently sourced version requires setting its supported language explicitly. Chunk building is a service for the future worker/maintenance command; scheduling arrives with the worker lifecycle. Embeddings and text-search vectors intentionally remain for BE-081.
+- **Commit/PR:** `feat: add approved public source chunk corpus`
+- **Next task may rely on:** `CorpusBuilder.refresh`, deterministic `ChunkSpan` values, and `public_api.source_chunks` as the only readable corpus projection.
+- **AI assistance used:** Completed the inherited chunker, designed the corpus boundary and migration, and wrote the tests and documentation.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; pending maintainer review.

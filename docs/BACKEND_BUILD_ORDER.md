@@ -866,6 +866,8 @@ Tests must try contact values, tracking code, handle, reviewer name, raw allegat
 4. Delete/deactivate chunks when source approval/availability changes without rewriting historical versions.
 5. Never ingest reports, contacts, reviewer notes, private discovery, or unapproved sources.
 
+> **Execution status (2026-09-19): complete.** Migration `0018_approved_source_chunks`, `retrieval/chunking.py`, and `retrieval/corpus.py` add deterministic paragraph/sentence/whitespace chunking and a worker-owned corpus that can read only the narrow `app.approved_source_documents` view. Each chunk preserves its project, source/version, exact character span, content hash, token count, source language, section label, and chunker version. A security-definer trigger rejects text, hashes, languages, source links, or active states that do not match an immutable approved source; the public retrieval view repeats current project visibility, source availability, and version approval checks so interrupted refreshes fail closed. Reprocessing is stable and keeps row IDs; unavailable, unapproved, or no-longer-public material is deactivated without changing the source version. Five unit and four PostgreSQL role/integration tests prove deterministic boundaries, approval and availability exclusion/reactivation, citation metadata, role grants, immutable language, and rejection of a private-text canary. `make backend-verify` passes with 1152 tests.
+
 ### BE-081 — Hybrid retrieval
 
 - Add PostgreSQL full-text vector and pgvector embedding columns/indexes.

@@ -244,11 +244,11 @@ Use UUIDv7 primary keys and UTC `timestamptz`. Avoid PostgreSQL enum types durin
 - `project_translations`: locale, title, plain summary, promised deliverable, review status.
 - `project_facts`: typed fact key/value, display value, verification state, observed/effective dates.
 - `sources`: publisher, type, canonical URL/document reference, publication/check dates, availability, public/review state.
-- `source_versions`: immutable retrieval metadata, content hash, permitted excerpt, retrieval time.
+- `source_versions`: immutable retrieval metadata, content hash, source language, permitted excerpt, retrieval time.
 - `fact_citations`: many-to-many links from each fact to a source/version and exact supporting passage.
 - `project_updates`: official or reviewed-community timeline entries, visibility, verification state.
 - `update_citations`: evidence links for each public timeline entry.
-- `source_chunks`: approved-public chunks only, content hash, text-search vector, embedding, token count.
+- `source_chunks`: approved-public, project-scoped chunks only, exact source offsets, content hash, language, section label, text-search vector, embedding, token count, and active state.
 - `escalation_routes`: locality, category, locale, organisation, instructions, verified date.
 
 This corrects the brief's most important modelling gap: sources do not become facts merely because they exist. Public facts and updates have explicit citations, and database constraints prevent public rows without at least one approved citation at publication time.

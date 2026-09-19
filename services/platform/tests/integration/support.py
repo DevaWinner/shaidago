@@ -96,7 +96,7 @@ async def insert_version(
     await session.execute(
         text(
             "INSERT INTO app.source_versions VALUES (:id, :s, :sha, :content, 'text/plain', :now, "
-            ":state, :reviewed, NULL, :now)"
+            ":state, :reviewed, NULL, :now, 'en')"
         ),
         {
             "id": version_id,
