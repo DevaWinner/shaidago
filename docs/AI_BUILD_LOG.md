@@ -1455,3 +1455,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Reconciled OpenAPI, route ownership, state rules, and backend handoff into one validator-backed BFF ledger; explicitly excluded unsafe generic forwarding and frontend policy decisions.
 - **Prompt summary:** Use the frontend loop and continue the next eligible frontend task.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-010 visual-direction discovery
+
+- **Task:** FE-010 — One-round design discovery.
+- **User outcome delivered:** The required human decision is recorded precisely rather than replaced with a generic component-library visual style or an AI-selected identity.
+- **Routes/components changed:** No runtime route, component, comp, token, direction contract, or design document changed.
+- **Backend operations/contract version:** No backend operation or contract changed.
+- **Public/private data handled:** No data flow changed.
+- **States implemented:** No UI state changed.
+- **Accessibility evidence:** No visual direction was selected; the future direction must state mobile, low-data, reduced-motion, contrast, and keyboard implications before visible implementation begins.
+- **Locales reviewed:** No message copy or translation changed.
+- **Performance/cache impact:** No runtime bundle or cache changed. The future decision must define a low-data fallback before visual assets/interactions are introduced.
+- **Commands run and results:** Confirmed Circle 0 is closed and Circle 1 explicitly requires a human choice. No design-generation, image-generation, external asset, or runtime command was run.
+- **Screenshots/traces/artifacts checked:** Reviewed the visual-circle entry/exit criteria. No existing visual surface, design authority, token set, logo, or approved comp exists to inspect.
+- **Known limitations/open decisions:** The maintainer must answer: (1) what a resident should feel/understand in the first viewport and what would feel untrustworthy; (2) which Abuja/Nigerian civic, documentary, publication, wayfinding, public-record, or community artifacts the product should sit beside and avoid copying; and (3) whether the standing workflow is comp-led or code-led. Then the maintainer must select one direction. FE-011–FE-013, Circle 4, and visible product surfaces remain blocked.
+- **Commit/PR:** `docs: record pending visual direction`
+- **Next task may rely on:** Circle 2/3 non-visual work may proceed from the closed Circle 0 contracts; no visual implementation may rely on this blocked task.
+- **AI assistance used:** Refused to invent a visual identity and recorded the exact human inputs required by the accepted build order.
+- **Prompt summary:** Use the frontend loop and continue after the Circle 0 gate.
+- **Human review:** required; maintainer visual-direction decision pending.

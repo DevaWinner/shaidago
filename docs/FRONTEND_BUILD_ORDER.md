@@ -261,6 +261,8 @@ This circle must pause for human choice. It may run in parallel with non-visual 
 
 ### FE-010 — One-round design discovery
 
+> **Execution status (2026-09-20): blocked.** This unattended loop cannot choose ShaidaGo's visual world. It needs the maintainer's answers to the three questions below and an explicit direction/build-path selection; no visible component, comp, direction contract, or `DESIGN.md` may be created until then. Circle 2 non-visual scaffolding may continue.
+
 Ask no more than three questions that materially change the work:
 
 1. What should a resident feel and understand in the first viewport, and what would make the product feel untrustworthy or wrong even if polished?
@@ -307,6 +309,8 @@ Write a compact direction contract containing:
 Plan for this contract to survive as the first emitted body comment in the root layout. Create a small surface brief for the initial route/flow if the tooling supports it. Do not create `DESIGN.md` from intention; it is written at Circle 15 from the implemented, reviewed world.
 
 ### Circle 1 exit gate
+
+> **Gate status (2026-09-20): open.** Awaiting maintainer-approved visual direction and build path from FE-010. FE-011 through FE-013 and all visible Circle 4+ surfaces remain ineligible; Circle 2/3 work whose dependencies are otherwise met may proceed.
 
 - Human has selected one direction and build path.
 - Direction handles public, report, reviewer, and source-reading modes within one world.
