@@ -441,3 +441,22 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the indexes and measurement, wrote the contract, snapshot, and property tests, and fixed the gaps the property test found.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-043 Idempotent evidence-backed seed pipeline (blocked)
+
+- **Task:** BE-043 — Idempotent evidence-backed seed pipeline.
+- **Outcome delivered:** None. The task is blocked and no code was written for it.
+- **Files changed:** Build order status note and this entry only.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** None. No project, source, citation, escalation route, translation, or fictional-report fixture was created outside the synthetic rows inside tests, and none of those is presented as real.
+- **Failure behaviour verified:** Not applicable.
+- **Commands run and results:** None for this task.
+- **Tests added or changed:** None.
+- **Generated artifacts checked:** None.
+- **Known limitations/open decisions:** BE-043 depends on BE-001, the verified six-project source register, which the maintainer deferred to just before this task; the loop's instructions forbid researching or inventing projects. The tables it would seed now exist (BE-040 to BE-042) and their constraints refuse uncited or unapproved public records, so the pipeline's target is ready. A partial build (versioned JSON schemas, validate-before-transaction, natural-key upserts, production and non-local refusal, counts and evidence-gap reporting, and a run-twice idempotency proof) could be written and tested against synthetic fixtures, but it would exercise a data contract that the real register has not yet shaped, so it was not started.
+- **Unblock:** The maintainer supplies the verified source register (BE-001) with real public sources and exact passages, confirms the reviewed fields for four locales or honest machine-assisted status, and confirms the escalation guidance. BE-043 then builds against that register, and the Circle 4 and Circle 0 gates can close.
+- **Commit/PR:** `docs: record BE-043 as blocked on the source register`
+- **Next task may rely on:** Nothing from this task. Circle 5 does not depend on it.
+- **AI assistance used:** Assessed the dependency and recorded the blocker.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

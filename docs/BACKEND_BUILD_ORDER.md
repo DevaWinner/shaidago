@@ -502,6 +502,8 @@ Expose public trust metadata: information class, verification state, source date
 5. Print counts added/updated/unchanged and evidence gaps without private values.
 6. Run twice and prove identical database state on the second run.
 
+> **Execution status (2026-09-19): blocked.** Blocked on BE-001 (the verified source register, deferred by the maintainer); no seed data may be invented. The tables and constraints the seed targets exist. Unblock: supply the verified register with real public sources and exact passages, reviewed locale text or honest machine-assisted status, and escalation guidance.
+
 ### BE-044 — Public list and detail services
 
 Implement:
