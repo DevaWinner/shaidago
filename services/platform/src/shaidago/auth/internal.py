@@ -7,10 +7,11 @@ reviewer, reporter, or tracking authority.
 
 import hmac
 import logging
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+from shaidago.shared.context import REQUEST_ID_HEADER
 from shaidago.shared.problems import Problem, problem_response
 
 if TYPE_CHECKING:
@@ -78,9 +79,15 @@ class InternalCallerRegistry:
 class InternalAuthMiddleware:
     """Pure ASGI middleware that runs before any router and answers every failure identically."""
 
-    def __init__(self, app: ASGIApp, registry: InternalCallerRegistry) -> None:
+    def __init__(
+        self,
+        app: ASGIApp,
+        registry: InternalCallerRegistry,
+        new_request_id: Callable[[], str],
+    ) -> None:
         self._app = app
         self._registry = registry
+        self._new_request_id = new_request_id
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         if scope["type"] == "lifespan":
@@ -97,8 +104,17 @@ class InternalAuthMiddleware:
         raw = headers.get(b"authorization")
         caller_id = self._registry.authenticate(raw.decode("latin-1") if raw else None)
         if caller_id is None:
-            _logger.warning("internal caller rejected", extra={"event": "internal_auth_denied"})
-            response = problem_response(UNAUTHENTICATED, headers={"WWW-Authenticate": "Bearer"})
+            # A denied caller is untrusted, so its forwarded request ID is ignored: mint our own.
+            request_id = self._new_request_id()
+            _logger.warning(
+                "internal caller rejected",
+                extra={"security_event": "internal_auth_denied", "request_id": request_id},
+            )
+            response = problem_response(
+                UNAUTHENTICATED,
+                request_id=request_id,
+                headers={"WWW-Authenticate": "Bearer", REQUEST_ID_HEADER: request_id},
+            )
             await response(scope, receive, send)
             return
         scope.setdefault("state", {})["caller_id"] = caller_id

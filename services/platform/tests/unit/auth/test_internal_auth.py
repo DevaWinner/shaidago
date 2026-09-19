@@ -33,6 +33,10 @@ def app_with_probe(**environ: str) -> tuple[FastAPI, list[str]]:
     return app, hits
 
 
+def without_request_id(body: dict[str, object]) -> dict[str, object]:
+    return {key: value for key, value in body.items() if key != "request_id"}
+
+
 def bearer(secret: str, caller: str = "web") -> dict[str, str]:
     return {"Authorization": f"Bearer {caller}.{secret}"}
 
@@ -73,7 +77,8 @@ def test_missing_malformed_and_wrong_credentials_get_one_generic_denial(
     assert responses.headers["content-type"] == "application/problem+json"
     assert responses.headers["www-authenticate"] == "Bearer"
     assert responses.headers["cache-control"] == "no-store"
-    assert responses.json() == baseline.json()
+    assert without_request_id(responses.json()) == without_request_id(baseline.json())
+    assert responses.json()["request_id"] == responses.headers["x-request-id"]
     assert responses.json()["code"] == "unauthenticated"
     assert hits == []
 
@@ -128,4 +133,4 @@ def test_credential_is_never_written_to_logs_or_the_response(
     assert secret not in response.text
     assert secret not in caplog.text
     security = [r for r in caplog.records if r.name == "shaidago.security"]
-    assert [r.__dict__.get("event") for r in security] == ["internal_auth_denied"]
+    assert [r.__dict__.get("security_event") for r in security] == ["internal_auth_denied"]

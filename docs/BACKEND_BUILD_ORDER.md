@@ -341,6 +341,8 @@ Do not confuse internal caller authentication with reviewer authentication or re
 5. Add canary tests that fail if any sensitive value reaches captured logs or exception output.
 6. Never log full request/response bodies.
 
+> **Execution status (2026-09-19): partial.** Request context, the redacting JSON logger, and canary tests for logs and exception output are implemented (99 passing tests, Ruff and Pyright strict clean). Propagation of the request ID into database audit metadata and worker messages is deferred to the tasks that create the audit table and the worker envelope (BE-090), and the error code in the access line arrives with BE-024.
+
 ### BE-024 — Problem details and exception boundary
 
 Implement one RFC 9457-style `application/problem+json` shape containing `type`, `title`, safe `status`, stable `code`, safe `detail`, `instance` or request ID, and field errors where appropriate.

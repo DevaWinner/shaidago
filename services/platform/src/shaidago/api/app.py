@@ -9,6 +9,7 @@ from fastapi import FastAPI
 
 from shaidago.api import v1
 from shaidago.auth.internal import InternalAuthMiddleware, InternalCallerRegistry
+from shaidago.shared.context import RequestContextMiddleware
 from shaidago.shared.lifecycle import open_resources
 
 if TYPE_CHECKING:
@@ -38,9 +39,12 @@ def create_app(settings: Settings, dependencies: Dependencies) -> FastAPI:
     app.state.settings = settings
     app.state.dependencies = dependencies
     app.include_router(v1.router)
-    # Added last so it is outermost: caller authentication runs before every router and any
-    # other middleware that reads forwarded context.
+    # Middleware order is outermost-last: authentication must run before request context so
+    # forwarded headers are trusted only from an authenticated caller.
+    app.add_middleware(RequestContextMiddleware, new_id=dependencies.new_request_id)
     app.add_middleware(
-        InternalAuthMiddleware, registry=InternalCallerRegistry.from_settings(settings.auth)
+        InternalAuthMiddleware,
+        registry=InternalCallerRegistry.from_settings(settings.auth),
+        new_request_id=dependencies.new_request_id,
     )
     return app
