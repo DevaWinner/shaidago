@@ -26,7 +26,7 @@ COMPOSE := docker compose --project-name shaidago --env-file $(INFRA_ENV) -f inf
 .DEFAULT_GOAL := help
 .PHONY: help backend-sync backend-format backend-format-check backend-lint backend-typecheck \
 	backend-unit backend-integration backend-contract backend-security backend-test backend-verify \
-	openapi-generate openapi-check migrate db-roles reviewer-bootstrap kek-rotate infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
+	openapi-generate openapi-check migrate db-roles seed-demo reviewer-bootstrap kek-rotate infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
 
 help:
 	@echo "Backend targets: backend-sync backend-format backend-format-check backend-lint"
@@ -88,6 +88,10 @@ db-roles:
 	$(RUN_WITH_ENV) python -m shaidago.db.provision
 
 # Creates the first reviewer from REVIEWER_BOOTSTRAP_* (idempotent; never overwrites a password).
+# Loads the verified-evidence demo data (local and test databases only; idempotent).
+seed-demo:
+	$(RUN_WITH_ENV) python -m shaidago.seed
+
 reviewer-bootstrap:
 	$(RUN_WITH_ENV) python -m shaidago.auth.bootstrap
 

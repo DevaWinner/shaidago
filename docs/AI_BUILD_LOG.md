@@ -606,3 +606,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Fetched and verified the sources, corrected the draft, and wrote the validator, renderer, and tests.
 - **Prompt summary:** The maintainer supplied a draft register and asked for it to be improved without invention and used to close Circle 0.
 - **Human review:** None yet; pending maintainer review.
+
+## 2026-09-19 — BE-043 evidence-backed seed pipeline
+
+- **Task:** BE-043 — Idempotent evidence-backed seed pipeline (unblocked by BE-001).
+- **Outcome delivered:** `shaidago.seed` (`plan.py`, `apply.py`, `__main__.py`) and `make seed-demo`. It reads `data/source-register.json`, validates it with the register validator before any connection, builds a database-independent plan, and applies it in one transaction.
+- **Files changed:** `services/platform/src/shaidago/seed/*`, `Makefile`, `README.md`, `CLAUDE.md`, build order notes, tests `tests/unit/seed/test_plan.py` and `tests/integration/test_seed.py`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** Refuses staging, production, a missing `APP_ENV`, and any non-local host, without echoing credentials. Seeds no private data, no escalation route, and no fictional report. Source versions store only the cited excerpts, not full articles.
+- **Failure behaviour verified:** An invalid register aborts before anything is written; production, staging, empty, and remote targets are refused; a second run through the real command reports every row unchanged and leaves a full-table snapshot identical; reviewer-owned status, visibility, and reviewed translation text survive a rerun; changed evidence adds one version and leaves the old one byte-identical without duplicating a source; every citation still quotes its stored excerpt exactly; through the public API the seeded projects are visible with no facts, a Hausa translation is served as such, and a Yoruba request is labelled as English fallback.
+- **Commands run and results:** `make backend-verify` exit 0 (590 passed). `make seed-demo` was run twice on a scratch database (first run added 3 localities, 3 projects, 6 translations, 3 sources, 3 versions, 7 facts, 11 citations; second run changed nothing) and once with `APP_ENV=production` (refused). Circle 0 validators passed.
+- **Tests added or changed:** 12 unit and 8 integration tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** Only 3 of 6 projects are seeded (the other three have no verified fact). Seeded facts are drafts and approved evidence needs a reviewer, so the public API shows no facts yet. Public status stays `unknown`; the register proposes `completed` for two projects pending review. For AMAC-01 and BWARI-02 the English summary is the first verified statement (`machine_assisted`, no reviewer) and `promised_deliverable` is empty because the register supplies none. Stale citations to an older pending version remain when evidence changes. Fictional report fixtures need the report tables (BE-061 onward).
+- **Commit/PR:** `feat: add the evidence-backed demo seed pipeline`
+- **Next task may rely on:** A loadable demo dataset and the register as the single source of seed facts.
+- **AI assistance used:** Designed and wrote the pipeline and tests.
+- **Prompt summary:** The maintainer asked to complete the pending circles using the register.
+- **Human review:** None yet; pending maintainer review.

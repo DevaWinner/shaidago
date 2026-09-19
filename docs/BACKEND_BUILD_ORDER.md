@@ -506,7 +506,7 @@ Expose public trust metadata: information class, verification state, source date
 5. Print counts added/updated/unchanged and evidence gaps without private values.
 6. Run twice and prove identical database state on the second run.
 
-> **Execution status (2026-09-19): blocked.** Blocked on BE-001 (the verified source register, deferred by the maintainer); no seed data may be invented. The tables and constraints the seed targets exist. Unblock: supply the verified register with real public sources and exact passages, reviewed locale text or honest machine-assisted status, and escalation guidance.
+> **Execution status (2026-09-19): complete for the verified evidence.** Previously blocked on BE-001, which now exists. `python -m shaidago.seed` (`make seed-demo`) validates the source register before opening a transaction, refuses any `APP_ENV` other than development or test and any non-local host (there is no production seed mode), then upserts by natural key in one transaction and prints added, updated, and unchanged counts plus the evidence gaps. It seeds only facts with a passage verified word for word: 3 projects, 6 translations, 3 sources, 3 pending versions holding just the cited excerpts, 7 draft facts, and 11 citations. Nothing is published or approved: versions stay `pending`, facts stay drafts, and public status stays `unknown` until a reviewer acts. Three projects (AMAC-02, AMAC-03, BWARI-03) are not seeded because no fact about them was verified, no escalation route is seeded, and the fictional reports wait for the report tables. A second run leaves the database byte-for-byte identical (`tests/integration/test_seed.py`), reviewer-owned fields and reviewed text survive a rerun, and changed evidence adds a version without rewriting history.
 
 ### BE-044 — Public list and detail services
 
@@ -547,6 +547,8 @@ Requirements:
 - Generated OpenAPI is committed with no unexplained diff.
 
 > **Gate status (2026-09-19): open.** Met: public endpoints are paginated, indexed with committed plan evidence, contract-tested with Schemathesis, snapshot- and denylist-guarded, and contain no private data; every displayed fact and update resolves to an approved citation (enforced by database triggers and proven adversarially); locale fallback is labelled honestly; the generated OpenAPI is committed and `make openapi-check` is part of `make backend-verify` (333 passing tests). **Not met:** the seed command and the six real cited projects. BE-001 (the verified source register) is deferred by the maintainer, so BE-043 is blocked and no project, source, escalation route, or translation exists outside synthetic tests. The Circle 4 exit criteria "six cited projects load" and "seed command is valid, idempotent, and refuses unsafe targets" stay open until then, together with the Circle 0 gate.
+
+> **Gate status (2026-09-19, updated): closed for the verified evidence, with a caveat.** The seed command is valid, idempotent, and refuses unsafe targets. Three cited projects load, not six: each has facts with verified passages, and every displayed fact or update still needs an approved citation, which the database enforces (seeded facts are drafts and are not shown). The other three projects wait for readable sources. Locale records exist for one project in four languages (all `machine_assisted`) and one language for the others, with an honest English-fallback label. The generated OpenAPI has no unexplained diff.
 
 ## 8. Circle 5 — reviewer identity, sessions, and authorisation
 
