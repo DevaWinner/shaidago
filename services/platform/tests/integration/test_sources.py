@@ -480,7 +480,12 @@ async def test_public_views_show_only_published_cited_material_and_no_tables(
     assert cites[0].source_id == source
     assert source in sources
     assert unrelated not in sources
-    assert not cite_columns & {"content_text", "review_state", "source_version_id"}
+    # The stored page text and the review state stay private. The version id is published on
+    # purpose (migration 0026): a reviewer must cite an approved version by id, and the row already
+    # publishes that version's source, URL, passage and retrieval time.
+    assert not cite_columns & {"content_text", "review_state"}
+    assert "source_version_id" in cite_columns
+    assert cites[0].source_version_id != cites[0].source_id
     for table in ("app.sources", "app.source_versions", "app.project_facts", "app.fact_citations"):
 
         async def read(name: str = table) -> None:

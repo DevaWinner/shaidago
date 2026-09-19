@@ -64,13 +64,15 @@ _UPDATES = text(
     "ORDER BY effective_on DESC NULLS LAST, id"
 )
 _FACT_CITATIONS = text(
-    "SELECT c.fact_id AS item_id, c.source_id, c.source_title, c.publisher, c.canonical_url, "
+    "SELECT c.fact_id AS item_id, c.source_version_id, c.source_id, c.source_title, c.publisher, "
+    "c.canonical_url, "
     "c.source_type, c.information_class, c.retrieved_at, c.passage, c.location_label "
     "FROM public_api.fact_citations c JOIN public_api.project_facts f ON f.id = c.fact_id "
     "WHERE f.project_slug = :slug ORDER BY c.location_label, c.source_id"
 )
 _UPDATE_CITATIONS = text(
-    "SELECT c.update_id AS item_id, c.source_id, c.source_title, c.publisher, c.canonical_url, "
+    "SELECT c.update_id AS item_id, c.source_version_id, c.source_id, c.source_title, c.publisher, "
+    "c.canonical_url, "
     "c.source_type, c.information_class, c.retrieved_at, c.passage, c.location_label "
     "FROM public_api.update_citations c JOIN public_api.project_updates u ON u.id = c.update_id "
     "WHERE u.project_slug = :slug ORDER BY c.location_label, c.source_id"

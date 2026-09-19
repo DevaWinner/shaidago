@@ -4000,7 +4000,7 @@
               "information_class": "official_source",
               "last_checked_on": "2026-09-19",
               "statement": "synthetic-example",
-              "verification_state": "verified_official"
+              "verification_state": "awaiting_verification"
             }
           },
           "headers": {},
@@ -4310,7 +4310,7 @@
               "information_class": "official_source",
               "last_checked_on": "2026-09-19",
               "statement": "synthetic-example",
-              "verification_state": "verified_official"
+              "verification_state": "awaiting_verification"
             }
           },
           "headers": {},

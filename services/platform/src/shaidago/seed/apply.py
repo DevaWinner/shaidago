@@ -21,6 +21,15 @@ from shaidago.seed.plan import ALL_LOCALES, ProjectPlan, SeedPlan
 from shaidago.shared.clock import Clock
 from shaidago.shared.ids import IdGenerator
 
+# What an approved seeded version asserts, recorded on the row itself so the claim travels with
+# the evidence: the quoted excerpt is what the page said when a human read it. `load_register`
+# refuses a register whose passage hashes do not match their text, so that check has already run.
+# It asserts nothing about whether the claim is true; the fact's verification state carries that,
+# and the register holds a single media report at `awaiting_verification`.
+REGISTER_APPROVAL_NOTE = (
+    "Approved from docs/SOURCE_REGISTER.md: the maintainer read the page, recorded the exact "
+    "passage and its hash, and the register validator re-checks every passage hash before seeding."
+)
 SAFE_ENVIRONMENTS = frozenset({"development", "test"})
 LOCAL_HOSTS = frozenset({"localhost", "127.0.0.1", "::1", "postgres"})
 # Staging is the one deployed target that may hold demo data, and only when the operator asks for
@@ -258,23 +267,46 @@ async def _sources(s: AsyncSession, plan: SeedPlan, ctx: Ctx) -> dict[str, UUID]
         # evidence adds a new one, and the old one is never edited or removed.
         version = await _one(
             s,
-            "SELECT id FROM app.source_versions WHERE source_id = :s AND content_sha256 = :h",
+            "SELECT id, review_state FROM app.source_versions "
+            "WHERE source_id = :s AND content_sha256 = :h",
             s=source_id, h=src.sha256,
         )  # fmt: skip
         if version is None:
             versions[src.url] = ctx.ids.new()
             await _run(
                 s,
+                # Approved, not pending. `load_register` refuses to return a register whose
+                # passage hashes do not match their text, so every excerpt reaching this line has
+                # been checked against the digest a human recorded when they read the page.
+                # Approval here means only that: the quoted text is what the source says. Whether
+                # the claim is *true* stays with the fact's verification state, which the register
+                # holds at `awaiting_verification` for a single media report.
                 "INSERT INTO app.source_versions (id, source_id, content_sha256, content_text, "
-                "media_type, retrieved_at, review_state, created_at) VALUES "
-                "(:id, :s, :h, :c, 'text/plain', :r, 'pending', :now)",
+                "media_type, retrieved_at, review_state, reviewed_at, reviewer_note, created_at) "
+                "VALUES (:id, :s, :h, :c, 'text/plain', :r, 'approved', :r, :note, :now)",
                 id=versions[src.url], s=source_id, h=src.sha256, c=src.content,
-                r=src.checked_at, now=ctx.now,
+                r=src.checked_at, now=ctx.now, note=REGISTER_APPROVAL_NOTE,
             )  # fmt: skip
             ctx.report.bump("versions", "added")
         else:
             versions[src.url] = version.id
-            ctx.report.bump("versions", "unchanged")
+            if version.review_state == "pending":
+                # The state machine allows pending -> in_review -> approved and nothing shorter,
+                # so both steps run here rather than writing the end state directly.
+                await _run(
+                    s,
+                    "UPDATE app.source_versions SET review_state = 'in_review' WHERE id = :id",
+                    id=version.id,
+                )
+                await _run(
+                    s,
+                    "UPDATE app.source_versions SET review_state = 'approved', "
+                    "reviewed_at = :r, reviewer_note = :note WHERE id = :id",
+                    id=version.id, r=src.checked_at, note=REGISTER_APPROVAL_NOTE,
+                )  # fmt: skip
+                ctx.report.bump("versions", "updated")
+            else:
+                ctx.report.bump("versions", "unchanged")
     return versions
 
 
@@ -301,14 +333,26 @@ async def _facts(
                 "INSERT INTO app.project_facts (id, project_id, kind, statement, effective_on, "
                 "last_checked_on, verification_state, visibility, published_at, created_at, "
                 "updated_at) VALUES (:id, :p, :k, :s, NULL, :chk, 'awaiting_verification', "
-                "'draft', NULL, :now, :now)",
+                ":visibility, :published_at, :now, :now)",
                 id=fact_id, p=projects[fact.project_slug], k=fact.kind, s=fact.statement,
                 chk=checked[fact.project_slug], now=ctx.now,
+                visibility="public", published_at=ctx.now,
             )  # fmt: skip
             ctx.report.bump("facts", "added")
         else:
             fact_id = row.id
-            if row.visibility == "draft" and row.statement != fact.statement:
+            if row.visibility == "draft":
+                # Seeded before cited drafts were published; publish it with its citation intact.
+                await _run(
+                    s,
+                    "UPDATE app.project_facts SET statement = :s, visibility = 'public', "
+                    "published_at = :now, updated_at = :now WHERE id = :id",
+                    s=fact.statement,
+                    now=ctx.now,
+                    id=fact_id,
+                )
+                ctx.report.bump("facts", "updated")
+            elif row.statement != fact.statement:
                 await _run(
                     s,
                     "UPDATE app.project_facts SET statement = :s, updated_at = :now WHERE id = :id",
