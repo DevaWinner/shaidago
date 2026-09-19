@@ -21,3 +21,12 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Human review:** The maintainer authorised selection of an appropriate license; the exact license addition remains reviewable in commit history.
 - **Verification:** The license text was checked against the Open Source Initiative template, repository references were updated, and GitHub license detection was checked after publication.
 - **Result:** ShaidaGo is licensed under MIT, copyright 2026 Aniekan Winner Anietie.
+
+## 2026-09-19 — Detailed backend and frontend build orders
+
+- **Task:** Convert the accepted architecture into implementation-grade backend and frontend sequences that lower-capability coding models can execute without inventing requirements or trust boundaries.
+- **Prompt summary:** Create a no-stone-unturned backend build order, then a frontend build order, grouping each task into a closed circle that explains every aspect of completion.
+- **AI assistance used:** Produced dependency maps, closed-circle execution rules, 72 backend task packets, 91 frontend task packets, entry/exit gates, adversarial cases, verification evidence, and handoff templates. The frontend order also includes a mandatory human-approved visual-world gate and bounded finish-review workflow.
+- **Human review:** Pending maintainer review. The task IDs and ordering are proposals constrained by the accepted implementation plan; record changes or approval before treating the orders as frozen.
+- **Verification:** Both documents passed unique task-heading checks, local Markdown-link resolution, and whitespace validation. Cross-links in the README, documentation index, and implementation plan were updated.
+- **Result:** Backend and frontend work now have explicit, dependency-ordered execution specifications; implementation remains at Gate 0.

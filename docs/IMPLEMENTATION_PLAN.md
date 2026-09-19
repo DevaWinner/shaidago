@@ -485,6 +485,8 @@ Without OpenAI or Brave keys, explicit fixture adapters keep the full workflow r
 
 The order below creates vertical, demonstrable increments. Its critical path is approximately 42–49 focused build hours plus recording, leaving only a small contingency before the stated deadline. Do not build all database tables first and postpone the user journey.
 
+This section is the milestone summary. Use [`BACKEND_BUILD_ORDER.md`](BACKEND_BUILD_ORDER.md) and [`FRONTEND_BUILD_ORDER.md`](FRONTEND_BUILD_ORDER.md) for the task-level dependency order, implementation steps, failure cases, tests, evidence, and circle exit gates. Those documents operationalise this plan; this plan remains authoritative if wording conflicts.
+
 ### Gate 0 — evidence and scope lock (2–3 hours)
 
 1. Select six real projects: three AMAC, three Bwari, with at least one health, education, water, and road/public-works example across the set.

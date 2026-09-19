@@ -9,8 +9,9 @@ When documents overlap, use this order:
 1. [`PRODUCT.md`](../PRODUCT.md) for product identity, pilot scope, users, capabilities, and non-goals.
 2. [`PRODUCT_BRIEF.md`](PRODUCT_BRIEF.md) for detailed journeys, trust model, requirements, and acceptance criteria.
 3. [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) for accepted technical choices, boundaries, data model, quality gates, and build order.
-4. The generated OpenAPI contract for implemented HTTP shapes once `contracts/openapi.json` exists.
-5. Migrations and executable tests for implemented behaviour.
+4. [`BACKEND_BUILD_ORDER.md`](BACKEND_BUILD_ORDER.md) and [`FRONTEND_BUILD_ORDER.md`](FRONTEND_BUILD_ORDER.md) for task-level execution. They operationalise the implementation plan and do not override it.
+5. The generated OpenAPI contract for implemented HTTP shapes once `contracts/openapi.json` exists.
+6. Migrations and executable tests for implemented behaviour.
 
 If implementation reveals a conflict, do not silently choose one version. Correct the higher-level document or record the decision, then update code and tests together.
 
@@ -20,6 +21,8 @@ If implementation reveals a conflict, do not silently choose one version. Correc
 | --- | --- | --- |
 | [`PRODUCT_BRIEF.md`](PRODUCT_BRIEF.md) | Active | What problem and user outcome are we building? |
 | [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) | Accepted architecture | How will the separate frontend/BFF and backend stacks deliver it safely? |
+| [`BACKEND_BUILD_ORDER.md`](BACKEND_BUILD_ORDER.md) | Execution specification | In what exact order should the API, worker, persistence, security, and operations be implemented and proven? |
+| [`FRONTEND_BUILD_ORDER.md`](FRONTEND_BUILD_ORDER.md) | Execution specification | In what exact order should the UI/BFF, visual system, four-language experience, PWA, and reviewer surfaces be implemented and proven? |
 | [`AI_BUILD_LOG.md`](AI_BUILD_LOG.md) | Active log | Where did AI assist, what was reviewed, and what was the result? |
 
 ## Planned evidence documents

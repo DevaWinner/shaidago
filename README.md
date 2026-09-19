@@ -68,6 +68,8 @@ Start with the [documentation index](docs/README.md).
 | [PRODUCT.md](PRODUCT.md) | Durable product scope, users, operating context, and non-goals |
 | [Product brief](docs/PRODUCT_BRIEF.md) | Detailed problem, journeys, functional requirements, and acceptance criteria |
 | [Implementation plan](docs/IMPLEMENTATION_PLAN.md) | Chosen stack, architecture, security model, quality gates, and build order |
+| [Backend build order](docs/BACKEND_BUILD_ORDER.md) | Closed implementation circles for the FastAPI API, worker, data, security, tests, and deployment |
+| [Frontend build order](docs/FRONTEND_BUILD_ORDER.md) | Closed implementation circles for the Next.js UI/BFF, localisation, accessibility, PWA, and visual finish |
 | [AGENTS.md](AGENTS.md) | Repository-wide implementation and code-review rules for coding agents |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Human contribution workflow and pull-request expectations |
 | [SECURITY.md](SECURITY.md) | Private vulnerability reporting and prototype data policy |

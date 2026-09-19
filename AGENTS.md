@@ -11,7 +11,7 @@ The repository is currently at the architecture/foundation stage. Do not claim t
 ## Read before changing code
 
 1. Inspect `git status`, recent changes, and the files in scope. Preserve unrelated and uncommitted work.
-2. Read `PRODUCT.md`, `docs/PRODUCT_BRIEF.md`, `docs/IMPLEMENTATION_PLAN.md`, and the nearest applicable `AGENTS.md`.
+2. Read `PRODUCT.md`, `docs/PRODUCT_BRIEF.md`, `docs/IMPLEMENTATION_PLAN.md`, the relevant `docs/BACKEND_BUILD_ORDER.md` or `docs/FRONTEND_BUILD_ORDER.md`, and the nearest applicable `AGENTS.md`.
 3. Identify the build gate and acceptance criterion that the change advances.
 4. Trace the complete browser → BFF → API → database/worker boundary for affected flows before editing.
 5. Prefer a small vertical change with tests and documentation over broad scaffolding that does not produce a working user outcome.
@@ -24,8 +24,9 @@ Use this order when repository sources conflict:
 2. `PRODUCT.md` for product scope, pilot, users, languages, and non-goals.
 3. `docs/PRODUCT_BRIEF.md` for detailed user journeys, trust rules, requirements, and acceptance criteria.
 4. `docs/IMPLEMENTATION_PLAN.md` for accepted architecture, stack, data model, security controls, tests, and build order.
-5. Generated `contracts/openapi.json` for implemented HTTP contracts.
-6. Migrations and executable tests for implemented behaviour.
+5. `docs/BACKEND_BUILD_ORDER.md` and `docs/FRONTEND_BUILD_ORDER.md` for task-level execution. They operationalise, but never override, the implementation plan.
+6. Generated `contracts/openapi.json` for implemented HTTP contracts.
+7. Migrations and executable tests for implemented behaviour.
 
 Do not silently work around a contradiction. Correct the authoritative document, add an architecture decision record when appropriate, and change code and tests in the same pull request.
 
