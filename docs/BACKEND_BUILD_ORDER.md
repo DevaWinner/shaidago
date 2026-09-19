@@ -316,6 +316,8 @@ Requirements:
 4. Keep docs/OpenAPI available in development/test, authenticated or disabled in staging/production, while still supporting deterministic schema generation.
 5. Add a test factory that injects clocks, randomness, repositories, and provider fixtures.
 
+> **Execution status (2026-09-19): partial.** The factory, `/v1` router mount, config-gated docs, deterministic schema generation, and reverse-order resource lifecycle are implemented and tested (60 passing tests, Ruff and Pyright strict clean). Item 5's clock and randomness injection is deferred to BE-034, which owns those primitives, and real pools and provider clients arrive with BE-031 and later; the lifespan is proven with recording fakes.
+
 ### BE-022 — Internal caller authentication
 
 The API is private but must not trust network location alone.

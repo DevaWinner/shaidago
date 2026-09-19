@@ -5,50 +5,18 @@ from typing import TYPE_CHECKING
 import pytest
 
 from shaidago.shared.config import ConfigurationError, KeyRing, Settings, load_settings
+from tests.factories import (
+    CREDENTIAL,
+    KEY_A,
+    KEY_B,
+    PLACEHOLDER_KEY,
+    development_environ,
+    production_environ,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
-
-# Synthetic test-only key material; none of it protects anything.
-KEY_A = base64.b64encode(b"a" * 32).decode()
-KEY_B = base64.b64encode(b"b" * 32).decode()
-PLACEHOLDER_KEY = base64.b64encode(b"change-me-".ljust(32, b"x")).decode()
-CREDENTIAL = "credential-" + "c" * 40
 CANARY = "canary-secret-value-do-not-leak"
-
-
-def development_environ() -> dict[str, str]:
-    return {
-        "APP_ENV": "development",
-        "DATABASE_URL": "postgresql+psycopg://app:dbpass-canary@localhost:5432/shaidago",
-        "REDIS_URL": "redis://localhost:6379/0",
-        "OBJECT_STORE_ENDPOINT_URL": "http://localhost:9000",
-        "OBJECT_STORE_BUCKET": "evidence-dev",
-        "OBJECT_STORE_ACCESS_KEY_ID": "access-id-canary",
-        "OBJECT_STORE_SECRET_ACCESS_KEY": "access-secret-canary",
-        "ENCRYPTION_KEKS": f"kek-1={KEY_A}",
-        "ENCRYPTION_ACTIVE_KEK_VERSION": "kek-1",
-        "TRACKING_PEPPERS": f"pepper-1={KEY_B}",
-        "TRACKING_ACTIVE_PEPPER_VERSION": "pepper-1",
-        "IDEMPOTENCY_PEPPER": KEY_B,
-        "INTERNAL_WEB_CREDENTIAL_CURRENT": CREDENTIAL,
-        "SESSION_HMAC_KEY": KEY_A,
-    }
-
-
-def production_environ() -> dict[str, str]:
-    environ = development_environ()
-    environ.update(
-        {
-            "APP_ENV": "production",
-            "SESSION_COOKIE_NAME": "__Host-sg_session",
-            "SESSION_COOKIE_SECURE": "true",
-            "PROVIDER_MODE": "live",
-            "OPENAI_API_KEY": "openai-live-key-canary",
-            "SEARCH_API_KEY": "search-live-key-canary",
-        }
-    )
-    return environ
 
 
 def failure(environ: Mapping[str, str]) -> ConfigurationError:

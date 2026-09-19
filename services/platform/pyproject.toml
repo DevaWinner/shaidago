@@ -33,6 +33,7 @@ dev = [
     "schemathesis",
     "bandit",
     "pip-audit",
+    "httpx2",           # Starlette TestClient transport (httpx is deprecated there)
 ]
 
 [build-system]
@@ -53,16 +54,14 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 select = [
     "E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF", "S", "T20", "PT", "ASYNC",
-    "DTZ", "PL", "TID", "PERF", "RET", "ARG", "PTH", "TCH", "FAST",
+    "DTZ", "PL", "TID", "PERF", "RET", "ARG", "PTH", "FAST",
 ]
+# TCH is deliberately not selected: FastAPI and Pydantic resolve annotations at runtime, so
+# moving imports behind TYPE_CHECKING breaks dependency injection and model validation.
 
 [tool.ruff.lint.per-file-ignores]
-# Assertions are the point of a test.
-"tests/**" = ["S101"]
-
-[tool.ruff.lint.flake8-type-checking]
-# Pydantic evaluates annotations at runtime, so they must stay real imports.
-runtime-evaluated-base-classes = ["pydantic.BaseModel"]
+# Assertions are the point of a test, and literal HTTP status codes read best inline.
+"tests/**" = ["S101", "PLR2004"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["shaidago"]
