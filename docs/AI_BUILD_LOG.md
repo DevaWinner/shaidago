@@ -1580,3 +1580,22 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Implemented the workflow and its negative-path validator, resolved the setup action revision, and kept browser data artifacts out of pull-request visibility.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
 - **Human review:** none yet; unattended loop, pending maintainer review.
+## 2026-09-20 — FE-010 visual-direction discovery (resolved)
+
+- **Task:** FE-010 — One-round design discovery.
+- **User outcome delivered:** The maintainer's Field ledger choice now constrains the public product before any visible component is built.
+- **Routes/components changed:** No runtime route or component changed. [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) records the accepted pre-implementation constraints.
+- **Backend operations/contract version:** No backend operation or contract changed.
+- **Public/private data handled:** No runtime data flow changed. The direction explicitly preserves the public-record/private-report boundary.
+- **States implemented:** No UI state changed; the decision requires all later visual states to retain text labels, timestamps, and explicit evidence boundaries.
+- **Accessibility evidence:** The approved constraints require four-locale typography, text-first public reading, keyboard-visible evidence links, reduced-motion equivalence, and low-data resilience. These are direction requirements, not completed UI evidence.
+- **Locales reviewed:** No message copy or translation changed.
+- **Performance/cache impact:** No runtime bundle or cache changed. The direction prohibits decorative dependencies as a substitute for evidence and requires a text-first fallback.
+- **Commands run and results:** Ran Impeccable's direction concept seed and local decision board. The maintainer selected Field ledger; no generated image, remote asset, runtime UI, or provider data was introduced.
+- **Screenshots/traces/artifacts checked:** No product surface exists yet. Temporary local decision-board artifacts were removed after the selection was recorded.
+- **Known limitations/open decisions:** FE-011 through FE-013 remain to record the comparison, workflow preference, and implementation contract. `DESIGN.md` remains intentionally absent until Circle 15.
+- **Commit/PR:** `docs: record the approved field ledger direction`
+- **Next task may rely on:** FE-011 may evaluate the accepted direction against the alternatives; no visible product UI is authorised until the complete Circle 1 gate closes.
+- **AI assistance used:** Presented a product-grounded visual-direction hand and translated the maintainer's selection into concrete trust and boundary constraints.
+- **Prompt summary:** Using Impeccable, present choices for ShaidaGo's frontend feel, look, and tokens; maintainer selected Field ledger.
+- **Human review:** The maintainer explicitly selected Field ledger on 20 September 2026.
