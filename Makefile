@@ -15,12 +15,13 @@ endef
 
 .DEFAULT_GOAL := help
 .PHONY: help backend-sync backend-format backend-format-check backend-lint backend-typecheck \
-	backend-unit backend-integration backend-contract backend-security backend-test backend-verify
+	backend-unit backend-integration backend-contract backend-security backend-test backend-verify \
+	openapi-generate openapi-check
 
 help:
 	@echo "Backend targets: backend-sync backend-format backend-format-check backend-lint"
 	@echo "  backend-typecheck backend-unit backend-integration backend-contract"
-	@echo "  backend-security backend-test backend-verify"
+	@echo "  backend-security backend-test backend-verify openapi-generate openapi-check"
 
 backend-sync:
 	$(UV) sync --all-groups --frozen
@@ -54,4 +55,13 @@ backend-security:
 backend-test:
 	@$(call run_layer,tests)
 
-backend-verify: backend-sync backend-format-check backend-lint backend-typecheck backend-security backend-test
+# The contract is generated from the FastAPI app with synthetic settings: no environment,
+# database, or provider is needed.
+openapi-generate:
+	$(RUN) python -m shaidago.api.openapi --output ../../contracts/openapi.json
+
+openapi-check:
+	$(RUN) python -m shaidago.api.openapi --output ../../contracts/openapi.json --check
+
+backend-verify: backend-sync backend-format-check backend-lint backend-typecheck backend-security \
+	openapi-check backend-test
