@@ -64,6 +64,10 @@ class Discovery:
                 )
             ).one()
 
+    async def owner_row(self, sql: str, **parameters: Any) -> Any:
+        async with self.owner.unit_of_work() as session:
+            return (await session.execute(text(sql), parameters)).one()
+
     async def audit(self, run_id: uuid.UUID) -> list[str]:
         async with self.owner.unit_of_work() as session:
             rows = await session.execute(

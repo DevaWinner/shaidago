@@ -1,8 +1,10 @@
 """Metadata for Source Scout discovery runs (BE-090); checks and the guard trigger are in 0021."""
 
 from sqlalchemy import (
+    BigInteger,
     Boolean,
     Column,
+    Date,
     DateTime,
     ForeignKey,
     Index,
@@ -10,6 +12,7 @@ from sqlalchemy import (
     PrimaryKeyConstraint,
     Table,
     Text,
+    UniqueConstraint,
     Uuid,
     text,
 )
@@ -69,5 +72,75 @@ discovery_runs = Table(
         "status",
         postgresql_where=text("status IN ('queued', 'searching', 'analysing')"),
     ),
+    schema="app",
+)
+
+discovered_sources = Table(
+    "discovered_sources",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column("scope", Text(), nullable=False),
+    Column(
+        "project_id", Uuid(), ForeignKey("app.projects.id", ondelete="RESTRICT"), nullable=False
+    ),
+    Column("report_id", Uuid(), ForeignKey("app.reports.id", ondelete="CASCADE")),
+    Column("canonical_url", Text(), nullable=False),
+    Column("publisher_domain", Text(), nullable=False),
+    Column("title", Text()),
+    Column("preliminary_type", Text(), nullable=False),
+    Column("published_on", Date()),
+    Column("published_provenance", Text(), nullable=False),
+    Column("date_conflict", Boolean(), nullable=False),
+    Column("content_type", Text(), nullable=False),
+    Column("excerpt", Text(), nullable=False),
+    Column("text_sha256", Text(), nullable=False),
+    Column("simhash", BigInteger(), nullable=False),
+    Column("extraction_version", Text(), nullable=False),
+    Column("injection_flag", Boolean(), nullable=False),
+    Column("duplicate_of", Uuid(), ForeignKey("app.discovered_sources.id", ondelete="SET NULL")),
+    Column("duplicate_kind", Text()),
+    Column("availability", Text(), nullable=False),
+    Column("disposition", Text(), nullable=False, server_default=text("'not_reviewed'")),
+    Column("first_discovered_at", DateTime(timezone=True), nullable=False),
+    Column("last_retrieved_at", DateTime(timezone=True), nullable=False),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    Column("updated_at", DateTime(timezone=True), nullable=False),
+    PrimaryKeyConstraint("id"),
+    Index(
+        "uq_discovered_sources_scope_url",
+        "scope",
+        text("COALESCE(report_id, project_id)"),
+        "canonical_url",
+        unique=True,
+    ),
+    Index(
+        "ix_discovered_sources_hash",
+        "scope",
+        text("COALESCE(report_id, project_id)"),
+        "text_sha256",
+    ),
+    schema="app",
+)
+
+discovered_source_sightings = Table(
+    "discovered_source_sightings",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column(
+        "discovered_source_id",
+        Uuid(),
+        ForeignKey("app.discovered_sources.id", ondelete="CASCADE"),
+        nullable=False,
+    ),
+    Column(
+        "run_id", Uuid(), ForeignKey("app.discovery_runs.id", ondelete="CASCADE"), nullable=False
+    ),
+    Column("discovered_at", DateTime(timezone=True), nullable=False),
+    Column("retrieved_at", DateTime(timezone=True), nullable=False),
+    PrimaryKeyConstraint("id"),
+    UniqueConstraint(
+        "discovered_source_id", "run_id", name="uq_discovered_source_sightings_source_run"
+    ),
+    Index("ix_discovered_source_sightings_run_id", "run_id"),
     schema="app",
 )

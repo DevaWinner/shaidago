@@ -1015,6 +1015,8 @@ Extract bounded inert text from permitted HTML/public PDFs:
 
 Test hostile markup, prompt injection, malformed HTML/PDF, conflicting metadata dates, stale/unavailable pages, duplicate and near-duplicate content.
 
+> **Execution status (2026-09-19): complete.** `discovery/extract.py` turns permitted HTML, public PDFs, and plain text into inert text using only the standard library and the existing `pypdf` (no new dependency): scripts, styles, templates, frames, forms, SVG, navigation, hidden elements, comments, and control or bidi characters are dropped; text that looks like an instruction to a model is kept as data and flagged; PDFs are page-capped and encrypted or malformed ones refused. Each page records its canonical and final URL (a canonical link is honoured only on the page's own host), publisher domain, title, publication date with its provenance (`meta_published`, `time_element`, `pdf_metadata`, or `none`) and a conflict flag when dates disagree, a domain-only preliminary type that never claims verification, a 1200-character excerpt, a content hash, a SimHash, and the extraction version; the full page is never stored. Migration `0022_discovered_sources` adds the scoped, constraint-checked tables, and `discovery/records.py` deduplicates by canonical URL, content SHA-256, and SimHash within one scope only (a private run never merges with a public one), keeps a duplicate with a pointer, and records every sighting. 34 extraction tests (hostile and malformed markup, injection, conflicting dates, empty and encrypted files) and 8 integration tests against PostgreSQL 18 with the real worker role pass.
+
 ### BE-095 — Structured discovery analysis
 
 Use the configured provider with strict schema:

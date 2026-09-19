@@ -1045,3 +1045,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the guard, fetcher, and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-094 Inert extraction and provenance
+
+- **Task:** BE-094 — Inert extraction and provenance.
+- **Outcome delivered:** Bounded inert extraction of HTML, PDF, and text with provenance, scoped de-duplication, and stored, unreviewed discovered sources with sightings.
+- **Files changed:** `services/platform/migrations/versions/0022_discovered_sources.py`, `src/shaidago/discovery/{extract,dedupe,records}.py`, `src/shaidago/db/discovery_tables.py`, tests (`tests/unit/discovery/test_extract.py`, `tests/integration/test_discovered_sources.py`), `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** Two tables with forced row security (worker inserts and refreshes; reviewers read; no public role) and named constraints. No OpenAPI change.
+- **Security/privacy impact:** Page text never becomes instructions; active and hidden content is removed; scopes never mix in de-duplication; only an excerpt and hashes are kept; every result is `not_reviewed`.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `make backend-verify` exit 0 (1789 passed). A first run failed the bandit gate on f-string SQL constants (`B608`); the statements are now literal.
+- **Tests added or changed:** 34 unit and 8 integration tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** The injection heuristic is a phrase list, so it flags obvious attempts and misses novel ones (the analysis stage's isolation and validation are the real defence). The `bit_count` near-duplicate query scans one scope's unmerged rows, fine at pilot size. Stale or unavailable sources are updated by the worker only through the `availability` column; the decision and attachment columns arrive with BE-096. The preliminary type is a domain guess with three outcomes.
+- **Commit/PR:** `feat: add inert page extraction, provenance, and scoped de-duplication`
+- **Next task may rely on:** `extract`, `ExtractedPage`, `SourceRecorder`, and `Scope`.
+- **AI assistance used:** Designed and wrote the extraction, de-duplication, recorder, migration, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
