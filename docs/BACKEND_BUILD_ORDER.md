@@ -283,6 +283,8 @@ Targets must fail on the first failed child command, use no developer-global pac
 
 > **Execution status (2026-09-19): partial.** `.github/workflows/backend.yml` is written with `contents: read` permissions, `actions/checkout` v7.0.1 and `astral-sh/setup-uv` v10.1.0 pinned by full commit SHA (resolved read-only through the GitHub API), a lockfile-keyed uv cache only, and one aggregate `Backend required` job over the static/unit job. The YAML parses locally, but no linter such as actionlint was available and **the workflow has never run: CI green is pending** because pushing is a maintainer action. Service-backed integration jobs and coverage/log upload are deliberately absent until BE-030 and the redaction test (BE-023). The maintainer should note that the `paths` filter means a required check would not report on unrelated pull requests; decide that before marking `Backend required` as required.
 
+> **Execution status (2026-09-19, updated): complete.** The workflow has run: `gh run list` shows the backend workflow green on `main` and on the reviewed pull-request branches (after one failure that was fixed by adding a Redis service). The integration job now also starts MinIO (creating the private bucket) and ClamAV as pinned containers so the storage, scanner, and readiness tests run in CI. That addition has only been validated locally (the YAML parses; no actionlint was available), so its first CI run will be its proof.
+
 ### Circle 1 exit gate
 
 - Frozen install works from a clean environment.
@@ -373,6 +375,8 @@ Implement one RFC 9457-style `application/problem+json` shape containing `type`,
 
 > **Execution status (2026-09-19): partial.** Liveness, readiness semantics (ready, degraded, unavailable), bounded concurrent checks, and no-detail output are implemented and proven with fake probes (117 passing tests). The database probe (BE-031) and the migration-revision probe (BE-033) are now registered; Redis and object-storage probes are still not, and belong to the tasks that add those clients.
 
+> **Execution status (2026-09-19, updated): complete.** Redis (`PING`), object storage (`HEAD` of the configured bucket), and the scanner (clamd `PING`, only when `SCANNER_MODE=clamd`) are registered as required probes beside the database and migration revision. Integration tests prove each passes against the real service and fails when it is gone, and the configured-app tests show all five components in the readiness response.
+
 ### Circle 2 exit gate
 
 - App starts and stops without leaked resources.
@@ -385,6 +389,8 @@ Implement one RFC 9457-style `application/problem+json` shape containing `type`,
 > **Gate status (2026-09-19): open, with two named gaps.** Evidence: (1) a real `uvicorn --factory` process started, served `/health/live` (200, request ID, `no-store`) and `/health/ready` (401 without the credential, 200 with it), logged redacted JSON, and shut down cleanly, and lifespan open/close order is unit-tested with fakes; (2) unauthenticated callers, including for unknown paths, get one generic 401 before any router; (3) framework, validation, domain, and unexpected errors all use the problem shape; (4) canary values are absent from redacted logs, exception output, and responses in tests; (5) `contracts/openapi.json` is generated deterministically from synthetic settings and `make openapi-check` is part of `make backend-verify` (121 tests passing, exit 0). **Gaps:** BE-021's clock/randomness injection is deferred to BE-034, and BE-025's real database, migration-revision, Redis, and object-storage probes are not registered (the API currently reports `ready` with no components), so "readiness distinguishes required dependency failure" is proven only with fake probes. BE-023 request-ID propagation into audit metadata and worker messages also remains. Circle 3 may start: it supplies those pieces.
 
 > **Gate status (2026-09-19, updated): open, one named gap.** BE-021's clock and randomness injection is delivered, and BE-023's audit-metadata propagation is delivered. Remaining: BE-025's Redis and object-storage probes are not registered, so readiness is proven against real dependency failure only for the database and migration revision, and request-ID propagation into worker messages waits for BE-090.
+
+> **Gate status (2026-09-19, updated again): closed.** BE-025's Redis, object-storage, and scanner probes are registered and proven, so the only remaining item is request-ID propagation into worker messages, which belongs to the worker envelope (BE-090) and is tracked there. CI has run green on the repository.
 
 ## 6. Circle 3 — local infrastructure, database roles, and migration baseline
 
@@ -404,6 +410,8 @@ Create Docker Compose definitions for:
 Use named project-scoped volumes, explicit ports configurable for local use, resource limits where supported, and no default production passwords. `make infra-up`, `infra-down`, `infra-logs`, and `infra-clean` must target only ShaidaGo resources. `infra-clean` requires an explicit destructive confirmation variable and never targets an unresolved path or external database.
 
 > **Execution status (2026-09-19): partial.** PostgreSQL 18 + pgvector, Redis, and MinIO with a private bucket were brought up healthy, persisted data across restart, and were removed only by a confirmed `infra-clean`; static Compose guards run in the unit suite. ClamAV is defined with a signature-aware health check but was **not started** (the Docker VM had about 2.6 GB free alongside unrelated containers), so scanner readiness and `make infra-up` end to end are unproven.
+
+> **Execution status (2026-09-19, updated): complete.** ClamAV was started with `make infra-up` and became healthy (signature-aware health check). `make backend-integration` now runs a real scan against it: clean content passes and the standard EICAR test file is reported as malware, a dead scanner fails closed, and readiness reports the scanner. `make infra-up` end to end (PostgreSQL, Redis, MinIO with a private bucket, ClamAV) is proven on this machine.
 
 ### BE-031 — Async database kernel
 
@@ -465,6 +473,8 @@ These primitives must exist before any create/list endpoint uses a local alterna
 > **Gate status (2026-09-19): open, one named gap.** Evidence: empty database to head, head to one revision down and up, head to base and back, repeat upgrade, and model drift all pass against PostgreSQL 18 (`tests/integration/test_migrations.py`); every application role is proven by allow/deny tests through real logins, on synthetic probe tables and on the real idempotency functions (`test_database_roles.py`, `test_idempotency.py`); the ID, clock, cursor, and idempotency primitives have Hypothesis property tests; `make backend-verify` exit 0 with 227 passing tests, and `make migrate` then `make db-roles` prepare a database end to end. **Gap:** the ClamAV service is defined but was never started (the Docker VM had about 2.6 GB free alongside unrelated containers), so "Compose services become healthy" is proven for PostgreSQL, Redis, and MinIO only. CI has also never run. The grant model for the real report, contact, and evidence tables remains to be proven by their owning tasks.
 
 > **Gate status (2026-09-19, updated): open, one named gap.** The grant model for the real report, contact, evidence, handle, and follow-up tables is now proven (BE-032 update). Remaining: the ClamAV service was never started, so "Compose services become healthy" is proven for PostgreSQL, Redis, and MinIO only, and CI has never run (needs a maintainer push).
+
+> **Gate status (2026-09-19, updated again): closed.** ClamAV now starts healthy, so every Compose service (PostgreSQL, Redis, MinIO, ClamAV) is proven healthy, and CI has run green on the repository.
 
 ## 7. Circle 4 — public accountability domain and APIs
 
@@ -764,6 +774,8 @@ Implement code-authenticated or handle-authenticated private follow-up answer su
 - Optional handle path, if included, passes every no-PII and unlink test; otherwise it remains cleanly absent.
 
 > **Gate status (2026-09-19): closed for the fictional local path, with one open item.** Anonymous reports work with and without attachment and contact (BE-063 tests). Tracking codes are random, keyed at rest, shown once, and safe in failure paths (BE-062, BE-063, BE-065). The insert-only role's lack of read-back is proven (BE-061). Sanitised artifacts carry no test metadata or active content and no raw file remains (BE-064). Tracking, handle, follow-up, and submission responses and logs are tested for private-data absence. The handle path passes its no-PII and unlink tests (BE-066). **Open:** ClamAV was never started, so real malware scanning is proven only against a protocol double and EICAR through the test scanner, and the EFF word list has had no human review.
+
+> **Gate status (2026-09-19, updated): closed.** ClamAV was started and a real scan is now proven (clean content passes; the EICAR test file is refused; a dead scanner fails closed). The only remaining item is human review of the EFF word list. One measured limit: ClamAV does not flag the EICAR string when it is appended to an image, so the pipeline's protection there is the sniff, decode, re-encode, and rewrite steps, not the scanner alone.
 
 ## 10. Circle 7 — reviewer queue, decision history, and publication
 

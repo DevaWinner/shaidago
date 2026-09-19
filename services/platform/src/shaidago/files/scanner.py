@@ -38,6 +38,23 @@ class ClamdScanner:
             raise UploadRejectedError("malware_detected")
         raise UploadRejectedError("scan_failed")
 
+    async def ping(self) -> None:
+        """Readiness: clamd answers PING, which it does only once signatures are loaded."""
+        try:
+            async with asyncio.timeout(self._timeout):
+                reader, writer = await asyncio.open_connection(self._host, self._port)
+                try:
+                    writer.write(b"zPING\0")
+                    await writer.drain()
+                    reply = (await reader.readuntil(b"\0")).rstrip(b"\0")
+                finally:
+                    writer.close()
+                    await writer.wait_closed()
+        except TimeoutError, OSError, asyncio.IncompleteReadError:
+            raise RuntimeError("scanner unreachable") from None
+        if reply != b"PONG":
+            raise RuntimeError("scanner not ready")
+
     async def _exchange(self, data: bytes) -> str:
         reader, writer = await asyncio.open_connection(self._host, self._port)
         try:

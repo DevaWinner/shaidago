@@ -65,6 +65,13 @@ jobs:
       POSTGRES_USER: shaidago
       POSTGRES_PASSWORD: ci-only-throwaway-password
       INFRA_POSTGRES_PORT: "55432"
+      INFRA_REDIS_PORT: "56379"
+      INFRA_CLAMD_PORT: "53310"
+      # Throwaway credentials for the disposable MinIO started below; nothing here is a secret.
+      OBJECT_STORE_ENDPOINT_URL: http://127.0.0.1:59000
+      OBJECT_STORE_BUCKET: shaidago-evidence-ci
+      OBJECT_STORE_ACCESS_KEY_ID: ci-only-access-key
+      OBJECT_STORE_SECRET_ACCESS_KEY: ci-only-secret-key-value
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -73,10 +80,35 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: services/platform/uv.lock
+      # MinIO and ClamAV need command-line arguments or a long start, so they run as plain
+      # containers (same pinned images as infra/docker/compose.yml) instead of service containers.
+      - name: Start MinIO and create the private evidence bucket
+        run: |
+          docker run -d --name minio -p 127.0.0.1:59000:9000 \
+            -e MINIO_ROOT_USER="$OBJECT_STORE_ACCESS_KEY_ID" \
+            -e MINIO_ROOT_PASSWORD="$OBJECT_STORE_SECRET_ACCESS_KEY" \
+            quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e \
+            server /data
+          for _ in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:59000/minio/health/ready && break
+            sleep 2
+          done
+          docker run --rm --network host \
+            -e MC_HOST_local="http://$OBJECT_STORE_ACCESS_KEY_ID:$OBJECT_STORE_SECRET_ACCESS_KEY@127.0.0.1:59000" \
+            quay.io/minio/mc:RELEASE.2025-08-13T08-35-41Z@sha256:a7fe349ef4bd8521fb8497f55c6042871b2ae640607cf99d9bede5e9bdf11727 \
+            mb --ignore-existing "local/$OBJECT_STORE_BUCKET"
+      - name: Start ClamAV and wait for signatures to load
+        run: |
+          docker run -d --name clamav -p 127.0.0.1:53310:3310 \
+            clamav/clamav-debian:1.5@sha256:cc16781fe005e49de6a8fc1231b63b265f74b18fc2a6347c670c35716914c3b6
+          for _ in $(seq 1 90); do
+            docker exec clamav clamdcheck.sh >/dev/null 2>&1 && exit 0
+            sleep 5
+          done
+          docker logs clamav
+          echo "ClamAV did not become ready" && exit 1
       - run: make backend-sync
       - run: make backend-integration
-
-  # MinIO and ClamAV service jobs are added by the tasks whose tests need them.
 
   backend-required:
     name: Backend required

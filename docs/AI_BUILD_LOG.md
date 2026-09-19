@@ -734,3 +734,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the migration, functions, endpoint, and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — Health probes, live scanner proof, and CI services
+
+- **Task:** Close the remaining partial items in Circles 1 to 3 (health probes, ClamAV, CI evidence).
+- **Outcome delivered:** Required readiness probes for Redis, object storage, and the scanner (`shared/probes.py`, `RedisRateLimiter.check`, `S3ObjectStore.check`, `ClamdScanner.ping`); a live ClamAV integration test; MinIO and ClamAV containers in the CI integration job; refreshed task and gate notes.
+- **Files changed:** `services/platform/src/shaidago/{api/main,files/scanner,files/storage,shared/probes,shared/ratelimit}.py`, `tests/integration/{test_infrastructure_probes,test_configured_app}.py`, `.github/workflows/backend.yml`, `.env.example`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None. The readiness response gains component names.
+- **Security/privacy impact:** Probes report only `ok` or `unavailable`, as before. No credential or endpoint is echoed. The scanner probe treats a non-PONG reply as not ready.
+- **Failure behaviour verified:** each probe passes against the real service and fails when it is dead or misconfigured; readiness goes unavailable when one required probe fails; the real ClamAV reports clean content as clean and the EICAR file as malware; a dead scanner fails closed. The configured-app tests now use the Compose services so only the database varies.
+- **Commands run and results:** `make infra-up` (ClamAV healthy); `make backend-integration` exit 0 (342 passed); `make backend-verify` exit 0 (767 passed); Circle 0 validators passed. `gh run list` confirmed earlier CI runs green on `main`.
+- **Tests added or changed:** 5 new integration tests; 3 configured-app tests updated.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** The updated CI job has not run yet, so its MinIO and ClamAV steps are unproven until the next push (ClamAV signature download may make the job slow). ClamAV does not flag EICAR appended to an image; earlier notes that implied it did referred to the test scanner only. `.env.example` now points `CLAMD_PORT` at the Compose host port (53310); an existing local `.env` needs the same edit. Worker-message request-ID propagation waits for BE-090.
+- **Commit/PR:** `feat: add infrastructure readiness probes and prove the live scanner`
+- **Next task may rely on:** A readiness endpoint that reflects every infrastructure dependency.
+- **AI assistance used:** Wrote the probes, tests, and CI steps; started and exercised the local ClamAV.
+- **Prompt summary:** Maintainer asked to close the open partial items.
+- **Human review:** None yet; pending maintainer review.

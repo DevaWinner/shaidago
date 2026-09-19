@@ -81,4 +81,4 @@ Every error is `application/problem+json`, `Cache-Control: no-store`, with `type
 ## Health
 
 - `GET /health/live`: process responds; no credential and no dependency check.
-- `GET /health/ready`: `ready`, `degraded` (only an optional provider is down; HTTP 200), or `unavailable` (a required dependency is down; HTTP 503), with each component reported only as `ok` or `unavailable`. No dependency probes are registered yet, so the running service currently reports `ready` with no components; each probe lands with its owning task (BE-031, BE-033, and the Redis and storage tasks).
+- `GET /health/ready`: `ready`, `degraded` (only an optional provider is down; HTTP 200), or `unavailable` (a required dependency is down; HTTP 503), with each component reported only as `ok` or `unavailable`. The running service registers `database`, `migrations`, `redis`, `object_storage`, and `scanner` (the last only when `SCANNER_MODE=clamd`); all are required.

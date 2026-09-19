@@ -10,11 +10,13 @@ from shaidago.api.dependencies import Dependencies
 from shaidago.db.revision import MigrationRevisionCheck, expected_head
 from shaidago.files.pipeline import EvidencePipeline, PipelineParts, SanitiserPool
 from shaidago.files.rules import FileLimits
-from shaidago.files.scanner import build_scanner
+from shaidago.files.scanner import ClamdScanner, build_scanner
 from shaidago.files.storage import S3ObjectStore
 from shaidago.shared.config import load_settings
 from shaidago.shared.database import Database, create_engine
+from shaidago.shared.health import HealthCheck
 from shaidago.shared.logging import configure_logging
+from shaidago.shared.probes import CallableProbe
 from shaidago.shared.ratelimit import RedisRateLimiter
 
 
@@ -40,40 +42,42 @@ def create_configured_app() -> FastAPI:
             url=settings.database.reviewer_sqlalchemy_url(),
         )
     )
-    limiter = RedisRateLimiter(
-        Redis.from_url(  # pyright: ignore[reportUnknownMemberType]
-            settings.redis.url.get_secret_value(), socket_connect_timeout=1, socket_timeout=1
-        )
+    redis = Redis.from_url(  # pyright: ignore[reportUnknownMemberType]
+        settings.redis.url.get_secret_value(), socket_connect_timeout=1, socket_timeout=1
     )
+    limiter = RedisRateLimiter(redis)
     storage = settings.storage
     pool = SanitiserPool()
     limits = FileLimits()
-    pipeline = EvidencePipeline(
-        PipelineParts(
-            build_scanner(
-                storage.scanner_mode,
-                app_env=settings.app.environment,
-                host=storage.clamd_host,
-                port=storage.clamd_port,
-                timeout_seconds=limits.scan_timeout_seconds,
-            ),
-            S3ObjectStore(
-                endpoint_url=storage.endpoint_url,
-                bucket=storage.bucket,
-                access_key_id=storage.access_key_id.get_secret_value(),
-                secret_access_key=storage.secret_access_key.get_secret_value(),
-                timeout_seconds=limits.store_timeout_seconds,
-            ),
-            pool.executor,
-        ),
-        limits=limits,
-    )
     revision_check = MigrationRevisionCheck(public, expected_head())
+    scanner = build_scanner(
+        storage.scanner_mode,
+        app_env=settings.app.environment,
+        host=storage.clamd_host,
+        port=storage.clamd_port,
+        timeout_seconds=limits.scan_timeout_seconds,
+    )
+    store = S3ObjectStore(
+        endpoint_url=storage.endpoint_url,
+        bucket=storage.bucket,
+        access_key_id=storage.access_key_id.get_secret_value(),
+        secret_access_key=storage.secret_access_key.get_secret_value(),
+        timeout_seconds=limits.store_timeout_seconds,
+    )
+    pipeline = EvidencePipeline(PipelineParts(scanner, store, pool.executor), limits=limits)
+    probes: list[HealthCheck] = [
+        public,
+        revision_check,
+        CallableProbe("redis", limiter.check, required=True),
+        CallableProbe("object_storage", store.check, required=True),
+    ]
+    if isinstance(scanner, ClamdScanner):  # the hosted demo runs without a scanner
+        probes.append(CallableProbe("scanner", scanner.ping, required=True))
     return create_app(
         settings,
         Dependencies(
             resources=(public, reviewer, limiter, pool),
-            health_checks=(public, revision_check),
+            health_checks=tuple(probes),
             public_database=public,
             reviewer_database=reviewer,
             rate_limiter=limiter,

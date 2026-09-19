@@ -83,6 +83,10 @@ class S3ObjectStore:
     async def delete(self, key: str) -> None:
         await self._call(self._client.delete_object, Bucket=self._bucket, Key=key)
 
+    async def check(self) -> None:
+        """Readiness: the configured bucket exists and these credentials can reach it."""
+        await self._call(self._client.head_bucket, Bucket=self._bucket)
+
     @staticmethod
     async def _call(function: Any, **arguments: Any) -> Any:
         try:

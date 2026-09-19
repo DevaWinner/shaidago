@@ -54,6 +54,10 @@ class RedisRateLimiter:
     def __init__(self, client: Redis) -> None:
         self._client = client
 
+    async def check(self) -> None:
+        """Readiness: Redis answers PING. Raises when it does not."""
+        await self._client.ping()  # pyright: ignore[reportUnknownMemberType, reportGeneralTypeIssues]
+
     async def hit(self, key: str, *, limit: int, window_seconds: int) -> RateDecision:
         try:
             pipeline = self._client.pipeline(transaction=True)
