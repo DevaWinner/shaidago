@@ -50,6 +50,9 @@ COPY services/platform/migrations /app/services/platform/migrations
 COPY services/platform/alembic.ini /app/services/platform/alembic.ini
 COPY contracts /app/contracts
 COPY data /app/data
+# The seed validates the source register with the repository's own validator, so the image
+# needs that one script. Nothing else from scripts/ is copied.
+COPY scripts/validate_source_register.py /app/scripts/validate_source_register.py
 
 ENV PATH="/app/services/platform/.venv/bin:${PATH}" \
     PYTHONUNBUFFERED=1 \
