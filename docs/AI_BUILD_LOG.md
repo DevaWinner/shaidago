@@ -515,3 +515,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the dependency and its adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-053 Role policy and authorisation tests
+
+- **Task:** BE-053 — Role policy and authorisation tests.
+- **Outcome delivered:** `shaidago.auth.policy` with ten capabilities (queue read, report detail read, evidence download, note write, status transition, discovery run, discovered-source decision, public-update publication, reopening a superseded source, and reviewer administration), a deny-by-default `is_allowed`/`authorize` that depends on a role and a capability only, and a `require(capability)` FastAPI dependency.
+- **Files changed:** `services/platform/src/shaidago/auth/policy.py`, `api/reviewer_auth.py`, tests `tests/unit/auth/test_policy.py` and additions to `tests/integration/test_reviewer_boundary.py`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** Roles other than `reviewer` and `admin` (empty, `reporter`, `system`, `worker`, upper-case variants) hold no capability. Only administrators may reopen a superseded source (taken from the controlled vocabulary) or administer reviewers. A denial is the same `403 forbidden` body for every capability and names no record, because the policy is never given a record.
+- **Failure behaviour verified (95 tests across policy and boundary):** an allow/deny case for every capability and role, including 70 unknown-role cases; a denial is one identical problem for every capability; through the API each capability is allowed for an admin and allowed or denied for a reviewer as the policy says, and all reviewer denials share one body; `401 unauthenticated` and `403 forbidden` stay distinct; an admin downgraded in the database loses admin routes on the very next request (the session is invalidated), so no stale privilege survives.
+- **Commands run and results:** `make backend-verify` exit 0; Circle 0 validators passed.
+- **Tests added or changed:** 12 unit test functions (parametrised to many cases) and 3 integration tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** The spec's "horizontal access to a report outside an assignment or tenant rule" is untestable because the pilot has no assignment or tenant model; authorisation is by role only, and the policy module records that any future scope must be an explicit argument with its own tests. Capability names for the report and evidence operations are defined before those endpoints exist (Circle 6 and 7), so their routes must adopt `require(...)` and add their own route-level tests. Session-fixation and replay-after-logout are covered by the session tests (server-only token generation and revocation).
+- **Commit/PR:** `feat: add reviewer capability policy`
+- **Next task may rely on:** `require(Capability.X)` on every reviewer route.
+- **AI assistance used:** Designed the policy and its exhaustive matrix tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

@@ -12,6 +12,7 @@ import pytest
 import structlog
 from fastapi import APIRouter, Depends
 from fastapi.testclient import TestClient
+from sqlalchemy import text
 from sqlalchemy.engine import URL
 
 from shaidago.api.app import create_app
@@ -19,9 +20,11 @@ from shaidago.api.dependencies import Dependencies
 from shaidago.api.reviewer_auth import (
     AuthenticatedReviewer,
     authenticated_reviewer,
+    require,
     session_service,
 )
 from shaidago.auth.passwords import PasswordPolicy, PasswordVerifier
+from shaidago.auth.policy import Capability, is_allowed
 from shaidago.auth.reviewers import ReviewerRecord, ReviewerService, find_reviewer
 from shaidago.auth.sessions import IssuedSession
 from shaidago.shared.clock import ManualClock
@@ -241,3 +244,64 @@ async def test_reviewer_routes_report_unavailable_when_no_reviewer_database_is_c
     )
     assert response.status_code == 503
     assert response.json()["code"] == "dependency_unavailable"
+
+
+async def test_capabilities_are_enforced_per_role_through_the_api(world: World) -> None:
+    router = APIRouter()
+    for capability in Capability:
+
+        def make(cap: Capability = capability) -> None:
+            @router.post(f"/v1/probe/cap/{cap.value}")
+            def route(_who: Annotated[AuthenticatedReviewer, Depends(require(cap))]) -> str:
+                return cap.value
+
+        make()
+    world.client.app.include_router(router)  # type: ignore[attr-defined]
+    admin = await world.session(await world.reviewer("admin"))
+    reviewer = await world.session(await world.reviewer("reviewer"))
+    for capability in Capability:
+        path = f"/v1/probe/cap/{capability.value}"
+        assert world.client.post(path, headers=hdr(admin)).status_code == 200
+        expected = 200 if is_allowed("reviewer", capability) else 403
+        assert world.client.post(path, headers=hdr(reviewer)).status_code == expected
+    denied = [
+        world.client.post(f"/v1/probe/cap/{c.value}", headers=hdr(reviewer))
+        for c in Capability
+        if not is_allowed("reviewer", c)
+    ]
+    assert len({json.dumps(body_without_id(r.json()), sort_keys=True) for r in denied}) == 1
+    assert denied[0].json()["code"] == "forbidden"
+
+
+async def test_unauthenticated_and_forbidden_are_distinct_but_both_generic(world: World) -> None:
+    world.client.app.include_router(_one_admin_route())  # type: ignore[attr-defined]
+    reviewer = await world.session(await world.reviewer("reviewer"))
+    anonymous = world.client.post("/v1/probe/admin", headers={})
+    forbidden = world.client.post("/v1/probe/admin", headers=hdr(reviewer))
+    assert (anonymous.status_code, anonymous.json()["code"]) == (401, "unauthenticated")
+    assert (forbidden.status_code, forbidden.json()["code"]) == (403, "forbidden")
+
+
+async def test_a_downgraded_admin_loses_access_on_the_next_request(world: World) -> None:
+    world.client.app.include_router(_one_admin_route())  # type: ignore[attr-defined]
+    admin = await world.reviewer("admin")
+    issued = await world.session(admin)
+    assert world.client.post("/v1/probe/admin", headers=hdr(issued)).status_code == 200
+    async with world.owner.unit_of_work() as session:
+        await session.execute(
+            text("UPDATE app.reviewers SET role = 'reviewer' WHERE id = :i"), {"i": admin.id}
+        )
+    downgraded = world.client.post("/v1/probe/admin", headers=hdr(issued))
+    assert downgraded.status_code == 401, "a privilege change forces a fresh sign-in"
+
+
+def _one_admin_route() -> APIRouter:
+    router = APIRouter()
+
+    @router.post("/v1/probe/admin")
+    def admin_only(
+        _who: Annotated[AuthenticatedReviewer, Depends(require(Capability.REVIEWER_ADMIN))],
+    ) -> str:
+        return "ok"
+
+    return router

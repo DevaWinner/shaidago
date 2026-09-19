@@ -593,6 +593,8 @@ Test:
 - session fixation and replay after logout;
 - generic failures without record-existence leakage.
 
+> **Execution status (2026-09-19): complete.** A deny-by-default capability policy independent of HTTP, an exhaustive role-by-capability matrix, and route-level checks (identical generic denials, immediate effect of a downgrade) are proven (`make backend-verify` exit 0). Horizontal-assignment tests are not possible because no assignment model exists.
+
 ### BE-054 — Authentication endpoints and abuse controls
 
 Implement `POST /v1/auth/sessions` and `DELETE /v1/auth/sessions/current` with generic credential failures, per-IP-HMAC and per-identifier backoff, bounded request size, audit events, and no username/password logging. Do not hard-lock an account in a way an attacker can weaponise without an administrative recovery path.

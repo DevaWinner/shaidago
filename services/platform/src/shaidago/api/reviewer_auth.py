@@ -7,6 +7,7 @@ reviewer route additionally needs a valid session, and every failure to establis
 same to the caller.
 """
 
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import timedelta
 from typing import Annotated, Final
@@ -15,6 +16,7 @@ from fastapi import Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from shaidago.api.dependencies import Dependencies, get_dependencies, get_settings
+from shaidago.auth.policy import Capability, authorize
 from shaidago.auth.sessions import Principal, SessionLifetimes, SessionService, csrf_matches
 from shaidago.shared.config import Settings
 from shaidago.shared.database import Database
@@ -75,3 +77,17 @@ async def authenticated_reviewer(
         if not csrf_matches(settings.auth.session_key(), token, presented):
             raise ProblemError(CSRF_INVALID)
     return AuthenticatedReviewer(principal=principal, session_token=token)
+
+
+def require(
+    capability: Capability,
+) -> Callable[[AuthenticatedReviewer], Awaitable[AuthenticatedReviewer]]:
+    """A dependency: an authenticated reviewer whose role holds ``capability``."""
+
+    async def dependency(
+        reviewer: Annotated[AuthenticatedReviewer, Depends(authenticated_reviewer)],
+    ) -> AuthenticatedReviewer:
+        authorize(reviewer.principal, capability)
+        return reviewer
+
+    return dependency
