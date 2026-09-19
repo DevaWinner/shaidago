@@ -38,6 +38,33 @@ class FieldError:
 BAD_REQUEST: Final = Problem(
     400, "bad_request", "Bad request", "The request could not be understood."
 )
+INVALID_CURSOR: Final = Problem(
+    400, "invalid_cursor", "Invalid cursor", "The pagination cursor is not valid for this request."
+)
+IDEMPOTENCY_KEY_REQUIRED: Final = Problem(
+    400,
+    "idempotency_key_required",
+    "Idempotency-Key required",
+    "This request must include an Idempotency-Key header.",
+)
+IDEMPOTENCY_KEY_INVALID: Final = Problem(
+    400,
+    "idempotency_key_invalid",
+    "Idempotency-Key invalid",
+    "The Idempotency-Key must be a random UUID (version 4).",
+)
+IDEMPOTENCY_CONFLICT: Final = Problem(
+    409,
+    "idempotency_conflict",
+    "Idempotency-Key conflict",
+    "This Idempotency-Key was already used for a different request.",
+)
+ALREADY_RECEIVED: Final = Problem(
+    409,
+    "already_received",
+    "Already received",
+    "This request was already received and its result is no longer available.",
+)
 UNAUTHENTICATED: Final = Problem(
     401, "unauthenticated", "Authentication required", "The request could not be authenticated."
 )

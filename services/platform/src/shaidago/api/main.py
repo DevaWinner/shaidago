@@ -6,7 +6,9 @@ from fastapi import FastAPI
 
 from shaidago.api.app import create_app
 from shaidago.api.dependencies import Dependencies
+from shaidago.db.revision import MigrationRevisionCheck, expected_head
 from shaidago.shared.config import load_settings
+from shaidago.shared.database import Database, create_engine
 from shaidago.shared.logging import configure_logging
 
 
@@ -17,4 +19,11 @@ def create_configured_app() -> FastAPI:
         environment=settings.app.environment,
         level=settings.observability.log_level,
     )
-    return create_app(settings, Dependencies())
+    database = Database(
+        create_engine(settings.database, application_name=settings.app.service_name)
+    )
+    revision_check = MigrationRevisionCheck(database, expected_head())
+    return create_app(
+        settings,
+        Dependencies(resources=(database,), health_checks=(database, revision_check)),
+    )

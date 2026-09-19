@@ -29,6 +29,7 @@ def development_environ() -> dict[str, str]:
         "TRACKING_PEPPERS": f"pepper-1={KEY_B}",
         "TRACKING_ACTIVE_PEPPER_VERSION": "pepper-1",
         "IDEMPOTENCY_PEPPER": KEY_B,
+        "CURSOR_HMAC_KEY": KEY_A,
         "INTERNAL_WEB_CREDENTIAL_CURRENT": CREDENTIAL,
         "SESSION_HMAC_KEY": KEY_A,
     }

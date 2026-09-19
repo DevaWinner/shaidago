@@ -32,6 +32,7 @@ _SYNTHETIC_ENVIRON = {
     "TRACKING_PEPPERS": "pepper-schema=Y2hhbmdlLW1lLWNoYW5nZS1tZS1jaGFuZ2UtbWUtMzI=",
     "TRACKING_ACTIVE_PEPPER_VERSION": "pepper-schema",
     "IDEMPOTENCY_PEPPER": "Y2hhbmdlLW1lLWNoYW5nZS1tZS1jaGFuZ2UtbWUtMzI=",
+    "CURSOR_HMAC_KEY": "Y2hhbmdlLW1lLWNoYW5nZS1tZS1jaGFuZ2UtbWUtMzI=",
     "INTERNAL_WEB_CREDENTIAL_CURRENT": "change-me-schema-generation-credential",
     "SESSION_HMAC_KEY": "Y2hhbmdlLW1lLWNoYW5nZS1tZS1jaGFuZ2UtbWUtMzI=",
 }

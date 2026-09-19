@@ -361,7 +361,7 @@ Implement one RFC 9457-style `application/problem+json` shape containing `type`,
 - Bound every dependency check by a short timeout and run independent checks concurrently where safe.
 - Test healthy, degraded optional provider, required dependency failure, timeout, and no-detail public output.
 
-> **Execution status (2026-09-19): partial.** Liveness, readiness semantics (ready, degraded, unavailable), bounded concurrent checks, and no-detail output are implemented and proven with fake probes (117 passing tests). Real database, migration-revision, Redis, and object-storage probes are not registered yet; BE-031, BE-033, and the Redis and storage tasks must add them.
+> **Execution status (2026-09-19): partial.** Liveness, readiness semantics (ready, degraded, unavailable), bounded concurrent checks, and no-detail output are implemented and proven with fake probes (117 passing tests). The database probe (BE-031) and the migration-revision probe (BE-033) are now registered; Redis and object-storage probes are still not, and belong to the tasks that add those clients.
 
 ### Circle 2 exit gate
 
@@ -391,12 +391,16 @@ Create Docker Compose definitions for:
 
 Use named project-scoped volumes, explicit ports configurable for local use, resource limits where supported, and no default production passwords. `make infra-up`, `infra-down`, `infra-logs`, and `infra-clean` must target only ShaidaGo resources. `infra-clean` requires an explicit destructive confirmation variable and never targets an unresolved path or external database.
 
+> **Execution status (2026-09-19): partial.** PostgreSQL 18 + pgvector, Redis, and MinIO with a private bucket were brought up healthy, persisted data across restart, and were removed only by a confirmed `infra-clean`; static Compose guards run in the unit suite. ClamAV is defined with a signature-aware health check but was **not started** (the Docker VM had about 2.6 GB free alongside unrelated containers), so scanner readiness and `make infra-up` end to end are unproven.
+
 ### BE-031 — Async database kernel
 
 1. Build async engine/session factories with pool configuration, statement timeout, UTC session expectations, and connection health checks.
 2. Scope one session/transaction to one use case. Route functions do not call `commit()` opportunistically.
 3. Translate known integrity/serialization errors into domain outcomes; unknown database errors remain internal.
 4. Add repository integration fixtures that create isolated transactions or disposable databases without hiding committed-transaction behaviour.
+
+> **Execution status (2026-09-19): complete.** The async engine, unit-of-work, SQLSTATE translation, pre-ping recovery, and readiness probe are proven against PostgreSQL 18 in 12 integration tests (`make backend-verify` exit 0, 144 passed). Separate public/reviewer pools wait for BE-032's roles.
 
 ### BE-032 — Roles, schemas, grants, and row security
 
@@ -411,6 +415,8 @@ Implement public views/projections, least-privilege grants, and row-security pol
 
 **Mandatory integration tests:** connect as each role and assert allowed and denied `SELECT`, `INSERT`, `UPDATE`, and private/public view paths. The restricted submission test must inspect emitted SQL or database behaviour to prove no read-back occurs.
 
+> **Execution status (2026-09-19): partial.** Roles, schemas, default-deny grants, forced row security, and the no-read-back mapping are proven by 11 integration tests that log in as each role (`make backend-verify` exit 0, 155 passed). The proof uses synthetic probe tables because the real private tables do not exist yet; the baseline is executed by BE-033's migration, and each real table must add its own grants, policies, and allow/deny test.
+
 ### BE-033 — Alembic discipline and baseline
 
 1. Configure Alembic to import one metadata registry without importing the running app.
@@ -418,6 +424,8 @@ Implement public views/projections, least-privilege grants, and row-security pol
 3. Give every constraint and index a stable name.
 4. Add a migration test: empty database → head, head → one revision down/up when reversible, model metadata drift check, and second run idempotence where applicable.
 5. Never edit an applied migration; use a corrective revision.
+
+> **Execution status (2026-09-19): complete.** Alembic runs empty-to-head, head-to-base-and-back, and repeat upgrades against PostgreSQL 18, drift and ownership checks pass, and readiness now includes a migration-revision probe (`make backend-verify` exit 0, 170 passed). The drift check is vacuous until the first model tables arrive.
 
 ### BE-034 — Shared identifiers, clock, pagination, and idempotency primitives
 
@@ -431,12 +439,16 @@ Implement and test:
 
 These primitives must exist before any create/list endpoint uses a local alternative.
 
+> **Execution status (2026-09-19): complete.** Clock, monotonic UUIDv7, signed cursors, and idempotency (sealed replay, conflict, expiry, concurrent duplicates) are proven by Hypothesis property tests and PostgreSQL integration tests (`make backend-verify` exit 0, 227 passed). The tests also exposed and led to two corrections in the BE-032 and BE-033 baseline, recorded in the build log.
+
 ### Circle 3 exit gate
 
 - Compose services become healthy and shut down cleanly.
 - Empty-to-head migration and schema drift checks pass.
 - Every database role is proven by allow/deny integration tests.
 - Shared ID, time, cursor, and idempotency primitives have deterministic property tests.
+
+> **Gate status (2026-09-19): open, one named gap.** Evidence: empty database to head, head to one revision down and up, head to base and back, repeat upgrade, and model drift all pass against PostgreSQL 18 (`tests/integration/test_migrations.py`); every application role is proven by allow/deny tests through real logins, on synthetic probe tables and on the real idempotency functions (`test_database_roles.py`, `test_idempotency.py`); the ID, clock, cursor, and idempotency primitives have Hypothesis property tests; `make backend-verify` exit 0 with 227 passing tests, and `make migrate` then `make db-roles` prepare a database end to end. **Gap:** the ClamAV service is defined but was never started (the Docker VM had about 2.6 GB free alongside unrelated containers), so "Compose services become healthy" is proven for PostgreSQL, Redis, and MinIO only. CI has also never run. The grant model for the real report, contact, and evidence tables remains to be proven by their owning tasks.
 
 ## 7. Circle 4 — public accountability domain and APIs
 
