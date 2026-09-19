@@ -736,6 +736,8 @@ Required endpoints: create, list reports, delete. Required tests: no-PII schema 
 
 Implement code-authenticated or handle-authenticated private follow-up answer submission with explicit question ownership, answer encryption, one-answer/idempotency semantics, safe skip/unsafe flags, and no ability to answer a question from another report. Never surface private answers through tracking response beyond an acknowledgement state.
 
+> **Execution status (2026-09-19): complete.** Migration `0013_follow_up_answers`, `reports/follow_ups.py`, and `api/v1/follow_ups.py` add reviewer-authored questions, code- or handle-authenticated answers encrypted under their own data keys, one answer per question, skip and unsafe flags, and the state machine's `record_follow_up` transition; 24 integration tests cover ownership (seven failure kinds give one response), encryption and shredding, replay and conflict, concurrent answers, the acknowledgement-only tracking view, log absence, and role grants. Reviewer authoring of questions is a table grant only until the reviewer queue (BE-071).
+
 ### Circle 6 exit gate
 
 - Fictional anonymous report path works with and without attachment/contact.
@@ -744,6 +746,8 @@ Implement code-authenticated or handle-authenticated private follow-up answer su
 - Sanitised artifacts contain no test metadata/active content; raw files are removed.
 - Tracking/public responses and logs contain no private data.
 - Optional handle path, if included, passes every no-PII and unlink test; otherwise it remains cleanly absent.
+
+> **Gate status (2026-09-19): closed for the fictional local path, with one open item.** Anonymous reports work with and without attachment and contact (BE-063 tests). Tracking codes are random, keyed at rest, shown once, and safe in failure paths (BE-062, BE-063, BE-065). The insert-only role's lack of read-back is proven (BE-061). Sanitised artifacts carry no test metadata or active content and no raw file remains (BE-064). Tracking, handle, follow-up, and submission responses and logs are tested for private-data absence. The handle path passes its no-PII and unlink tests (BE-066). **Open:** ClamAV was never started, so real malware scanning is proven only against a protocol double and EICAR through the test scanner, and the EFF word list has had no human review.
 
 ## 10. Circle 7 — reviewer queue, decision history, and publication
 

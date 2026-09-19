@@ -55,6 +55,10 @@ A handle is optional and carries no identity: `POST /v1/reporter-handles` (with 
 
 Every credential failure (unknown, wrong, deleted, or in backoff) is the same 403 `invalid_reporter_credentials`, and a rejected submission stores nothing. Failures are limited per client, per client and handle, and per handle with a backoff that starts after three failures, doubles from 5 seconds, is capped at 15 minutes, and never locks permanently. There is no recovery or reset endpoint.
 
+## Follow-up answers
+
+A reviewer's questions appear on the tracking lookup (`follow_up_questions`: `question_id`, `text`, and `state` of `open`, `answered`, `skipped`, or `unsafe`); answers are never returned. `POST /v1/report-status:answer-follow-up` (with `Idempotency-Key`) takes `question_id`, `kind` (`answered`, `skipped`, or `unsafe`), `answer` (only with `answered`, up to 2000 characters), and exactly one credential: a tracking `code`, or a `handle` with its `passphrase`. It answers only a question about the caller's own report, once. Every other case (someone else's question, unknown, already answered, withdrawn, bad credential) is one generic problem: 404 `tracking_code_not_recognised` for a code, 403 `invalid_reporter_credentials` for a handle. The answer is encrypted before storage. Answering the last open question of a report that needs information resumes review.
+
 ## Errors
 
 Every error is `application/problem+json`, `Cache-Control: no-store`, with `type`, `title`, `status`, `code`, `detail`, `request_id`, and, for validation failures, `errors` (`field` and rule `code`, never the submitted value). The `code` is the stable contract; the BFF localises display text from it.

@@ -1,6 +1,105 @@
 {
   "components": {
     "schemas": {
+      "AnswerAck": {
+        "additionalProperties": false,
+        "properties": {
+          "acknowledged": {
+            "const": true,
+            "title": "Acknowledged",
+            "type": "boolean"
+          },
+          "question_state": {
+            "enum": [
+              "answered",
+              "skipped",
+              "unsafe"
+            ],
+            "title": "Question State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "acknowledged",
+          "question_state"
+        ],
+        "title": "AnswerAck",
+        "type": "object"
+      },
+      "AnswerRequest": {
+        "additionalProperties": false,
+        "description": "Exactly one credential (a tracking code, or a handle with its passphrase).",
+        "properties": {
+          "answer": {
+            "anyOf": [
+              {
+                "maxLength": 2500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "maxLength": 256,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "handle": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Handle"
+          },
+          "kind": {
+            "enum": [
+              "answered",
+              "skipped",
+              "unsafe"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "passphrase": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Passphrase"
+          },
+          "question_id": {
+            "format": "uuid",
+            "title": "Question Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question_id",
+          "kind"
+        ],
+        "title": "AnswerRequest",
+        "type": "object"
+      },
       "AttachmentOutcome": {
         "additionalProperties": false,
         "description": "Position only: names and content are never echoed.",
@@ -306,10 +405,20 @@
       },
       "FollowUpQuestion": {
         "additionalProperties": false,
-        "description": "Reviewer questions the reporter may answer. Populated by the follow-up task (BE-067).",
+        "description": "A reviewer's question with its acknowledgement state. Answers are never returned.",
         "properties": {
           "question_id": {
             "title": "Question Id",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "open",
+              "answered",
+              "skipped",
+              "unsafe"
+            ],
+            "title": "State",
             "type": "string"
           },
           "text": {
@@ -319,7 +428,8 @@
         },
         "required": [
           "question_id",
-          "text"
+          "text",
+          "state"
         ],
         "title": "FollowUpQuestion",
         "type": "object"
@@ -1944,6 +2054,117 @@
         "summary": "Get Project Source",
         "tags": [
           "projects"
+        ]
+      }
+    },
+    "/v1/report-status:answer-follow-up": {
+      "post": {
+        "operationId": "answer_follow_up_v1_report_status_answer_follow_up_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswerRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnswerAck"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Malformed body or Idempotency-Key."
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Generic handle failure."
+          },
+          "404": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Generic tracking-code failure."
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Key reused with a different request."
+          },
+          "413": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Content Too Large"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "429": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Answer Follow Up",
+        "tags": [
+          "reports"
         ]
       }
     },

@@ -56,12 +56,13 @@ class StatusLookupRequest(BaseModel):
 
 
 class FollowUpQuestion(BaseModel):
-    """Reviewer questions the reporter may answer. Populated by the follow-up task (BE-067)."""
+    """A reviewer's question with its acknowledgement state. Answers are never returned."""
 
     model_config = ConfigDict(extra="forbid")
 
     question_id: str
     text: str
+    state: Literal["open", "answered", "skipped", "unsafe"]
 
 
 class ReportStatusOut(BaseModel):
@@ -87,7 +88,7 @@ def _refuse_large_body(request: Request) -> None:
         raise ProblemError(PAYLOAD_TOO_LARGE)
 
 
-def _bucket(client: str, prefix: str) -> str:
+def code_bucket(client: str, prefix: str) -> str:
     return hashlib.sha256(f"{client}:{prefix}".encode()).hexdigest()[:32]
 
 
@@ -115,7 +116,7 @@ async def look_up_report_status(
     prefix = code_prefix(body.code)
     if prefix is not None:
         await enforce_rate_limit(
-            dependencies, f"sg:rl:track:{_bucket(client, prefix)}", limit=PREFIX_LIMIT
+            dependencies, f"sg:rl:track:{code_bucket(client, prefix)}", limit=PREFIX_LIMIT
         )
     database = dependencies.public_database
     if database is None:
@@ -138,5 +139,12 @@ async def look_up_report_status(
         status_updated_at=found.status_updated_at,
         message=found.message,
         next_action=found.next_action,  # type: ignore[arg-type]  # values of NEXT_ACTIONS
-        follow_up_questions=[],
+        follow_up_questions=[
+            FollowUpQuestion(
+                question_id=q.question_id,
+                text=q.text,
+                state=q.state,  # type: ignore[arg-type]  # constrained by the SQL CASE
+            )
+            for q in found.questions
+        ],
     )

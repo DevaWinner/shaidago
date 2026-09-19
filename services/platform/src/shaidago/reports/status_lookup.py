@@ -32,11 +32,26 @@ _LOOKUP = text(
 ).bindparams(bindparam("digests", type_=ARRAY(LargeBinary)))
 
 
+_QUESTIONS = text(
+    "SELECT question_id, question, state FROM app.tracking_follow_ups(:digests)"
+).bindparams(bindparam("digests", type_=ARRAY(LargeBinary)))
+
+
+@dataclass(frozen=True)
+class TrackedQuestion:
+    """A reviewer's question and only whether it was answered, never the answer."""
+
+    question_id: str
+    text: str
+    state: str
+
+
 @dataclass(frozen=True)
 class TrackedReport:
     status: str
     status_updated_at: datetime
     message: str
+    questions: tuple[TrackedQuestion, ...] = ()
 
     @property
     def next_action(self) -> str:
@@ -66,6 +81,12 @@ async def find_report(
     except InvalidTrackingCodeError:
         digests = [secrets.token_bytes(32) for _ in peppers]
     row = (await session.execute(_LOOKUP, {"digests": digests})).one_or_none()
+    questions = (await session.execute(_QUESTIONS, {"digests": digests})).all()
     if row is None or row.status not in NEXT_ACTIONS:
         return None
-    return TrackedReport(row.status, row.status_updated_at, row.public_message)
+    return TrackedReport(
+        row.status,
+        row.status_updated_at,
+        row.public_message,
+        tuple(TrackedQuestion(str(q.question_id), q.question, q.state) for q in questions),
+    )

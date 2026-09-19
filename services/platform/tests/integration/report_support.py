@@ -1,5 +1,6 @@
 """Shared harness for the private-report endpoints: real public role, in-memory evidence store."""
 
+import base64
 import io
 import re
 import uuid
@@ -10,7 +11,7 @@ from typing import Any
 import httpx
 from fastapi import FastAPI
 from PIL import Image
-from sqlalchemy import text
+from sqlalchemy import LargeBinary, bindparam, text
 from sqlalchemy.engine import URL
 
 from shaidago.api.app import create_app
@@ -19,11 +20,12 @@ from shaidago.files.pipeline import EvidencePipeline, PipelineParts
 from shaidago.files.rules import FileLimits
 from shaidago.files.scanner import EicarScanner
 from shaidago.files.storage import InMemoryObjectStore
+from shaidago.reports.tracking import lookup_key, normalise
 from shaidago.shared.clock import ManualClock
 from shaidago.shared.database import Database, build_engine
 from shaidago.shared.ids import Uuid7Generator
 from shaidago.shared.ratelimit import InMemoryRateLimiter
-from tests.factories import CREDENTIAL, build_settings
+from tests.factories import CREDENTIAL, KEY_B, build_settings
 from tests.integration.support import Plain
 
 START = datetime(2026, 9, 19, 12, 0, tzinfo=UTC)
@@ -120,3 +122,59 @@ def build(role_urls: dict[str, URL], engines: list[Any], **environ: str) -> tupl
         ),
     )
     return app, (store, pool)
+
+
+async def report_id_for(harness: Harness, code: str) -> uuid.UUID:
+    """The internal ID behind a tracking code, found the way the database would."""
+    async with harness.owner.unit_of_work() as session:
+        return uuid.UUID(
+            str(
+                (
+                    await session.execute(
+                        text(
+                            "SELECT report_id FROM app.report_tracking_keys "
+                            "WHERE lookup_hmac = :digest"
+                        ).bindparams(bindparam("digest", type_=LargeBinary)),
+                        {"digest": lookup_key(base64.b64decode(KEY_B), normalise(code))},
+                    )
+                ).scalar_one()
+            )
+        )
+
+
+async def set_status(harness: Harness, code: str, new: str, message: str, at: datetime) -> None:
+    """What a reviewer's transition writes: one event and the matching projection."""
+    report_id = await report_id_for(harness, code)
+    async with harness.owner.unit_of_work() as session:
+        old = (
+            await session.execute(
+                text("SELECT status FROM app.reports WHERE id = :r"), {"r": report_id}
+            )
+        ).scalar_one()
+        await session.execute(
+            text(
+                "INSERT INTO app.report_status_events (id, report_id, previous_status, new_status, "
+                "public_message, actor_type, occurred_at) VALUES "
+                "(gen_random_uuid(), :r, :old, :new, :m, 'reviewer', :at)"
+            ),
+            {"r": report_id, "old": old, "new": new, "m": message, "at": at},
+        )
+        await session.execute(
+            text("UPDATE app.reports SET status = :new, status_updated_at = :at WHERE id = :r"),
+            {"r": report_id, "new": new, "at": at},
+        )
+
+
+async def ask(harness: Harness, code: str, question: str, at: datetime) -> uuid.UUID:
+    """A reviewer's follow-up question about the report behind ``code``."""
+    report_id = await report_id_for(harness, code)
+    question_id = uuid.uuid4()
+    async with harness.owner.unit_of_work() as session:
+        await session.execute(
+            text(
+                "INSERT INTO app.report_follow_up_questions (id, report_id, question, asked_at) "
+                "VALUES (:id, :r, :q, :at)"
+            ),
+            {"id": question_id, "r": report_id, "q": question, "at": at},
+        )
+    return question_id

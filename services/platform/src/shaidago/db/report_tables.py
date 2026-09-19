@@ -7,6 +7,7 @@ from sqlalchemy import (
     Date,
     DateTime,
     ForeignKey,
+    ForeignKeyConstraint,
     Index,
     Integer,
     LargeBinary,
@@ -150,5 +151,44 @@ reporter_handles = Table(
     Column("backoff_until", DateTime(timezone=True)),
     PrimaryKeyConstraint("id"),
     UniqueConstraint("handle", name="uq_reporter_handles_handle"),
+    schema="app",
+)
+
+
+# Reviewer follow-up questions and private answers (BE-067); checks are in 0013.
+report_follow_up_questions = Table(
+    "report_follow_up_questions",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column("report_id", Uuid(), _fk("app.reports.id", "CASCADE"), nullable=False),
+    Column("question", Text(), nullable=False),
+    Column("asked_by", Uuid(), _fk("app.reviewers.id", "SET NULL")),
+    Column("asked_at", DateTime(timezone=True), nullable=False),
+    Column("withdrawn_at", DateTime(timezone=True)),
+    PrimaryKeyConstraint("id"),
+    UniqueConstraint("id", "report_id", name="uq_report_follow_up_questions_id_report_id"),
+    Index("ix_report_follow_up_questions_report_id", "report_id", "asked_at"),
+    schema="app",
+)
+
+report_follow_up_answers = Table(
+    "report_follow_up_answers",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column("question_id", Uuid(), nullable=False),
+    Column("report_id", Uuid(), nullable=False),
+    Column("kind", Text(), nullable=False),
+    Column("answer_ciphertext", LargeBinary()),
+    Column("data_key_id", Uuid(), _fk("app.data_keys.id", "RESTRICT")),
+    Column("schema_version", Integer(), nullable=False),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    PrimaryKeyConstraint("id"),
+    UniqueConstraint("question_id", name="uq_report_follow_up_answers_question_id"),
+    ForeignKeyConstraint(
+        ["question_id", "report_id"],
+        ["app.report_follow_up_questions.id", "app.report_follow_up_questions.report_id"],
+        name="fk_report_follow_up_answers_question",
+        ondelete="CASCADE",
+    ),
     schema="app",
 )

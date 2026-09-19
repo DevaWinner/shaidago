@@ -11,15 +11,22 @@ from typing import Any
 
 import httpx
 import pytest
-from sqlalchemy import LargeBinary, bindparam, text
+from sqlalchemy import text
 
 from shaidago.api.app import create_app
 from shaidago.reports.persistence import RECEIVED_MESSAGE
 from shaidago.reports.status_lookup import NEXT_ACTIONS
-from shaidago.reports.tracking import generate, lookup_key, normalise
+from shaidago.reports.tracking import generate
 from shaidago.shared import vocabulary
 from tests.factories import KEY_B, build_settings
-from tests.integration.report_support import CANARY, CLIENT, CONTACT_CANARY, Harness, png
+from tests.integration.report_support import (
+    CANARY,
+    CLIENT,
+    CONTACT_CANARY,
+    Harness,
+    png,
+    set_status,
+)
 
 LOOKUP = "/v1/report-status:lookup"
 KEYS = {"status", "status_updated_at", "message", "next_action", "follow_up_questions"}
@@ -45,33 +52,6 @@ async def lookup(harness: Harness, code: str, client: str = CLIENT) -> httpx.Res
     async with harness.client() as http:
         return await http.post(
             LOOKUP, json={"code": code}, headers={"X-Shaidago-Client-Hmac": client}
-        )
-
-
-async def change_status(harness: Harness, code: str, new: str, message: str, at: datetime) -> None:
-    """What a reviewer's transition writes: one event and the matching projection."""
-    async with harness.owner.unit_of_work() as session:
-        row = (
-            await session.execute(
-                text(
-                    "SELECT r.id, r.status FROM app.reports r "
-                    "JOIN app.report_tracking_keys k ON k.report_id = r.id "
-                    "WHERE k.lookup_hmac = :digest"
-                ).bindparams(bindparam("digest", type_=LargeBinary)),
-                {"digest": lookup_key(base64.b64decode(KEY_B), normalise(code))},
-            )
-        ).one()
-        await session.execute(
-            text(
-                "INSERT INTO app.report_status_events (id, report_id, previous_status, new_status, "
-                "public_message, actor_type, occurred_at) VALUES "
-                "(gen_random_uuid(), :r, :old, :new, :m, 'reviewer', :at)"
-            ),
-            {"r": row.id, "old": row.status, "new": new, "m": message, "at": at},
-        )
-        await session.execute(
-            text("UPDATE app.reports SET status = :new, status_updated_at = :at WHERE id = :r"),
-            {"r": row.id, "new": new, "at": at},
         )
 
 
@@ -112,8 +92,8 @@ async def test_the_newest_reviewer_message_and_status_are_shown(harness: Harness
     instant(harness)
     code = await submit(harness)
     later = datetime(2026, 9, 20, 9, 0, tzinfo=UTC)
-    await change_status(harness, code, "under_review", "A reviewer is looking at this.", later)
-    await change_status(
+    await set_status(harness, code, "under_review", "A reviewer is looking at this.", later)
+    await set_status(
         harness, code, "referred", "Sent to the approved route.", later + timedelta(hours=1)
     )
     body = (await lookup(harness, code)).json()

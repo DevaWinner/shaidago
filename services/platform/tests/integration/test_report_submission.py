@@ -3,6 +3,7 @@
 import asyncio
 import io
 import json
+import logging
 import uuid
 from collections.abc import AsyncIterator
 from concurrent.futures import ThreadPoolExecutor
@@ -10,6 +11,7 @@ from dataclasses import replace
 from typing import Any
 
 import pytest
+import structlog
 from PIL import Image
 from sqlalchemy.engine import URL
 
@@ -20,6 +22,7 @@ from shaidago.files.rules import FileLimits
 from shaidago.files.scanner import EICAR, EicarScanner
 from shaidago.reports.tracking import generate, lookup_key, normalise
 from shaidago.shared.database import Database, build_engine
+from shaidago.shared.logging import configure_logging
 from tests.integration.report_support import (
     CANARY,
     CLIENT,
@@ -323,3 +326,24 @@ async def test_the_receipt_and_stored_rows_carry_no_identity(harness: Harness) -
     assert "203.0.113.9" not in dump
     assert "canary-agent" not in dump
     assert CLIENT not in dump
+
+
+async def test_report_content_contacts_codes_and_file_names_never_reach_logs(
+    harness: Harness,
+) -> None:
+    buffer = io.StringIO()
+    configure_logging(service="svc", environment="test", level="DEBUG", stream=buffer)
+    try:
+        response = await harness.post(
+            harness.fields(contact_channel="email", contact_value=CONTACT_CANARY),
+            files=[("secret-site-photo.png", png(), "image/png")],
+        )
+        bad = await harness.post(harness.fields(description="too short"))
+        assert (response.status_code, bad.status_code) == (201, 422)
+        output = buffer.getvalue()
+    finally:
+        structlog.reset_defaults()
+        logging.getLogger().handlers.clear()
+    code = response.json()["tracking_code"]
+    for private in (CANARY, CONTACT_CANARY, code, code.replace("-", ""), "secret-site-photo"):
+        assert private not in output
