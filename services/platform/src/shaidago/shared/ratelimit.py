@@ -7,6 +7,8 @@ off is worse than a brief outage.
 """
 
 import math
+import secrets
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -48,11 +50,36 @@ class InMemoryRateLimiter:
         return _decision(count, limit, math.ceil(reset_at - now))
 
 
-class RedisRateLimiter:
-    """Also a managed resource: ``open`` checks reachability lazily, ``close`` releases the pool."""
+# One atomic step: drop entries older than the window, count what is left, and record this
+# attempt only if it is within the limit. Time comes from Redis, so every API process shares one
+# clock. A refused attempt is not recorded, so hammering a limit never extends its own lockout.
+_SLIDING_WINDOW = """
+local now = redis.call('TIME')
+local now_ms = now[1] * 1000 + math.floor(now[2] / 1000)
+local window_ms = tonumber(ARGV[1]) * 1000
+local limit = tonumber(ARGV[2])
+redis.call('ZREMRANGEBYSCORE', KEYS[1], 0, now_ms - window_ms)
+local count = redis.call('ZCARD', KEYS[1])
+if count < limit then
+  redis.call('ZADD', KEYS[1], now_ms, ARGV[3])
+  redis.call('PEXPIRE', KEYS[1], window_ms)
+  return {1, limit - count - 1, 0}
+end
+local oldest = redis.call('ZRANGE', KEYS[1], 0, 0, 'WITHSCORES')
+local retry_ms = tonumber(oldest[2]) + window_ms - now_ms
+return {0, 0, math.ceil(retry_ms / 1000)}
+"""
 
-    def __init__(self, client: Redis) -> None:
+
+class RedisRateLimiter:
+    """Sliding-window limiter shared by every API process. Also a managed resource: ``open``
+    checks reachability lazily, ``close`` releases the pool."""
+
+    def __init__(
+        self, client: Redis, *, token: Callable[[], str] = lambda: secrets.token_hex(8)
+    ) -> None:
         self._client = client
+        self._token = token
 
     async def check(self) -> None:
         """Readiness: Redis answers PING. Raises when it does not."""
@@ -60,14 +87,17 @@ class RedisRateLimiter:
 
     async def hit(self, key: str, *, limit: int, window_seconds: int) -> RateDecision:
         try:
-            pipeline = self._client.pipeline(transaction=True)
-            pipeline.set(key, 0, ex=window_seconds, nx=True)
-            pipeline.incr(key)
-            pipeline.ttl(key)
-            _, count, ttl = await pipeline.execute()
-        except RedisError as error:
+            raw = await self._client.eval(  # pyright: ignore[reportUnknownMemberType, reportGeneralTypeIssues]
+                _SLIDING_WINDOW, 1, key, window_seconds, limit, self._token()
+            )
+            allowed, remaining, retry_after = (int(v) for v in raw)  # pyright: ignore[reportUnknownVariableType, reportUnknownArgumentType]
+        except (RedisError, ValueError, TypeError) as error:
             raise RateLimitUnavailableError from error
-        return _decision(int(count), limit, max(int(ttl), 1))
+        return RateDecision(
+            allowed=bool(allowed),
+            remaining=max(remaining, 0),
+            retry_after_seconds=max(retry_after, 1),
+        )
 
     async def open(self) -> None:
         return

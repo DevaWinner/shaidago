@@ -10,7 +10,9 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import Response
 
 from shaidago.shared.context import REQUEST_ID_HEADER
+from shaidago.shared.crypto import KeyUnavailableError
 from shaidago.shared.problems import (
+    DEPENDENCY_UNAVAILABLE,
     INTERNAL_ERROR,
     VALIDATION_FAILED,
     FieldError,
@@ -107,6 +109,13 @@ async def _handle_http(request: Request, error: Exception) -> Response:
     return _respond(request, problem_for_status(http_error.status_code), headers=headers)
 
 
+async def _handle_key_unavailable(request: Request, error: Exception) -> Response:
+    """The key version that protects this data is not configured here: retryable, not a crash."""
+    del error
+    _logger.error("encryption key version unavailable")
+    return _respond(request, DEPENDENCY_UNAVAILABLE)
+
+
 async def _handle_unexpected(request: Request, error: Exception) -> Response:
     # The exception is chained into the redacted server log; the client learns nothing about it.
     _logger.error("unhandled exception", exc_info=error)
@@ -117,4 +126,5 @@ def register_exception_handlers(app: FastAPI) -> None:
     app.add_exception_handler(ProblemError, _handle_problem)
     app.add_exception_handler(RequestValidationError, _handle_validation)
     app.add_exception_handler(StarletteHTTPException, _handle_http)
+    app.add_exception_handler(KeyUnavailableError, _handle_key_unavailable)
     app.add_exception_handler(Exception, _handle_unexpected)

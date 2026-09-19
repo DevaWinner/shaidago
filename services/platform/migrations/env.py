@@ -35,8 +35,18 @@ def run_migrations_online() -> None:
         _run(connection)
         return
     engine = create_engine(_url(), poolclass=pool.NullPool)
-    with engine.connect() as opened:
-        _run(opened)
+    # Only one migration run at a time: a second one waits here instead of colliding with the
+    # first on roles, extensions, or the version table. The lock is held on its own connection
+    # for the whole run and is released by the server if this process dies.
+    with engine.connect() as guard:
+        guard.exec_driver_sql("SELECT pg_advisory_lock(hashtext('shaidago.migrations'))")
+        guard.commit()
+        try:
+            with engine.connect() as opened:
+                _run(opened)
+        finally:
+            guard.exec_driver_sql("SELECT pg_advisory_unlock(hashtext('shaidago.migrations'))")
+            guard.commit()
 
 
 def _run(connection: Connection) -> None:

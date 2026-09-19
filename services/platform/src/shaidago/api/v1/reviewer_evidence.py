@@ -39,6 +39,7 @@ PROBLEMS: dict[int | str, dict[str, Any]] = {
     401: {"model": ProblemDetails},
     403: {"model": ProblemDetails},
     404: {"model": ProblemDetails},
+    422: {"model": ProblemDetails},
     503: {"model": ProblemDetails},
 }
 

@@ -1117,3 +1117,129 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the generator, fixtures, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-100 Central rate limits and abuse budgets
+
+- **Task:** BE-100 — Central rate limits and abuse budgets.
+- **Outcome delivered:** An atomic sliding-window Redis limiter, a central policy table with a completeness test, reviewer read and write budgets, a shared Q&A provider budget, and proven fail-closed behaviour.
+- **Files changed:** `services/platform/src/shaidago/shared/{ratelimit,config}.py`, `src/shaidago/api/{rate_policy,reviewer_auth}.py`, `src/shaidago/api/v1/project_questions.py`, tests (`test_rate_limits_redis.py`, `test_rate_limits_api.py`), `.env.example`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None. The Q&A limiter key changed shape (`sg:rl:qa:client:` and `sg:rl:qa:global`); old keys simply expire.
+- **Security/privacy impact:** Keys hold only pseudonymous or internal identifiers; no raw address or code. Every policy fails closed.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `make backend-verify` exit 0 (1957 passed).
+- **Tests added or changed:** 6 Redis integration and 3 API tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** The reviewer budgets are skipped when no limiter is wired, which happens only in tests (the running service always wires one). The default reviewer budgets (600 reads and 120 writes per minute) are guesses to be tuned with real use. Progressive backoff for sign-in and handle verification remains the earlier per-pair and per-handle design.
+- **Commit/PR:** `feat: add an atomic sliding-window limiter, reviewer budgets, and a rate-limit policy table`
+- **Next task may rely on:** the policy table and limiter for any new route.
+- **AI assistance used:** Designed and wrote the limiter, policy table, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-101 Cache and data-leak audit
+
+- **Task:** BE-101 — Cache and data-leak audit.
+- **Outcome delivered:** A cache-policy middleware with a four-path public allowlist, plus tests that enumerate every route and prove private responses are `no-store`.
+- **Files changed:** `services/platform/src/shaidago/api/{cache_policy,app}.py`, tests (`tests/unit/api/test_cache_policy.py`, `tests/integration/test_cache_audit.py`), `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None (responses already had explicit headers; the middleware is a backstop).
+- **Security/privacy impact:** A private response cannot leave with a public cache header even if a route is written wrongly.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `make backend-verify` exit 0 (1974 passed).
+- **Tests added or changed:** 14 unit and 3 integration tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** The BFF and any CDN must still honour these headers; that boundary is the frontend's and Circle 11's to prove. The allowlist is a regex table that must be updated if a public route is added.
+- **Commit/PR:** `feat: enforce an explicit cache policy on every response`
+- **Next task may rely on:** the allowlist as the single list of cacheable routes.
+- **AI assistance used:** Designed and wrote the middleware and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-102 Contract fuzzing and public projection proof
+
+- **Task:** BE-102 — Contract fuzzing and public projection proof.
+- **Outcome delivered:** Authenticated reviewer contract fuzzing and a composed canary proof that private data never reaches public, tracking, error, or log output.
+- **Files changed:** `services/platform/tests/integration/{test_schemathesis_reviewer,test_public_projection_proof}.py`, `src/shaidago/api/v1/reviewer_evidence.py` (documented `422`), `contracts/openapi.json`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** One documented status added to one operation.
+- **Security/privacy impact:** Proof only; no behaviour change beyond the documented status.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `make backend-verify` exit 0.
+- **Tests added or changed:** 1 fuzz test (20 operations) and 2 proof tests.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated.
+- **Known limitations/open decisions:** The fuzzer runs 25 examples per operation to keep the suite fast; a longer run (`max_examples` raised) is a manual option. Multipart duplicate-name cases are generated only where the schema describes them (report submission is covered by its own adversarial tests).
+- **Commit/PR:** `test: fuzz the reviewer API and prove private canaries never surface publicly`
+- **Next task may rely on:** the canary world helper for any later leak test.
+- **AI assistance used:** Designed and wrote the fuzz and proof tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-103 Concurrency and failure-injection suite
+
+- **Task:** BE-103 — Concurrency and failure-injection suite.
+- **Outcome delivered:** A resilience suite, a serialised migration runner, and a stable 503 for an unavailable key version.
+- **Files changed:** `services/platform/migrations/env.py`, `src/shaidago/api/errors.py`, `tests/integration/test_resilience.py`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** A key-version outage no longer surfaces as an unhandled error; nothing partial is written.
+- **Failure behaviour verified:** see the build order note. The concurrent-migration case failed before the fix (two of three runners errored) and passes after.
+- **Commands run and results:** `make backend-verify` exit 0 (1985 passed).
+- **Tests added or changed:** 8 integration tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** Migration contention is tested across processes (Alembic's context is process-global, so threads are not a valid model). A real client disconnect mid-multipart was not simulated over ASGI. Timeout of Redis during a request is covered by making the limiter raise, not by a real network stall.
+- **Commit/PR:** `test: add concurrency and failure-injection tests and serialise migrations`
+- **Next task may rely on:** a single advisory-locked migration path (the pre-deploy step in Circle 11).
+- **AI assistance used:** Designed and wrote the suite and fixes.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-104 Performance and resource budgets
+
+- **Task:** BE-104 — Performance and resource budgets.
+- **Outcome delivered:** Declared budgets, a scaled-data budget test, and preserved measurements.
+- **Files changed:** `docs/PERFORMANCE_BUDGETS.md`, `docs/evidence/BE-104-performance.md`, `services/platform/tests/integration/test_performance_budgets.py`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** None.
+- **Failure behaviour verified:** Not applicable; the test caught nothing to fix.
+- **Commands run and results:** `make backend-verify` exit 0 (1990 passed).
+- **Tests added or changed:** 5 tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** Latency is in-process (no network); the budgets are generous by design; production Argon2 timing must be repeated on the Railway instance size.
+- **Commit/PR:** `test: declare performance budgets and measure them on scaled data`
+- **Next task may rely on:** the budget table as the reference for Circle 11 sizing.
+- **AI assistance used:** Wrote the budgets, test, and evidence note.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-105 Security scanning and dependency review
+
+- **Task:** BE-105 — Security scanning and dependency review.
+- **Outcome delivered:** Scanners run and triaged, a narrow secret-scan allowlist, and a security workflow.
+- **Files changed:** `.gitleaks.toml`, `.github/workflows/security.yml`, `docs/SECURITY_SCAN_TRIAGE.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** Confirms no committed secret; documents the scan gaps.
+- **Failure behaviour verified:** Not applicable.
+- **Commands run and results:** `gitleaks detect` (6 findings, then 0 with the allowlist), `uvx semgrep@1.177.0` (0 findings, 9 partial parses), `make backend-verify` (Bandit, pip-audit, Ruff clean).
+- **Tests added or changed:** None.
+- **Generated artifacts checked:** The workflow YAML parses.
+- **Known limitations/open decisions:** **CodeQL and Trivy are pending** and are open items of the Circle 10 gate. Docker images for Gitleaks were pulled from a public registry to run the scan. The allowlist would hide the same placeholder wherever it appeared, so a real key must never look like it.
+- **Commit/PR:** `ci: add secret, static-analysis, and CodeQL scanning with a triage record`
+- **Next task may rely on:** the security workflow, where the Trivy job for BE-110 belongs.
+- **AI assistance used:** Ran the scanners, triaged the findings, and wrote the workflow and record.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-106 Retention, deletion, and operational privacy
+
+- **Task:** BE-106 — Retention, deletion, and operational privacy.
+- **Outcome delivered:** An operator retention command with purges, crypto-shredding, and an access-review list, and a retention policy document with explicit limitations.
+- **Files changed:** `services/platform/src/shaidago/retention/{__init__,purge,__main__}.py`, `Makefile`, `tests/integration/test_retention.py`, `docs/RETENTION.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** Shredding makes private content unreadable by destroying its keys; history and audit stay; nothing runs from the API.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `make backend-verify`; Circle 0 validators.
+- **Tests added or changed:** 5 integration tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** No compliance claim; report and audit retention periods, backup configuration, and scheduling of the purge are open. Report-scoped discovery runs are not deleted (the run guard forbids direct deletes and they hold no private text). Shredding needs the object store credentials to delete evidence objects.
+- **Commit/PR:** `feat: add retention purges, report crypto-shredding, and a retention policy`
+- **Next task may rely on:** the retention command for the runbooks in BE-113.
+- **AI assistance used:** Designed and wrote the module, command, tests, and policy.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

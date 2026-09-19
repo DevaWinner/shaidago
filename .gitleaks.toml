@@ -1,0 +1,16 @@
+# Gitleaks configuration. The default rules apply; the allowlist below covers exactly two synthetic
+# values that look like keys. Adding a value here needs a reason in the same change.
+title = "ShaidaGo gitleaks"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Documented synthetic placeholders"
+regexes = [
+  # base64 of the ASCII text "change-me-change-me-change-me-32": the placeholder used in
+  # .env.example, the OpenAPI generator's synthetic settings, and tests. It protects nothing.
+  '''Y2hhbmdlLW1lLWNoYW5nZS1tZS1jaGFuZ2UtbWUtMzI=''',
+  # Two fixed UUIDs used as example Idempotency-Key values in tests.
+  '''3f2b8c1e-9d4a-4b6e-8a1c-2d5e7f9a0b3[cd]''',
+]
