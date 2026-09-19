@@ -147,6 +147,8 @@ Domain modules use the same internal layers where needed: `models.py` for domain
 - **Evidence:** requirements-to-task traceability table added to the implementing pull request.
 - **Done when:** no acceptance criterion is orphaned or assigned to the BFF alone.
 
+> **Execution status (2026-09-19): complete.** The requirements-to-task traceability table is `docs/REQUIREMENTS_TRACEABILITY.md`, the five journeys and the non-goals (for example NG-01, no public accounts) are mapped there, and no criterion is orphaned or assigned to the BFF alone.
+
 ### BE-001 — Build the verified source register
 
 > **Execution status (2026-09-19): deferred by maintainer.** Complete this task as part of the evidence-backed demo seeding work immediately before BE-043. The deferral changes execution order only: BE-001 remains a prerequisite for BE-043 and the Circle 0 exit gate remains open until the register and validator pass.
@@ -322,6 +324,8 @@ Requirements:
 
 > **Execution status (2026-09-19): partial.** The factory, `/v1` router mount, config-gated docs, deterministic schema generation, and reverse-order resource lifecycle are implemented and tested (60 passing tests, Ruff and Pyright strict clean). Item 5's clock and randomness injection is deferred to BE-034, which owns those primitives, and real pools and provider clients arrive with BE-031 and later; the lifespan is proven with recording fakes.
 
+> **Execution status (2026-09-19, updated): complete.** The deferred item is delivered: the application receives its clock and identifier generator through `Dependencies`, backed by the BE-034 primitives, and every report, session, and audit path uses them with deterministic test doubles.
+
 ### BE-022 — Internal caller authentication
 
 The API is private but must not trust network location alone.
@@ -346,6 +350,8 @@ Do not confuse internal caller authentication with reviewer authentication or re
 6. Never log full request/response bodies.
 
 > **Execution status (2026-09-19): partial.** Request context, the redacting JSON logger, and canary tests for logs and exception output are implemented (99 passing tests, Ruff and Pyright strict clean). Propagation of the request ID into database audit metadata and worker messages is deferred to the tasks that create the audit table and the worker envelope (BE-090), and the error code in the access line arrives with BE-024.
+
+> **Execution status (2026-09-19, updated): partial.** The request ID now reaches the database audit metadata (`AuditWriter` records it, and the sign-in, sign-out, and follow-up paths pass it). Only propagation into worker messages remains, and it belongs to the worker envelope in BE-090.
 
 ### BE-024 — Problem details and exception boundary
 
@@ -377,6 +383,8 @@ Implement one RFC 9457-style `application/problem+json` shape containing `type`,
 - Deterministic `contracts/openapi.json` generation is available even with external providers offline.
 
 > **Gate status (2026-09-19): open, with two named gaps.** Evidence: (1) a real `uvicorn --factory` process started, served `/health/live` (200, request ID, `no-store`) and `/health/ready` (401 without the credential, 200 with it), logged redacted JSON, and shut down cleanly, and lifespan open/close order is unit-tested with fakes; (2) unauthenticated callers, including for unknown paths, get one generic 401 before any router; (3) framework, validation, domain, and unexpected errors all use the problem shape; (4) canary values are absent from redacted logs, exception output, and responses in tests; (5) `contracts/openapi.json` is generated deterministically from synthetic settings and `make openapi-check` is part of `make backend-verify` (121 tests passing, exit 0). **Gaps:** BE-021's clock/randomness injection is deferred to BE-034, and BE-025's real database, migration-revision, Redis, and object-storage probes are not registered (the API currently reports `ready` with no components), so "readiness distinguishes required dependency failure" is proven only with fake probes. BE-023 request-ID propagation into audit metadata and worker messages also remains. Circle 3 may start: it supplies those pieces.
+
+> **Gate status (2026-09-19, updated): open, one named gap.** BE-021's clock and randomness injection is delivered, and BE-023's audit-metadata propagation is delivered. Remaining: BE-025's Redis and object-storage probes are not registered, so readiness is proven against real dependency failure only for the database and migration revision, and request-ID propagation into worker messages waits for BE-090.
 
 ## 6. Circle 3 — local infrastructure, database roles, and migration baseline
 
@@ -421,6 +429,8 @@ Implement public views/projections, least-privilege grants, and row-security pol
 
 > **Execution status (2026-09-19): partial.** Roles, schemas, default-deny grants, forced row security, and the no-read-back mapping are proven by 11 integration tests that log in as each role (`make backend-verify` exit 0, 155 passed). The proof uses synthetic probe tables because the real private tables do not exist yet; the baseline is executed by BE-033's migration, and each real table must add its own grants, policies, and allow/deny test.
 
+> **Execution status (2026-09-19, updated): complete.** The real tables now carry their own grants, forced row security, and allow/deny tests: reports, contacts, status events, tracking keys, evidence, reporter handles, and follow-up questions and answers (`test_private_reports.py`, `test_reporter_handles.py`, `test_follow_ups.py`), including the insert-only public role and the definer functions each one exposes.
+
 ### BE-033 — Alembic discipline and baseline
 
 1. Configure Alembic to import one metadata registry without importing the running app.
@@ -453,6 +463,8 @@ These primitives must exist before any create/list endpoint uses a local alterna
 - Shared ID, time, cursor, and idempotency primitives have deterministic property tests.
 
 > **Gate status (2026-09-19): open, one named gap.** Evidence: empty database to head, head to one revision down and up, head to base and back, repeat upgrade, and model drift all pass against PostgreSQL 18 (`tests/integration/test_migrations.py`); every application role is proven by allow/deny tests through real logins, on synthetic probe tables and on the real idempotency functions (`test_database_roles.py`, `test_idempotency.py`); the ID, clock, cursor, and idempotency primitives have Hypothesis property tests; `make backend-verify` exit 0 with 227 passing tests, and `make migrate` then `make db-roles` prepare a database end to end. **Gap:** the ClamAV service is defined but was never started (the Docker VM had about 2.6 GB free alongside unrelated containers), so "Compose services become healthy" is proven for PostgreSQL, Redis, and MinIO only. CI has also never run. The grant model for the real report, contact, and evidence tables remains to be proven by their owning tasks.
+
+> **Gate status (2026-09-19, updated): open, one named gap.** The grant model for the real report, contact, evidence, handle, and follow-up tables is now proven (BE-032 update). Remaining: the ClamAV service was never started, so "Compose services become healthy" is proven for PostgreSQL, Redis, and MinIO only, and CI has never run (needs a maintainer push).
 
 ## 7. Circle 4 — public accountability domain and APIs
 
@@ -548,6 +560,8 @@ Requirements:
 
 > **Gate status (2026-09-19): open.** Met: public endpoints are paginated, indexed with committed plan evidence, contract-tested with Schemathesis, snapshot- and denylist-guarded, and contain no private data; every displayed fact and update resolves to an approved citation (enforced by database triggers and proven adversarially); locale fallback is labelled honestly; the generated OpenAPI is committed and `make openapi-check` is part of `make backend-verify` (333 passing tests). **Not met:** the seed command and the six real cited projects. BE-001 (the verified source register) is deferred by the maintainer, so BE-043 is blocked and no project, source, escalation route, or translation exists outside synthetic tests. The Circle 4 exit criteria "six cited projects load" and "seed command is valid, idempotent, and refuses unsafe targets" stay open until then, together with the Circle 0 gate.
 
+> **Gate status (2026-09-19, superseded):** see the updated note below; the seed command and cited projects were delivered by BE-043 once BE-001 landed.
+
 > **Gate status (2026-09-19, updated): closed for the verified evidence, with a caveat.** The seed command is valid, idempotent, and refuses unsafe targets. Three cited projects load, not six: each has facts with verified passages, and every displayed fact or update still needs an approved citation, which the database enforces (seeded facts are drafts and are not shown). The other three projects wait for readable sources. Locale records exist for one project in four languages (all `machine_assisted`) and one language for the others, with an honest English-fallback label. The generated OpenAPI has no unexplained diff.
 
 ## 8. Circle 5 — reviewer identity, sessions, and authorisation
@@ -564,7 +578,7 @@ Requirements:
 4. Refuse duplicate identifiers and weak/demo defaults outside development/test.
 5. Make disablement revoke active sessions transactionally.
 
-> **Execution status (2026-09-19): partial.** Reviewer users, the append-only audit log, Argon2id hashing with rehash-on-success, and an idempotent bootstrap are proven (`make backend-verify` exit 0, 58 new tests). Step 5, disablement revoking active sessions, was delivered by BE-051 (`ReviewerService.disable`), so this task is effectively complete.
+> **Execution status (2026-09-19): complete.** Reviewer users, the append-only audit log, Argon2id hashing with rehash-on-success, and an idempotent bootstrap are proven (`make backend-verify` exit 0, 58 new tests). Step 5, disablement revoking active sessions in the same transaction, depends on the session store that BE-051 introduced, so it was delivered there (`ReviewerService.disable`); `tests/integration/test_sessions.py` proves both that disabling revokes every session and that a failed disable rolls the revocation back. The task was marked partial only because this note was written before BE-051 and never updated.
 
 ### BE-051 — Opaque sessions and cookie contract
 
@@ -664,6 +678,8 @@ Implement `SG-XXXXX-XXXXX-XXXXX-XXXXX-C` using 100 random bits of Crockford Base
 6. Property-test round trips, typo detection, entropy source calls, normalisation, and collision handling.
 
 > **Execution status (2026-09-19): partial.** Code generation, strict normalisation with a Luhn mod 32 check (every single-symbol typo detected; transposition misses measured under 5%), redacting code objects, and the keyed lookup hash with pepper ordering are proven by 30 tests (`make backend-verify` exit 0, 561 passed). The tracking-key table, indexed lookup, and one-time create response depend on BE-061 and BE-063 and are not built.
+
+> **Execution status (2026-09-19, updated): complete.** The remaining items are delivered: the tracking-key table and unique indexed lookup (BE-061), the one-time code in the create response (BE-063), and the generic lookup function (BE-065), all proven by integration tests on PostgreSQL.
 
 ### BE-063 — Multipart report submission
 
