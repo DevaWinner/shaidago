@@ -8,6 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from shaidago.discovery.dedupe import canonical_url
 from shaidago.discovery.fetcher import FetchedPage, FetchError
+from shaidago.discovery.netguard import UnsafeDestinationError, is_public_address, parse_target
 
 FIXTURE_ROOT: Final = Path(__file__).parents[5] / "data" / "discovery-fixtures"
 MAX_FIXTURE_BODY: Final = 500_000
@@ -52,6 +53,11 @@ class FixturePageFetcher:
         return cls({})
 
     async def fetch(self, url: str) -> FetchedPage:
+        # Replay honours the same destination rules as the live fetcher, so an unsafe URL in a
+        # recorded result is refused, not served.
+        target = parse_target(url)
+        if target.is_ip_literal and not is_public_address(target.host):
+            raise UnsafeDestinationError("private_address")
         record = self._pages.get(canonical_url(url))
         if record is None:
             raise FetchError("fixture_missing")

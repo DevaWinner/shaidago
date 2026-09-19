@@ -1099,3 +1099,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the migration, pipeline, services, endpoints, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-097 Replay fixtures and live evidence
+
+- **Task:** BE-097 — Replay fixtures and live evidence.
+- **Outcome delivered:** Generated synthetic replay fixtures for all listed scenarios with end-to-end tests, replay labelling, a public-run query stored at creation, and a documented, pending live evidence procedure.
+- **Files changed:** `data/discovery-fixtures/*`, `services/platform/scripts/build_discovery_fixtures.py`, `migrations/versions/0024_public_run_query.py`, `src/shaidago/discovery/{pipeline,service,pages}.py`, tests (`test_discovery_replay.py`, `tests/live/test_discovery_live.py`), `docs/evidence/BE-097-live-evidence.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** The public run creation function now takes and stores the planned query and policy version.
+- **Security/privacy impact:** Fixtures use reserved `.test` domains and invented pages; the replay page source refuses private and metadata addresses like the live fetcher.
+- **Failure behaviour verified:** all twelve scenarios. The work also found a real gap: public runs were created without a query (so a real run would have failed with `query_not_approved`), fixed by planning the query at creation.
+- **Commands run and results:** `make backend-verify` exit 0 (1948 passed, 1 live test deselected); Circle 0 validators passed.
+- **Tests added or changed:** 14 replay tests; one skipped opt-in live test.
+- **Generated artifacts checked:** the fixtures against their generator; OpenAPI unchanged.
+- **Known limitations/open decisions:** **The live search and analysis evidence is pending** (hard stop, live provider). In replay mode with no matching fixture a run finds nothing, which is honest but means the hosted demo shows no discovery results until fixtures for real projects exist or a live run is authorised.
+- **Commit/PR:** `feat: add discovery replay fixtures, scenario tests, and the live evidence procedure`
+- **Next task may rely on:** replay providers and the fixtures for any discovery test.
+- **AI assistance used:** Designed and wrote the generator, fixtures, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

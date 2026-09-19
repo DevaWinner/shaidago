@@ -160,7 +160,9 @@ async def test_a_run_finds_records_analyses_and_completes_with_everything_unrevi
     assert row.model_id == "fixture-echo"
     [request] = analyser.requests
     assert len(request.passages) == 2  # the duplicate is not analysed twice
-    assert {p.citation_id for p in request.passages} == {citation_id(s.id) for s in stored[:2]}
+    assert {p.citation_id for p in request.passages} == {
+        citation_id(s.canonical_url, s.text_sha256) for s in stored[:2]
+    }
 
 
 async def test_a_page_that_tries_to_instruct_the_model_is_recorded_but_never_analysed(

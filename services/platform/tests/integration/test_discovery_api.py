@@ -123,7 +123,8 @@ async def test_a_public_run_is_created_once_shared_and_queued_by_id_only(
         "SELECT scope, report_id, provider_mode, query_text FROM app.discovery_runs WHERE id = :r",
         r=uuid.UUID(body["run_id"]),
     )
-    assert (row.scope, row.report_id, row.query_text) == ("public", None, None)
+    assert (row.scope, row.report_id) == ("public", None)
+    assert row.query_text == "synthetic title Synthetic Council health"
 
 
 async def test_an_unknown_project_and_a_bad_rate_are_refused(review_world: ReviewWorld) -> None:

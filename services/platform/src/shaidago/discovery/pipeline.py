@@ -37,16 +37,18 @@ from shaidago.worker.store import RunStore, RunView
 
 MAX_ANALYSED_SOURCES: Final = 8
 _SIGHTED = text(
-    "SELECT d.id, d.publisher_domain, d.excerpt FROM app.discovered_source_sightings s "
+    "SELECT d.id, d.canonical_url, d.text_sha256, d.publisher_domain, d.excerpt "
+    "FROM app.discovered_source_sightings s "
     "JOIN app.discovered_sources d ON d.id = s.discovered_source_id "
     "WHERE s.run_id = :run AND d.duplicate_of IS NULL AND NOT d.injection_flag "
     "ORDER BY d.first_discovered_at, d.id LIMIT :limit"
 )
 
 
-def citation_id(source_id: UUID) -> str:
-    """An opaque per-source label: nothing in it identifies the source or the run."""
-    return "s_" + hashlib.sha256(str(source_id).encode()).hexdigest()[:12]
+def citation_id(canonical_url: str, text_sha256: str) -> str:
+    """An opaque label derived from the page's own URL and content, so the same page always gets
+    the same label (replay fixtures stay valid) and nothing in it names a run or a person."""
+    return "s_" + hashlib.sha256(f"{canonical_url}\n{text_sha256}".encode()).hexdigest()[:12]
 
 
 class SourceScoutPipeline:
@@ -107,7 +109,9 @@ class SourceScoutPipeline:
             return AnalysisResult(needs_review=False)
         passages = tuple(
             SourcePassage(
-                citation_id=citation_id(r.id), publisher_domain=r.publisher_domain, text=r.excerpt
+                citation_id=citation_id(r.canonical_url, r.text_sha256),
+                publisher_domain=r.publisher_domain,
+                text=r.excerpt,
             )
             for r in rows
         )

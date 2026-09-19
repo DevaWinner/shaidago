@@ -20,7 +20,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from shaidago.audit.events import AuditWriter
 from shaidago.discovery.budget import BudgetDecision, PriorRun, decide_public_run
 from shaidago.discovery.dispositions import DecisionNotAllowedError, find_decision
-from shaidago.discovery.planner import POLICY_VERSION, PublicProjectTerms, QueryPlan
+from shaidago.discovery.planner import (
+    POLICY_VERSION,
+    PublicProjectTerms,
+    QueryPlan,
+    plan_public_query,
+)
 from shaidago.review.context import ReviewContext
 from shaidago.review.detail import Reviewer
 from shaidago.shared.clock import Clock
@@ -62,7 +67,9 @@ _TODAY = text(
     "SELECT count(*) FROM public_api.discovery_runs "
     "WHERE created_at >= :start AND created_at < :end"
 )
-_CREATE_PUBLIC = text("SELECT app.create_public_discovery_run(:id, :slug, :now, :mode, :demo)")
+_CREATE_PUBLIC = text(
+    "SELECT app.create_public_discovery_run(:id, :slug, :now, :mode, :demo, :query, :policy)"
+)
 _PUBLIC_RUN = text("SELECT * FROM public_api.discovery_runs WHERE id = :id")
 _PUBLIC_SOURCES = text(
     "SELECT source_id, canonical_url, publisher_domain, title, preliminary_type, published_on, "
@@ -174,6 +181,10 @@ async def request_public_run(  # noqa: PLR0913 - the budget inputs are named, no
         now=now, runs=runs, fresh_runs_today=int(today), daily_limit=daily_limit
     )
     if decision.action == "create":
+        terms = await project_terms(session, slug)
+        plan = plan_public_query(terms) if terms is not None else None
+        if plan is None or not plan.terms:
+            return PublicRunRequest(UUID(int=0), "unavailable", created=False, enqueue=False)
         run_id = UUID(
             str(
                 (
@@ -185,6 +196,8 @@ async def request_public_run(  # noqa: PLR0913 - the budget inputs are named, no
                             "now": now,
                             "mode": provider_mode,
                             "demo": provider_mode == "replay",
+                            "query": plan.query,
+                            "policy": plan.policy_version,
                         },
                     )
                 ).scalar_one()

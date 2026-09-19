@@ -1,0 +1,215 @@
+{
+  "fixture_version": 1,
+  "records": [
+    {
+      "fingerprint": "4464912113a1e84600c44229ea9dd8caa6863ca8fd5b62a9bb3458a8d1ada3f7",
+      "output": {
+        "confidence_note": "Two public pages were read; coverage is limited.",
+        "contradictions": [],
+        "follow_up_questions": [
+          {
+            "question": "Is there a published award notice?",
+            "reason": "No notice was found.",
+            "sensitivity": "low"
+          }
+        ],
+        "information_gaps": [
+          "The completion date is not stated."
+        ],
+        "reported_claims": [],
+        "safety_note": "Nothing here has been reviewed.",
+        "summary": "Public pages about the fictional project were read.",
+        "supported_facts": [
+          {
+            "citation_ids": [
+              "s_e66c5ca6f523"
+            ],
+            "text": "The fictional clinic works contract was awarded on 1 March 2026"
+          }
+        ]
+      }
+    },
+    {
+      "fingerprint": "c249b840b467a9de9dfecafcaa41039a62333f4c6a720d58b8045fbb4cf72369",
+      "output": {
+        "confidence_note": "Two public pages were read; coverage is limited.",
+        "contradictions": [],
+        "follow_up_questions": [
+          {
+            "question": "Is there a published award notice?",
+            "reason": "No notice was found.",
+            "sensitivity": "low"
+          }
+        ],
+        "information_gaps": [
+          "The completion date is not stated."
+        ],
+        "reported_claims": [],
+        "safety_note": "Nothing here has been reviewed.",
+        "summary": "Public pages about the fictional project were read.",
+        "supported_facts": [
+          {
+            "citation_ids": [
+              "s_02956a6d64cb"
+            ],
+            "text": "The fictional clinic works contract was awarded on 1 March 2026"
+          }
+        ]
+      }
+    },
+    {
+      "fingerprint": "5abaac246c6e84c20a74a1d488d403512266d1ae1db20940e0b9bd451f685eb7",
+      "output": {
+        "confidence_note": "Two public pages were read; coverage is limited.",
+        "contradictions": [
+          {
+            "citation_ids": [
+              "s_3456b5aee964",
+              "s_024ac0ca09a1"
+            ],
+            "description": "The two pages give different award dates and amounts."
+          }
+        ],
+        "follow_up_questions": [
+          {
+            "question": "Is there a published award notice?",
+            "reason": "No notice was found.",
+            "sensitivity": "low"
+          }
+        ],
+        "information_gaps": [
+          "The completion date is not stated."
+        ],
+        "reported_claims": [
+          {
+            "citation_id": "s_024ac0ca09a1",
+            "claim": "the clinic works were awarded in April 2026",
+            "publisher": "news.fixture.test"
+          }
+        ],
+        "safety_note": "Nothing here has been reviewed.",
+        "summary": "Public pages about the fictional project were read.",
+        "supported_facts": [
+          {
+            "citation_ids": [
+              "s_3456b5aee964"
+            ],
+            "text": "The fictional clinic works contract was awarded on 1 March 2026"
+          }
+        ]
+      }
+    },
+    {
+      "fingerprint": "3f847b88059714ab937b989df046ceba1e560ce3698549abbbf79718f8906f8b",
+      "output": {
+        "confidence_note": "Two public pages were read; coverage is limited.",
+        "contradictions": [],
+        "follow_up_questions": [
+          {
+            "question": "Is there a published award notice?",
+            "reason": "No notice was found.",
+            "sensitivity": "low"
+          }
+        ],
+        "information_gaps": [
+          "The completion date is not stated."
+        ],
+        "reported_claims": [],
+        "safety_note": "Nothing here has been reviewed.",
+        "summary": "Public pages about the fictional project were read.",
+        "supported_facts": [
+          {
+            "citation_ids": [
+              "s_73cea25b1f9f"
+            ],
+            "text": "The fictional clinic works contract was awarded on 1 March 2026"
+          }
+        ]
+      }
+    },
+    {
+      "fingerprint": "abca4ec195a622baa602314f9e8e05eb55b07a85249f158985da0c8b467cdf0a",
+      "output": {
+        "confidence_note": "Two public pages were read; coverage is limited.",
+        "contradictions": [],
+        "follow_up_questions": [
+          {
+            "question": "Is there a published award notice?",
+            "reason": "No notice was found.",
+            "sensitivity": "low"
+          }
+        ],
+        "information_gaps": [
+          "The completion date is not stated."
+        ],
+        "reported_claims": [],
+        "safety_note": "Nothing here has been reviewed.",
+        "summary": "Public pages about the fictional project were read.",
+        "supported_facts": [
+          {
+            "citation_ids": [
+              "s_4a3365654ee1"
+            ],
+            "text": "The fictional clinic works are on schedule for the second quarter of 2026"
+          }
+        ]
+      }
+    },
+    {
+      "fingerprint": "8c4bdf235cefa7605c7fdf36f62c65e4be7cfac3e627b3c17dbf6a997667979f",
+      "output": {
+        "confidence_note": "Two public pages were read; coverage is limited.",
+        "contradictions": [],
+        "follow_up_questions": [
+          {
+            "question": "Is there a published award notice?",
+            "reason": "No notice was found.",
+            "sensitivity": "low"
+          }
+        ],
+        "information_gaps": [
+          "The completion date is not stated."
+        ],
+        "reported_claims": [],
+        "safety_note": "Nothing here has been reviewed.",
+        "summary": "Public pages about the fictional project were read.",
+        "supported_facts": [
+          {
+            "citation_ids": [
+              "s_6e8dc57bcf08"
+            ],
+            "text": "The fictional clinic works are on schedule for the second quarter of 2026"
+          }
+        ]
+      }
+    },
+    {
+      "fingerprint": "8d61edd424f5e01f1be08b6de4d8dfe453271c8dc30b104d8ef604b83d85fede",
+      "output": {
+        "confidence_note": "Two public pages were read; coverage is limited.",
+        "contradictions": [],
+        "follow_up_questions": [
+          {
+            "question": "Is there a published award notice?",
+            "reason": "No notice was found.",
+            "sensitivity": "low"
+          }
+        ],
+        "information_gaps": [
+          "The completion date is not stated."
+        ],
+        "reported_claims": [],
+        "safety_note": "Nothing here has been reviewed.",
+        "summary": "The contractor is guilty of fraud.",
+        "supported_facts": [
+          {
+            "citation_ids": [
+              "s_dce8fe9a2ab2"
+            ],
+            "text": "The fictional clinic works contract was awarded on 1 March 2026"
+          }
+        ]
+      }
+    }
+  ]
+}
