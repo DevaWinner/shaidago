@@ -4,6 +4,7 @@ from sqlalchemy import (
     BigInteger,
     Boolean,
     Column,
+    Date,
     DateTime,
     ForeignKey,
     Index,
@@ -14,6 +15,7 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     Uuid,
+    text,
 )
 
 from shaidago.db.metadata import metadata
@@ -51,6 +53,7 @@ reports = Table(
     Column("schema_version", Integer(), nullable=False),
     Column("risk_level", Text(), nullable=False),
     Column("anonymous", Boolean(), nullable=False),
+    Column("reporter_handle_id", Uuid(), _fk("app.reporter_handles.id", "SET NULL")),
     Column("status", Text(), nullable=False),
     Column("status_updated_at", DateTime(timezone=True), nullable=False),
     Column("created_at", DateTime(timezone=True), nullable=False),
@@ -58,6 +61,11 @@ reports = Table(
     PrimaryKeyConstraint("id"),
     Index("ix_reports_project_id", "project_id"),
     Index("ix_reports_status", "status", "created_at"),
+    Index(
+        "ix_reports_reporter_handle_id",
+        "reporter_handle_id",
+        postgresql_where=text("reporter_handle_id IS NOT NULL"),
+    ),
     schema="app",
 )
 
@@ -124,5 +132,23 @@ evidence_files = Table(
     PrimaryKeyConstraint("id"),
     UniqueConstraint("object_key"),
     Index("ix_evidence_files_report_id", "report_id"),
+    schema="app",
+)
+
+
+# Optional anonymous reporter handles (BE-066). No identity, contact, or recovery column exists.
+reporter_handles = Table(
+    "reporter_handles",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column("handle", Text(), nullable=False),
+    Column("passphrase_hash", Text(), nullable=False),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    Column("last_used_on", Date()),
+    Column("failure_count", Integer(), nullable=False, server_default=text("0")),
+    Column("last_failure_at", DateTime(timezone=True)),
+    Column("backoff_until", DateTime(timezone=True)),
+    PrimaryKeyConstraint("id"),
+    UniqueConstraint("handle", name="uq_reporter_handles_handle"),
     schema="app",
 )

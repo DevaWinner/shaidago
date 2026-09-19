@@ -46,6 +46,7 @@ class NewReport:
     description: str
     contact: ContactInput | None = None
     risk_level: str = "standard"
+    reporter_handle_id: UUID | None = None
 
     def __repr__(self) -> str:
         return f"NewReport(project_id={self.project_id}, category={self.concern_category})"
@@ -53,9 +54,9 @@ class NewReport:
 
 _REPORT = text(
     "INSERT INTO app.reports (id, project_id, concern_category, description_ciphertext, "
-    "description_key_id, schema_version, risk_level, anonymous, status, status_updated_at, "
-    "created_at, updated_at) VALUES (:id, :project, :category, :ciphertext, :key, :version, "
-    ":risk, :anonymous, 'received', :now, :now, :now)"
+    "description_key_id, schema_version, risk_level, anonymous, reporter_handle_id, status, "
+    "status_updated_at, created_at, updated_at) VALUES (:id, :project, :category, :ciphertext, "
+    ":key, :version, :risk, :anonymous, :handle, 'received', :now, :now, :now)"
 ).bindparams(bindparam("ciphertext", type_=LargeBinary))
 _EVENT = text(
     "INSERT INTO app.report_status_events (id, report_id, previous_status, new_status, "
@@ -131,6 +132,7 @@ class ReportWriter:
                 "version": SCHEMA_VERSION,
                 "risk": report.risk_level,
                 "anonymous": report.contact is None,
+                "handle": report.reporter_handle_id,
                 "now": now,
             },
         )

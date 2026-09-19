@@ -146,6 +146,27 @@
         "title": "CookieOut",
         "type": "object"
       },
+      "Credentials": {
+        "additionalProperties": false,
+        "properties": {
+          "handle": {
+            "maxLength": 64,
+            "title": "Handle",
+            "type": "string"
+          },
+          "passphrase": {
+            "maxLength": 200,
+            "title": "Passphrase",
+            "type": "string"
+          }
+        },
+        "required": [
+          "handle",
+          "passphrase"
+        ],
+        "title": "Credentials",
+        "type": "object"
+      },
       "ExcerptOut": {
         "properties": {
           "cited_by": {
@@ -301,6 +322,49 @@
           "text"
         ],
         "title": "FollowUpQuestion",
+        "type": "object"
+      },
+      "HandleCreated": {
+        "additionalProperties": false,
+        "description": "Shown once and never recoverable: nobody, including the operators, can show it again.",
+        "properties": {
+          "handle": {
+            "title": "Handle",
+            "type": "string"
+          },
+          "passphrase": {
+            "title": "Passphrase",
+            "type": "string"
+          },
+          "recoverable": {
+            "const": false,
+            "title": "Recoverable",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "handle",
+          "passphrase",
+          "recoverable"
+        ],
+        "title": "HandleCreated",
+        "type": "object"
+      },
+      "HandleReports": {
+        "additionalProperties": false,
+        "properties": {
+          "reports": {
+            "items": {
+              "$ref": "#/components/schemas/ReportStatusItem"
+            },
+            "title": "Reports",
+            "type": "array"
+          }
+        },
+        "required": [
+          "reports"
+        ],
+        "title": "HandleReports",
         "type": "object"
       },
       "LiveResponse": {
@@ -844,6 +908,36 @@
           "next_steps"
         ],
         "title": "ReportReceipt",
+        "type": "object"
+      },
+      "ReportStatusItem": {
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "next_action": {
+            "title": "Next Action",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "status_updated_at": {
+            "format": "date-time",
+            "title": "Status Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "status_updated_at",
+          "message",
+          "next_action"
+        ],
+        "title": "ReportStatusItem",
         "type": "object"
       },
       "ReportStatusOut": {
@@ -1944,6 +2038,264 @@
         ]
       }
     },
+    "/v1/reporter-handles": {
+      "post": {
+        "operationId": "create_handle_v1_reporter_handles_post",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HandleCreated"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Malformed body or Idempotency-Key."
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "One answer for every credential failure."
+          },
+          "413": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Content Too Large"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "429": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Create Handle",
+        "tags": [
+          "reporter-handles"
+        ]
+      }
+    },
+    "/v1/reporter-handles:delete": {
+      "post": {
+        "description": "Unlinks every report, then removes the credential. The reports stay, fully anonymous.",
+        "operationId": "delete_handle_v1_reporter_handles_delete_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Credentials"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Malformed body or Idempotency-Key."
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "One answer for every credential failure."
+          },
+          "413": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Content Too Large"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "429": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Delete Handle",
+        "tags": [
+          "reporter-handles"
+        ]
+      }
+    },
+    "/v1/reporter-handles:list-reports": {
+      "post": {
+        "description": "Public-safe statuses only: no code, ID, category, text, or evidence.",
+        "operationId": "list_handle_reports_v1_reporter_handles_list_reports_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Credentials"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HandleReports"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Malformed body or Idempotency-Key."
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "One answer for every credential failure."
+          },
+          "413": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Content Too Large"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "429": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "List Handle Reports",
+        "tags": [
+          "reporter-handles"
+        ]
+      }
+    },
     "/v1/reports": {
       "post": {
         "operationId": "submit_report_v1_reports_post",
@@ -1992,6 +2344,14 @@
                   "project_slug": {
                     "maxLength": 120,
                     "type": "string"
+                  },
+                  "reporter_handle": {
+                    "maxLength": 200,
+                    "type": "string"
+                  },
+                  "reporter_passphrase": {
+                    "maxLength": 200,
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -2025,6 +2385,16 @@
               }
             },
             "description": "Missing or malformed Idempotency-Key."
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Reporter handle credentials not accepted."
           },
           "409": {
             "content": {

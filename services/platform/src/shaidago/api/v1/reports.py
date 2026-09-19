@@ -20,6 +20,8 @@ from starlette.datastructures import FormData, UploadFile
 from starlette.requests import Request as StarletteRequest
 
 from shaidago.api.dependencies import Dependencies, get_dependencies, get_settings
+from shaidago.api.rate_limits import enforce_rate_limit
+from shaidago.api.v1.reporter_handles import Credentials, verified_handle
 from shaidago.files.pipeline import StoredEvidence
 from shaidago.files.rules import MIME_EXTENSIONS, UploadRejectedError
 from shaidago.projects.repository import PublicProjectRepository
@@ -44,14 +46,12 @@ from shaidago.shared.idempotency import (
 from shaidago.shared.problems import (
     DEPENDENCY_UNAVAILABLE,
     PAYLOAD_TOO_LARGE,
-    RATE_LIMITED,
     UNSUPPORTED_MEDIA_TYPE,
     VALIDATION_FAILED,
     FieldError,
     ProblemDetails,
     ProblemError,
 )
-from shaidago.shared.ratelimit import RateLimitUnavailableError
 from shaidago.shared.vocabulary import values
 
 router = APIRouter(prefix="/reports", tags=["reports"])
@@ -64,6 +64,7 @@ MAX_BODY_BYTES: Final = MAX_FILES * MAX_FILE_BYTES + MAX_FIELD_BYTES
 MIN_DESCRIPTION_CHARS: Final = 10
 MAX_SLUG_CHARS: Final = 120
 MIN_HANDLE_CHARS: Final = 3
+MAX_CREDENTIAL_FIELD: Final = 200
 RATE_WINDOW_SECONDS: Final = 3600
 CONTACT_CHANNELS: Final = ("email", "phone", "messaging_app")
 _EMAIL: Final = re.compile(r"[^@\s]{1,64}@[^@\s]{1,190}\.[^@\s]{2,63}")
@@ -74,10 +75,13 @@ _TEXT_FIELDS: Final = (
     "description",
     "contact_channel",
     "contact_value",
+    "reporter_handle",
+    "reporter_passphrase",
 )
 _SLUG: Final = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 PROBLEMS: dict[int | str, dict[str, Any]] = {
     400: {"model": ProblemDetails, "description": "Missing or malformed Idempotency-Key."},
+    403: {"model": ProblemDetails, "description": "Reporter handle credentials not accepted."},
     409: {"model": ProblemDetails, "description": "Key reused with a different request."},
     413: {"model": ProblemDetails},
     415: {"model": ProblemDetails},
@@ -131,6 +135,7 @@ class Submission:
     description: str
     contact: ContactInput | None
     files: tuple[UploadFile, ...]
+    credentials: Credentials | None = None
 
 
 def _too_large() -> ProblemError:
@@ -182,6 +187,8 @@ def parse_submission(form: FormData, known_categories: tuple[str, ...]) -> Submi
         errors.append(FieldError("description", "invalid"))
     contact, contact_errors = _contact(form)
     errors.extend(contact_errors)
+    credentials, credential_errors = _credentials(form, has_contact=contact is not None)
+    errors.extend(credential_errors)
     attachments = form.getlist("attachments")
     files = tuple(f for f in attachments if isinstance(f, UploadFile) and f.filename)
     if len(files) > MAX_FILES:
@@ -190,7 +197,24 @@ def parse_submission(form: FormData, known_categories: tuple[str, ...]) -> Submi
         errors.append(FieldError("attachments", "not_a_file"))
     if errors:
         raise ProblemError(VALIDATION_FAILED, field_errors=errors)
-    return Submission(slug, category, description, contact, files)
+    return Submission(slug, category, description, contact, files, credentials)
+
+
+def _credentials(
+    form: FormData, *, has_contact: bool
+) -> tuple[Credentials | None, list[FieldError]]:
+    """A handle is one of three exclusive choices: anonymous, handle, or a contact channel."""
+    handle, passphrase = _text(form, "reporter_handle"), _text(form, "reporter_passphrase")
+    if not handle and not passphrase:
+        return None, []
+    errors: list[FieldError] = []
+    if not handle or not passphrase:
+        errors.append(FieldError("reporter_handle", "required_together"))
+    if has_contact:
+        errors.append(FieldError("reporter_handle", "exclusive_with_contact"))
+    if len(handle) > MAX_CREDENTIAL_FIELD or len(passphrase) > MAX_CREDENTIAL_FIELD:
+        errors.append(FieldError("reporter_handle", "length"))
+    return (None, errors) if errors else (Credentials(handle=handle, passphrase=passphrase), [])
 
 
 def _contact_value_error(channel: str, value: str) -> str | None:
@@ -236,21 +260,6 @@ def _declared_type(upload: UploadFile) -> str | None:
     return declared if declared in MIME_EXTENSIONS else None
 
 
-async def _enforce_rate_limit(dependencies: Dependencies, request: Request, limit: int) -> None:
-    limiter = dependencies.rate_limiter
-    if limiter is None:
-        raise ProblemError(DEPENDENCY_UNAVAILABLE)
-    client = getattr(request.state, "client_hmac", None) or "unknown"
-    try:
-        decision = await limiter.hit(
-            f"sg:rl:submit:{client}", limit=limit, window_seconds=RATE_WINDOW_SECONDS
-        )
-    except RateLimitUnavailableError:
-        raise ProblemError(DEPENDENCY_UNAVAILABLE) from None
-    if not decision.allowed:
-        raise ProblemError(RATE_LIMITED, headers={"Retry-After": str(decision.retry_after_seconds)})
-
-
 def _no_store(response: Response) -> None:
     response.headers["Cache-Control"] = "no-store"
 
@@ -282,6 +291,8 @@ def _no_store(response: Response) -> None:
                             },
                             "contact_channel": {"type": "string", "enum": list(CONTACT_CHANNELS)},
                             "contact_value": {"type": "string", "maxLength": MAX_CONTACT_CHARS},
+                            "reporter_handle": {"type": "string", "maxLength": 200},
+                            "reporter_passphrase": {"type": "string", "maxLength": 200},
                             "attachments": {
                                 "type": "array",
                                 "maxItems": MAX_FILES,
@@ -301,7 +312,10 @@ async def submit_report(
     settings: Annotated[Settings, Depends(get_settings)],
 ) -> Response:
     _no_store(response)
-    await _enforce_rate_limit(dependencies, request, settings.rate_limits.submission_per_hour)
+    client = getattr(request.state, "client_hmac", None) or "unknown"
+    await enforce_rate_limit(
+        dependencies, f"sg:rl:submit:{client}", limit=settings.rate_limits.submission_per_hour
+    )
     key = validate_idempotency_key(request.headers.get("idempotency-key"))
     if not request.headers.get("content-type", "").lower().startswith("multipart/form-data"):
         raise ProblemError(UNSUPPORTED_MEDIA_TYPE)
@@ -310,11 +324,21 @@ async def submit_report(
         max_files=MAX_FILES + 1, max_fields=len(_TEXT_FIELDS) + 4, max_part_size=MAX_FIELD_BYTES
     ) as form:
         submission = parse_submission(form, values("report_concern_category"))
-        return await _store(submission, key, dependencies, settings)
+        handle_id: UUID | None = None
+        if submission.credentials is not None:
+            # Wrong credentials leave the report unsubmitted, with the one generic answer.
+            handle_id = await verified_handle(
+                submission.credentials, request, dependencies, settings
+            )
+        return await _store(submission, key, dependencies, settings, handle_id)
 
 
 async def _store(
-    submission: Submission, key: str, dependencies: Dependencies, settings: Settings
+    submission: Submission,
+    key: str,
+    dependencies: Dependencies,
+    settings: Settings,
+    handle_id: UUID | None,
 ) -> Response:
     database = dependencies.public_database
     if database is None:
@@ -327,6 +351,7 @@ async def _store(
         submission.description,
         contact.channel if contact else "",
         contact.value if contact else "",
+        str(handle_id) if handle_id else "",
         *digests,
     )
     crypto = settings.crypto
@@ -367,7 +392,13 @@ async def _store(
             code = generate()
             try:
                 report_id = await writer.insert(
-                    NewReport(project_id, submission.category, submission.description, contact),
+                    NewReport(
+                        project_id,
+                        submission.category,
+                        submission.description,
+                        contact,
+                        reporter_handle_id=handle_id,
+                    ),
                     code,
                     pepper_version=pepper_version,
                     pepper=peppers[pepper_version],

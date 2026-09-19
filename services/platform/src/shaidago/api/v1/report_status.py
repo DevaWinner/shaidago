@@ -15,17 +15,16 @@ from fastapi import APIRouter, Depends, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
 
 from shaidago.api.dependencies import Dependencies, get_dependencies, get_settings
+from shaidago.api.rate_limits import enforce_rate_limit
 from shaidago.reports.status_lookup import code_prefix, find_report
 from shaidago.shared.config import Settings
 from shaidago.shared.problems import (
     DEPENDENCY_UNAVAILABLE,
     PAYLOAD_TOO_LARGE,
-    RATE_LIMITED,
     TRACKING_NOT_RECOGNISED,
     ProblemDetails,
     ProblemError,
 )
-from shaidago.shared.ratelimit import RateLimitUnavailableError
 
 router = APIRouter(tags=["reports"])
 
@@ -88,18 +87,6 @@ def _refuse_large_body(request: Request) -> None:
         raise ProblemError(PAYLOAD_TOO_LARGE)
 
 
-async def _limit(dependencies: Dependencies, key: str, limit: int) -> None:
-    limiter = dependencies.rate_limiter
-    if limiter is None:
-        raise ProblemError(DEPENDENCY_UNAVAILABLE)
-    try:
-        decision = await limiter.hit(key, limit=limit, window_seconds=WINDOW_SECONDS)
-    except RateLimitUnavailableError:
-        raise ProblemError(DEPENDENCY_UNAVAILABLE) from None
-    if not decision.allowed:
-        raise ProblemError(RATE_LIMITED, headers={"Retry-After": str(decision.retry_after_seconds)})
-
-
 def _bucket(client: str, prefix: str) -> str:
     return hashlib.sha256(f"{client}:{prefix}".encode()).hexdigest()[:32]
 
@@ -120,12 +107,16 @@ async def look_up_report_status(
     response.headers["Cache-Control"] = "no-store"
     started = time.monotonic()
     client = getattr(request.state, "client_hmac", None) or "unknown"
-    await _limit(
-        dependencies, f"sg:rl:track:{client}", settings.rate_limits.tracking_lookup_per_hour
+    await enforce_rate_limit(
+        dependencies,
+        f"sg:rl:track:{client}",
+        limit=settings.rate_limits.tracking_lookup_per_hour,
     )
     prefix = code_prefix(body.code)
     if prefix is not None:
-        await _limit(dependencies, f"sg:rl:track:{_bucket(client, prefix)}", PREFIX_LIMIT)
+        await enforce_rate_limit(
+            dependencies, f"sg:rl:track:{_bucket(client, prefix)}", limit=PREFIX_LIMIT
+        )
     database = dependencies.public_database
     if database is None:
         raise ProblemError(DEPENDENCY_UNAVAILABLE)

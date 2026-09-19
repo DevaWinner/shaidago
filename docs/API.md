@@ -49,6 +49,12 @@ Both endpoints are for the trusted BFF only; the BFF, not the API, sets the brow
 
 `POST /v1/report-status:lookup` takes `{"code": "..."}` in the body (never in a path or query string) and returns `status`, `status_updated_at`, the newest reviewer-safe `message`, a `next_action` code, and `follow_up_questions` (empty until BE-067). Codes are accepted in any case and with spaces or hyphens. A malformed, unknown, or unreachable code all give the same 404 `tracking_code_not_recognised`. Lookups are limited per client and per client and code prefix (429 with `Retry-After`), every call takes at least a fixed minimum time, and no response is cacheable or echoes the code.
 
+## Optional reporter handles
+
+A handle is optional and carries no identity: `POST /v1/reporter-handles` (with `Idempotency-Key`) returns a generated `SG-H-XXXX-XXXX` handle and a six-word passphrase exactly once (`recoverable: false`; nobody can show them again). `POST /v1/reporter-handles:list-reports` lists public-safe statuses for the handle's reports and `POST /v1/reporter-handles:delete` unlinks every report and removes the credential; the reports stay, fully anonymous. Credentials go in POST bodies only. A report may carry a handle (`reporter_handle`, `reporter_passphrase` form fields) but not a contact channel as well.
+
+Every credential failure (unknown, wrong, deleted, or in backoff) is the same 403 `invalid_reporter_credentials`, and a rejected submission stores nothing. Failures are limited per client, per client and handle, and per handle with a backoff that starts after three failures, doubles from 5 seconds, is capped at 15 minutes, and never locks permanently. There is no recovery or reset endpoint.
+
 ## Errors
 
 Every error is `application/problem+json`, `Cache-Control: no-store`, with `type`, `title`, `status`, `code`, `detail`, `request_id`, and, for validation failures, `errors` (`field` and rule `code`, never the submitted value). The `code` is the stable contract; the BFF localises display text from it.

@@ -92,6 +92,13 @@ TRACKING_NOT_RECOGNISED: Final = Problem(
     "Tracking code not recognised",
     "We could not find a report for that code. Check the code and try again.",
 )
+# One answer for a missing handle, a wrong passphrase, a deleted handle, or a handle in backoff.
+INVALID_REPORTER_CREDENTIALS: Final = Problem(
+    403,
+    "invalid_reporter_credentials",
+    "Reporter credentials not accepted",
+    "The handle and passphrase were not accepted.",
+)
 METHOD_NOT_ALLOWED: Final = Problem(
     405, "method_not_allowed", "Method not allowed", "This method is not supported here."
 )

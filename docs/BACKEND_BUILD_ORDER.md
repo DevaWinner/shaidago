@@ -730,6 +730,8 @@ Build only after BE-060 through BE-065 pass end to end.
 
 Required endpoints: create, list reports, delete. Required tests: no-PII schema introspection, generic failure, backoff, unlink-on-delete, public/log absence, concurrency, and no recovery path.
 
+> **Execution status (2026-09-19): complete.** Migration `0012_reporter_handles`, `reports/{handles,handle_store}.py`, and `api/v1/reporter_handles.py` implement creation, listing, deletion, and handle-linked submission with the committed EFF long list (provenance in `docs/evidence/BE-066-wordlist.md`); 16 unit and 13 integration tests cover every required test area. **The word list has not been reviewed by a human**, and reviewer-facing history exists only as the `reporter_handle_track_record` database function until the queue (BE-070) uses it.
+
 ### BE-067 — Report follow-up answers
 
 Implement code-authenticated or handle-authenticated private follow-up answer submission with explicit question ownership, answer encryption, one-answer/idempotency semantics, safe skip/unsafe flags, and no ability to answer a question from another report. Never surface private answers through tracking response beyond an acknowledgement state.
