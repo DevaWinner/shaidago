@@ -67,6 +67,10 @@ def client() -> TestClient:
     def forbidden() -> None:
         raise ProblemError(FORBIDDEN, field_errors=[FieldError("role", "insufficient")])
 
+    @router.get("/v1/things")
+    def listing() -> list[str]:
+        return []
+
     app.include_router(router)
     return TestClient(app, headers=AUTH, raise_server_exceptions=False)
 
@@ -138,7 +142,8 @@ def test_unknown_route_and_wrong_method_use_the_same_shape(client: TestClient) -
     assert_problem(missing.json(), "not_found")
     wrong = client.delete("/v1/things")
     assert wrong.status_code == 405
-    assert wrong.headers["allow"] == "POST"
+    # One path with separate routes per method lists every method, not only the first route's.
+    assert wrong.headers["allow"] == "GET, HEAD, POST"
     assert_problem(wrong.json(), "method_not_allowed")
 
 

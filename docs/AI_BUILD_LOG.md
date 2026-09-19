@@ -806,3 +806,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the migration, state machine, service, endpoints, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-072 Encrypted reviewer notes
+
+- **Task:** BE-072 — Encrypted reviewer notes.
+- **Outcome delivered:** Append-only notes encrypted per note, create and list endpoints with pagination, and a correct `Allow` header for paths that carry several methods.
+- **Files changed:** `services/platform/migrations/versions/0016_report_notes.py`, `src/shaidago/review/notes.py`, `src/shaidago/api/v1/{reviewer_notes,__init__}.py`, `src/shaidago/api/errors.py`, `src/shaidago/db/report_tables.py`, tests (`test_report_notes.py`, `tests/unit/api/test_errors.py`), `contracts/openapi.json`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** One table with forced row security (reviewer and owner only; the public role has no privilege), an append-only trigger that allows only foreign-key cascades to delete. OpenAPI gains two paths.
+- **Security/privacy impact:** Note text is ciphertext under a per-note key that can be shredded alone; markup is refused so a note can never be rendered as HTML; audit and logs carry the note ID only. The public role cannot read the table, and no view, tracking function, or public projection selects from it.
+- **Failure behaviour verified:** empty, oversized, markup, and control-character bodies and extra fields are 422 with nothing stored; no session 401, no CSRF 403, unknown report 404; a cursor from another report is 400; the reviewer and owner roles cannot update or directly delete a note; a destroyed key returns the note with `body: null`.
+- **Commands run and results:** `make backend-verify` exit 0 (1065 passed); Circle 0 validators passed. The contract test caught a wrong `Allow` header on a path with two methods (Starlette reports only the first route's methods); fixed once in the error boundary using the generated contract.
+- **Tests added or changed:** 9 integration tests; the error-boundary unit test now covers a path with two methods.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated; `make openapi-check` passes inside `backend-verify`.
+- **Known limitations/open decisions:** Notes cannot be searched. The `Allow` header is computed from the generated contract, which is built once on the first 405. Reading notes is not separately audited (the detail view is).
+- **Commit/PR:** `feat: add encrypted append-only reviewer notes`
+- **Next task may rely on:** `review/notes.py` and the `report_notes` table for any later reviewer commentary.
+- **AI assistance used:** Designed and wrote the migration, service, endpoints, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

@@ -198,3 +198,20 @@ report_follow_up_answers = Table(
     ),
     schema="app",
 )
+
+
+# Encrypted, append-only reviewer notes (BE-072); checks, policies, and the trigger are in 0016.
+report_notes = Table(
+    "report_notes",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column("report_id", Uuid(), _fk("app.reports.id", "CASCADE"), nullable=False),
+    Column("author_id", Uuid(), _fk("app.reviewers.id", "SET NULL")),
+    Column("body_ciphertext", LargeBinary(), nullable=False),
+    Column("data_key_id", Uuid(), _fk("app.data_keys.id", "RESTRICT"), nullable=False),
+    Column("schema_version", Integer(), nullable=False),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    PrimaryKeyConstraint("id"),
+    Index("ix_report_notes_report_id", "report_id", "created_at"),
+    schema="app",
+)

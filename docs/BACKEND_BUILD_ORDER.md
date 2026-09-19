@@ -814,6 +814,8 @@ Generate a transition matrix test covering every allowed and denied state/role p
 
 Implement create/read notes with independent encryption, author/time metadata, append-only semantics, role checks, pagination if needed, and no public/tracking serialization path. Do not support arbitrary HTML. Audit note creation without logging content.
 
+> **Execution status (2026-09-19): complete.** Migration `0016_report_notes`, `review/notes.py`, and `api/v1/reviewer_notes.py` add append-only notes, each encrypted under its own data key, with author and time, cursor pagination, plain-text-only bodies (markup is refused), and an audit event that records the note ID only. 9 integration tests prove ciphertext at rest, ordering and paging, refusal of markup and control characters, session and CSRF requirements, no note text in tracking, public API, detail, or logs, no public-role access, no edit or delete even by the owner role, and a shredded key leaving the note present but unreadable. The same change fixed the 405 `Allow` header for paths that have separate routes per method (found by the contract test).
+
 ### BE-073 — Evidence download broker
 
 1. Authorise report/evidence access before generating access.

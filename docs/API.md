@@ -72,6 +72,11 @@ Every route needs a reviewer session (`X-Shaidago-Session`) and a role holding t
 - `POST /v1/reviewer/reports/{report_id}/status-transitions` takes `command`, `expected_status`, `expected_version` (from the detail response), and optionally `internal_reason` (private, encrypted, never shown to the reporter; required for `reopen`) and `reporter_message` (shown on tracking; a fixed default is used when omitted). The commands and the states they leave are the `report_status` machine in `contracts/controlled-vocabulary.json`. A view that is no longer current is `409 report_version_conflict`; a command that does not exist from the current status for the caller (including the reporter-only `record_follow_up`) is `409 report_status_transition_not_allowed` and is audited. Every response says `published: false`: a decision never publishes text.
 - `POST /v1/reviewer/reports/{report_id}/follow-up-questions` (`201`, `question_id`) adds a question the reporter sees on tracking (5 to 500 characters, at most 10 open, not on a closed report). `POST .../follow-up-questions/{question_id}:withdraw` withdraws one (`204`). Neither changes the report's status.
 
+## Reviewer notes
+
+- `POST /v1/reviewer/reports/{report_id}/notes` with `{body}` (plain text up to 4000 characters; markup such as `<b>` or `<script>` is `422 markup_not_allowed`) returns `201` with `note_id` and `created_at`. Notes are append-only: there is no edit or delete, and a correction is a new note.
+- `GET /v1/reviewer/reports/{report_id}/notes` pages notes oldest first (`limit`, `cursor`) with `note_id`, `created_at`, the author's reviewer identifier, and the decrypted `body` (`null` if its key was destroyed). Notes never appear on tracking, the public API, or the report detail. Responses are `no-store`; creation is audited by note ID only.
+
 ## Errors
 
 Every error is `application/problem+json`, `Cache-Control: no-store`, with `type`, `title`, `status`, `code`, `detail`, `request_id`, and, for validation failures, `errors` (`field` and rule `code`, never the submitted value). The `code` is the stable contract; the BFF localises display text from it.
@@ -82,7 +87,7 @@ Every error is `application/problem+json`, `Cache-Control: no-store`, with `type
 | 401 | `unauthenticated` | Missing or invalid internal credential (identical for every cause) |
 | 403 | `forbidden` | Not permitted |
 | 404 | `not_found` | Unknown resource or route |
-| 405 | `method_not_allowed` | Method not supported |
+| 405 | `method_not_allowed` | Method not supported (`Allow` lists every method the path supports) |
 | 409 | `conflict` | Conflicts with current state |
 | 413 | `payload_too_large` | Body over the limit |
 | 415 | `unsupported_media_type` | Content type not accepted |
