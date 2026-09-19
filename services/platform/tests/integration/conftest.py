@@ -6,7 +6,8 @@ behaviour is real and nothing persists. Missing infrastructure fails loudly rath
 
 import os
 import uuid
-from collections.abc import AsyncIterator, Iterator
+from collections.abc import AsyncIterator, Generator, Iterator
+from contextlib import contextmanager
 
 import psycopg
 import pytest
@@ -49,10 +50,13 @@ def admin_connection() -> Iterator[psycopg.Connection[tuple[object, ...]]]:
         yield connection
 
 
-@pytest.fixture(scope="session")
-def database_url(admin_connection: psycopg.Connection[tuple[object, ...]]) -> Iterator[URL]:
+@contextmanager
+def disposable_database(
+    admin: psycopg.Connection[tuple[object, ...]],
+) -> Generator[URL]:
+    """Create an empty database, yield a URL to it as the bootstrap user, and drop it."""
     name = f"shaidago_test_{uuid.uuid4().hex[:12]}"
-    admin_connection.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(name)))
+    admin.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(name)))
     kwargs = _admin_connection_kwargs()
     try:
         yield URL.create(
@@ -64,9 +68,15 @@ def database_url(admin_connection: psycopg.Connection[tuple[object, ...]]) -> It
             database=name,
         )
     finally:
-        admin_connection.execute(
+        admin.execute(
             sql.SQL("DROP DATABASE IF EXISTS {} WITH (FORCE)").format(sql.Identifier(name))
         )
+
+
+@pytest.fixture(scope="session")
+def database_url(admin_connection: psycopg.Connection[tuple[object, ...]]) -> Iterator[URL]:
+    with disposable_database(admin_connection) as url:
+        yield url
 
 
 @pytest.fixture

@@ -292,3 +292,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the kernel, the translation policy, and the integration tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-032 Roles, schemas, grants, and row security
+
+- **Task:** BE-032 — Roles, schemas, grants, and row security.
+- **Outcome delivered:** A versioned, idempotent security baseline (`shaidago/db/sql/0001_security_baseline.sql`) creating the five ADR-0003 roles (NOLOGIN, no superuser, no `BYPASSRLS`), the `app` and `public_api` schemas, revoked `PUBLIC` access, USAGE-only schema grants, and default privileges that leave new `app` tables ungranted; `shaidago.db.roles` applies it and enables role logins from deployment-supplied passwords; `shared/private_insert.py` holds the no-read-back mapping options.
+- **Files changed:** `services/platform/src/shaidago/db/{__init__,roles}.py`, `db/sql/0001_security_baseline.sql`, `shared/private_insert.py`, `tests/integration/{conftest,test_database_roles}.py`, `pyproject.toml` (test-only `S608` ignore for fixed test SQL).
+- **Schema/contract changes:** Roles and two schemas; no tables.
+- **Security/privacy impact:** Proven by connecting as each role. `shaidago_public`: may `INSERT` into a private probe table but cannot `SELECT`, `UPDATE`, `DELETE`, or `INSERT ... RETURNING`; reads only the `public_api` view and only its projected columns (selecting the hidden column fails with undefined-column); cannot read `app` tables or `pg_authid`, create objects in `public`, `app`, or `public_api`, `SET ROLE` to the owner, or alter itself. `shaidago_reviewer`: select/insert/update but no delete, no contact table, no DDL. Worker and ops roles: no private table access; ops get no view by default. With `FORCE ROW LEVEL SECURITY`, a `SELECT` grant without a policy returns zero rows. An ORM mapping with `implicit_returning=False`, `eager_defaults=False`, and client-generated ID and timestamp inserts as the restricted role with no `RETURNING` in the emitted SQL; the default mapping fails with SQLSTATE 42501, which shows the options are necessary.
+- **Failure behaviour verified:** The baseline runs twice without error; `enable_login` rejects unknown roles and passwords under 16 characters, and a password containing a quote and a percent sign works for a real login.
+- **Commands run and results:** `make backend-verify` exit 0 (155 passed, 11 of them new role tests) against the Compose PostgreSQL 18. Circle 0 validators passed.
+- **Tests added or changed:** 11 role and mapping integration tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** The grant model is proven on synthetic **probe tables**, not the real report, contact, or evidence tables, which do not exist yet; each later table migration must add its own grants, policies, and allow/deny test (ADR-0003). The `SECURITY DEFINER` lookup functions and the real `public_api` views come with BE-041, BE-044, BE-062, and BE-065. The baseline is not yet executed by a migration; BE-033 must run it from the baseline revision, and the SQL file becomes immutable once applied. Role login URLs are not in configuration yet; the public and reviewer engines are added with their first consumers (BE-044, BE-054). `shaidago_readonly_ops` has no views to test until aggregate views exist.
+- **Commit/PR:** `feat: add database roles, schemas, and grant baseline`
+- **Next task may rely on:** Roles and schemas from `apply_security_baseline`, `enable_login`, and `PRIVATE_TABLE_ARGS`/`PRIVATE_MAPPER_ARGS` for private-insert mappings.
+- **AI assistance used:** Wrote the baseline SQL, helpers, and the allow/deny matrix; the tests found and fixed a `%` handling defect in script execution.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

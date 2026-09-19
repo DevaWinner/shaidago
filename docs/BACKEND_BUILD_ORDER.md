@@ -415,6 +415,8 @@ Implement public views/projections, least-privilege grants, and row-security pol
 
 **Mandatory integration tests:** connect as each role and assert allowed and denied `SELECT`, `INSERT`, `UPDATE`, and private/public view paths. The restricted submission test must inspect emitted SQL or database behaviour to prove no read-back occurs.
 
+> **Execution status (2026-09-19): partial.** Roles, schemas, default-deny grants, forced row security, and the no-read-back mapping are proven by 11 integration tests that log in as each role (`make backend-verify` exit 0, 155 passed). The proof uses synthetic probe tables because the real private tables do not exist yet; the baseline is executed by BE-033's migration, and each real table must add its own grants, policies, and allow/deny test.
+
 ### BE-033 — Alembic discipline and baseline
 
 1. Configure Alembic to import one metadata registry without importing the running app.

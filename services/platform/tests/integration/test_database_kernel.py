@@ -21,14 +21,14 @@ async def table(database: Database) -> str:
 
 async def insert(session: AsyncSession, table: str, row_id: int, note: str) -> None:
     await session.execute(
-        text(f"INSERT INTO {table} VALUES (:id, :note)"),  # noqa: S608 - fixed test table name
+        text(f"INSERT INTO {table} VALUES (:id, :note)"),
         {"id": row_id, "note": note},
     )
 
 
 async def count(database: Database, table: str) -> int:
     async with database.unit_of_work() as session:
-        return (await session.execute(text(f"SELECT count(*) FROM {table}"))).scalar_one()  # noqa: S608
+        return (await session.execute(text(f"SELECT count(*) FROM {table}"))).scalar_one()
 
 
 async def insert_then_fail(database: Database, table: str) -> None:
