@@ -292,6 +292,8 @@ Candidates must avoid generic civic-tech dashboards, startup gradients, glass ca
 
 ### FE-012 — Choose comp-led or code-led execution
 
+> **Execution status (2026-09-20): complete.** The maintainer's selected decision state uses the standing code-led workflow, committed in [`.impeccable/config.json`](../.impeccable/config.json). [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) defines its non-negotiable spatial, interaction, responsive, and review obligations.
+
 - **Comp-led:** create/approve a north-star first-viewport composition before code. The approved comp becomes a spatial contract; later screenshots are compared at the same dimensions.
 - **Code-led:** define exact first-viewport composition, signature interaction, and motion grammar in writing; absence of a comp does not reduce the craft bar.
 
