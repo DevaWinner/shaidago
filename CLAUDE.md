@@ -1,0 +1,73 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+@AGENTS.md
+
+`AGENTS.md` (imported above) is the binding rulebook: product invariants, architecture boundaries, coding standards, the definition of done, and the blocking code-review rules. This file adds only orientation for Claude Code; it does not override or relax `AGENTS.md`.
+
+## Current state
+
+The repository is **pre-scaffold (Gate 0)**: it contains planning, governance, and documentation only. There is no `apps/`, `services/`, `Makefile`, lockfile, Compose file, migration, or test yet, so **no build, lint, or test command exists**. Do not run or claim to have run a command from the plan until the artifact that provides it has been created and verified.
+
+The only executable checks today are dependency-free Python 3 validators for the Circle 0 contracts. Run all of them after touching `contracts/`, `docs/THREAT_MODEL.md`, `docs/decisions/`, or task IDs in the build orders:
+
+```text
+python3 scripts/validate_controlled_vocabulary.py --self-test
+python3 scripts/render_controlled_vocabulary.py --check   # generated docs/CONTROLLED_VOCABULARY.md has no drift
+python3 scripts/validate_threat_model.py --self-test
+python3 scripts/validate_decisions.py --self-test
+```
+
+Work is executed task by task from `docs/BACKEND_BUILD_ORDER.md` (circles of `BE-*` tasks). Each task gets one Conventional Commit, an `Execution status` note under its heading, and an entry in `docs/AI_BUILD_LOG.md`.
+
+Circle 0 design work (BE-000, BE-002 to BE-004) is complete; the next task is BE-010 in Circle 1. BE-001, the six-project source register, is deferred by the maintainer to just before BE-043, and the Circle 0 exit gate stays open until it lands. No seed data may be presented as factual before that register exists. Never fabricate project data, sources, escalation routes, or translations.
+
+Hard deadline: **21 September 2026, 23:59 UTC** (hackathon submission). When time is short, follow the plan's scope-cut order; never cut the items it marks as uncuttable.
+
+## Documents and their authority
+
+Read in this order when they conflict (details in `docs/README.md`):
+
+1. `PRODUCT.md`: scope, pilot, users, languages, non-goals.
+2. `docs/PRODUCT_BRIEF.md`: journeys, trust model, requirements, acceptance criteria.
+3. `docs/IMPLEMENTATION_PLAN.md`: stack, BFF boundary, data model, API list, security controls, test strategy, gates, and scope-cut order.
+   - `docs/decisions/` (ADR-0001 to ADR-0008) makes binding the hard-to-reverse backend choices: internal-service auth, DB roles, envelope encryption, tracking codes, sanitation, OpenAPI, providers.
+   - `docs/THREAT_MODEL.md` classifies every asset and lists the allowed data per flow and destination.
+4. `contracts/openapi.json`, migrations, and tests once they exist.
+
+Log material AI assistance in `docs/AI_BUILD_LOG.md` as part of each change.
+
+## Planned commands (target interfaces, not yet implemented)
+
+Once Gate 1 lands, the root `Makefile` is the judge-facing entry point:
+
+```text
+cp .env.example .env
+make setup && make infra-up && make migrate && make seed-demo
+make dev
+make verify     # canonical full gate: format, lint, types, tests, contract diff, migrations, builds, E2E
+```
+
+Stack-specific commands stay with their stack: `pnpm` in `apps/web` (Vitest, Playwright), `uv` in `services/platform` (Ruff, Pyright, pytest). When they exist, a single backend test runs as `uv run pytest path/to/test_file.py::test_name` from `services/platform`, and a single frontend test runs through the web package's Vitest script with a file filter. Confirm the actual scripts in `package.json`/`pyproject.toml` before relying on this.
+
+## Big-picture architecture
+
+- **Two stacks, one authority.** `apps/web` (Next.js App Router, thin BFF) and `services/platform` (FastAPI modular monolith with `api` and Dramatiq `worker` entry points). FastAPI owns every domain, authorisation, visibility, and publication rule; the BFF only handles cookies, CSRF/origin, locale, request IDs, and response shaping.
+- **Browser → Next.js origin only.** Server Components call the private API directly; browser mutations, uploads, polling, and reviewer actions go through Next.js Route Handlers to FastAPI.
+- **Contract flow.** FastAPI emits `contracts/openapi.json` → the TypeScript client in `apps/web/src/lib/api/generated/` is generated from it. Change the backend schema and regenerate both in one change; never hand-edit generated files.
+- **Three trust zones with separate paths.** Public records (projects, facts, citations, approved sources), private reporting (encrypted reports, separate contacts, evidence files, reviewer notes), and discovery (Source Scout runs, discovered sources). Public repositories read only public views; private data never reaches public DTOs, caches, logs, the Q&A index, or search queries.
+- **Publication is always a separate human act.** Status changes never publish text; a reviewer authors a separate `public_update` with approved citations.
+
+## Accepted decisions that are easy to miss
+
+These are recorded in `docs/IMPLEMENTATION_PLAN.md` and override the original brief where they differ:
+
+- Tracking lookup is `POST /v1/report-status:lookup` with the code in the body, not the brief's `GET /reports/status/{code}`.
+- No page fetches the API during `next build` (Railway private networking is unavailable at build time); public routes render on request and cache afterwards.
+- The restricted submission DB role cannot `SELECT`, so private-report inserts generate UUIDv7 in the app and disable implicit `RETURNING`.
+- Public Source Scout runs are cached per project for 24 hours and capped by a global daily budget; reviewer runs are separate and audited.
+- Hosted demo runs without ClamAV (`SCANNER_MODE=not_deployed`, files labelled `not_scanned_demo`); local and CI scan for real; production refuses that mode.
+- Session cookie is `__Host-sg_session` (Secure) in staging/production and plain `sg_session` in development/test so WebKit E2E works on `http://localhost`.
+- Seed embeddings are checked in under `data/embeddings/`; without a key, Q&A falls back to full-text search and reports `retrieval_mode: "keyword"`.
+- Optional anonymous reporter handles: server-generated handle plus six-word passphrase, Argon2id hash, no contact or recovery data, verified only at submission, reviewer-only track record, deletable without deleting reports. Fully anonymous reporting remains the default, and handles are built only after the anonymous path works.
