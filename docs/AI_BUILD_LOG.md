@@ -1171,3 +1171,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the fuzz and proof tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-103 Concurrency and failure-injection suite
+
+- **Task:** BE-103 — Concurrency and failure-injection suite.
+- **Outcome delivered:** A resilience suite, a serialised migration runner, and a stable 503 for an unavailable key version.
+- **Files changed:** `services/platform/migrations/env.py`, `src/shaidago/api/errors.py`, `tests/integration/test_resilience.py`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** A key-version outage no longer surfaces as an unhandled error; nothing partial is written.
+- **Failure behaviour verified:** see the build order note. The concurrent-migration case failed before the fix (two of three runners errored) and passes after.
+- **Commands run and results:** `make backend-verify` exit 0 (1985 passed).
+- **Tests added or changed:** 8 integration tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** Migration contention is tested across processes (Alembic's context is process-global, so threads are not a valid model). A real client disconnect mid-multipart was not simulated over ASGI. Timeout of Redis during a request is covered by making the limiter raise, not by a real network stall.
+- **Commit/PR:** `test: add concurrency and failure-injection tests and serialise migrations`
+- **Next task may rely on:** a single advisory-locked migration path (the pre-deploy step in Circle 11).
+- **AI assistance used:** Designed and wrote the suite and fixes.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

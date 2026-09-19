@@ -1116,6 +1116,8 @@ Test:
 
 Each test asserts atomic result, retry safety, visible status, no leaked partial data, and no infinite work.
 
+> **Execution status (2026-09-19): complete.** `tests/integration/test_resilience.py` (8 tests, real PostgreSQL, Redis, and roles) proves: six concurrent submissions with one idempotency key create exactly one report and one receipt; a sign-out racing five in-flight reviewer writes leaves every answered write stored, no 5xx, and nothing working afterwards; killed database connections are recovered by the pool with no crash; object storage failing during an upload keeps the report, reports `storage_failed` for the attachment, and leaves no evidence row pointing at a missing object; a missing encryption-key version is a retryable `503` (previously an unhandled `500`, now mapped once at the exception boundary) with new writes still using the active key and access restored when the key ring is; and three migrations started at once all finish. That last test caught a real defect: concurrent migrators collided on `alembic_version` (two of three failed), so `migrations/env.py` now serialises runs with a session advisory lock held on its own connection. Already proven elsewhere and not repeated: two reviewers deciding or publishing one report (BE-071 and BE-074), worker crash between stages and lease takeover (BE-090), Redis unavailable (BE-100), Q&A and discovery provider timeout and invalid output (BE-083, BE-096, BE-097), and upload size and cleanup caps (BE-064). An upload disconnect is exercised at the pipeline level (the raw temporary file is removed on every path); a true mid-stream client disconnect over ASGI was not simulated.
+
 ### BE-104 — Performance and resource budgets
 
 Define testable budgets before measurement:
