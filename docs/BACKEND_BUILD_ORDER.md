@@ -558,7 +558,7 @@ Requirements:
 4. Refuse duplicate identifiers and weak/demo defaults outside development/test.
 5. Make disablement revoke active sessions transactionally.
 
-> **Execution status (2026-09-19): partial.** Reviewer users, the append-only audit log, Argon2id hashing with rehash-on-success, and an idempotent bootstrap are proven (`make backend-verify` exit 0, 58 new tests). Step 5, disablement revoking active sessions, is delivered with the session store in BE-051.
+> **Execution status (2026-09-19): partial.** Reviewer users, the append-only audit log, Argon2id hashing with rehash-on-success, and an idempotent bootstrap are proven (`make backend-verify` exit 0, 58 new tests). Step 5, disablement revoking active sessions, was delivered by BE-051 (`ReviewerService.disable`), so this task is effectively complete.
 
 ### BE-051 — Opaque sessions and cookie contract
 
@@ -568,6 +568,8 @@ Requirements:
 4. Define the required cookie policy contract: production/staging uses `__Host-sg_session; Secure; HttpOnly; SameSite=Lax; Path=/` with no Domain; development/test uses `sg_session` without `Secure` on `http://localhost`.
 5. FastAPI owns session creation and validity. It returns the raw token exactly once to the trusted BFF in an internal `no-store` response; the BFF owns the final same-origin `Set-Cookie`/clear-cookie header. The internal response and token never reach client JavaScript, logs, traces, or error bodies.
 6. Apply idle and absolute expiry using the injectable clock.
+
+> **Execution status (2026-09-19): complete.** Opaque HMAC-stored sessions, session-bound CSRF tokens, idle and absolute expiry, revocation on disable, password change, and role change, and the production and development cookie contracts are proven (`make backend-verify` exit 0, 395 passed). Two real bugs found by property and fuzz tests were fixed. The HTTP endpoints and BFF header contract are BE-052 and BE-054.
 
 ### BE-052 — CSRF, origin, and internal boundary
 

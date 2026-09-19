@@ -109,3 +109,73 @@ class ReviewerService:
             details={"role": role},
         )
         return reviewer_id
+
+    async def disable(self, reviewer_id: UUID, *, request_id: str | None = None) -> None:
+        """Disable a reviewer and revoke every session in the same transaction."""
+        await self._session.execute(
+            text(
+                "UPDATE app.reviewers SET state = 'disabled', "
+                "credential_version = credential_version + 1, updated_at = :now WHERE id = :id"
+            ),
+            {"now": self._clock.now(), "id": reviewer_id},
+        )
+        await self._revoke_all(reviewer_id, "disabled")
+        await self._audit.record(
+            "reviewer_disabled",
+            actor_type="admin",
+            subject_type="reviewer",
+            subject_id=reviewer_id,
+            request_id=request_id,
+        )
+
+    async def change_password(
+        self, reviewer_id: UUID, new_password: str, *, request_id: str | None = None
+    ) -> None:
+        """Replace the password, bump the credential version, and revoke every session."""
+        validate_new_password(new_password, deployed=self._deployed)
+        await self._session.execute(
+            text(
+                "UPDATE app.reviewers SET password_hash = :hash, "
+                "credential_version = credential_version + 1, updated_at = :now WHERE id = :id"
+            ),
+            {
+                "hash": self._passwords.hash(new_password),
+                "now": self._clock.now(),
+                "id": reviewer_id,
+            },
+        )
+        await self._revoke_all(reviewer_id, "credential_change")
+        await self._audit.record(
+            "reviewer_password_changed",
+            actor_type="admin",
+            subject_type="reviewer",
+            subject_id=reviewer_id,
+            request_id=request_id,
+        )
+
+    async def set_role(
+        self, reviewer_id: UUID, role: Role, *, request_id: str | None = None
+    ) -> None:
+        """Change a role and revoke sessions. Runs as the migration owner, not the reviewer pool."""
+        await self._session.execute(
+            text("UPDATE app.reviewers SET role = :role, updated_at = :now WHERE id = :id"),
+            {"role": role, "now": self._clock.now(), "id": reviewer_id},
+        )
+        await self._revoke_all(reviewer_id, "role_change")
+        await self._audit.record(
+            "reviewer_role_changed",
+            actor_type="admin",
+            subject_type="reviewer",
+            subject_id=reviewer_id,
+            request_id=request_id,
+            details={"role": role},
+        )
+
+    async def _revoke_all(self, reviewer_id: UUID, reason: str) -> None:
+        await self._session.execute(
+            text(
+                "UPDATE app.reviewer_sessions SET revoked_at = :now, revocation_reason = :reason "
+                "WHERE reviewer_id = :id AND revoked_at IS NULL"
+            ),
+            {"now": self._clock.now(), "reason": reason, "id": reviewer_id},
+        )

@@ -231,6 +231,15 @@ class AuthSettings(_Section):
     session_hmac_key: SecretStr = Field(validation_alias="SESSION_HMAC_KEY")
     session_cookie_name: str = Field(default="sg_session", validation_alias="SESSION_COOKIE_NAME")
     session_cookie_secure: bool = Field(default=False, validation_alias="SESSION_COOKIE_SECURE")
+    session_idle_minutes: PositiveInt = Field(
+        default=30, le=1440, validation_alias="SESSION_IDLE_MINUTES"
+    )
+    session_absolute_hours: PositiveInt = Field(
+        default=8, le=72, validation_alias="SESSION_ABSOLUTE_HOURS"
+    )
+
+    def session_key(self) -> bytes:
+        return _decode_single_key(self.session_hmac_key.get_secret_value())
 
     @field_validator("web_credential_previous", mode="before")
     @classmethod
