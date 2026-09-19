@@ -100,8 +100,13 @@ async def ask_project_question(  # noqa: PLR0913,PLR0917 - a route names its col
     client = getattr(request.state, "client_hmac", None) or "unknown"
     await enforce_rate_limit(
         dependencies,
-        f"sg:rl:qa:{client}",
+        f"sg:rl:qa:client:{client}",
         limit=settings.rate_limits.qa_per_hour,
+    )
+    # The provider budget is shared by everyone: one client cannot spend it all, and the total is
+    # bounded whatever the number of clients.
+    await enforce_rate_limit(
+        dependencies, "sg:rl:qa:global", limit=settings.rate_limits.qa_global_per_hour
     )
     database = dependencies.public_database
     model = dependencies.language_model

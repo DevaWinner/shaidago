@@ -11,11 +11,13 @@ from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import timedelta
 from typing import Annotated, Final
+from uuid import UUID
 
 from fastapi import Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from shaidago.api.dependencies import Dependencies, get_dependencies, get_settings
+from shaidago.api.rate_limits import enforce_rate_limit
 from shaidago.auth.policy import Capability, authorize
 from shaidago.auth.sessions import Principal, SessionLifetimes, SessionService, csrf_matches
 from shaidago.shared.config import Settings
@@ -76,7 +78,25 @@ async def authenticated_reviewer(
         presented = request.headers.get(CSRF_HEADER, "")
         if not csrf_matches(settings.auth.session_key(), token, presented):
             raise ProblemError(CSRF_INVALID)
+    await _enforce_reviewer_budget(request, dependencies, settings, principal.reviewer_id)
     return AuthenticatedReviewer(principal=principal, session_token=token)
+
+
+async def _enforce_reviewer_budget(
+    request: Request, dependencies: Dependencies, settings: Settings, reviewer_id: UUID
+) -> None:
+    """Per-reviewer request budgets. An unwired limiter exists only in tests; the running service
+    always wires one, and if Redis is down the request fails closed (503)."""
+    if dependencies.rate_limiter is None:
+        return
+    write = request.method not in SAFE_METHODS
+    limits = settings.rate_limits
+    await enforce_rate_limit(
+        dependencies,
+        f"sg:rl:reviewer:{'write' if write else 'read'}:{reviewer_id}",
+        limit=limits.reviewer_write_per_minute if write else limits.reviewer_read_per_minute,
+        window_seconds=60,
+    )
 
 
 def require(

@@ -1117,3 +1117,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the generator, fixtures, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-100 Central rate limits and abuse budgets
+
+- **Task:** BE-100 — Central rate limits and abuse budgets.
+- **Outcome delivered:** An atomic sliding-window Redis limiter, a central policy table with a completeness test, reviewer read and write budgets, a shared Q&A provider budget, and proven fail-closed behaviour.
+- **Files changed:** `services/platform/src/shaidago/shared/{ratelimit,config}.py`, `src/shaidago/api/{rate_policy,reviewer_auth}.py`, `src/shaidago/api/v1/project_questions.py`, tests (`test_rate_limits_redis.py`, `test_rate_limits_api.py`), `.env.example`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None. The Q&A limiter key changed shape (`sg:rl:qa:client:` and `sg:rl:qa:global`); old keys simply expire.
+- **Security/privacy impact:** Keys hold only pseudonymous or internal identifiers; no raw address or code. Every policy fails closed.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `make backend-verify` exit 0 (1957 passed).
+- **Tests added or changed:** 6 Redis integration and 3 API tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** The reviewer budgets are skipped when no limiter is wired, which happens only in tests (the running service always wires one). The default reviewer budgets (600 reads and 120 writes per minute) are guesses to be tuned with real use. Progressive backoff for sign-in and handle verification remains the earlier per-pair and per-handle design.
+- **Commit/PR:** `feat: add an atomic sliding-window limiter, reviewer budgets, and a rate-limit policy table`
+- **Next task may rely on:** the policy table and limiter for any new route.
+- **AI assistance used:** Designed and wrote the limiter, policy table, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

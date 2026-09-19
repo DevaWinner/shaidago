@@ -304,10 +304,23 @@ class RateLimitSettings(_Section):
         default=10, validation_alias="RATE_HANDLE_VERIFY_PER_HOUR"
     )
     qa_per_hour: PositiveInt = Field(default=30, validation_alias="RATE_QA_PER_HOUR")
+    # Provider budget shared by every visitor (grounded Q&A calls a paid model).
+    qa_global_per_hour: PositiveInt = Field(
+        default=1000, validation_alias="RATE_QA_GLOBAL_PER_HOUR"
+    )
     discovery_per_hour: PositiveInt = Field(default=5, validation_alias="RATE_DISCOVERY_PER_HOUR")
     # Global cap on fresh public discovery runs per Africa/Lagos day (provider budget).
     discovery_public_daily_runs: PositiveInt = Field(
         default=20, validation_alias="DISCOVERY_PUBLIC_DAILY_RUNS"
+    )
+    # Per-reviewer request budgets (one minute), keyed by the reviewer's ID so limits are
+    # attributable. Reads are generous; every state change, note, decision, and download counts
+    # against the write budget.
+    reviewer_read_per_minute: PositiveInt = Field(
+        default=600, validation_alias="RATE_REVIEWER_READ_PER_MINUTE"
+    )
+    reviewer_write_per_minute: PositiveInt = Field(
+        default=120, validation_alias="RATE_REVIEWER_WRITE_PER_MINUTE"
     )
     # Per-reviewer cap on reviewer-started runs per hour.
     discovery_reviewer_per_hour: PositiveInt = Field(
