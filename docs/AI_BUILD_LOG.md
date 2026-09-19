@@ -1153,3 +1153,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the middleware and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-102 Contract fuzzing and public projection proof
+
+- **Task:** BE-102 — Contract fuzzing and public projection proof.
+- **Outcome delivered:** Authenticated reviewer contract fuzzing and a composed canary proof that private data never reaches public, tracking, error, or log output.
+- **Files changed:** `services/platform/tests/integration/{test_schemathesis_reviewer,test_public_projection_proof}.py`, `src/shaidago/api/v1/reviewer_evidence.py` (documented `422`), `contracts/openapi.json`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** One documented status added to one operation.
+- **Security/privacy impact:** Proof only; no behaviour change beyond the documented status.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `make backend-verify` exit 0.
+- **Tests added or changed:** 1 fuzz test (20 operations) and 2 proof tests.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated.
+- **Known limitations/open decisions:** The fuzzer runs 25 examples per operation to keep the suite fast; a longer run (`max_examples` raised) is a manual option. Multipart duplicate-name cases are generated only where the schema describes them (report submission is covered by its own adversarial tests).
+- **Commit/PR:** `test: fuzz the reviewer API and prove private canaries never surface publicly`
+- **Next task may rely on:** the canary world helper for any later leak test.
+- **AI assistance used:** Designed and wrote the fuzz and proof tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
