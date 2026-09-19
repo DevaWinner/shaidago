@@ -28,6 +28,7 @@ If implementation reveals a conflict, do not silently choose one version. Correc
 | [`THREAT_MODEL.md`](THREAT_MODEL.md) | Design contract | Which data is private or secret, where may it flow, how is it deleted, and which task proves each control? |
 | [`CONTROLLED_VOCABULARY.md`](CONTROLLED_VOCABULARY.md) | Generated active contract | Which machine values, actors, transitions, audit events, visibility rules, and failure codes are permitted? |
 | [`API.md`](API.md) | Active | How is the private API called, what does it return on error, and how is the OpenAPI contract generated and checked? |
+| [`KEY_MANAGEMENT.md`](KEY_MANAGEMENT.md) | Active | How are private-field keys held, rotated, destroyed, and later moved to a managed KMS? |
 | [`AI_BUILD_LOG.md`](AI_BUILD_LOG.md) | Active log | Where did AI assist, what was reviewed, and what was the result? |
 
 ## Planned evidence documents

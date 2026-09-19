@@ -5,6 +5,7 @@ here, in the same change as the migration that creates the table.
 """
 
 from shaidago.db import (
+    crypto_tables,
     escalation_tables,
     idempotency_table,
     project_tables,
@@ -14,6 +15,7 @@ from shaidago.db import (
 from shaidago.db.metadata import metadata
 
 __all__ = [
+    "crypto_tables",
     "escalation_tables",
     "idempotency_table",
     "metadata",
