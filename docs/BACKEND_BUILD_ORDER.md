@@ -1189,6 +1189,8 @@ Create one multi-stage backend image used by API and worker with different comma
 
 Test API and worker commands from the same image and verify graceful termination drains requests/jobs within timeout.
 
+> **Execution status (2026-09-19): complete.** `services/platform/Dockerfile` builds one multi-stage image (base pinned by digest, uv pinned, frozen install without development dependencies, no compiler, uv, git, curl, pip, or setuptools in the final image, OCI labels including the commit) that runs the API, the worker, and the migration job with different commands, as an unprivileged user (uid 10001). `python -m shaidago.api.serve` binds one dual-stack socket on `::` with `IPV6_V6ONLY` off (a bare `--host ::` was IPv6-only in the container runtime and unreachable over IPv4) and drains on SIGTERM. `scripts/verify-container.sh` (run with `TRIVY=1`) passed every check: builds, non-root, revision label equals the commit, no build or development tooling, no credential files, the API answering liveness and readiness (200) with a read-only root filesystem, no capabilities, and no privilege escalation, a `401` without credentials, SIGTERM exiting 0 in about one second, the worker starting and draining from the same image, the migration job creating an empty database from the same image, and Trivy reporting no fixable high or critical vulnerability. Building the image found four real defects, now fixed: the API needs its package metadata (the project is now installed editable at its repository-relative path), the migration job demanded every application role's URL (it now needs only `DATABASE_URL`), the first Trivy findings were the base image's unused pip and setuptools (removed), and the `::` bind. A Trivy job was added to `.github/workflows/security.yml`.
+
 ### BE-111 — Railway services and environment matrix
 
 Define web-independent backend topology:
@@ -1228,6 +1230,8 @@ Create concise runbooks for:
 - rollback and incident evidence preservation.
 
 Each runbook has trigger, immediate containment, safe diagnostic commands, decision owner, recovery, verification, and follow-up. Commands must not print secrets/private rows.
+
+> **Execution status (2026-09-19): complete.** `docs/RUNBOOKS.md` has the eleven runbooks the task lists (API not ready, migration failure or lock, Redis and job backlog and dead letters, object storage unavailable, provider outage or budget exhausted, suspected private-data leak, credential and key rotation, reviewer disablement and session revocation, evidence sanitation or scanner failure, database backup and restore including replaying shredded reports, and rollback with incident evidence preservation). Each states the trigger, containment, read-only diagnostics that print counts and identifiers only, the decision owner, recovery, verification, and follow-up. The runbooks were written against the shipped commands and states (`/health/ready` components, the `shaidago:discovery` queue and its dead-letter queue, `python -m shaidago.retention`, `rotate_keks`); commands that use `railway ssh` and the Railway CLI were exercised only as far as BE-114 records.
 
 ### BE-114 — Staging smoke and rollback exercise
 

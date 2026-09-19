@@ -1243,3 +1243,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the module, command, tests, and policy.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-110 Production container and BE-113 Operational runbooks
+
+- **Task:** BE-110 — Production container; BE-113 — Operational runbooks.
+- **Outcome delivered:** A verified non-root multi-stage image for the API, worker, and migration job, a container verification script, a Trivy CI job, and eleven runbooks.
+- **Files changed:** `services/platform/Dockerfile`, `.dockerignore`, `scripts/verify-container.sh`, `services/platform/src/shaidago/api/serve.py`, `services/platform/migrations/env.py`, `tests/unit/api/test_serve.py`, `.github/workflows/security.yml`, `docs/RUNBOOKS.md`, `docs/DEPLOYMENT.md`, `railway/*.railway.json`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None. The migration environment now requires only `DATABASE_URL`.
+- **Security/privacy impact:** The image carries no credentials or build tooling and runs unprivileged on a read-only filesystem; the migration job no longer needs application secrets.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `TRIVY=1 scripts/verify-container.sh` all PASS; `make backend-verify` exit 0 (1996 passed).
+- **Tests added or changed:** 1 unit test (dual-stack socket); the container script is the image test.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** The image was built and verified for the developer's architecture (arm64); an amd64 build (Railway) was not built locally. The runbook Railway commands are exercised in BE-114 only. Trivy was run from a public image pulled for the purpose.
+- **Commit/PR:** `build: add the verified production container, runbooks, and Railway service configuration`
+- **Next task may rely on:** the image, `railway/*.railway.json`, and `docs/DEPLOYMENT.md`.
+- **AI assistance used:** Wrote the Dockerfile, script, entry point, and runbooks; found and fixed the four defects the build exposed.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

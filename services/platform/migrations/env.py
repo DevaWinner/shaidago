@@ -5,11 +5,10 @@ from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import create_engine, pool
-from sqlalchemy.engine import Connection
+from sqlalchemy.engine import Connection, make_url
 
 from shaidago.db.metadata import include_object
 from shaidago.db.registry import metadata
-from shaidago.shared.config import DatabaseSettings
 
 config = context.config
 if config.config_file_name is not None:
@@ -25,8 +24,18 @@ def _url() -> str:
     override = config.attributes.get("url")
     if override is not None:
         return str(override)
-    settings = DatabaseSettings.model_validate(os.environ)
-    return settings.sqlalchemy_url().render_as_string(hide_password=False)
+    # The migration job needs the owner URL and nothing else: none of the application roles'
+    # URLs, keys, or provider credentials is required (or wanted) in its environment.
+    raw = os.environ.get("DATABASE_URL", "")
+    parsed = make_url(raw) if raw else None
+    if (
+        parsed is None
+        or parsed.drivername != "postgresql+psycopg"
+        or not parsed.host
+        or not parsed.database
+    ):
+        raise SystemExit("DATABASE_URL must be a postgresql+psycopg URL with a host and database")
+    return parsed.render_as_string(hide_password=False)
 
 
 def run_migrations_online() -> None:
