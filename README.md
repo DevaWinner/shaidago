@@ -80,7 +80,7 @@ Start with the [documentation index](docs/README.md).
 
 ## Unattended build loops
 
-The tracked Claude commands [`backend-build-loop`](.claude/commands/backend-build-loop.md) and [`frontend-build-loop`](.claude/commands/frontend-build-loop.md) execute the respective build orders task by task. Each requires an explicit task packet, verification evidence, documentation, and one Conventional Commit per task; neither may publish, deploy, or substitute human decisions for source, language, or visual review.
+The tracked Claude commands [`backend-build-loop`](.claude/commands/backend-build-loop.md) and [`frontend-build-loop`](.claude/commands/frontend-build-loop.md) execute the respective build orders task by task. Each requires an explicit task packet, verification evidence, documentation, and one Conventional Commit per task; neither may publish, deploy, or substitute human decisions for source, language, or visual review. The frontend loop uses one `frontend/<circle-goal>` branch per circle and excludes roadmap labels, circle numbers, and task IDs from branch names and commit subjects.
 
 ## Development
 
