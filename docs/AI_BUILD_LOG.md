@@ -954,3 +954,22 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the endpoint orchestration, metrics boundary and grants, natural-question keyword fallback, contract, adversarial integration tests, and documentation; corrected the database-test environment and contract-fuzzer dependency setup without weakening checks.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-085 Four-language grounded-answer evaluation
+
+- **Task:** BE-085 — Four-language evaluation harness (blocked only on the required human language review).
+- **Outcome delivered:** A versioned synthetic golden corpus and strict evaluator that expand eleven answerability, evidence-gap, conflict, injection, citation, fact-change, malformed-output, and timeout scenarios across English, Hausa, Igbo, and Yoruba. Deterministic scoring passes 44/44 cases, 28/28 citation checks, and 44/44 policy checks. A separate explicitly gated live runner accepts an injected provider or `--live` CLI invocation and writes only safe outcomes and model/prompt/schema versions.
+- **Files changed:** `data/qa-evaluation/{README.md,golden-v1.json}`, `services/platform/src/shaidago/retrieval/evaluation.py`, multilingual evaluation tests, service documentation, and backend execution documentation.
+- **Schema/contract changes:** No database or HTTP contract change. The corpus is version 1 and is locked to `grounded-qa-v1` and `grounded-answer-v2`; strict models reject missing locales, version drift, duplicate or missing scenario kinds, extra fields, and inconsistent review claims.
+- **Security/privacy impact:** All cases are visibly synthetic. Deterministic CI reads no provider key and makes no network call. The live path requires explicit `--live`, model, output path, and `OPENAI_API_KEY`; its result contains only synthetic case IDs, safe outcomes, and version identifiers, never questions, passages, provider responses, or a key. No live run was made.
+- **Dependencies added:** None.
+- **Failure behaviour verified:** Cross-project and unknown citations, unsupported changed names/numbers/dates, prompt-injection output, insufficient/conflicting evidence, and malformed provider output fail closed; retryable timeout is classified unavailable. Pending review records cannot claim a reviewer, date, or findings, while reviewed records require all of them.
+- **Commands run and results:** The deterministic command reported 44/44 cases, 28/28 citation checks, 44/44 policy checks, 11/11 per locale, all human-review statuses pending, and `live_provider_called=false`; targeted evaluation tests passed (9); Ruff and Pyright passed; `make backend-verify` exited 0 with formatting, lint, strict types, Bandit, `pip-audit`, OpenAPI drift, API fuzzing, and 1227 deterministic tests passing; all six Circle 0 validators passed.
+- **Tests added or changed:** Nine evaluation tests cover full four-locale expansion, machine-checkable invariant names/amounts/dates, pending-review honesty, corpus drift rejection, safe aggregate output, strict checked-in JSON, and injected live-run metadata without a network call.
+- **Generated artifacts checked:** OpenAPI and lockfiles are unchanged by this task; `make openapi-check` passed inside the full gate. The golden corpus is hand-reviewable UTF-8 JSON rather than generated output.
+- **Known limitations/open decisions:** Hausa, Igbo, Yoruba, and English evaluation copy is machine-assisted draft text and has not received the required fluent human review. All review dimensions remain explicitly pending. The opt-in live OpenAI path was implemented but not executed because live paid-provider calls are a hard stop.
+- **Commit/PR:** `test: add multilingual grounded-answer evaluation`
+- **Next task may rely on:** Deterministic corpus structure and scoring only. It must not treat any locale copy as reviewed or start Circle 9 until fluent reviewers complete and record all four review entries.
+- **AI assistance used:** Designed the synthetic cross-locale corpus, deterministic scenario expansion/scoring, review-state guards, safe aggregate report, opt-in live runner, tests, and documentation; it did not perform human language review.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** Required and pending. Fluent reviewers must review all four locale packs and record each preservation dimension before this task or Circle 8 can be marked complete.

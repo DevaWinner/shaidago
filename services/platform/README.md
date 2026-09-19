@@ -23,6 +23,8 @@ From the repository root, `make backend-verify` runs the canonical backend gate 
 
 `POST /v1/projects/{slug}/questions` is the private-API boundary for grounded public questions. It accepts one bounded JSON `question`, takes the requested locale from the trusted BFF header, searches only approved source chunks for that public project, and returns a short validated answer with resolvable citations or the exact insufficient-evidence fallback. Responses and errors are `no-store`; requests are rate-limited per BFF-supplied client pseudonym. Operational rows retain counts, outcome, duration, and model/prompt/schema versions, never the question, prompt, passage, client pseudonym, or IP address. Replay mode is the default deterministic provider path; live mode requires the configured OpenAI key.
 
+`uv run python -m shaidago.retrieval.evaluation` runs the checked-in 44-case English, Hausa, Igbo, and Yoruba citation/policy evaluation without a key or network access. Its locale copy is machine-assisted and every human-review record remains explicitly pending. The separate `--live` mode is an opt-in maintainer workflow documented in `data/qa-evaluation/README.md`; it must not be run as part of deterministic verification.
+
 ## Layout
 
 `src/shaidago/` holds the package. Domain modules are added by their owning circle (see build order section 2); test directories under `tests/` are split by layer (`unit`, `integration`, `contract`, `security`, `evaluation`, `fixtures`).

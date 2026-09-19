@@ -930,7 +930,11 @@ Create a versioned golden corpus covering English, Hausa, Igbo, and Yoruba:
 
 Score citation validity and policy deterministically. Human language reviewers record whether meaning, names, amounts, dates, uncertainty, and safety wording are preserved. Live evaluation is opt-in and records model/prompt versions without secrets.
 
+> **Execution status (2026-09-19): blocked.** The implementation portion is complete: `data/qa-evaluation/golden-v1.json` expands 11 required scenarios across `en`, `ha`, `ig`, and `yo`; the strict harness passes 44/44 deterministic cases, 28/28 citation scores, and 44/44 policy scores, rejects corpus/review/version drift, reports only safe aggregates, and provides a separately gated live runner that records only case outcomes and model/prompt/schema versions. No live call was made. Every locale review is honestly `pending`; this task can be marked complete only after fluent human reviewers check meaning, names, amounts, dates, uncertainty, and safety wording and record their name, absolute review date, and each dimension as `preserved` or `issue`.
+
 ### Circle 8 exit gate
+
+> **Gate status (2026-09-19): open.** The approved-only corpus, keyless keyword mode, project-scoped citations, fail-closed validation, and four-language deterministic corpus all pass. The remaining criterion is substantive human language review: all four explicit review records are still `pending`, so Circle 8 is not complete and dependent Circle 9 work must not start.
 
 - Retrieval corpus contains approved public chunks only.
 - Keyword-only setup works without an OpenAI key.
