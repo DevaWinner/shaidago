@@ -40,3 +40,9 @@ Staging and production are separate Railway environments in separate projects wh
 ## Container
 
 `docker build -f services/platform/Dockerfile --build-arg REVISION=$(git rev-parse HEAD) -t shaidago-platform .` from the repository root. `scripts/verify-container.sh` (with `TRIVY=1`) proves the image is non-root, has no build or development tooling, runs the API on a read-only filesystem with no capabilities, starts the worker and the migration job from the same image, drains on SIGTERM, and passes the vulnerability scan.
+
+## Provisioning staging (what was actually done)
+
+`railway init --name shaidago-staging`, rename the environment to `staging`, then `railway add` for `postgres` (`pgvector/pgvector:pg18`, plus a volume at `/var/lib/postgresql/data`), a managed Redis, a bucket in `ams`, and empty `api`, `worker`, and `migrate` services; start commands and restart policies were set through the Railway API to match `railway/*.railway.json`; `scripts/railway_staging_variables.py` generated every key and role password and set the variables without printing them. Deploy order: `migrate` (wait for SUCCESS), then `api` and `worker` (`railway up --service <name> --detach`, then follow the deployment ID to SUCCESS). Two deliberate details: the backend's settings require `DATABASE_URL` to exist, so `api` and `worker` carry the worker role's URL in it (they never connect with it), which keeps the owner URL on `migrate` alone; and no service has a public domain.
+
+Not created: a production project. Production must be its own project with its own database, Redis, bucket, keys, reviewer accounts, provider keys, and budgets, and must start from `PROVIDER_MODE=live`, `SCANNER_MODE=clamd`, and a real scanner service.

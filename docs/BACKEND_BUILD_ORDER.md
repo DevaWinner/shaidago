@@ -1204,6 +1204,8 @@ Define web-independent backend topology:
 
 Only the Next.js service receives the internal API URL/credential. Provider and object-storage secrets stay API/worker-side as needed. Document ownership and rotation for every secret.
 
+> **Execution status (2026-09-19): complete for staging; production not created.** The topology, secret ownership and rotation table, and per-service variable matrix are in `docs/DEPLOYMENT.md`, with per-service config in `railway/{api,worker,migrate}.railway.json`. Staging was created on Railway (`shaidago-staging`, environment `staging`): a pgvector PostgreSQL 18 image with a volume, managed Redis, a private bucket, and `api`, `worker`, and `migrate` from the verified image, none with a public domain. `scripts/railway_staging_variables.py` generated every key and role password and set them without printing anything; only `migrate` holds the owner URL, and the worker and API hold no owner credential. Staging runs `PROVIDER_MODE=replay` and `SCANNER_MODE=not_deployed`, and no live provider key was set. The web service does not exist yet, so nothing holds the internal API URL. A separate production project, with its own database, Redis, bucket, keys, reviewers, and budgets, is specified but was deliberately not created.
+
 ### BE-112 — Pre-deploy migration and compatibility
 
 1. Run migrations as a one-shot pre-deploy job under migration credentials.
@@ -1212,6 +1214,8 @@ Only the Next.js service receives the internal API URL/credential. Provider and 
 4. Never auto-seed production.
 5. Back up and test restore before a destructive/irreversible migration.
 6. Document rollback as app rollback plus schema/data decision, not simply `alembic downgrade`.
+
+> **Execution status (2026-09-19): complete.** `migrate` is a one-shot service (restart policy never) that runs `alembic upgrade head` under the owner role, serialised by an advisory lock so concurrent runs cannot collide (proven by a three-process test), then provisions role logins; `api` and `worker` are deployed only after it reports SUCCESS, and the API's readiness reports `unavailable` on a revision mismatch. On staging the order was executed: `migrate` SUCCESS ("enabled login for 4 roles"), then `api` and `worker` SUCCESS. `docs/DEPLOYMENT.md` records the expand, migrate, contract sequencing, the requirement to back up and test-restore before a destructive migration, that production is never auto-seeded (the seed refuses non-local targets), and that rollback is an app rollback plus an explicit schema decision, not `alembic downgrade`. A backup and restore drill was not run (no backup is configured; runbook 10 says so).
 
 ### BE-113 — Operational runbooks
 
@@ -1237,6 +1241,8 @@ Each runbook has trigger, immediate containment, safe diagnostic commands, decis
 
 Run public project read, anonymous fictional submission, tracking, reviewer transition, Q&A fixture/live as approved, public Source Scout, report-scoped reviewer discovery, safe publication, logout/revocation, and failure states. Exercise one rollback and one secret rotation. Record commit/image, environment, timestamps, safe outcomes, and limitations.
 
+> **Execution status (2026-09-19): partial.** Exercised on staging and recorded in `docs/evidence/BE-114-staging-smoke.md`: the ordered deploy, a secret rotation (`INTERNAL_WEB_CREDENTIAL_CURRENT` replaced with the old value kept as `_PREVIOUS`; the service redeployed to SUCCESS), and a rollback of `api` to the previous deployment (`deploymentRollback`, new deployment SUCCESS, startup confirmed in its log). **Not run:** the full fictional smoke journey on staging. It needs access inside Railway's private network (`railway ssh`), and no SSH key is registered on the Railway account; registering one is an account change left to the maintainer. `scripts/staging_smoke.py` implements the whole journey (public read, anonymous submission, tracking, reviewer decision and stale-decision refusal, verification, previewed publication, Q&A in replay, public and report-scoped discovery, sign-out and revocation) and the record lists the exact steps to run it.
+
 ### Circle 11 exit gate
 
 - Container is non-root, scanned, and runs API/worker.
@@ -1244,6 +1250,8 @@ Run public project read, anonymous fictional submission, tracking, reviewer tran
 - Migrations gate deploy and rollback is exercised.
 - Runbooks contain executable safe diagnostics.
 - Staging smoke covers the complete fictional journey without public/private leakage.
+
+> **Gate status (2026-09-19): open, two named items.** Met: the container is non-root, scanned (no fixable high or critical finding), and runs the API, worker, and migration job (BE-110); staging uses private networking and isolated resources with no public domain (BE-111); migrations gate the deploy and one rollback and one secret rotation were exercised on staging (BE-112, BE-114); the runbooks contain safe, count-only diagnostics (BE-113). **Open:** (1) the complete staging smoke journey has not been run, because it needs a registered Railway SSH key (see `docs/evidence/BE-114-staging-smoke.md`); (2) the Railway commands in the runbooks are unproven beyond deploy, logs, variables, and rollback. A production project and a backup and restore drill do not exist and are production-gate items.
 
 ## 15. Circle 12 — backend release and frontend handoff gate
 

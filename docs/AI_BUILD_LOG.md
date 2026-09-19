@@ -1261,3 +1261,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the Dockerfile, script, entry point, and runbooks; found and fixed the four defects the build exposed.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-111, BE-112, BE-114 Railway staging, migration gating, rotation and rollback
+
+- **Task:** BE-111 — Railway services and environment matrix; BE-112 — Pre-deploy migration and compatibility; BE-114 — Staging smoke and rollback exercise (partial).
+- **Outcome delivered:** A Railway staging environment with private services from the verified image, ordered migration-then-deploy, a rotation and a rollback exercised, and a smoke script ready to run.
+- **Files changed:** `docs/DEPLOYMENT.md`, `railway/*.railway.json`, `scripts/railway_staging_variables.py`, `scripts/staging_smoke.py`, `docs/evidence/BE-114-staging-smoke.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** Hosted resources were created in the maintainer's Railway account with their standing authorisation for the Railway deploy; no public domain exists; no live provider key was used; generated secrets were never printed or committed; the owner credential exists only on the one-shot migration service.
+- **Failure behaviour verified:** deploy order, rotation, and rollback on staging; the migration advisory lock and readiness revision check locally.
+- **Commands run and results:** see the evidence record; `make backend-verify` (1996 passed) before the deploy.
+- **Tests added or changed:** `scripts/staging_smoke.py` (not yet run on staging).
+- **Generated artifacts checked:** None.
+- **Known limitations/open decisions:** **The staging smoke journey is pending** a registered Railway SSH key (an account change I did not make). The staging environment is a running paid resource until the maintainer removes it. The variables script rotates every secret if re-run. The image was built for the developer's architecture and Railway built its own from the same Dockerfile.
+- **Commit/PR:** `build: deploy the backend to Railway staging with gated migrations, rotation, and rollback evidence`
+- **Next task may rely on:** the staging environment, the deploy order, and the evidence record for the release gate.
+- **AI assistance used:** Provisioned staging with the Railway CLI, exercised rotation and rollback, wrote the smoke script and records.
+- **Prompt summary:** Unattended backend build loop; maintainer authorised the Railway deploy.
+- **Human review:** None yet; unattended run, pending maintainer review.
