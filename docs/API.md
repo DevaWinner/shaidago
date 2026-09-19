@@ -77,6 +77,10 @@ Every route needs a reviewer session (`X-Shaidago-Session`) and a role holding t
 - `POST /v1/reviewer/reports/{report_id}/notes` with `{body}` (plain text up to 4000 characters; markup such as `<b>` or `<script>` is `422 markup_not_allowed`) returns `201` with `note_id` and `created_at`. Notes are append-only: there is no edit or delete, and a correction is a new note.
 - `GET /v1/reviewer/reports/{report_id}/notes` pages notes oldest first (`limit`, `cursor`) with `note_id`, `created_at`, the author's reviewer identifier, and the decrypted `body` (`null` if its key was destroyed). Notes never appear on tracking, the public API, or the report detail. Responses are `no-store`; creation is audited by note ID only.
 
+## Reviewer evidence download
+
+`GET /v1/reviewer/reports/{report_id}/evidence/{evidence_id}/content` returns the sanitised file as an attachment (`Content-Disposition: attachment`, the stored type, `Cache-Control: no-store`, `X-Content-Type-Options: nosniff`, a sandboxing `Content-Security-Policy`, and `X-Evidence-Scan-State`: `clean` or `not_scanned_demo` on the hosted demo). There is no signed URL: access is checked on every request, the decision is audited before any byte is read (`report_evidence_download_granted` or `_denied`, IDs only), and the object key never leaves the service. An unknown report, an unknown file, and a file that belongs to another report are the same `404 not_found`; bytes that fail the recorded size and SHA-256 check are never served (`503`).
+
 ## Errors
 
 Every error is `application/problem+json`, `Cache-Control: no-store`, with `type`, `title`, `status`, `code`, `detail`, `request_id`, and, for validation failures, `errors` (`field` and rule `code`, never the submitted value). The `code` is the stable contract; the BFF localises display text from it.

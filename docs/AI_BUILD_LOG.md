@@ -824,3 +824,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the migration, service, endpoints, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-073 Evidence download broker
+
+- **Task:** BE-073 — Evidence download broker.
+- **Outcome delivered:** An authorised, audited download endpoint that streams the sanitised evidence with forced-download headers and an integrity check.
+- **Files changed:** `services/platform/src/shaidago/review/evidence.py`, `src/shaidago/api/v1/{reviewer_evidence,__init__}.py`, `src/shaidago/api/{dependencies,main}.py`, tests (`tests/unit/review/test_evidence.py`, `tests/integration/test_evidence_download.py`, `reviewer_support.py`), `contracts/openapi.json`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None to the schema. OpenAPI gains one path; `Dependencies` gains `evidence_store`.
+- **Security/privacy impact:** Streaming through the API removes the signed-URL token from the design. Access is deny-by-default (capability, active session, evidence must belong to the named report), audited before the read, and unsafe or mismatched bytes are never served. Headers forbid rendering, caching, and sniffing. The object key and any storage location stay server side.
+- **Failure behaviour verified:** see the build order note; unsafe-state serving is refused by `is_servable` (unit) and cannot be produced through the database because of its check constraint.
+- **Commands run and results:** `make backend-verify` exit 0 (1093 passed); Circle 0 validators passed.
+- **Tests added or changed:** 20 unit and 8 integration tests.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated; `make openapi-check` passes.
+- **Known limitations/open decisions:** The whole file (at most 10 MB) is read into memory before it is sent; no `Range` support; no per-reviewer download rate limit yet (BE-100). A short-lived signed URL was considered and not chosen because a streamed response has no bearer token to expire.
+- **Commit/PR:** `feat: add the audited reviewer evidence download broker`
+- **Next task may rely on:** `evidence_store` in `Dependencies` and `review/evidence.py` rules.
+- **AI assistance used:** Designed and wrote the broker and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

@@ -160,6 +160,7 @@ def build_world(
             reviewer_database=Database(reviewer),
             rate_limiter=InMemoryRateLimiter(clock),
             evidence_pipeline=pipeline,
+            evidence_store=store,
         ),
     )
     return ReviewWorld(app, Database(owner), store, clock, slug), pool

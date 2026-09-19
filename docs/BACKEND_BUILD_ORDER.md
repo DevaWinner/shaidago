@@ -825,6 +825,8 @@ Implement create/read notes with independent encryption, author/time metadata, a
 5. Audit the download decision, not URL/token.
 6. Test expiry, replay after expiry, wrong report, inactive reviewer, unsafe evidence state, and no object-key leakage.
 
+> **Execution status (2026-09-19): complete.** `GET /v1/reviewer/reports/{report_id}/evidence/{evidence_id}/content` streams the sanitised file through the authorised endpoint instead of issuing a signed URL (the task allows either), so no token or storage URL exists to leak, replay, or outlive the session. Authorisation and the audit decision are committed before any byte is read; only sanitised evidence of an allowed type with a known scan state is served; the stored size and SHA-256 are re-checked; headers force `attachment`, `no-store`, `nosniff`, a sandboxing CSP, and expose `X-Evidence-Scan-State` so the hosted demo's `not_scanned_demo` label is visible. 8 integration and 20 unit tests cover session expiry and replay after it, a disabled reviewer, another report's file, unknown IDs (one identical 404), hostile file names, tampered and missing bytes (503, decision still audited), and no object key in any reviewer response. An unsafe-state row cannot be built through the database (its check constraint refuses it), so that refusal is covered by unit tests of `is_servable` plus the existing constraint tests.
+
 ### BE-074 — Separate public-update publication transaction
 
 Create `public_updates` and a publication service:

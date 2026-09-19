@@ -10,6 +10,7 @@ from shaidago.api.v1 import (
     reporter_handles,
     reports,
     reviewer_decisions,
+    reviewer_evidence,
     reviewer_notes,
     reviewer_reports,
 )
@@ -25,3 +26,4 @@ router.include_router(reporter_handles.router)
 router.include_router(reviewer_reports.router)
 router.include_router(reviewer_decisions.router)
 router.include_router(reviewer_notes.router)
+router.include_router(reviewer_evidence.router)
