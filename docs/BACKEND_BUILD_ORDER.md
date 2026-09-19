@@ -1281,6 +1281,8 @@ Run twice: once locally from clean services/database and once in CI. Report targ
 
 ### BE-121 — Frontend contract package
 
+> **Execution status (2026-09-19): complete.** All 37 routes now declare stable, unique `<module>_<action>` operation IDs enforced by a contract test. `docs/FRONTEND_BACKEND_CONTRACT.md` freezes the BFF/auth/CSRF, caching, idempotency, cursor, vocabulary, polling, upload, citation, and one-time-display semantics. The drift-checked `contracts/frontend-fixtures.json` gives every operation a concrete example for every documented response status plus MSW-ready `success`, `empty`, `stale`, `partial`, `denied`, `rate_limited`, `dependency_down`, and `validation` scenarios. No deployed frontend client exists, so replacing FastAPI's unstable generated IDs at this handoff gate has no migration consumer.
+
 Commit and document:
 
 - `contracts/openapi.json` with stable operation IDs;

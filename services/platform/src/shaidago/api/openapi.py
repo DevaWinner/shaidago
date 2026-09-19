@@ -13,6 +13,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from fastapi import FastAPI
+
 from shaidago.api.app import create_app
 from shaidago.api.dependencies import Dependencies
 from shaidago.shared.config import load_settings
@@ -40,9 +42,13 @@ _SYNTHETIC_ENVIRON = {
 }
 
 
+def build_contract_app() -> FastAPI:
+    """Build the provider-free application used to freeze and inspect the HTTP contract."""
+    return create_app(load_settings(_SYNTHETIC_ENVIRON), Dependencies())
+
+
 def build_openapi() -> dict[str, Any]:
-    app = create_app(load_settings(_SYNTHETIC_ENVIRON), Dependencies())
-    return app.openapi()
+    return build_contract_app().openapi()
 
 
 def render_openapi() -> str:

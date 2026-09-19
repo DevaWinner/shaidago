@@ -44,7 +44,12 @@ PROBLEMS: dict[int | str, dict[str, Any]] = {
 }
 
 
-@router.get("/{evidence_id}/content", responses=PROBLEMS, response_class=Response)
+@router.get(
+    "/{evidence_id}/content",
+    responses=PROBLEMS,
+    response_class=Response,
+    operation_id="reviewer_evidence_download",
+)
 async def download(  # noqa: PLR0913 - a route names its collaborators
     report_id: UUID,
     evidence_id: UUID,

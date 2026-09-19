@@ -325,7 +325,9 @@ def _cited_fields(cited: Cited) -> dict[str, object]:
     }
 
 
-@localities_router.get("", response_model=LocalityListOut, responses=PROBLEMS)
+@localities_router.get(
+    "", response_model=LocalityListOut, responses=PROBLEMS, operation_id="projects_list_localities"
+)
 async def list_localities(
     request: Request, database: Annotated[Database, Depends(public_database)]
 ) -> Response:
@@ -336,7 +338,7 @@ async def list_localities(
     return cacheable(request, LocalityListOut(items=items))
 
 
-@router.get("", response_model=ProjectPageOut, responses=PROBLEMS)
+@router.get("", response_model=ProjectPageOut, responses=PROBLEMS, operation_id="projects_list")
 async def list_projects(
     request: Request,
     database: Annotated[Database, Depends(public_database)],
@@ -396,7 +398,9 @@ async def list_projects(
     return cacheable(request, ProjectPageOut(items=items, next_cursor=page.next_cursor))
 
 
-@router.get("/{slug}", response_model=ProjectDetailOut, responses=PROBLEMS)
+@router.get(
+    "/{slug}", response_model=ProjectDetailOut, responses=PROBLEMS, operation_id="projects_get"
+)
 async def get_project(
     slug: Annotated[str, Path(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$", max_length=80)],
     request: Request,
@@ -434,7 +438,12 @@ async def get_project(
     return cacheable(request, payload)
 
 
-@router.get("/{slug}/sources/{source_id}", response_model=SourceExcerptsOut, responses=PROBLEMS)
+@router.get(
+    "/{slug}/sources/{source_id}",
+    response_model=SourceExcerptsOut,
+    responses=PROBLEMS,
+    operation_id="projects_get_source",
+)
 async def get_project_source(
     slug: Annotated[str, Path(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$", max_length=80)],
     source_id: UUID,

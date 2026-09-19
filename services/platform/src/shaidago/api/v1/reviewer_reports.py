@@ -163,7 +163,9 @@ def actor_of(reviewer: AuthenticatedReviewer, request: Request) -> Reviewer:
     )
 
 
-@router.get("", response_model=QueuePageOut, responses=PROBLEMS)
+@router.get(
+    "", response_model=QueuePageOut, responses=PROBLEMS, operation_id="reviewer_reports_queue"
+)
 async def queue(
     request: Request,
     response: Response,
@@ -219,7 +221,12 @@ async def queue(
     )
 
 
-@router.get("/{report_id}", response_model=ReportDetailOut, responses=PROBLEMS)
+@router.get(
+    "/{report_id}",
+    response_model=ReportDetailOut,
+    responses=PROBLEMS,
+    operation_id="reviewer_reports_get",
+)
 async def detail(  # noqa: PLR0913 - a route names its collaborators
     report_id: UUID,
     request: Request,

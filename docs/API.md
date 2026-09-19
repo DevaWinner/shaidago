@@ -9,6 +9,11 @@ make openapi-check      # fail if it differs from the application (part of make 
 
 Generation uses fixed synthetic settings, so it needs no environment, database, or provider. Change a route or model, regenerate, and commit both in the same change.
 
+The frontend handoff semantics that OpenAPI cannot encode (BFF forwarding, cookies/CSRF, caching,
+idempotency, cursors, polling, uploads, citations, and one-time fields) are in
+[`FRONTEND_BACKEND_CONTRACT.md`](FRONTEND_BACKEND_CONTRACT.md). Its generated MSW-ready response
+examples are `contracts/frontend-fixtures.json`; `make frontend-contract-check` rejects drift.
+
 ## Calling the API
 
 - Every request except `GET /health/live` needs `Authorization: Bearer <caller-id>.<secret>` ([ADR-0002](decisions/0002-bff-authority-split-and-internal-service-authentication.md)). The pilot caller is `web`. This proves the caller is the BFF only; it grants no reviewer or reporter authority.

@@ -137,6 +137,7 @@ async def _caller(
     response_model=AnswerAck,
     responses=PROBLEMS,
     dependencies=[Depends(_refuse_large_body)],
+    operation_id="report_status_answer_follow_up",
 )
 async def answer_follow_up(
     body: AnswerRequest,

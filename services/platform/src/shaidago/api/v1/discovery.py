@@ -83,7 +83,12 @@ def _queue(dependencies: Dependencies) -> Any:
     return dependencies.job_queue
 
 
-@router.post("/projects/{slug}/discovery-runs", response_model=RunStartedOut, responses=PROBLEMS)
+@router.post(
+    "/projects/{slug}/discovery-runs",
+    response_model=RunStartedOut,
+    responses=PROBLEMS,
+    operation_id="discovery_start_public_run",
+)
 async def start_public_run(  # noqa: PLR0913 - a route names its collaborators
     slug: str,
     *,
@@ -124,7 +129,12 @@ async def start_public_run(  # noqa: PLR0913 - a route names its collaborators
     )
 
 
-@router.get("/discovery-runs/{run_id}", response_model=RunOut, responses=PROBLEMS)
+@router.get(
+    "/discovery-runs/{run_id}",
+    response_model=RunOut,
+    responses=PROBLEMS,
+    operation_id="discovery_get_public_run",
+)
 async def get_public_run(
     run_id: UUID,
     request: Request,

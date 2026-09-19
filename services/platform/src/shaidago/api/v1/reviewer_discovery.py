@@ -179,7 +179,12 @@ def _plan_out(plan: Any) -> PlanOut:
     )
 
 
-@router.post("/reports/{report_id}/discovery-runs:plan", response_model=PlanOut, responses=PROBLEMS)
+@router.post(
+    "/reports/{report_id}/discovery-runs:plan",
+    response_model=PlanOut,
+    responses=PROBLEMS,
+    operation_id="reviewer_discovery_plan",
+)
 async def plan_run(
     report_id: UUID,
     body: PlanIn,
@@ -198,6 +203,7 @@ async def plan_run(
     response_model=RunCreatedOut,
     status_code=201,
     responses=PROBLEMS,
+    operation_id="reviewer_discovery_create",
 )
 async def create_run(  # noqa: PLR0913 - a route names its collaborators
     report_id: UUID,
@@ -239,7 +245,12 @@ async def create_run(  # noqa: PLR0913 - a route names its collaborators
     return RunCreatedOut(run_id=run_id, status="queued")
 
 
-@router.get("/discovery-runs/{run_id:uuid}", response_model=ReviewerRunOut, responses=PROBLEMS)
+@router.get(
+    "/discovery-runs/{run_id:uuid}",
+    response_model=ReviewerRunOut,
+    responses=PROBLEMS,
+    operation_id="reviewer_discovery_get",
+)
 async def get_run(
     run_id: UUID,
     response: Response,
@@ -276,7 +287,12 @@ async def get_run(
     )
 
 
-@router.post("/discovery-runs/{run_id}:cancel", response_model=CancelOut, responses=PROBLEMS)
+@router.post(
+    "/discovery-runs/{run_id}:cancel",
+    response_model=CancelOut,
+    responses=PROBLEMS,
+    operation_id="reviewer_discovery_cancel",
+)
 async def cancel(  # noqa: PLR0913 - a route names its collaborators
     run_id: UUID,
     *,
@@ -296,7 +312,12 @@ async def cancel(  # noqa: PLR0913 - a route names its collaborators
     return CancelOut(result=result)  # type: ignore[arg-type]
 
 
-@router.post("/discovery-runs/{run_id}:review", response_model=ReviewOut, responses=PROBLEMS)
+@router.post(
+    "/discovery-runs/{run_id}:review",
+    response_model=ReviewOut,
+    responses=PROBLEMS,
+    operation_id="reviewer_discovery_review",
+)
 async def review(  # noqa: PLR0913 - a route names its collaborators
     run_id: UUID,
     body: ReviewIn,
@@ -318,7 +339,12 @@ async def review(  # noqa: PLR0913 - a route names its collaborators
     return ReviewOut(status=status)
 
 
-@router.post("/discovery-runs/{run_id}/follow-up-answers", status_code=204, responses=PROBLEMS)
+@router.post(
+    "/discovery-runs/{run_id}/follow-up-answers",
+    status_code=204,
+    responses=PROBLEMS,
+    operation_id="reviewer_discovery_answer_follow_up",
+)
 async def answer_follow_up(  # noqa: PLR0913 - a route names its collaborators
     run_id: UUID,
     body: AnswerIn,
@@ -343,7 +369,10 @@ async def answer_follow_up(  # noqa: PLR0913 - a route names its collaborators
 
 
 @router.post(
-    "/discovered-sources/{source_id}/decision", response_model=DecisionOut, responses=PROBLEMS
+    "/discovered-sources/{source_id}/decision",
+    response_model=DecisionOut,
+    responses=PROBLEMS,
+    operation_id="reviewer_discovery_decide_source",
 )
 async def decide(  # noqa: PLR0913 - a route names its collaborators
     source_id: UUID,

@@ -1297,3 +1297,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Completed the in-progress gate, added the measurable coverage floor, aligned CI with the canonical target, ran it, and recorded the remaining hosted evidence honestly.
 - **Prompt summary:** Continue Circle 12 from the existing branch and in-progress work.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-121 Frontend contract package
+
+- **Task:** BE-121 — Frontend contract package.
+- **Outcome delivered:** A frozen frontend handoff: explicit stable operation IDs, a generated and drift-checked operation/response fixture manifest, named MSW-ready UI states, and one document for every browser/BFF semantic not expressible in OpenAPI.
+- **Files changed:** `services/platform/src/shaidago/api/{health,openapi}.py`, every route module under `api/v1`, `services/platform/tests/contract/test_openapi.py`, `contracts/{openapi,frontend-fixtures}.json`, `scripts/render_frontend_contract.py`, `Makefile`, `docs/{API,FRONTEND_BACKEND_CONTRACT,BACKEND_BUILD_ORDER,AI_BUILD_LOG}.md`, `README.md`, `services/platform/README.md`.
+- **Schema/contract changes:** All 37 existing operations receive explicit stable IDs; their paths, methods, request/response schemas, and runtime behaviour are unchanged. The frontend fixture schema is version 1.
+- **Security/privacy impact:** The handoff makes BFF-only tokens, one-time reporter credentials, no-store surfaces, public cache boundaries, partial uploads, private discovery, and citation trust states explicit. Fixtures are visibly synthetic and contain no usable secret or real report.
+- **Failure behaviour verified:** Contract tests reject a missing, invalid, or duplicate operation ID; reject a fixture manifest missing any operation or documented response status; and the renderer's check mode fails on drift.
+- **Commands run and results:** Targeted Ruff and Pyright passed; 7 targeted contract tests passed; `make openapi-generate`; `python3 scripts/render_frontend_contract.py`; `make backend-verify` exited 0 with 1,999 deterministic tests passed, one live test deselected, 94.03% branch coverage, both generated-contract drift checks, Bandit, and `pip-audit`; all six Circle 0 validators passed.
+- **Tests added or changed:** Two contract tests enforce explicit IDs, complete response-fixture coverage, all eight named state fixtures, and generated-file drift.
+- **Generated artifacts checked:** `contracts/openapi.json` and `contracts/frontend-fixtures.json` are generated from executable API schemas and checked by `make backend-verify`.
+- **Known limitations/open decisions:** The fixture copy is transport-oriented synthetic English, not reviewed locale UI copy. The frontend still owns its accessible presentation and the review status of translations. There is no deployed frontend consumer requiring an operation-ID deprecation window.
+- **Commit/PR:** `feat: freeze the frontend backend contract`.
+- **Next task may rely on:** generated types from stable operation IDs, exact transport examples for every response status, and documented handling for privacy, retries, polling, and trust states without inspecting backend internals.
+- **AI assistance used:** Corrected the inherited generated-ID approach to comply with ADR-0007, built the fixture generator and enforcement, and wrote the frontend handoff semantics.
+- **Prompt summary:** Continue Circle 12 from the existing branch and in-progress work.
+- **Human review:** None yet; unattended run, pending maintainer review.

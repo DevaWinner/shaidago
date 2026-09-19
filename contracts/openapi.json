@@ -3319,7 +3319,7 @@
   "paths": {
     "/health/live": {
       "get": {
-        "operationId": "live_health_live_get",
+        "operationId": "health_live",
         "responses": {
           "200": {
             "content": {
@@ -3340,7 +3340,7 @@
     },
     "/health/ready": {
       "get": {
-        "operationId": "ready_health_ready_get",
+        "operationId": "health_ready",
         "responses": {
           "200": {
             "content": {
@@ -3361,7 +3361,7 @@
     },
     "/v1/auth/sessions": {
       "post": {
-        "operationId": "sign_in_v1_auth_sessions_post",
+        "operationId": "auth_sign_in",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3462,7 +3462,7 @@
     },
     "/v1/auth/sessions/current": {
       "delete": {
-        "operationId": "sign_out_v1_auth_sessions_current_delete",
+        "operationId": "auth_sign_out",
         "responses": {
           "204": {
             "description": "Successful Response"
@@ -3546,7 +3546,7 @@
     },
     "/v1/discovery-runs/{run_id}": {
       "get": {
-        "operationId": "get_public_run_v1_discovery_runs__run_id__get",
+        "operationId": "discovery_get_public_run",
         "parameters": [
           {
             "in": "path",
@@ -3637,7 +3637,7 @@
     },
     "/v1/localities": {
       "get": {
-        "operationId": "list_localities_v1_localities_get",
+        "operationId": "projects_list_localities",
         "responses": {
           "200": {
             "content": {
@@ -3698,7 +3698,7 @@
     },
     "/v1/projects": {
       "get": {
-        "operationId": "list_projects_v1_projects_get",
+        "operationId": "projects_list",
         "parameters": [
           {
             "in": "query",
@@ -3904,7 +3904,7 @@
     },
     "/v1/projects/{slug}": {
       "get": {
-        "operationId": "get_project_v1_projects__slug__get",
+        "operationId": "projects_get",
         "parameters": [
           {
             "in": "path",
@@ -3978,7 +3978,7 @@
     },
     "/v1/projects/{slug}/discovery-runs": {
       "post": {
-        "operationId": "start_public_run_v1_projects__slug__discovery_runs_post",
+        "operationId": "discovery_start_public_run",
         "parameters": [
           {
             "in": "path",
@@ -4050,7 +4050,7 @@
     },
     "/v1/projects/{slug}/questions": {
       "post": {
-        "operationId": "ask_project_question_v1_projects__slug__questions_post",
+        "operationId": "projects_ask_question",
         "parameters": [
           {
             "in": "path",
@@ -4154,7 +4154,7 @@
     },
     "/v1/projects/{slug}/sources/{source_id}": {
       "get": {
-        "operationId": "get_project_source_v1_projects__slug__sources__source_id__get",
+        "operationId": "projects_get_source",
         "parameters": [
           {
             "in": "path",
@@ -4238,7 +4238,7 @@
     },
     "/v1/report-status:answer-follow-up": {
       "post": {
-        "operationId": "answer_follow_up_v1_report_status_answer_follow_up_post",
+        "operationId": "report_status_answer_follow_up",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4349,7 +4349,7 @@
     },
     "/v1/report-status:lookup": {
       "post": {
-        "operationId": "look_up_report_status_v1_report_status_lookup_post",
+        "operationId": "report_status_lookup",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4440,7 +4440,7 @@
     },
     "/v1/reporter-handles": {
       "post": {
-        "operationId": "create_handle_v1_reporter_handles_post",
+        "operationId": "reporter_handles_create",
         "responses": {
           "201": {
             "content": {
@@ -4522,7 +4522,7 @@
     "/v1/reporter-handles:delete": {
       "post": {
         "description": "Unlinks every report, then removes the credential. The reports stay, fully anonymous.",
-        "operationId": "delete_handle_v1_reporter_handles_delete_post",
+        "operationId": "reporter_handles_delete",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4607,7 +4607,7 @@
     "/v1/reporter-handles:list-reports": {
       "post": {
         "description": "Public-safe statuses only: no code, ID, category, text, or evidence.",
-        "operationId": "list_handle_reports_v1_reporter_handles_list_reports_post",
+        "operationId": "reporter_handles_list_reports",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4698,7 +4698,7 @@
     },
     "/v1/reports": {
       "post": {
-        "operationId": "submit_report_v1_reports_post",
+        "operationId": "reports_submit",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -4865,7 +4865,7 @@
     },
     "/v1/reviewer/discovered-sources/{source_id}/decision": {
       "post": {
-        "operationId": "decide_v1_reviewer_discovered_sources__source_id__decision_post",
+        "operationId": "reviewer_discovery_decide_source",
         "parameters": [
           {
             "in": "path",
@@ -4988,7 +4988,7 @@
     },
     "/v1/reviewer/discovery-runs/{run_id}": {
       "get": {
-        "operationId": "get_run_v1_reviewer_discovery_runs__run_id__get",
+        "operationId": "reviewer_discovery_get",
         "parameters": [
           {
             "in": "path",
@@ -5101,7 +5101,7 @@
     },
     "/v1/reviewer/discovery-runs/{run_id}/follow-up-answers": {
       "post": {
-        "operationId": "answer_follow_up_v1_reviewer_discovery_runs__run_id__follow_up_answers_post",
+        "operationId": "reviewer_discovery_answer_follow_up",
         "parameters": [
           {
             "in": "path",
@@ -5217,7 +5217,7 @@
     },
     "/v1/reviewer/discovery-runs/{run_id}:cancel": {
       "post": {
-        "operationId": "cancel_v1_reviewer_discovery_runs__run_id__cancel_post",
+        "operationId": "reviewer_discovery_cancel",
         "parameters": [
           {
             "in": "path",
@@ -5330,7 +5330,7 @@
     },
     "/v1/reviewer/discovery-runs/{run_id}:review": {
       "post": {
-        "operationId": "review_v1_reviewer_discovery_runs__run_id__review_post",
+        "operationId": "reviewer_discovery_review",
         "parameters": [
           {
             "in": "path",
@@ -5453,7 +5453,7 @@
     },
     "/v1/reviewer/reports": {
       "get": {
-        "operationId": "queue_v1_reviewer_reports_get",
+        "operationId": "reviewer_reports_queue",
         "parameters": [
           {
             "in": "query",
@@ -5663,7 +5663,7 @@
     },
     "/v1/reviewer/reports/{report_id}": {
       "get": {
-        "operationId": "detail_v1_reviewer_reports__report_id__get",
+        "operationId": "reviewer_reports_get",
         "parameters": [
           {
             "in": "path",
@@ -5766,7 +5766,7 @@
     },
     "/v1/reviewer/reports/{report_id}/discovery-runs": {
       "post": {
-        "operationId": "create_run_v1_reviewer_reports__report_id__discovery_runs_post",
+        "operationId": "reviewer_discovery_create",
         "parameters": [
           {
             "in": "path",
@@ -5889,7 +5889,7 @@
     },
     "/v1/reviewer/reports/{report_id}/discovery-runs:plan": {
       "post": {
-        "operationId": "plan_run_v1_reviewer_reports__report_id__discovery_runs_plan_post",
+        "operationId": "reviewer_discovery_plan",
         "parameters": [
           {
             "in": "path",
@@ -6012,7 +6012,7 @@
     },
     "/v1/reviewer/reports/{report_id}/evidence/{evidence_id}/content": {
       "get": {
-        "operationId": "download_v1_reviewer_reports__report_id__evidence__evidence_id__content_get",
+        "operationId": "reviewer_evidence_download",
         "parameters": [
           {
             "in": "path",
@@ -6101,7 +6101,7 @@
     },
     "/v1/reviewer/reports/{report_id}/follow-up-questions": {
       "post": {
-        "operationId": "ask_follow_up_v1_reviewer_reports__report_id__follow_up_questions_post",
+        "operationId": "reviewer_decisions_ask_follow_up",
         "parameters": [
           {
             "in": "path",
@@ -6214,7 +6214,7 @@
     },
     "/v1/reviewer/reports/{report_id}/follow-up-questions/{question_id}:withdraw": {
       "post": {
-        "operationId": "withdraw_follow_up_v1_reviewer_reports__report_id__follow_up_questions__question_id__withdraw_post",
+        "operationId": "reviewer_decisions_withdraw_follow_up",
         "parameters": [
           {
             "in": "path",
@@ -6320,7 +6320,7 @@
     },
     "/v1/reviewer/reports/{report_id}/notes": {
       "get": {
-        "operationId": "list_notes_v1_reviewer_reports__report_id__notes_get",
+        "operationId": "reviewer_notes_list",
         "parameters": [
           {
             "in": "path",
@@ -6446,7 +6446,7 @@
         ]
       },
       "post": {
-        "operationId": "add_note_v1_reviewer_reports__report_id__notes_post",
+        "operationId": "reviewer_notes_create",
         "parameters": [
           {
             "in": "path",
@@ -6549,7 +6549,7 @@
     },
     "/v1/reviewer/reports/{report_id}/public-updates": {
       "get": {
-        "operationId": "list_drafts_v1_reviewer_reports__report_id__public_updates_get",
+        "operationId": "reviewer_publication_list",
         "parameters": [
           {
             "in": "path",
@@ -6650,7 +6650,7 @@
         ]
       },
       "post": {
-        "operationId": "create_draft_v1_reviewer_reports__report_id__public_updates_post",
+        "operationId": "reviewer_publication_create_draft",
         "parameters": [
           {
             "in": "path",
@@ -6763,7 +6763,7 @@
     },
     "/v1/reviewer/reports/{report_id}/public-updates/{update_id}": {
       "get": {
-        "operationId": "preview_v1_reviewer_reports__report_id__public_updates__update_id__get",
+        "operationId": "reviewer_publication_preview",
         "parameters": [
           {
             "in": "path",
@@ -6876,7 +6876,7 @@
     },
     "/v1/reviewer/reports/{report_id}/public-updates/{update_id}:publish": {
       "post": {
-        "operationId": "publish_v1_reviewer_reports__report_id__public_updates__update_id__publish_post",
+        "operationId": "reviewer_publication_publish",
         "parameters": [
           {
             "in": "path",
@@ -6999,7 +6999,7 @@
     },
     "/v1/reviewer/reports/{report_id}/public-updates/{update_id}:withdraw": {
       "post": {
-        "operationId": "withdraw_v1_reviewer_reports__report_id__public_updates__update_id__withdraw_post",
+        "operationId": "reviewer_publication_withdraw",
         "parameters": [
           {
             "in": "path",
@@ -7105,7 +7105,7 @@
     },
     "/v1/reviewer/reports/{report_id}/status-transitions": {
       "post": {
-        "operationId": "transition_v1_reviewer_reports__report_id__status_transitions_post",
+        "operationId": "reviewer_decisions_transition",
         "parameters": [
           {
             "in": "path",

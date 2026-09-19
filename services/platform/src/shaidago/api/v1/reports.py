@@ -269,6 +269,7 @@ def _no_store(response: Response) -> None:
     response_model=ReportReceipt,
     status_code=201,
     responses=PROBLEMS,
+    operation_id="reports_submit",
     openapi_extra={
         "requestBody": {
             "required": True,
