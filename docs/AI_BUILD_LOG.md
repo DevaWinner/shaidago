@@ -30,3 +30,12 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Human review:** Pending maintainer review. The task IDs and ordering are proposals constrained by the accepted implementation plan; record changes or approval before treating the orders as frozen.
 - **Verification:** Both documents passed unique task-heading checks, local Markdown-link resolution, and whitespace validation. Cross-links in the README, documentation index, and implementation plan were updated.
 - **Result:** Backend and frontend work now have explicit, dependency-ordered execution specifications; implementation remains at Gate 0.
+
+## 2026-09-19 — BE-000 backend scope reconciliation
+
+- **Task:** Map every backend-owned or shared proof-of-concept requirement to an implementation task, evidence type, journey, and explicit non-goal control.
+- **Prompt summary:** Implement the first backend circle task, log it, commit it, and only then move to the next task.
+- **AI assistance used:** Created stable requirement IDs and traceability tables for the five journeys, 16 must-have capabilities, public records, reporting, tracking, reviewer publication, grounded AI, Source Scout, security, resilience, release, demo readiness, and non-goals.
+- **Human review:** The maintainer authorised sequential Circle 0 implementation. Content review of the mapping remains available through this task's commit.
+- **Verification:** All local Markdown links resolve; every referenced `BE-*` task is checked against `BACKEND_BUILD_ORDER.md`; all five journeys and all 16 must-have capabilities have backend owners and proof; no accepted capability is assigned to the BFF alone.
+- **Result:** `docs/REQUIREMENTS_TRACEABILITY.md` is the active orphan-prevention and change-control register for backend implementation.
