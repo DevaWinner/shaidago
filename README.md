@@ -87,4 +87,6 @@ When implementation starts, the separate stacks remain independently owned:
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) before making changes. Do not put vulnerabilities or sensitive report scenarios in a public issue; follow [SECURITY.md](SECURITY.md).
 
-No software license has been selected yet. Public visibility does not imply permission to reuse the code; the maintainer should choose and add a license before external reuse is invited.
+## License
+
+ShaidaGo's original code and documentation are available under the [MIT License](LICENSE). Copyright © 2026 Aniekan Winner Anietie. Third-party source material and datasets retain their own terms and attribution requirements.

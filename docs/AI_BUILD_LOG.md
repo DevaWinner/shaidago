@@ -12,3 +12,12 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Human review:** Pending maintainer review. Update this field with accepted, changed, or rejected decisions before treating the entry as closed.
 - **Verification:** Repository hygiene, links, secret patterns, Git state, and remote settings are checked during handoff; application tests are not applicable before scaffolding.
 - **Result:** Repository foundation prepared; application implementation remains at Gate 0.
+
+## 2026-09-19 — License selection
+
+- **Task:** Select and add an appropriate open-source license for the public hackathon repository.
+- **Prompt summary:** Add a license suitable for a hackathon project.
+- **AI assistance used:** Selected the OSI-approved MIT License because its short, permissive terms allow use, modification, distribution, sublicensing, and sale while retaining the copyright, permission notice, and warranty disclaimer.
+- **Human review:** The maintainer authorised selection of an appropriate license; the exact license addition remains reviewable in commit history.
+- **Verification:** The license text was checked against the Open Source Initiative template, repository references were updated, and GitHub license detection was checked after publication.
+- **Result:** ShaidaGo is licensed under MIT, copyright 2026 Aniekan Winner Anietie.
