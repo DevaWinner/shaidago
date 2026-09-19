@@ -85,6 +85,13 @@ CSRF_INVALID: Final = Problem(
     403, "csrf_invalid", "Request not permitted", "The request could not be verified."
 )
 NOT_FOUND: Final = Problem(404, "not_found", "Not found", "The requested resource was not found.")
+# One answer for a malformed, unknown, or unreachable tracking code, so lookups reveal nothing.
+TRACKING_NOT_RECOGNISED: Final = Problem(
+    404,
+    "tracking_code_not_recognised",
+    "Tracking code not recognised",
+    "We could not find a report for that code. Check the code and try again.",
+)
 METHOD_NOT_ALLOWED: Final = Problem(
     405, "method_not_allowed", "Method not allowed", "This method is not supported here."
 )

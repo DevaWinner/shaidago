@@ -680,7 +680,7 @@ Implement `POST /v1/reports`:
 
 Test concurrent duplicate submission and transaction rollback at each failure boundary.
 
-> **Execution status (2026-09-19): complete.** `POST /v1/reports` is implemented in `api/v1/reports.py` with 30 integration tests against PostgreSQL and the public role: anonymous and contact reports, per-attachment outcomes with the report still accepted, replay and conflict, concurrent duplicates, declared and streamed size caps, rate limiting, and rollback (plus file discard) at the unknown-project, evidence-insert, and duplicate-tracking-code boundaries. OpenAPI regenerated. The BFF does not exist yet, so the client HMAC header is exercised directly.
+> **Execution status (2026-09-19): complete.** `POST /v1/reports` is implemented in `api/v1/reports.py` with 29 integration tests against PostgreSQL and the public role: anonymous and contact reports, per-attachment outcomes with the report still accepted, replay and conflict, concurrent duplicates, declared and streamed size caps, rate limiting, and rollback (plus file discard) at the unknown-project, evidence-insert, and duplicate-tracking-code boundaries. OpenAPI regenerated. The BFF does not exist yet, so the client HMAC header is exercised directly.
 
 ### BE-064 — Streaming evidence sanitation pipeline
 
@@ -712,6 +712,8 @@ Implement `POST /v1/report-status:lookup` with code in the body:
 - set `Cache-Control: no-store` and never echo the code.
 
 Add public-response denylist tests for description, contact, handle, evidence, reviewer, internal notes, private discovery, and database IDs not intended for the user.
+
+> **Execution status (2026-09-19): complete.** `POST /v1/report-status:lookup` is served through migration `0011_tracking_lookup` (a `SECURITY DEFINER` function only the public role can run) and `reports/status_lookup.py`; 13 integration tests cover the safe view, code variants, newest-message selection, one identical response for eight kinds of failure, denylist assertions, the timing floor, per-client and per-prefix limits, retired-pepper lookup, and function grants. Rehashing a retired-pepper hit to the active pepper is not built (it needs an audited write function).
 
 ### BE-066 — Optional anonymous reporter handles
 

@@ -283,6 +283,26 @@
         "title": "FieldErrorBody",
         "type": "object"
       },
+      "FollowUpQuestion": {
+        "additionalProperties": false,
+        "description": "Reviewer questions the reporter may answer. Populated by the follow-up task (BE-067).",
+        "properties": {
+          "question_id": {
+            "title": "Question Id",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question_id",
+          "text"
+        ],
+        "title": "FollowUpQuestion",
+        "type": "object"
+      },
       "LiveResponse": {
         "properties": {
           "status": {
@@ -826,6 +846,59 @@
         "title": "ReportReceipt",
         "type": "object"
       },
+      "ReportStatusOut": {
+        "additionalProperties": false,
+        "properties": {
+          "follow_up_questions": {
+            "items": {
+              "$ref": "#/components/schemas/FollowUpQuestion"
+            },
+            "title": "Follow Up Questions",
+            "type": "array"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "next_action": {
+            "enum": [
+              "wait_for_review",
+              "answer_follow_up",
+              "watch_public_updates",
+              "see_escalation_guidance",
+              "none"
+            ],
+            "title": "Next Action",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "received",
+              "needs_information",
+              "under_review",
+              "verified_for_public_update",
+              "referred",
+              "closed"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "status_updated_at": {
+            "format": "date-time",
+            "title": "Status Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "status_updated_at",
+          "message",
+          "next_action",
+          "follow_up_questions"
+        ],
+        "title": "ReportStatusOut",
+        "type": "object"
+      },
       "ReviewerOut": {
         "properties": {
           "role": {
@@ -979,6 +1052,21 @@
           "availability_checked_at"
         ],
         "title": "SourceOut",
+        "type": "object"
+      },
+      "StatusLookupRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "maxLength": 256,
+            "title": "Code",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ],
+        "title": "StatusLookupRequest",
         "type": "object"
       },
       "SummaryTextOut": {
@@ -1762,6 +1850,97 @@
         "summary": "Get Project Source",
         "tags": [
           "projects"
+        ]
+      }
+    },
+    "/v1/report-status:lookup": {
+      "post": {
+        "operationId": "look_up_report_status_v1_report_status_lookup_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusLookupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportStatusOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "The body could not be parsed."
+          },
+          "404": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "One answer for every unrecognised code."
+          },
+          "413": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Content Too Large"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "429": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Look Up Report Status",
+        "tags": [
+          "reports"
         ]
       }
     },

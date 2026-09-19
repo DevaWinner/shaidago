@@ -20,6 +20,8 @@ from shaidago.db.provision import PASSWORD_VARIABLES, provision
 from shaidago.db.revision import alembic_config
 from shaidago.shared.database import Database, build_engine
 from tests.integration.public_catalogue import client, seed
+from tests.integration.report_support import Harness, build
+from tests.integration.support import Plain, insert_project
 
 
 def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
@@ -114,3 +116,20 @@ def role_urls(
 
 # Re-exported so pytest registers the shared catalogue fixture for every integration module.
 __all__ = ["client", "seed"]
+
+
+@pytest.fixture
+async def harness(role_urls: URL | dict[str, URL]) -> AsyncIterator[Harness]:
+    """The report endpoints over the real public role, with one synthetic public project."""
+    urls: dict[str, URL] = role_urls  # type: ignore[assignment]  # fixture returns the role map
+    engines: list[AsyncEngine] = []
+    owner = build_engine(urls["owner"], application_name="o", statement_timeout_ms=8000)
+    engines.append(owner)
+    app, (store, pool) = build(urls, engines)
+    slug = f"synthetic-{uuid.uuid4().hex[:10]}"
+    async with Plain(owner).unit_of_work() as session:
+        await insert_project(session, slug=slug)
+    yield Harness(app, Database(owner), store, slug)
+    pool.shutdown()
+    for engine in engines:
+        await engine.dispose()

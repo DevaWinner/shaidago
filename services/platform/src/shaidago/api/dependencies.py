@@ -38,6 +38,8 @@ class Dependencies:
     rate_limiter: RateLimiter | None = None
     # None means attachments cannot be processed; reports are still accepted without them.
     evidence_pipeline: EvidencePipeline | None = None
+    # Floor for tracking lookups so a hit and a miss take about the same time.
+    lookup_minimum_seconds: float = 0.25
 
 
 def get_settings(request: Request) -> Settings:
