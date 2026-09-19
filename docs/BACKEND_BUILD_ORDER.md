@@ -243,6 +243,8 @@ Each ADR includes context, decision, alternatives, consequences, migration impac
 - **Verification:** `uv sync --all-groups --frozen`, Ruff check/format check, Pyright, and pytest collection all succeed.
 - **Do not:** add domain tables, provider calls, or placeholder secrets.
 
+> **Execution status (2026-09-19): complete.** `services/platform` has a pinned Python 3.14 project with a committed `uv.lock`; from an empty `.venv`, `uv sync --all-groups --frozen`, Ruff check and format check, Pyright strict, and pytest (one package-import test) all pass locally. Provider SDKs (OpenAI, S3) and `python-multipart` are deliberately absent until their owning circles. `psycopg` and `dramatiq` are LGPL-3.0 (used as unmodified, dynamically linked libraries); `hypothesis` is MPL-2.0; `pip-audit` reported no known vulnerabilities.
+
 ### BE-011 — Establish canonical backend commands
 
 Add Make targets or scripts with one implementation behind each name:
@@ -262,6 +264,8 @@ Add Make targets or scripts with one implementation behind each name:
 
 Targets must fail on the first failed child command, use no developer-global packages, and produce the same result locally and in CI.
 
+> **Execution status (2026-09-19): complete.** The root `Makefile` provides every listed target except `openapi-generate` and `openapi-check`, which wait for the Circle 2 app. `make backend-verify` ran green locally, and negative checks confirmed that a failing test and a lint violation each produce a non-zero exit. The integration and contract layers hold no tests yet, so their targets print that fact and exit 0 (pytest exit code 5 only); BE-030 and BE-045 must add the first tests there.
+
 ### BE-012 — Add backend CI without false claims
 
 1. Create a least-privilege GitHub Actions workflow pinned by full action commit SHA with version comments.
@@ -271,12 +275,16 @@ Targets must fail on the first failed child command, use no developer-global pac
 5. Upload coverage and logs only after the central redaction test exists; until then, keep artifacts minimal.
 6. Prove the workflow on the repository branch before making it required.
 
+> **Execution status (2026-09-19): partial.** `.github/workflows/backend.yml` is written with `contents: read` permissions, `actions/checkout` v7.0.1 and `astral-sh/setup-uv` v10.1.0 pinned by full commit SHA (resolved read-only through the GitHub API), a lockfile-keyed uv cache only, and one aggregate `Backend required` job over the static/unit job. The YAML parses locally, but no linter such as actionlint was available and **the workflow has never run: CI green is pending** because pushing is a maintainer action. Service-backed integration jobs and coverage/log upload are deliberately absent until BE-030 and the redaction test (BE-023). The maintainer should note that the `paths` filter means a required check would not report on unrelated pull requests; decide that before marking `Backend required` as required.
+
 ### Circle 1 exit gate
 
 - Frozen install works from a clean environment.
 - Static checks and empty tests are green locally and in CI.
 - `uv.lock` changes only when dependencies change.
 - No backend command depends on an undeclared global tool.
+
+> **Gate status (2026-09-19): open.** Met locally: frozen install from an empty `.venv`, green static checks and tests through `make backend-verify`, `uv lock --check` clean, and the only global tools are `make` and `uv`. Missing: green CI on the repository branch (BE-012), which needs a maintainer push.
 
 ## 5. Circle 2 — runtime kernel, configuration, errors, and observability
 

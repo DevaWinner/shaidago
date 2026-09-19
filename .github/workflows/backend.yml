@@ -1,0 +1,55 @@
+name: backend
+
+on:
+  pull_request:
+    paths:
+      - "services/platform/**"
+      - "Makefile"
+      - ".github/workflows/backend.yml"
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static-and-unit:
+    name: Static checks and unit tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Caches only uv's downloaded package artifacts, keyed on the lockfile.
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: services/platform/uv.lock
+      - run: make backend-sync
+      - run: make backend-format-check
+      - run: make backend-lint
+      - run: make backend-typecheck
+      - run: make backend-security
+      - run: make backend-unit
+
+  # Service-backed integration jobs (PostgreSQL, Redis, MinIO, ClamAV) are added by the tasks
+  # that create the first integration tests (BE-030 onward); none is needed yet.
+
+  backend-required:
+    name: Backend required
+    if: always()
+    needs: [static-and-unit]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Fail unless every required job succeeded
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          for result in $RESULTS; do
+            [ "$result" = "success" ] || { echo "job result: $result"; exit 1; }
+          done
