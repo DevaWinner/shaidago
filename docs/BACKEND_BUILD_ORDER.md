@@ -972,6 +972,8 @@ For report-scoped discovery:
 
 Property-test canary PII/secret values and obfuscated variants. Any uncertain sensitive term is excluded, not sent.
 
+> **Execution status (2026-09-19): complete.** `discovery/planner.py` builds a query only from an allowlist (the public project's title, locality, authority, category, and plausible years) plus, for a report-scoped run, suggested incident concepts that are wholly neutral vocabulary words; everything else is excluded, not sent. Deterministic detectors (email, phone, URL, credentials and long tokens, tracking-code and handle patterns, coordinates, and obfuscated variants: `at`/`dot` spellings, full-width characters, zero-width characters, spaced or letter-swapped digits) screen every term, and `assert_query_safe` re-screens the whole query before it can be used. Each term keeps its source and whether an AI suggested it; a plan has a digest, and an approval matches exactly one query under one policy version, so any material change needs a new approval. 51 unit tests, including hypothesis property tests for obfuscated emails and phone runs and a 20-canary suite, pass. Persisting the approved query and showing it to the reviewer are done by the run APIs (BE-096).
+
 ### BE-092 — Search provider adapter and budgets
 
 Implement Brave Search behind an interface with maximum ten results, strict timeout, bounded retries for retryable failures, and fixture adapter.

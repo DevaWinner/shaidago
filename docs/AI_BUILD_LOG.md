@@ -991,3 +991,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the migration, worker modules, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-091 Privacy-safe query planner
+
+- **Task:** BE-091 — Privacy-safe query planner.
+- **Outcome delivered:** A pure, allowlist-first query planner with sensitive-term detectors, term provenance, an exact-approval digest, and a final outbound check.
+- **Files changed:** `services/platform/src/shaidago/discovery/{__init__,planner}.py`, `tests/unit/discovery/test_planner.py`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None (the run table already stores `query_text`, `query_policy_version`, and the approver).
+- **Security/privacy impact:** A term is used only if it is public project data or an in-vocabulary neutral concept and passes every detector; an uncertain term is dropped. A model suggestion cannot add a name, place, or identifier because the vocabulary is a closed list.
+- **Failure behaviour verified:** 20 obfuscated canaries and generated email and phone variants never pass; over-long, duplicate, empty, and implausible-year inputs are bounded; rejections carry a reason code, never the text.
+- **Commands run and results:** `make backend-verify` exit 0.
+- **Tests added or changed:** 51 unit tests.
+- **Generated artifacts checked:** None.
+- **Known limitations/open decisions:** The concept vocabulary (about 40 words) is a reviewable constant and deliberately small; a legitimate concept outside it is excluded. Detectors favour false positives, so an unusual public project title with many digits would be dropped from the query. Name detection for report scope is by allowlist rather than a named-entity model.
+- **Commit/PR:** `feat: add the privacy-safe discovery query planner`
+- **Next task may rely on:** `plan_public_query`, `plan_report_query`, `assert_query_safe`, and `approval_matches`.
+- **AI assistance used:** Designed and wrote the planner and property tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
