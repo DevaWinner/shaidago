@@ -1,0 +1,128 @@
+"""Metadata for the private report tables (BE-061); checks and triggers are in 0010."""
+
+from sqlalchemy import (
+    BigInteger,
+    Boolean,
+    Column,
+    DateTime,
+    ForeignKey,
+    Index,
+    Integer,
+    LargeBinary,
+    PrimaryKeyConstraint,
+    Table,
+    Text,
+    UniqueConstraint,
+    Uuid,
+)
+
+from shaidago.db.metadata import metadata
+
+REPORT_STATUSES = (
+    "received",
+    "needs_information",
+    "under_review",
+    "verified_for_public_update",
+    "referred",
+    "closed",
+)
+CONCERN_CATEGORIES = (
+    "no_visible_work",
+    "incomplete_work",
+    "unsafe_construction",
+    "suspected_incorrect_status",
+    "access_barrier",
+    "other_concern",
+)
+
+
+def _fk(target: str, action: str) -> ForeignKey:
+    return ForeignKey(target, ondelete=action)
+
+
+reports = Table(
+    "reports",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column("project_id", Uuid(), _fk("app.projects.id", "RESTRICT"), nullable=False),
+    Column("concern_category", Text(), nullable=False),
+    Column("description_ciphertext", LargeBinary(), nullable=False),
+    Column("description_key_id", Uuid(), _fk("app.data_keys.id", "RESTRICT"), nullable=False),
+    Column("schema_version", Integer(), nullable=False),
+    Column("risk_level", Text(), nullable=False),
+    Column("anonymous", Boolean(), nullable=False),
+    Column("status", Text(), nullable=False),
+    Column("status_updated_at", DateTime(timezone=True), nullable=False),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    Column("updated_at", DateTime(timezone=True), nullable=False),
+    PrimaryKeyConstraint("id"),
+    Index("ix_reports_project_id", "project_id"),
+    Index("ix_reports_status", "status", "created_at"),
+    schema="app",
+)
+
+report_contacts = Table(
+    "report_contacts",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column("report_id", Uuid(), _fk("app.reports.id", "CASCADE"), nullable=False),
+    Column("channel_ciphertext", LargeBinary()),
+    Column("value_ciphertext", LargeBinary()),
+    Column("data_key_id", Uuid(), _fk("app.data_keys.id", "RESTRICT"), nullable=False),
+    Column("schema_version", Integer(), nullable=False),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    Column("destroyed_at", DateTime(timezone=True)),
+    PrimaryKeyConstraint("id"),
+    UniqueConstraint("report_id"),
+    schema="app",
+)
+
+report_status_events = Table(
+    "report_status_events",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column("report_id", Uuid(), _fk("app.reports.id", "CASCADE"), nullable=False),
+    Column("previous_status", Text()),
+    Column("new_status", Text(), nullable=False),
+    Column("public_message", Text(), nullable=False),
+    Column("actor_type", Text(), nullable=False),
+    Column("actor_id", Uuid()),
+    Column("occurred_at", DateTime(timezone=True), nullable=False),
+    PrimaryKeyConstraint("id"),
+    Index("ix_report_status_events_report_id", "report_id", "occurred_at"),
+    schema="app",
+)
+
+report_tracking_keys = Table(
+    "report_tracking_keys",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column("report_id", Uuid(), _fk("app.reports.id", "CASCADE"), nullable=False),
+    Column("lookup_hmac", LargeBinary(), nullable=False),
+    Column("pepper_version", Text(), nullable=False),
+    Column("checksum_version", Integer(), nullable=False),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    PrimaryKeyConstraint("id"),
+    UniqueConstraint("lookup_hmac"),
+    UniqueConstraint("report_id"),
+    schema="app",
+)
+
+evidence_files = Table(
+    "evidence_files",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column("report_id", Uuid(), _fk("app.reports.id", "CASCADE"), nullable=False),
+    Column("object_key", Text(), nullable=False),
+    Column("display_name", Text(), nullable=False),
+    Column("sniffed_mime", Text(), nullable=False),
+    Column("size_bytes", BigInteger(), nullable=False),
+    Column("sha256", Text(), nullable=False),
+    Column("sanitation_state", Text(), nullable=False),
+    Column("scan_state", Text(), nullable=False),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    PrimaryKeyConstraint("id"),
+    UniqueConstraint("object_key"),
+    Index("ix_evidence_files_report_id", "report_id"),
+    schema="app",
+)

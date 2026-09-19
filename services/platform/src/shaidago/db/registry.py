@@ -9,6 +9,7 @@ from shaidago.db import (
     escalation_tables,
     idempotency_table,
     project_tables,
+    report_tables,
     reviewer_tables,
     source_tables,
 )
@@ -20,6 +21,7 @@ __all__ = [
     "idempotency_table",
     "metadata",
     "project_tables",
+    "report_tables",
     "reviewer_tables",
     "source_tables",
 ]

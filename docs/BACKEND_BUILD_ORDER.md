@@ -650,6 +650,8 @@ Create `reports`, `report_contacts`, `report_status_events`, `report_tracking_ke
 - Private mappings disable implicit `RETURNING`; application generates ID/time.
 - Public/tracking DB role cannot select the private rows.
 
+> **Execution status (2026-09-19): complete.** Five private tables, an insert-only public role with no read-back, separately encrypted description and contact, append-only status history with a commit-time projection check, and vocabulary-derived constraints are proven by 37 PostgreSQL cases (`make backend-verify` exit 0).
+
 ### BE-062 — Tracking code design and lookup primitive
 
 Implement `SG-XXXXX-XXXXX-XXXXX-XXXXX-C` using 100 random bits of Crockford Base32 and a versioned typo checksum.

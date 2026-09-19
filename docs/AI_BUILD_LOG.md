@@ -624,3 +624,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the pipeline and tests.
 - **Prompt summary:** The maintainer asked to complete the pending circles using the register.
 - **Human review:** None yet; pending maintainer review.
+
+## 2026-09-19 — BE-061 Private report persistence
+
+- **Task:** BE-061 — Private report persistence.
+- **Outcome delivered:** Revision `0010_private_reports` with `reports`, `report_contacts`, `report_status_events`, `report_tracking_keys`, and `evidence_files`, and `shaidago/reports/persistence.py` (`ReportWriter`, `read_description`).
+- **Files changed:** `services/platform/migrations/versions/0010_private_reports.py`, `src/shaidago/db/{report_tables,registry}.py`, `src/shaidago/reports/persistence.py`, `tests/integration/test_private_reports.py`.
+- **Schema/contract changes:** Five private tables with forced row security; the public role has INSERT only; reviewers read reports, events, and evidence metadata and may update only the status projection columns and insert events; nobody but the owner can read contacts yet. OpenAPI unchanged.
+- **Security/privacy impact:** The description and the contact channel and value are AES-GCM ciphertext under separate data keys, and the contact is a separate table that can be crypto-shredded without touching the report (proven). The writer issues only plain `INSERT`s with application IDs and times and never reads back. No column holds plaintext, an IP, a device, a handle, or a raw tracking code. Status history is append-only, only legal transitions from the controlled vocabulary can be recorded, and a report's status must equal its newest event at commit, so a status cannot change without a history entry.
+- **Failure behaviour verified (PostgreSQL 18, 37 test cases):** the public role is denied `SELECT`, `UPDATE`, and `DELETE` on all five tables; the captured SQL has no `SELECT` and no `RETURNING`; report, event, contact, tracking key, and both data keys are stored together, and a duplicate tracking key rolls all of them back; canary description, contact, channel, and code strings appear in no stored value; the description decrypts for the reviewer role and after the contact key is destroyed; reviewers cannot read contacts, rename a category, replace the ciphertext, move a report, or delete it; an event without a status update, and a status update without an event, both fail at commit; events cannot be updated or deleted even by the owner; seven transitions (four illegal) behave as the state machine says; the database checks equal the controlled vocabulary (values and all 15 transition pairs); evidence rows accept only sanitised files with a clean or demo scan state, a random object key, an allowed MIME type, and a bounded size; empty, oversized, and malformed content is refused before any write without echoing it.
+- **Commands run and results:** `make backend-verify` exit 0; `make openapi-check` exit 0.
+- **Tests added or changed:** 37 integration cases.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** No endpoint uses the writer yet (BE-063). The tracking-key lookup function and the reporter handle column arrive with BE-065 and BE-066. Reviewer access to contacts is deferred to an audited function (BE-070). Evidence rows cannot represent a file that failed sanitation or scanning, because ADR-0006 persists only sanitised, scanned artifacts. The description key is created before the report because of the foreign key, so a crash between the two statements is prevented only by the single transaction. Reports are not yet linked to the reporter handle.
+- **Commit/PR:** `feat: add private report persistence`
+- **Next task may rely on:** `ReportWriter.insert` as the one atomic write path for a report and its keys.
+- **AI assistance used:** Designed the schema, triggers, writer, and adversarial tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
