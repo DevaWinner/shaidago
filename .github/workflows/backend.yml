@@ -54,6 +54,13 @@ jobs:
         options: >-
           --health-cmd "pg_isready -h 127.0.0.1 -U shaidago -d shaidago"
           --health-interval 5s --health-timeout 5s --health-retries 12
+      redis:
+        image: redis:8-alpine@sha256:bd999b5cfee25fb24b8320a31fddbd69f462df44c8138c66e369582937beebc0
+        ports:
+          - 56379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 3s --health-retries 10
     env:
       POSTGRES_USER: shaidago
       POSTGRES_PASSWORD: ci-only-throwaway-password
@@ -69,7 +76,7 @@ jobs:
       - run: make backend-sync
       - run: make backend-integration
 
-  # Redis, MinIO, and ClamAV service jobs are added by the tasks whose tests need them.
+  # MinIO and ClamAV service jobs are added by the tasks whose tests need them.
 
   backend-required:
     name: Backend required
