@@ -67,6 +67,11 @@ Every route needs a reviewer session (`X-Shaidago-Session`) and a role holding t
 - `GET /v1/reviewer/reports/{report_id}` returns the report with its decrypted description, status history, follow-up questions and answers, evidence metadata (`evidence_id`, name, type, size, sanitation and scan state; never an object key or URL), and the reviewer-only handle track record. `include_contact=true` additionally returns the contact; it needs the `contact_read` capability and is audited by the database before the value is returned. An unknown report is `404 not_found`. Each view writes a `report_detail_viewed` audit event holding identifiers only.
 - `version` is the token later commands send back to prove they acted on the current state.
 
+## Reviewer decisions
+
+- `POST /v1/reviewer/reports/{report_id}/status-transitions` takes `command`, `expected_status`, `expected_version` (from the detail response), and optionally `internal_reason` (private, encrypted, never shown to the reporter; required for `reopen`) and `reporter_message` (shown on tracking; a fixed default is used when omitted). The commands and the states they leave are the `report_status` machine in `contracts/controlled-vocabulary.json`. A view that is no longer current is `409 report_version_conflict`; a command that does not exist from the current status for the caller (including the reporter-only `record_follow_up`) is `409 report_status_transition_not_allowed` and is audited. Every response says `published: false`: a decision never publishes text.
+- `POST /v1/reviewer/reports/{report_id}/follow-up-questions` (`201`, `question_id`) adds a question the reporter sees on tracking (5 to 500 characters, at most 10 open, not on a closed report). `POST .../follow-up-questions/{question_id}:withdraw` withdraws one (`204`). Neither changes the report's status.
+
 ## Errors
 
 Every error is `application/problem+json`, `Cache-Control: no-store`, with `type`, `title`, `status`, `code`, `detail`, `request_id`, and, for validation failures, `errors` (`field` and rule `code`, never the submitted value). The `code` is the stable contract; the BFF localises display text from it.

@@ -808,6 +808,8 @@ Implement reviewer list/detail services and endpoints with cursor pagination, al
 
 Generate a transition matrix test covering every allowed and denied state/role pair.
 
+> **Execution status (2026-09-19): complete.** The pure state machine `review/state_machine.py` (a literal copy of the contract, parity-tested), the decision service `review/decisions.py`, and `POST /v1/reviewer/reports/{id}/status-transitions` apply one command with the caller's expected status and version, one append-only event, and the projection in one transaction; a stale view is `409 report_version_conflict`. Migration `0015_status_event_reason` adds an encrypted private reason to the event, kept apart from the reporter-facing message, and reopening requires one. Reviewer follow-up question authoring and withdrawal (the endpoint BE-067 left for this task) are included. Evidence: a 6 x 8 status-and-command matrix over HTTP for both roles and a 6 x 8 x 5 unit matrix of status, command, and actor (all against the contract); concurrency (four simultaneous decisions on one version apply once); refused commands audited; history immutable even for the reviewer role; 1056 tests passing under `make backend-verify`.
+
 ### BE-072 — Encrypted reviewer notes
 
 Implement create/read notes with independent encryption, author/time metadata, append-only semantics, role checks, pagination if needed, and no public/tracking serialization path. Do not support arbitrary HTML. Audit note creation without logging content.

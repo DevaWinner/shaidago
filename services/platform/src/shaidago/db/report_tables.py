@@ -99,6 +99,10 @@ report_status_events = Table(
     Column("actor_type", Text(), nullable=False),
     Column("actor_id", Uuid()),
     Column("occurred_at", DateTime(timezone=True), nullable=False),
+    # Private encrypted reason for a reviewer decision (0015); tracking never reads these.
+    Column("reason_ciphertext", LargeBinary()),
+    Column("reason_key_id", Uuid(), _fk("app.data_keys.id", "RESTRICT")),
+    Column("reason_schema_version", Integer()),
     PrimaryKeyConstraint("id"),
     Index("ix_report_status_events_report_id", "report_id", "occurred_at"),
     schema="app",

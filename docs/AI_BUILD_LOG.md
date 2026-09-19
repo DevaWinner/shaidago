@@ -788,3 +788,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the migration, services, endpoints, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-071 Report state machine and append-only events
+
+- **Task:** BE-071 — Report state machine and append-only events.
+- **Outcome delivered:** A pure state machine, an audited decision service and endpoint with optimistic concurrency, an encrypted private reason kept apart from the reporter-facing message, and reviewer follow-up question authoring and withdrawal.
+- **Files changed:** `services/platform/migrations/versions/0015_status_event_reason.py`, `src/shaidago/review/{state_machine,decisions,follow_up_questions,detail}.py`, `src/shaidago/api/v1/{reviewer_decisions,reviewer_reports,__init__}.py`, `src/shaidago/shared/problems.py`, `src/shaidago/db/report_tables.py`, tests (`tests/unit/review/test_state_machine.py`, `tests/integration/test_report_decisions.py`), `contracts/openapi.json`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** Three nullable reason columns with a check (all or none, reviewer or admin actor) on `report_status_events`. OpenAPI gains three reviewer paths and two problem codes.
+- **Security/privacy impact:** The private reason is ciphertext under its own data key and is read only by the reviewer detail; the tracking function selects only `public_message`. Audit details hold identifiers, command names, and versions, never text. A refused command is audited in its own transaction because the refused transaction rolls back. The state machine denies by default (unknown status, command, or actor).
+- **Failure behaviour verified:** stale status or version (nothing written); every disallowed pair (409, unchanged state); reporter-only command refused for a reviewer; bad text, unknown command or status, extra fields (422 before any write); no session (401), no CSRF (403), unknown report (404); four concurrent decisions apply exactly once; history cannot be updated or deleted by the reviewer role; a reporter answer that resumes review still raises the version.
+- **Commands run and results:** `make backend-verify` exit 0 (1056 passed); Circle 0 validators passed. A first run found the new POST route lacked a documented `400`, fixed at the cause.
+- **Tests added or changed:** 244 unit cases (full status x command x actor matrix, contract parity) and 13 integration tests.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated; `make openapi-check` is part of `backend-verify`.
+- **Known limitations/open decisions:** The event time is the later of the API clock and the newest event plus one microsecond, so a reviewer event is never reordered behind history; a reporter answer arriving with a clock earlier than that still fails closed at the database (BE-067's documented limit). `reporter_message` is free text a reviewer is responsible for keeping free of private detail; only length and character rules bound it. No rate limit yet (BE-100).
+- **Commit/PR:** `feat: add the report state machine and audited reviewer decisions`
+- **Next task may rely on:** `review.decisions.decide`, the encrypted event reason, and `report_version_conflict` semantics.
+- **AI assistance used:** Designed and wrote the migration, state machine, service, endpoints, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

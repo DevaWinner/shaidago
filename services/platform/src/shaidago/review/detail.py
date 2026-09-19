@@ -29,7 +29,8 @@ _REPORT = text(
     "FROM app.reports r JOIN app.projects p ON p.id = r.project_id WHERE r.id = :id"
 )
 _EVENTS = text(
-    "SELECT id, previous_status, new_status, public_message, actor_type, occurred_at "
+    "SELECT id, previous_status, new_status, public_message, actor_type, occurred_at, "
+    "reason_ciphertext, reason_key_id, reason_schema_version "
     "FROM app.report_status_events WHERE report_id = :id "
     "ORDER BY occurred_at, id LIMIT :limit"
 )
@@ -53,11 +54,13 @@ _CONTACT = text(
 
 @dataclass(frozen=True)
 class StatusEventView:
+    event_id: UUID
     previous_status: str | None
     new_status: str
     public_message: str
     actor_type: str
     occurred_at: datetime
+    internal_reason: str | None
 
 
 @dataclass(frozen=True)
@@ -147,7 +150,11 @@ async def load_detail(
             track = TrackRecordView(
                 row.handle, row.reports_total, row.verified_for_public_update, row.closed
             )
-    key_ids = [report.description_key_id] + [q.data_key_id for q in questions if q.data_key_id]
+    key_ids = (
+        [report.description_key_id]
+        + [q.data_key_id for q in questions if q.data_key_id]
+        + [e.reason_key_id for e in events if e.reason_key_id]
+    )
     keys = await crypto.keys.load_many(key_ids)
     description = _decrypt(
         crypto,
@@ -177,11 +184,7 @@ async def load_detail(
         version=report.version,
         has_contact=not report.anonymous,
         description=description or "",
-        events=[
-            StatusEventView(e.previous_status, e.new_status, e.public_message, e.actor_type,
-                            e.occurred_at)
-            for e in events
-        ],
+        events=[_event(crypto, keys, e) for e in events],
         follow_ups=follow_ups,
         evidence=[
             EvidenceView(e.id, e.display_name, e.sniffed_mime, e.size_bytes, e.sanitation_state,
@@ -191,6 +194,20 @@ async def load_detail(
         track_record=track,
         contact=contact,
     )  # fmt: skip
+
+
+def _event(crypto: ReviewContext, keys: dict[UUID, DataKey], e: Row[Any]) -> StatusEventView:
+    reason = None
+    if e.reason_ciphertext is not None:
+        reason = _decrypt(
+            crypto,
+            keys.get(e.reason_key_id),
+            bytes(e.reason_ciphertext),
+            field_context("report_status_events", e.id, "reason", e.reason_schema_version),
+        )
+    return StatusEventView(
+        e.id, e.previous_status, e.new_status, e.public_message, e.actor_type, e.occurred_at, reason
+    )
 
 
 def _decrypt(

@@ -95,11 +95,13 @@ class QueuePageOut(BaseModel):
 
 
 class StatusEventOut(BaseModel):
+    event_id: UUID
     previous_status: str | None
     new_status: str
     public_message: str
     actor_type: str
     occurred_at: datetime
+    internal_reason: str | None
 
 
 class FollowUpOut(BaseModel):

@@ -9,6 +9,7 @@ from shaidago.api.v1 import (
     report_status,
     reporter_handles,
     reports,
+    reviewer_decisions,
     reviewer_reports,
 )
 
@@ -21,3 +22,4 @@ router.include_router(report_status.router)
 router.include_router(follow_ups.router)
 router.include_router(reporter_handles.router)
 router.include_router(reviewer_reports.router)
+router.include_router(reviewer_decisions.router)
