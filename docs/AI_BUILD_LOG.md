@@ -1655,3 +1655,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Presented a product-grounded visual-direction hand and translated the maintainer's selection into concrete trust and boundary constraints.
 - **Prompt summary:** Using Impeccable, present choices for ShaidaGo's frontend feel, look, and tokens; maintainer selected Field ledger.
 - **Human review:** The maintainer explicitly selected Field ledger on 20 September 2026.
+
+## 2026-09-20 — FE-011 compare visual directions
+
+- **Task:** FE-011 — Generate and compare visual directions.
+- **User outcome delivered:** Field ledger was selected from a product-grounded hand, with its evidence and privacy behaviour defined before components can dilute it.
+- **Routes/components changed:** No runtime route or component changed. [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) now records the comparison and cross-surface visual grammar.
+- **Backend operations/contract version:** No backend operation or contract changed.
+- **Public/private data handled:** No runtime data changed. The selected grammar makes public evidence, private reporting, and reviewer-only material visibly separate without inventing a new authorisation rule.
+- **States implemented:** No UI state changed. The contract requires text and icon labels alongside state colour, dated in-place history, and explicit limited-evidence/review states.
+- **Accessibility evidence:** Citation stitch is specified as keyboard-operable, programmatically announced, no-JavaScript reachable links; narrow/low-data behaviour is explicit. These requirements await implementation tests.
+- **Locales reviewed:** No message copy or translation changed. The typography direction requires all four locale scripts/diacritics to be tested before use.
+- **Performance/cache impact:** No runtime bundle, asset, or cache changed. The selected path forbids decorative media or motion from being required for evidence reading.
+- **Commands run and results:** The Impeccable direction seed and local decision board completed before the human selection. Documentation validation remains limited to the project validators because no visual implementation exists.
+- **Screenshots/traces/artifacts checked:** No product screenshot or comp exists; code-led execution is recorded in FE-012.
+- **Known limitations/open decisions:** Exact token values, first-viewport contract, and initial route surface brief are FE-012/FE-013 work. `DESIGN.md` remains intentionally deferred.
+- **Commit/PR:** `docs: define the field ledger visual system`
+- **Next task may rely on:** FE-012 can select and persist the workflow path without re-opening the visual-world decision.
+- **AI assistance used:** Framed and evaluated candidate worlds against audience identification and product clarity, then documented the maintainer's selected system without using unverified cultural or public-record claims.
+- **Prompt summary:** Using Impeccable, present choices for ShaidaGo's frontend feel, look, and tokens; maintainer selected Field ledger.
+- **Human review:** The maintainer selected Field ledger after the comparison on 20 September 2026.

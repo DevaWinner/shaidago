@@ -273,6 +273,8 @@ Do not ask for CSS values, trendy style names, or a colour preference detached f
 
 ### FE-011 — Generate and compare visual directions
 
+> **Execution status (2026-09-20): complete.** The Impeccable direction round compared the Field ledger, District index, Evidence panes, Accountability board, declined challengers, and category-standard exit. The maintainer selected Field ledger; [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) records the comparison, system grammar, signature interaction, and honest risk.
+
 Use the repository's available visual-direction workflow when present; with the Impeccable tooling, run the new-world concept process in the appropriate visitor modes (`Persuade` for landing, `Operate` for application/reviewer surfaces, `Read` for trust/source surfaces).
 
 Each candidate must specify:
