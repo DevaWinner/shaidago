@@ -23,6 +23,7 @@ PATTERN_CANARIES = {
     "phone": "+234 803 555 0142",
     "tracking": TRACKING_CODE,
     "signed_url": SIGNED_URL,
+    "dsn": "postgresql://user:dsn-canary-pass@db.internal:5432/app",
     "ipv4": "203.0.113.77",
     "ipv6": "2001:db8::77:1",
 }
@@ -65,13 +66,13 @@ def test_sensitive_keys_are_redacted_regardless_of_value(
 ) -> None:
     structlog.get_logger("t").info(
         "event",
-        password="x",  # noqa: S106 - synthetic value, asserts redaction by key
+        password="x",
         Authorization="y",
         tracking_code="z",
         report_text="w",
         client_ip="v",
         reporter_handle="u",
-        api_token="t",  # noqa: S106 - synthetic value, asserts redaction by suffix
+        api_token="t",
         nested={"cookie": "s", "safe": "visible"},
     )
     [record] = lines(stream)

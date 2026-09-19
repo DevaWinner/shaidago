@@ -351,6 +351,8 @@ Implement one RFC 9457-style `application/problem+json` shape containing `type`,
 - Keep internal exceptions chained in server logs after redaction; never return stack traces, SQL, object keys, provider text, or record existence.
 - Test response media type, schema, stable code, localisation handoff field if used, and redaction.
 
+> **Execution status (2026-09-19): complete.** One problem+json shape and one exception boundary are implemented; `tests/unit/api/test_errors.py` proves canary values never reach responses or redacted logs and that framework, validation, domain, and unexpected errors share the shape.
+
 ### BE-025 — Health and readiness
 
 - Liveness checks process responsiveness only.

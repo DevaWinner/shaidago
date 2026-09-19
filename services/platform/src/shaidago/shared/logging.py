@@ -44,6 +44,8 @@ _SIGNED_URL = re.compile(
     r"https?://[^\s\"']*[?&](?:x-amz-signature|x-amz-credential|signature|sig|token|expires)=[^\s\"']*",
     re.IGNORECASE,
 )
+# user:password@ inside any URL (database and broker DSNs commonly surface in exception text).
+_URL_CREDENTIALS = re.compile(r"(?<=://)[^/\s:@]+:[^@\s/]+@")
 _EMAIL = re.compile(r"\b[\w.+-]+@[\w-]+(?:\.[\w-]+)+\b")
 # International (+...) or national (leading 0) numbers only, so dates and counters are not caught.
 _PHONE = re.compile(r"(?<![\w.])(?:\+\d{1,3}|0)[\d\s()-]{8,}\d(?![\w.])")
@@ -51,7 +53,15 @@ _IP_CANDIDATE = re.compile(
     r"(?<![\w:.])(?:[0-9A-Fa-f]{0,4}:){2,7}[0-9A-Fa-f]{0,4}(?![\w:])|\b(?:\d{1,3}\.){3}\d{1,3}\b"
 )
 # Order matters: URLs and cookies contain fragments the later patterns would otherwise split.
-_TEXT_PATTERNS: Final = (_SIGNED_URL, _BEARER, _SESSION_COOKIE, _TRACKING_CODE, _EMAIL, _PHONE)
+_TEXT_PATTERNS: Final = (
+    _SIGNED_URL,
+    _URL_CREDENTIALS,
+    _BEARER,
+    _SESSION_COOKIE,
+    _TRACKING_CODE,
+    _EMAIL,
+    _PHONE,
+)
 
 
 def _is_sensitive_key(key: str) -> bool:

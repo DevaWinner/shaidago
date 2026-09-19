@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from shaidago.shared.context import REQUEST_ID_HEADER
-from shaidago.shared.problems import Problem, problem_response
+from shaidago.shared.problems import UNAUTHENTICATED, problem_response
 
 if TYPE_CHECKING:
     from starlette.types import ASGIApp, Receive, Scope, Send
@@ -20,12 +20,6 @@ if TYPE_CHECKING:
     from shaidago.shared.config import AuthSettings
 
 _logger = logging.getLogger("shaidago.security")
-UNAUTHENTICATED = Problem(
-    status=401,
-    code="unauthenticated",
-    title="Authentication required",
-    detail="The request could not be authenticated.",
-)
 _BEARER = "bearer "
 EXEMPT_PATHS: frozenset[str] = frozenset({"/health/live"})
 # Compared against when the claimed caller is unknown, so timing does not reveal valid caller IDs.

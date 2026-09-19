@@ -67,9 +67,10 @@ class RequestContextMiddleware:
             nonlocal status_code
             if message["type"] == "http.response.start":
                 status_code = message["status"]
-                message.setdefault("headers", []).append(
-                    (REQUEST_ID_HEADER.lower().encode(), request_id.encode())
-                )
+                response_headers = message.setdefault("headers", [])
+                # Error handlers already set it; never send the header twice.
+                if not any(name.lower() == b"x-request-id" for name, _ in response_headers):
+                    response_headers.append((b"x-request-id", request_id.encode()))
             await send(message)
 
         structlog.contextvars.bind_contextvars(request_id=request_id)
