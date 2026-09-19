@@ -1027,3 +1027,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the adapters, decision function, and tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-093 SSRF-safe public fetcher
+
+- **Task:** BE-093 — SSRF-safe public fetcher.
+- **Outcome delivered:** A destination guard and a bounded, pinned, robots-respecting fetcher.
+- **Files changed:** `services/platform/src/shaidago/discovery/{netguard,fetcher}.py`, `tests/unit/discovery/{test_netguard,test_fetcher}.py`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** No request can be made to a non-public destination through any hop; no credential, cookie, or caller header is sent; bodies are bounded compressed and decompressed; errors carry stable codes and never the URL.
+- **Failure behaviour verified:** every required fixture (IPv4 and IPv6 local forms, decimal, octal, and hex host confusion, mixed DNS answers, rebinding, redirect to a private IP, metadata IPs, oversized and chunked bodies, compression bombs, slow bodies, unsupported port and scheme, credentials in the URL) plus robots and access-control behaviour.
+- **Commands run and results:** `make backend-verify` exit 0 (1747 passed). Branch coverage measured for the guard (100%) and fetcher (98%).
+- **Tests added or changed:** 204 unit tests.
+- **Generated artifacts checked:** None.
+- **Known limitations/open decisions:** Verified against a simulated network only (an `httpx.MockTransport` and a fake resolver); the `sni_hostname` extension and the pinned-IP request path are unproven against a real TLS server in this run. `Content-Encoding` is limited to gzip and deflate (a Brotli-only origin is skipped). Robots parsing uses the standard library parser. Per-host limits are per fetcher instance, not shared across worker processes. Publisher terms are honoured only through robots and access signals; there is no per-publisher terms review.
+- **Commit/PR:** `feat: add the SSRF-safe public page fetcher`
+- **Next task may rely on:** `SafeFetcher.fetch(url) -> FetchedPage` and the `FetchError` and `UnsafeDestinationError` codes.
+- **AI assistance used:** Designed and wrote the guard, fetcher, and adversarial tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
