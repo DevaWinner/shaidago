@@ -7,6 +7,7 @@ from fastapi import Request
 
 from shaidago.shared.config import Settings
 from shaidago.shared.context import new_request_id
+from shaidago.shared.health import HealthCheck
 from shaidago.shared.lifecycle import ManagedResource
 
 
@@ -20,6 +21,7 @@ class Dependencies:
 
     resources: tuple[ManagedResource, ...] = field(default_factory=tuple)
     new_request_id: Callable[[], str] = new_request_id
+    health_checks: tuple[HealthCheck, ...] = field(default_factory=tuple)
 
 
 def get_settings(request: Request) -> Settings:

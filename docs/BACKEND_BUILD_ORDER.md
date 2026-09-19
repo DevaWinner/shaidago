@@ -361,6 +361,8 @@ Implement one RFC 9457-style `application/problem+json` shape containing `type`,
 - Bound every dependency check by a short timeout and run independent checks concurrently where safe.
 - Test healthy, degraded optional provider, required dependency failure, timeout, and no-detail public output.
 
+> **Execution status (2026-09-19): partial.** Liveness, readiness semantics (ready, degraded, unavailable), bounded concurrent checks, and no-detail output are implemented and proven with fake probes (117 passing tests). Real database, migration-revision, Redis, and object-storage probes are not registered yet; BE-031, BE-033, and the Redis and storage tasks must add them.
+
 ### Circle 2 exit gate
 
 - App starts and stops without leaked resources.

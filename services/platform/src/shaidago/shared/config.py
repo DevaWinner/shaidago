@@ -17,6 +17,7 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    PositiveFloat,
     PositiveInt,
     SecretStr,
     ValidationError,
@@ -266,6 +267,9 @@ class RateLimitSettings(_Section):
 
 class ObservabilitySettings(_Section):
     log_level: LogLevel = Field(default="INFO", validation_alias="LOG_LEVEL")
+    readiness_timeout_seconds: PositiveFloat = Field(
+        default=2.0, le=10.0, validation_alias="READINESS_CHECK_TIMEOUT_SECONDS"
+    )
 
 
 class Settings(_Section):
