@@ -10,6 +10,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
+from shaidago.shared.context import REQUEST_ID_PATTERN
+
 ENVELOPE_VERSION: Final = 1
 ACTOR_NAME: Final = "run_discovery"
 QUEUE_NAME: Final = "discovery"
@@ -22,6 +24,9 @@ class JobEnvelope(BaseModel):
     envelope_version: Annotated[int, Field(ge=1, le=ENVELOPE_VERSION)] = ENVELOPE_VERSION
     run_id: UUID
     config_version: Annotated[str, Field(pattern=r"^[a-z0-9][a-z0-9._-]{0,39}$")]
+    # The originating request ID, so one ID spans BFF, API, worker, and audit rows. It is
+    # operational metadata with bounded shape (A-20), never a credential or private value.
+    request_id: Annotated[str, Field(pattern=REQUEST_ID_PATTERN)] | None = None
 
 
 class InvalidEnvelopeError(ValueError):
@@ -42,8 +47,11 @@ def parse_envelope(raw: object) -> JobEnvelope:
 
 
 def to_message(envelope: JobEnvelope) -> dict[str, object]:
-    return {
+    message: dict[str, object] = {
         "envelope_version": envelope.envelope_version,
         "run_id": str(envelope.run_id),
         "config_version": envelope.config_version,
     }
+    if envelope.request_id is not None:
+        message["request_id"] = envelope.request_id
+    return message

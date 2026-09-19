@@ -1,11 +1,19 @@
-"""Staging smoke journey (BE-114). Runs INSIDE the private API container, over loopback.
+"""Staging smoke journey (BE-114). Two ways in, because the API has no public route of its own.
+
+1. Inside the private API container, over loopback (no base URL needed):
 
     railway ssh --service api -- python -c "import base64,sys;exec(base64.b64decode(sys.argv[1]))" <base64 of this file>
 
-The API is private, so this is the only way in; it uses the container's own internal credential and
-needs SMOKE_REVIEWER and SMOKE_PASSWORD in the environment (a staging reviewer created by the
-operator). Everything it creates is fictional. It prints one PASS or FAIL line per step, never a
-tracking code, credential, session token, or report text.
+2. From an operator machine, against a temporary public domain on the api service, removed again
+   as soon as the run finishes:
+
+    SMOKE_BASE_URL=https://<temporary-domain> INTERNAL_WEB_CREDENTIAL_CURRENT=... \
+      SMOKE_REVIEWER=... SMOKE_PASSWORD=... python3 scripts/staging_smoke.py
+
+Either way it uses the internal credential (ADR-0002) and needs SMOKE_REVIEWER and SMOKE_PASSWORD
+in the environment (a staging reviewer created by the operator). Everything it creates is
+fictional. It prints one PASS or FAIL line per step, never a tracking code, credential, session
+token, or report text.
 """
 
 import json
@@ -17,7 +25,9 @@ import urllib.error
 import urllib.request
 import uuid
 
-BASE = f"http://127.0.0.1:{os.environ.get('PORT', '8000')}"
+BASE = os.environ.get("SMOKE_BASE_URL", "").rstrip("/") or (
+    f"http://127.0.0.1:{os.environ.get('PORT', '8000')}"
+)
 CREDENTIAL = os.environ["INTERNAL_WEB_CREDENTIAL_CURRENT"]
 SLUG = os.environ.get("SMOKE_SLUG", "fixture-scenario-success")
 RESULTS: list[tuple[bool, str]] = []

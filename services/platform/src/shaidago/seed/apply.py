@@ -23,6 +23,10 @@ from shaidago.shared.ids import IdGenerator
 
 SAFE_ENVIRONMENTS = frozenset({"development", "test"})
 LOCAL_HOSTS = frozenset({"localhost", "127.0.0.1", "::1", "postgres"})
+# Staging is the one deployed target that may hold demo data, and only when the operator asks for
+# it by name. Production has no seed mode at all, with or without the flag.
+DEPLOYED_SEED_ENVIRONMENT = "staging"
+DEPLOYED_SEED_FLAG = "SEED_ALLOW_DEPLOYED"
 
 
 class SeedRefusedError(Exception):
@@ -30,12 +34,24 @@ class SeedRefusedError(Exception):
 
 
 def assert_safe_target(environ: Mapping[str, str], url: URL) -> None:
-    """Demo seeding is for local development and test databases only."""
+    """Demo seeding is for local development and test databases, or staging when asked by name.
+
+    The staging path requires both ``APP_ENV=staging`` and ``SEED_ALLOW_DEPLOYED=1``, so no
+    ordinary command, deploy hook, or typo can seed a deployed database. Production is refused
+    whatever the flag says: there is no production seed mode.
+    """
     app_env = environ.get("APP_ENV")
+    if app_env == DEPLOYED_SEED_ENVIRONMENT:
+        if environ.get(DEPLOYED_SEED_FLAG) != "1":
+            raise SeedRefusedError(
+                f"seeding {DEPLOYED_SEED_ENVIRONMENT} requires {DEPLOYED_SEED_FLAG}=1; "
+                "it is never implied by the environment alone"
+            )
+        return  # the staging host is a private Railway address, so the local-host rule cannot apply
     if app_env not in SAFE_ENVIRONMENTS:
         raise SeedRefusedError(
-            "the demo seed runs only when APP_ENV is development or test; "
-            "there is no production seed mode"
+            "the demo seed runs only when APP_ENV is development, test, or an explicitly "
+            "flagged staging target; there is no production seed mode"
         )
     host = url.host or ""
     if host not in LOCAL_HOSTS and urlsplit(f"//{host}").hostname not in LOCAL_HOSTS:

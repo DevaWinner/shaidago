@@ -1,8 +1,9 @@
 """Dramatiq wiring on the stub broker: delivery, invalid messages, bounded retries, dead letters."""
 
 import threading
-from uuid import UUID, uuid4
+from uuid import UUID, uuid4, uuid7
 
+import structlog
 from dramatiq import Worker
 from dramatiq.brokers.stub import StubBroker
 
@@ -58,6 +59,27 @@ def run_worker(
 
 def envelope() -> JobEnvelope:
     return JobEnvelope(run_id=uuid4(), config_version="discovery-v1")
+
+
+def test_the_worker_binds_the_originating_request_id_for_its_logs() -> None:
+    request_id = str(uuid7())
+    recorder = Recorder()
+    captured: list[object] = []
+
+    class Capture(Recorder):
+        async def handle(self, run_id: UUID, owner: str) -> Outcome:
+            captured.append(structlog.contextvars.get_contextvars().get("request_id"))
+            return await super().handle(run_id, owner)
+
+    capture = Capture()
+    run_worker(
+        capture, [JobEnvelope(run_id=uuid4(), config_version="discovery-v1", request_id=request_id)]
+    )
+    assert captured == [request_id]
+    # The binding does not leak into the next job or the process context.
+    assert structlog.contextvars.get_contextvars().get("request_id") is None
+    run_worker(recorder, [envelope()])
+    assert recorder.handled
 
 
 def test_a_valid_message_is_delivered_once_with_only_its_identifiers() -> None:
