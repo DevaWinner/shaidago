@@ -866,6 +866,8 @@ Tests must try contact values, tracking code, handle, reviewer name, raw allegat
 4. Delete/deactivate chunks when source approval/availability changes without rewriting historical versions.
 5. Never ingest reports, contacts, reviewer notes, private discovery, or unapproved sources.
 
+> **Execution status (2026-09-19): complete.** Migration `0018_approved_source_chunks`, `retrieval/chunking.py`, and `retrieval/corpus.py` add deterministic paragraph/sentence/whitespace chunking and a worker-owned corpus that can read only the narrow `app.approved_source_documents` view. Each chunk preserves its project, source/version, exact character span, content hash, token count, source language, section label, and chunker version. A security-definer trigger rejects text, hashes, languages, source links, or active states that do not match an immutable approved source; the public retrieval view repeats current project visibility, source availability, and version approval checks so interrupted refreshes fail closed. Reprocessing is stable and keeps row IDs; unavailable, unapproved, or no-longer-public material is deactivated without changing the source version. Five unit and four PostgreSQL role/integration tests prove deterministic boundaries, approval and availability exclusion/reactivation, citation metadata, role grants, immutable language, and rejection of a private-text canary. `make backend-verify` passes with 1152 tests.
+
 ### BE-081 — Hybrid retrieval
 
 - Add PostgreSQL full-text vector and pgvector embedding columns/indexes.
@@ -874,6 +876,8 @@ Tests must try contact values, tracking code, handle, reviewer name, raw allegat
 - Combine full-text and cosine ranks using reciprocal-rank fusion, restricted to selected project/approved chunks.
 - Fall back to keyword mode when embeddings are unavailable and return `retrieval_mode` honestly.
 - Test cross-project isolation, unavailable source exclusion, deterministic rank ties, empty corpus, and adversarial query length/Unicode.
+
+> **Execution status (2026-09-19): complete.** Migration `0019_hybrid_retrieval` adds generated full-text search, nullable 1,536-dimension embeddings, completeness checks, and GIN/HNSW indexes to the approved-source corpus. `retrieval/search.py` performs project-scoped reciprocal-rank fusion with stable tie ordering and reports keyword mode unless a same-model semantic rank actually participates; the live eligibility-rechecking view still excludes unavailable or unapproved sources. Seed processing only loads strict checked-in JSONL records keyed by exact chunk hash and otherwise announces keyword fallback, while `make embeddings` is the sole explicit credentialed provider workflow. Unit and PostgreSQL integration tests cover bounded Unicode queries and vectors, fixture validation, provider request shape without a live call, cross-project isolation, empty results, immediate availability loss, deterministic ties, model mismatch, and hybrid activation. `make backend-verify` passes with 1167 tests.
 
 ### BE-082 — OpenAI provider and strict schema
 
@@ -889,6 +893,8 @@ Required output schema:
 
 Implement deterministic fixture adapter for every CI path. Do not retry validation/policy failures blindly or log prompt/source text.
 
+> **Execution status (2026-09-19): complete.** `retrieval/language.py` defines a strict, bounded `LanguageModel` contract, opaque citation passages, the required answer/statement/coverage/timestamp schema, safe retry classifications, stable request fingerprints, and a checked-in synthetic replay adapter. `retrieval/openai.py` sends only the bounded locale, question, approved passages, opaque IDs, and application timestamp to the configured Responses model using strict `text.format` JSON Schema, `store: false`, no tools, a 20-second default timeout, a 64 KiB response cap, and no internal retry loop; it accepts one completed text message, permits inert reasoning items, and rejects refusals, tool/action output, malformed content, or a changed timestamp without logging bodies. Twenty-four transport/schema/replay tests cover request allowlisting, fixture hygiene, strict object closure, timeout and HTTP classification, no blind retry, response limits, tool/refusal rejection, safe errors, and timestamp ownership. `make backend-verify` passes with 1191 tests.
+
 ### BE-083 — Deterministic citation and safety validator
 
 Reject or fall back when output contains:
@@ -901,9 +907,13 @@ Reject or fall back when output contains:
 
 Fallback is the approved insufficient-evidence message with relevant source links. Validation failure never returns partially trusted model prose.
 
+> **Execution status (2026-09-19): complete.** `retrieval/validation.py` applies deterministic, project-scoped citation checks to every provider-authored statement, rejects unknown, ambiguous, duplicate, cross-project, unavailable, uncited, or lexically unsupported evidence, and blocks accusation/guilt language, person identification, private-data content or instructions, prompt-injection phrases, and truth scores. The provider schema is now `grounded-answer-v2` and binds output to the requested locale; the parser continues to reject malformed, excessive, timestamp-altered, refusal, tool, and action output. Any finding discards all provider prose and returns the exact approved English insufficient-evidence message with up to five deduplicated links from available evidence for the selected project, while preserving requested/served locale disclosure. Twenty validator tests achieve 100% statement and branch coverage, and `make backend-verify` passes with 1211 tests.
+
 ### BE-084 — Project question endpoint
 
 Implement `POST /v1/projects/{slug}/questions` with bounded text, locale, project resolution, rate limit, retrieval metadata, validated answer, generation time, cited sources, safe cache policy, and problem responses for provider unavailability. Store metrics/prompt/model/schema versions; do not store a potentially sensitive raw question by default.
+
+> **Execution status (2026-09-19): complete.** `POST /v1/projects/{slug}/questions` normalises and bounds one question, resolves only a public project and trusted BFF locale, applies the shared per-client Redis limit, searches the live approved-source view, and passes at most five opaque-ID passages through the configured replay/live language-model boundary and fail-closed validator. Successful responses contain generation time, requested/served locale, honest retrieval mode and count, statement citation IDs, and resolvable approved-source metadata; empty, malformed, or unsafe results return the exact fallback and useful eligible links, while retryable provider failures return a stable `question_answering_unavailable` problem. Every response is `no-store`. Migration `0020_question_metrics` lets the restricted public role append bounded outcome/count/duration and model/prompt/schema metadata but denies it read access and has no question, prompt, passage, client, or IP column. Conversational keyword fallback uses a bounded parameterised OR expression so filler words do not hide evidence. Six endpoint/database tests, API fuzzing, migration drift/rollback tests, and the full 1218-test backend gate pass.
 
 ### BE-085 — Four-language evaluation harness
 
@@ -920,7 +930,11 @@ Create a versioned golden corpus covering English, Hausa, Igbo, and Yoruba:
 
 Score citation validity and policy deterministically. Human language reviewers record whether meaning, names, amounts, dates, uncertainty, and safety wording are preserved. Live evaluation is opt-in and records model/prompt versions without secrets.
 
+> **Execution status (2026-09-19): blocked.** The implementation portion is complete: `data/qa-evaluation/golden-v1.json` expands 11 required scenarios across `en`, `ha`, `ig`, and `yo`; the strict harness passes 44/44 deterministic cases, 28/28 citation scores, and 44/44 policy scores, rejects corpus/review/version drift, reports only safe aggregates, and provides a separately gated live runner that records only case outcomes and model/prompt/schema versions. No live call was made. Every locale review is honestly `pending`; this task can be marked complete only after fluent human reviewers check meaning, names, amounts, dates, uncertainty, and safety wording and record their name, absolute review date, and each dimension as `preserved` or `issue`.
+
 ### Circle 8 exit gate
+
+> **Gate status (2026-09-19): open.** The approved-only corpus, keyless keyword mode, project-scoped citations, fail-closed validation, and four-language deterministic corpus all pass. The remaining criterion is substantive human language review: all four explicit review records are still `pending`, so Circle 8 is not complete and dependent Circle 9 work must not start.
 
 - Retrieval corpus contains approved public chunks only.
 - Keyword-only setup works without an OpenAI key.

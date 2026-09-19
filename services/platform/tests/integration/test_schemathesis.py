@@ -20,6 +20,7 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 
 from shaidago.api.app import create_app
 from shaidago.api.dependencies import Dependencies
+from shaidago.retrieval.language import QA_FIXTURES_ROOT, FixtureLanguageModel
 from shaidago.shared.clock import ManualClock
 from shaidago.shared.database import Database, build_engine
 from shaidago.shared.ratelimit import InMemoryRateLimiter
@@ -58,6 +59,7 @@ def api_schema(role_urls: dict[str, URL], seed: Seed) -> Any:
             reviewer_database=Database(reviewer),
             clock=clock,
             rate_limiter=InMemoryRateLimiter(clock),
+            language_model=FixtureLanguageModel.from_path(QA_FIXTURES_ROOT / "grounded-qa-v1.json"),
         ),
     )
     return schemathesis.openapi.from_asgi("/openapi.json", WithCredential(app))

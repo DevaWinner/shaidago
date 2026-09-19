@@ -76,7 +76,7 @@ async def test_a_version_must_be_addressed_by_the_hash_of_its_text(owner: Plain)
             await session.execute(
                 text(
                     "INSERT INTO app.source_versions VALUES (gen_random_uuid(), :s, :sha, 'text', "
-                    "'text/plain', now(), 'pending', NULL, NULL, now())"
+                    "'text/plain', now(), 'pending', NULL, NULL, now(), 'en')"
                 ),
                 {"s": source_id, "sha": sha256_hex("different text")},
             )

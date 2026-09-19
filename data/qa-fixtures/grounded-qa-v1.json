@@ -1,0 +1,20 @@
+{
+  "fixture_version": 1,
+  "records": [
+    {
+      "fingerprint": "c529460c4cac87d62a2762da6dedaf829b391e2acfff1a584fa9cc26eaee771f",
+      "output": {
+        "answer": "The synthetic clinic opened on 1 March.",
+        "statements": [
+          {
+            "text": "The synthetic clinic opened on 1 March.",
+            "citation_ids": ["c_synthetic01"]
+          }
+        ],
+        "insufficient_evidence": false,
+        "confidence_note": "The supplied synthetic passage covers only the opening date.",
+        "locale": "en"
+      }
+    }
+  ]
+}

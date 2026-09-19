@@ -158,6 +158,12 @@ DEPENDENCY_UNAVAILABLE: Final = Problem(
     "Temporarily unavailable",
     "A required service is unavailable. Try again later.",
 )
+QUESTION_ANSWERING_UNAVAILABLE: Final = Problem(
+    503,
+    "question_answering_unavailable",
+    "Answer temporarily unavailable",
+    "The source-backed answer could not be generated. Try again later.",
+)
 
 _BY_STATUS: Final[Mapping[int, Problem]] = {
     problem.status: problem

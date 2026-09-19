@@ -8,9 +8,9 @@ The hackathon pilot covers Abuja's AMAC and Bwari Area Councils. The public expe
 
 ## Repository status
 
-**Foundation and architecture stage.** The product scope, technical architecture, safety boundaries, engineering standards, and build gates are defined. The executable web and API applications have not been scaffolded yet, so this repository does not currently claim to provide a runnable demo.
+**Backend implementation in progress.** `services/platform` contains the FastAPI application, reviewed migrations, restricted database roles, deterministic tests, and the backend capabilities marked complete in the build order. The Next.js application under `apps/web` has not been scaffolded yet, so this repository does not currently claim to provide the complete runnable product.
 
-The immediate next milestone is Gate 0 in the [implementation plan](docs/IMPLEMENTATION_PLAN.md): verify six public projects and their source passages before application code or seed data is presented as factual.
+The current backend milestone is approved-source retrieval and grounded Q&A. Public seed facts remain limited to the exact evidence and caveats recorded in the source register.
 
 ## The problem
 
@@ -77,7 +77,7 @@ Start with the [documentation index](docs/README.md).
 
 ## Development
 
-`services/platform` now has a pinned Python toolchain (see its README); the root `Makefile` provides `make backend-*` targets (`make backend-verify` is the backend gate); the judge-facing `make setup`/`make verify` do not exist yet. `make infra-up-core` (after `cp .env.example .env`) starts local PostgreSQL 18 + pgvector, Redis, and MinIO through Docker Compose on loopback-only ports; `make infra-up` adds the ClamAV scanner, which needs 1.5-3 GB of memory. `make migrate` then `make db-roles` prepare the database (baseline schema, roles, and role logins), and `make seed-demo` loads the verified-evidence demo data (local databases only). Gate 1 will add the pnpm workspace, Python project, lockfiles, Docker Compose services, migrations, seed command, and canonical root `make` targets. Until those artifacts exist, commands shown in the implementation plan are target interfaces rather than working claims.
+`services/platform` has a pinned Python toolchain (see its README); the root `Makefile` provides `make backend-*` targets (`make backend-verify` is the backend gate); the judge-facing `make setup`/`make verify` do not exist yet. `make infra-up-core` (after `cp .env.example .env`) starts local PostgreSQL 18 + pgvector, Redis, and MinIO through Docker Compose on loopback-only ports; `make infra-up` adds the ClamAV scanner, which needs 1.5-3 GB of memory. `make migrate` then `make db-roles` prepare the database (schema, roles, and role logins), and `make seed-demo` loads local demo data, refreshes approved public source chunks, and loads a matching checked-in embedding fixture when present. It never calls an AI provider. `make embeddings` is the separate, explicit OpenAI-backed generation command and requires `OPENAI_API_KEY`.
 
 When implementation starts, the separate stacks remain independently owned:
 

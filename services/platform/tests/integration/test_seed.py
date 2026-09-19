@@ -198,6 +198,21 @@ async def test_an_invalid_register_writes_nothing(
     assert await snapshot(owner) == before
 
 
+async def test_seed_command_uses_keyword_fallback_without_a_provider_key(
+    role_urls: dict[str, URL],
+) -> None:
+    output = await run(
+        {
+            "APP_ENV": "development",
+            "DATABASE_URL": role_urls["owner"].render_as_string(hide_password=False),
+            "OPENAI_EMBEDDING_MODEL": "no-checked-in-fixture",
+        }
+    )
+
+    assert "chunks: inserted" in output
+    assert "keyword fallback enabled" in output
+
+
 async def test_the_command_refuses_production_and_remote_targets_before_touching_anything(
     role_urls: dict[str, URL],
 ) -> None:

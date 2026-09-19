@@ -5,8 +5,12 @@ Value lists are literal copies of ``contracts/controlled-vocabulary.json`` (chec
 revision 0004; this metadata lets autogenerate compare columns, keys, and indexes.
 """
 
+from pgvector.sqlalchemy import VECTOR
 from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
     Column,
+    Computed,
     Date,
     DateTime,
     ForeignKey,
@@ -18,6 +22,7 @@ from sqlalchemy import (
     UniqueConstraint,
     Uuid,
 )
+from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy.schema import SchemaItem
 
 from shaidago.db.metadata import metadata
@@ -88,9 +93,92 @@ source_versions = Table(
     Column("reviewed_at", DateTime(timezone=True)),
     Column("reviewer_note", Text()),
     Column("created_at", DateTime(timezone=True), nullable=False),
+    Column("language", Text(), nullable=False),
     PrimaryKeyConstraint("id"),
     UniqueConstraint("source_id", "content_sha256"),
+    CheckConstraint("language IN ('en', 'ha', 'ig', 'yo')", name="language"),
     Index("ix_source_versions_source_id", "source_id"),
+    schema="app",
+)
+
+
+# Public-source retrieval corpus (BE-080). The table is private to owner/worker roles; the public
+# API role sees only the eligibility-rechecking ``public_api.source_chunks`` view.
+source_chunks = Table(
+    "source_chunks",
+    metadata,
+    Column("id", Uuid(), nullable=False),
+    Column(
+        "project_id", Uuid(), ForeignKey("app.projects.id", ondelete="RESTRICT"), nullable=False
+    ),
+    Column("source_id", Uuid(), ForeignKey("app.sources.id", ondelete="RESTRICT"), nullable=False),
+    Column(
+        "source_version_id",
+        Uuid(),
+        ForeignKey("app.source_versions.id", ondelete="RESTRICT"),
+        nullable=False,
+    ),
+    Column("chunk_index", Integer(), nullable=False),
+    Column("passage_start", Integer(), nullable=False),
+    Column("passage_end", Integer(), nullable=False),
+    Column("content_text", Text(), nullable=False),
+    Column("text_sha256", Text(), nullable=False),
+    Column("token_count", Integer(), nullable=False),
+    Column("language", Text(), nullable=False),
+    Column("section_label", Text()),
+    Column("chunker_version", Text(), nullable=False),
+    Column("active", Boolean(), nullable=False),
+    Column("created_at", DateTime(timezone=True), nullable=False),
+    Column("updated_at", DateTime(timezone=True), nullable=False),
+    Column(
+        "search_vector",
+        TSVECTOR(),
+        Computed("to_tsvector('simple', content_text)", persisted=True),
+        nullable=True,
+    ),
+    Column("embedding", VECTOR(1536)),
+    Column("embedding_model", Text()),
+    Column("embedded_at", DateTime(timezone=True)),
+    PrimaryKeyConstraint("id"),
+    UniqueConstraint(
+        "project_id",
+        "source_version_id",
+        "language",
+        "chunk_index",
+        name="uq_source_chunks_project_version_language_index",
+    ),
+    CheckConstraint("chunk_index >= 0", name="index_nonnegative"),
+    CheckConstraint("passage_start >= 0 AND passage_end > passage_start", name="passage_span"),
+    CheckConstraint("char_length(content_text) BETWEEN 1 AND 900", name="content_bounded"),
+    CheckConstraint("text_sha256 ~ '^[0-9a-f]{64}$'", name="hash"),
+    CheckConstraint("token_count BETWEEN 1 AND 2000", name="token_count"),
+    CheckConstraint("language IN ('en', 'ha', 'ig', 'yo')", name="language"),
+    CheckConstraint(
+        "section_label IS NULL OR char_length(section_label) BETWEEN 1 AND 200",
+        name="section_label",
+    ),
+    CheckConstraint(
+        "chunker_version ~ '^[a-z0-9][a-z0-9-]*-v[0-9]+$'",
+        name="chunker_version",
+    ),
+    CheckConstraint(
+        "(embedding IS NULL AND embedding_model IS NULL AND embedded_at IS NULL) OR "
+        "(embedding IS NOT NULL AND embedding_model IS NOT NULL AND embedded_at IS NOT NULL)",
+        name="embedding_complete",
+    ),
+    CheckConstraint(
+        "embedding_model IS NULL OR char_length(embedding_model) BETWEEN 1 AND 100",
+        name="embedding_model",
+    ),
+    Index("ix_source_chunks_project_active", "project_id", "active"),
+    Index("ix_source_chunks_version", "source_version_id"),
+    Index("ix_source_chunks_search_vector", "search_vector", postgresql_using="gin"),
+    Index(
+        "ix_source_chunks_embedding_cosine",
+        "embedding",
+        postgresql_using="hnsw",
+        postgresql_ops={"embedding": "vector_cosine_ops"},
+    ),
     schema="app",
 )
 
