@@ -90,6 +90,15 @@ Publishing is a separate act from any status change, with its own record.
 - `POST .../public-updates/{update_id}:publish` with `{preview_digest}` confirms that exact preview. A digest that no longer matches (the text, a source, or the report changed) is `409 preview_stale`; a report no longer verified is `409 public_update_report_not_verified`; a draft already published or withdrawn is `409 public_update_not_draft`; unmet requirements are `422 publication_incomplete` with the same issue codes. On success (`200`) the public update and its citations are written in one transaction with an audit event; the report's status is not changed.
 - `POST .../public-updates/{update_id}:withdraw` (`204`) withdraws a draft. `GET .../public-updates` lists the report's drafts (at most 50).
 
+## Source Scout (discovery)
+
+Every result is labelled `discovered — not yet reviewed`; nothing found here is attached, verified, or published. Runs execute in the worker, so responses report progress and a job is identified by the run ID only.
+
+- `POST /v1/projects/{slug}/discovery-runs` starts or re-uses the single shared public run for a project and returns `action`: `create`, `reuse_fresh`, `show_latest_completed` (the daily budget `DISCOVERY_PUBLIC_DAILY_RUNS` is spent), or `unavailable`, with `run_id`, `status`, and `demo_replay` (true when providers are in replay mode). Rate limited per client (`429`).
+- `GET /v1/discovery-runs/{run_id}` returns `status`, `version`, `progress` (`results_found`, `fetched`, `analysed`), source cards (URL, publisher domain, title, preliminary type, publication date with provenance and a conflict flag, excerpt, availability), and, only when the run is `complete`, the validated analysis. `?since_version=N` answers `304` when nothing changed. A report-scoped run id is a `404`.
+- Public callers cannot cancel a shared run or answer its follow-up questions.
+- Reviewer (all `no-store`): `POST /v1/reviewer/reports/{report_id}/discovery-runs:plan` returns the exact outbound query, each term's source (`suggested_by`), the exclusions with a reason code, and `plan_digest`; `POST .../discovery-runs` with `concepts` and `approved_digest` creates a report-scoped run (`409 query_changed` if the query differs from the approved one); `GET /v1/reviewer/discovery-runs/{run_id}`; `POST .../discovery-runs/{run_id}:cancel` (`cancelled` now if queued, else `cancel_requested`); `POST .../{run_id}:review` with `approve_completion` or `reject_run`; `POST .../{run_id}/follow-up-answers` (`answered`, `skipped`, or `unsafe`; answers are encrypted); and `POST /v1/reviewer/discovered-sources/{source_id}/decision` with `attach`, `reject`, `defer`, or `reconsider` and a reason (encrypted). Attaching creates a *pending* source and never approves a fact.
+
 ## Errors
 
 Every error is `application/problem+json`, `Cache-Control: no-store`, with `type`, `title`, `status`, `code`, `detail`, `request_id`, and, for validation failures, `errors` (`field` and rule `code`, never the submitted value). The `code` is the stable contract; the BFF localises display text from it.

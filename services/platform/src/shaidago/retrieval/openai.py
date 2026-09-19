@@ -75,8 +75,8 @@ class OpenAILanguageModel:
             },
             "tools": list[object](),
         }
-        response = await self._send(body)
-        output_text = self._output_text(response)
+        response = await self.send(body)
+        output_text = self.output_text(response)
         answer = parse_structured_answer(
             output_text,
             expected_generated_at=request.generated_at,
@@ -94,7 +94,7 @@ class OpenAILanguageModel:
         """The HTTP pool connects lazily; lifecycle symmetry keeps shutdown deterministic."""
         return
 
-    async def _send(self, body: dict[str, object]) -> object:
+    async def send(self, body: dict[str, object]) -> object:
         request = self._client.build_request(
             "POST",
             "/v1/responses",
@@ -144,7 +144,7 @@ class OpenAILanguageModel:
             ) from error
 
     @staticmethod
-    def _output_text(value: object) -> str:
+    def output_text(value: object) -> str:
         if not isinstance(value, dict):
             raise LanguageModelError("provider_invalid_response", RetryClass.NON_RETRYABLE)
         mapping = cast(dict[object, object], value)

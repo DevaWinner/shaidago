@@ -125,6 +125,8 @@ class DatabaseSettings(_Section):
     url: SecretStr = Field(validation_alias="DATABASE_URL")
     public_url: SecretStr = Field(validation_alias="DATABASE_URL_PUBLIC")
     reviewer_url: SecretStr = Field(validation_alias="DATABASE_URL_REVIEWER")
+    # The background worker connects as shaidago_worker; the API processes never use this URL.
+    worker_url: SecretStr | None = Field(default=None, validation_alias="DATABASE_URL_WORKER")
     pool_size: PositiveInt = Field(default=5, le=50, validation_alias="DATABASE_POOL_SIZE")
     connect_timeout_seconds: PositiveInt = Field(
         default=5, le=60, validation_alias="DATABASE_CONNECT_TIMEOUT_SECONDS"
@@ -133,10 +135,15 @@ class DatabaseSettings(_Section):
         default=5000, le=60_000, validation_alias="DATABASE_STATEMENT_TIMEOUT_MS"
     )
 
-    @field_validator("url", "public_url", "reviewer_url")
+    @field_validator("url", "public_url", "reviewer_url", "worker_url")
     @classmethod
-    def _parse_url(cls, value: SecretStr) -> SecretStr:
-        return _validate_database_url(value)
+    def _parse_url(cls, value: SecretStr | None) -> SecretStr | None:
+        return None if value is None else _validate_database_url(value)
+
+    def worker_sqlalchemy_url(self) -> URL:
+        if self.worker_url is None:
+            raise ValueError("DATABASE_URL_WORKER is required to run the worker")
+        return make_url(self.worker_url.get_secret_value())
 
     def sqlalchemy_url(self) -> URL:
         return make_url(self.url.get_secret_value())
@@ -298,6 +305,14 @@ class RateLimitSettings(_Section):
     )
     qa_per_hour: PositiveInt = Field(default=30, validation_alias="RATE_QA_PER_HOUR")
     discovery_per_hour: PositiveInt = Field(default=5, validation_alias="RATE_DISCOVERY_PER_HOUR")
+    # Global cap on fresh public discovery runs per Africa/Lagos day (provider budget).
+    discovery_public_daily_runs: PositiveInt = Field(
+        default=20, validation_alias="DISCOVERY_PUBLIC_DAILY_RUNS"
+    )
+    # Per-reviewer cap on reviewer-started runs per hour.
+    discovery_reviewer_per_hour: PositiveInt = Field(
+        default=10, validation_alias="RATE_DISCOVERY_REVIEWER_PER_HOUR"
+    )
 
 
 class ObservabilitySettings(_Section):

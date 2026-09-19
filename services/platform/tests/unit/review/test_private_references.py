@@ -114,3 +114,8 @@ def test_only_the_unsupported_guarded_words_are_reported() -> None:
     )
     assert unsupported_terms("Neutral wording only.", []) == ()
     assert unsupported_terms("A corruption inquiry", ["corrupt practices"]) == ("corruption",)
+
+
+def test_ordinary_prose_containing_sg_is_not_mistaken_for_a_tracking_code() -> None:
+    prose = "The two pages give different award dates and amounts for the works."
+    assert find_private_references(prose, PrivateContext()) == ()

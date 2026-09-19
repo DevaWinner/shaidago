@@ -1,0 +1,87 @@
+{
+  "entries": [
+    {
+      "query_sha256": "56d7bdcf7a8ab1c524c8da5c13577a1884f1d2d0aa89bfae3e5abea6a756e3fb",
+      "urls": [
+        "https://ministry.fixture.test/success/good",
+        "https://news.fixture.test/success/news"
+      ]
+    },
+    {
+      "query_sha256": "6adf802b288af1f1d8a4f99b8a5888f92c7ba09f53ed3eab0c03dddb3edc2484",
+      "urls": []
+    },
+    {
+      "query_sha256": "fb9827673a3896cf628256d71c3e69fe1f9637241fafb5f6eb46dedce066a0b9",
+      "urls": [
+        "https://ministry.fixture.test/duplicates/good",
+        "https://mirror.fixture.test/duplicates/mirror",
+        "https://news.fixture.test/duplicates/news"
+      ]
+    },
+    {
+      "query_sha256": "182851b4ff0744d7cf81dc16f66f295c0b673dbf54d4b73977f10a1c35a24033",
+      "urls": [
+        "https://ministry.fixture.test/contradictions/good",
+        "https://news.fixture.test/contradictions/news"
+      ]
+    },
+    {
+      "query_sha256": "9beda779010698750aeedb7df48185173feae56ecf12f23d83a94a80d46c5944",
+      "urls": [
+        "http://127.0.0.1/admin",
+        "http://169.254.169.254/latest/meta-data/",
+        "http://user:pw@ministry.fixture.test/x",
+        "file:///etc/passwd",
+        "https://ministry.fixture.test/unsafe_urls/good"
+      ]
+    },
+    {
+      "query_sha256": "7039c11123276a50ce1e67deb21f7a4d2b503a331b51dc316779714d2932e5f9",
+      "urls": [
+        "https://ministry.fixture.test/prompt_injection/good",
+        "https://news.fixture.test/prompt_injection/news"
+      ]
+    },
+    {
+      "query_sha256": "7f67172fc1fdcf7722c4f1bf4760efef0c98428cf14f7ffc22ae1f1eee6ba04c",
+      "urls": [
+        "https://ministry.fixture.test/stale_page/good",
+        "https://news.fixture.test/stale_page/news"
+      ]
+    },
+    {
+      "query_sha256": "8b36094352488bdc267a7d51b4ad639e633cf14f3f4106bc7c1f5b43089b1477",
+      "urls": [
+        "https://ministry.fixture.test/extraction_failure/good"
+      ]
+    },
+    {
+      "query_sha256": "eea2450874cb2733ecf17ecd8e333e5c684cc77abb1a75e80823098c6323501a",
+      "urls": [
+        "https://ministry.fixture.test/invalid_model_result/good"
+      ]
+    },
+    {
+      "error": "unavailable",
+      "query_sha256": "661f1cc15e1e3b84dada6d6bff7550559f11adb744f1b821c003505592f72fc5",
+      "urls": []
+    },
+    {
+      "error": "unavailable",
+      "query_sha256": "9d4dbf9f5836b817c4d29dfda9adb6e6e21e783ed237bea86540cd69041e65e8",
+      "urls": []
+    },
+    {
+      "query_sha256": "10a200264024e6508252f1c0284f1c8e5a04ed5e7325f4bcea55a143b812b863",
+      "urls": [
+        "https://site0.fixture.test/page",
+        "https://site1.fixture.test/page",
+        "https://site2.fixture.test/page",
+        "https://site3.fixture.test/page",
+        "https://site4.fixture.test/page"
+      ]
+    }
+  ],
+  "fixture_version": 1
+}

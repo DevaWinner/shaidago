@@ -973,3 +973,147 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the synthetic cross-locale corpus, deterministic scenario expansion/scoring, review-state guards, safe aggregate report, opt-in live runner, tests, and documentation; it did not perform human language review.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** Required and pending. Fluent reviewers must review all four locale packs and record each preservation dimension before this task or Circle 8 can be marked complete.
+
+## 2026-09-19 — BE-090 Dramatiq broker and job envelope
+
+- **Task:** BE-090 — Dramatiq broker and job envelope.
+- **Outcome delivered:** A worker process with identifier-only jobs, persisted run stage and lease, idempotent redelivery, bounded retries, dead-lettering, and a visible exhausted state.
+- **Files changed:** `services/platform/migrations/versions/0021_discovery_runs.py`, `src/shaidago/db/{discovery_tables,registry}.py`, `src/shaidago/worker/*`, `src/shaidago/shared/config.py`, tests (`tests/unit/worker/*`, `tests/integration/{discovery_support,test_discovery_worker}.py`), `.env.example`, `Makefile`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** `app.discovery_runs` with row security (owner, worker, reviewer; no public role) and a guard trigger; the worker role may update only progress and lifecycle columns, reviewers may insert runs and request cancellation. No OpenAPI change. New optional setting `DATABASE_URL_WORKER`.
+- **Security/privacy impact:** The message schema cannot carry private data. The worker uses its own restricted role and cannot create runs or edit their approved query. A finished run is immutable at the database.
+- **Failure behaviour verified:** duplicate concurrent delivery, expired versus live lease, a crash between stages (no repeated `start_search`), permanent failure code, attempt cap, finished and unknown runs, cancellation before and between stages (retrieved counts kept), exhausted retries, illegal edges refused for the worker role, and unprivileged writes refused.
+- **Commands run and results:** `make backend-verify` exit 0 (1543 passed); Circle 0 validators run at the end of the circle.
+- **Tests added or changed:** 16 integration tests; unit tests for the envelope, machine, and broker.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** Not exercised against a real Redis broker; the stub broker covers delivery, retry, and dead-letter semantics. The pipeline stages are placeholders that fail closed. The lease is 300 seconds with no renewal, so a stage longer than that could be taken over (stages are idempotent, so the effect is repeated work, not corruption).
+- **Commit/PR:** `feat: add the discovery worker, job envelope, and run lifecycle`
+- **Next task may rely on:** `RunStore`, `process_run`, and the `DiscoveryPipeline` protocol.
+- **AI assistance used:** Designed and wrote the migration, worker modules, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-091 Privacy-safe query planner
+
+- **Task:** BE-091 — Privacy-safe query planner.
+- **Outcome delivered:** A pure, allowlist-first query planner with sensitive-term detectors, term provenance, an exact-approval digest, and a final outbound check.
+- **Files changed:** `services/platform/src/shaidago/discovery/{__init__,planner}.py`, `tests/unit/discovery/test_planner.py`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None (the run table already stores `query_text`, `query_policy_version`, and the approver).
+- **Security/privacy impact:** A term is used only if it is public project data or an in-vocabulary neutral concept and passes every detector; an uncertain term is dropped. A model suggestion cannot add a name, place, or identifier because the vocabulary is a closed list.
+- **Failure behaviour verified:** 20 obfuscated canaries and generated email and phone variants never pass; over-long, duplicate, empty, and implausible-year inputs are bounded; rejections carry a reason code, never the text.
+- **Commands run and results:** `make backend-verify` exit 0.
+- **Tests added or changed:** 51 unit tests.
+- **Generated artifacts checked:** None.
+- **Known limitations/open decisions:** The concept vocabulary (about 40 words) is a reviewable constant and deliberately small; a legitimate concept outside it is excluded. Detectors favour false positives, so an unusual public project title with many digits would be dropped from the query. Name detection for report scope is by allowlist rather than a named-entity model.
+- **Commit/PR:** `feat: add the privacy-safe discovery query planner`
+- **Next task may rely on:** `plan_public_query`, `plan_report_query`, `assert_query_safe`, and `approval_matches`.
+- **AI assistance used:** Designed and wrote the planner and property tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-092 Search provider adapter and budgets
+
+- **Task:** BE-092 — Search provider adapter and budgets.
+- **Outcome delivered:** A URL-only search provider interface, a Brave adapter, a labelled replay adapter, and a pure public-run budget decision, with two new settings.
+- **Files changed:** `services/platform/src/shaidago/discovery/{search,budget}.py`, `src/shaidago/shared/config.py`, `tests/unit/discovery/test_search.py`, `.env.example`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** The adapter refuses any query the planner would refuse, before a request exists; the credential is never in a repr, log, or exception; results cannot carry snippets or ranks.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `make backend-verify` exit 0 (1615 passed).
+- **Tests added or changed:** 72 unit tests (adapter, fixtures, budget).
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** No live Brave call was made (hard stop: live provider). The Brave response shape (`web.results[].url`) follows the provider's documented format and is unverified against a live response. Whether the active Brave plan permits storing snippets is unresolved, so none are stored.
+- **Commit/PR:** `feat: add the search provider adapter and public-run budget decision`
+- **Next task may rely on:** `SearchProvider`, `FixtureSearchProvider`, and `decide_public_run`.
+- **AI assistance used:** Designed and wrote the adapters, decision function, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-093 SSRF-safe public fetcher
+
+- **Task:** BE-093 — SSRF-safe public fetcher.
+- **Outcome delivered:** A destination guard and a bounded, pinned, robots-respecting fetcher.
+- **Files changed:** `services/platform/src/shaidago/discovery/{netguard,fetcher}.py`, `tests/unit/discovery/{test_netguard,test_fetcher}.py`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** No request can be made to a non-public destination through any hop; no credential, cookie, or caller header is sent; bodies are bounded compressed and decompressed; errors carry stable codes and never the URL.
+- **Failure behaviour verified:** every required fixture (IPv4 and IPv6 local forms, decimal, octal, and hex host confusion, mixed DNS answers, rebinding, redirect to a private IP, metadata IPs, oversized and chunked bodies, compression bombs, slow bodies, unsupported port and scheme, credentials in the URL) plus robots and access-control behaviour.
+- **Commands run and results:** `make backend-verify` exit 0 (1747 passed). Branch coverage measured for the guard (100%) and fetcher (98%).
+- **Tests added or changed:** 204 unit tests.
+- **Generated artifacts checked:** None.
+- **Known limitations/open decisions:** Verified against a simulated network only (an `httpx.MockTransport` and a fake resolver); the `sni_hostname` extension and the pinned-IP request path are unproven against a real TLS server in this run. `Content-Encoding` is limited to gzip and deflate (a Brotli-only origin is skipped). Robots parsing uses the standard library parser. Per-host limits are per fetcher instance, not shared across worker processes. Publisher terms are honoured only through robots and access signals; there is no per-publisher terms review.
+- **Commit/PR:** `feat: add the SSRF-safe public page fetcher`
+- **Next task may rely on:** `SafeFetcher.fetch(url) -> FetchedPage` and the `FetchError` and `UnsafeDestinationError` codes.
+- **AI assistance used:** Designed and wrote the guard, fetcher, and adversarial tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-094 Inert extraction and provenance
+
+- **Task:** BE-094 — Inert extraction and provenance.
+- **Outcome delivered:** Bounded inert extraction of HTML, PDF, and text with provenance, scoped de-duplication, and stored, unreviewed discovered sources with sightings.
+- **Files changed:** `services/platform/migrations/versions/0022_discovered_sources.py`, `src/shaidago/discovery/{extract,dedupe,records}.py`, `src/shaidago/db/discovery_tables.py`, tests (`tests/unit/discovery/test_extract.py`, `tests/integration/test_discovered_sources.py`), `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** Two tables with forced row security (worker inserts and refreshes; reviewers read; no public role) and named constraints. No OpenAPI change.
+- **Security/privacy impact:** Page text never becomes instructions; active and hidden content is removed; scopes never mix in de-duplication; only an excerpt and hashes are kept; every result is `not_reviewed`.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `make backend-verify` exit 0 (1789 passed). A first run failed the bandit gate on f-string SQL constants (`B608`); the statements are now literal.
+- **Tests added or changed:** 34 unit and 8 integration tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** The injection heuristic is a phrase list, so it flags obvious attempts and misses novel ones (the analysis stage's isolation and validation are the real defence). The `bit_count` near-duplicate query scans one scope's unmerged rows, fine at pilot size. Stale or unavailable sources are updated by the worker only through the `availability` column; the decision and attachment columns arrive with BE-096. The preliminary type is a domain guess with three outcomes.
+- **Commit/PR:** `feat: add inert page extraction, provenance, and scoped de-duplication`
+- **Next task may rely on:** `extract`, `ExtractedPage`, `SourceRecorder`, and `Scope`.
+- **AI assistance used:** Designed and wrote the extraction, de-duplication, recorder, migration, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-095 Structured discovery analysis
+
+- **Task:** BE-095 — Structured discovery analysis.
+- **Outcome delivered:** A strict analysis schema, provider adapters (OpenAI and fixture), and a deterministic fail-closed validator.
+- **Files changed:** `services/platform/src/shaidago/discovery/analysis.py`, `src/shaidago/retrieval/{openai,validation}.py` (public `send`, `output_text`, `statement_supported`, `safety_findings`; tracking-code false-positive fix), `src/shaidago/review/private_references.py` (same fix), tests (`tests/unit/discovery/test_analysis.py`, regression tests), `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** The provider request holds only opaque IDs, publisher domains, and inert excerpts; injection-flagged pages should be excluded by the caller. Output is never trusted before validation; private terms are refused.
+- **Failure behaviour verified:** see the build order note. The tracking-code fix removes a class of false blocks (fail-closed, but wrong) in Q&A and publication text.
+- **Commands run and results:** `make backend-verify` exit 0 (1822 passed).
+- **Tests added or changed:** 32 new unit tests plus two regression tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** Not called against the live provider (hard stop). The stance-word list and personal-data question pattern are small reviewable constants. The `needs_review` status is entered only for invalid output; a valid analysis with contradictions completes and shows them, which the maintainer may want to change. The caller (BE-096) must exclude injection-flagged sources from passages.
+- **Commit/PR:** `feat: add validated structured discovery analysis`
+- **Next task may rely on:** `analyse_sources`, `SourcePassage`, `FixtureAnalyser`, and `OpenAIAnalyser`.
+- **AI assistance used:** Designed and wrote the analysis module, adapters, and tests; found and fixed the shared false positive.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-096 Discovery run APIs and state transitions
+
+- **Task:** BE-096 — Discovery run APIs and state transitions.
+- **Outcome delivered:** Public and reviewer run APIs, the real search-fetch-extract-analyse pipeline, replay and live provider selection, a job queue for the API, and reviewer decisions on discovered sources.
+- **Files changed:** `services/platform/migrations/versions/0023_discovery_review.py`, `src/shaidago/discovery/{pipeline,service,providers,pages,dispositions}.py`, `src/shaidago/worker/{queue,pipeline,store,envelope,entry}.py`, `src/shaidago/api/v1/{discovery,reviewer_discovery,__init__}.py`, `src/shaidago/api/{dependencies,main}.py`, `src/shaidago/db/discovery_tables.py`, tests (`test_discovery_api.py`, `test_discovery_pipeline.py`, `tests/unit/discovery/test_dispositions_and_providers.py`, harness updates), `contracts/openapi.json`, `docs/API.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** Two public views, a function for creating public runs, a function for attaching a source, decision columns and a guard trigger, an encrypted follow-up answers table. OpenAPI gains 9 paths.
+- **Security/privacy impact:** Public and private discovery cannot cross by ID, DTO, or view; reviewer approval is bound to the exact query digest; attach yields only a pending source; decisions and answers are encrypted; the worker still cannot read reports.
+- **Failure behaviour verified:** see the build order note. A first full run showed the daily-budget query counting runs on later days (a test artefact of moving the clock, fixed by bounding the day), the decision key being reused for a second decision on one source (each decision now has its own key), and the contract fuzzer needing a queue in its app.
+- **Commands run and results:** `make backend-verify` exit 0 (1934 passed).
+- **Tests added or changed:** 18 API, 9 pipeline, 85 unit.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated; `make openapi-check` passes.
+- **Known limitations/open decisions:** Public cancel and public follow-up answers from the plan are intentionally not offered (a shared anonymous run must not be steerable); the maintainer should confirm. Live search, fetch, and analysis were not exercised. A job lost after commit is recovered only by the next public request (public runs) or a reviewer retry; there is no background sweeper. `needs_review` is entered only for invalid analysis or a missing replay fixture. Decision reasons are visible only to reviewers via decryption not yet exposed by an endpoint.
+- **Commit/PR:** `feat: add the discovery run APIs, pipeline, and reviewer source decisions`
+- **Next task may rely on:** the run lifecycle and replay providers, ready for fixtures (BE-097).
+- **AI assistance used:** Designed and wrote the migration, pipeline, services, endpoints, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-097 Replay fixtures and live evidence
+
+- **Task:** BE-097 — Replay fixtures and live evidence.
+- **Outcome delivered:** Generated synthetic replay fixtures for all listed scenarios with end-to-end tests, replay labelling, a public-run query stored at creation, and a documented, pending live evidence procedure.
+- **Files changed:** `data/discovery-fixtures/*`, `services/platform/scripts/build_discovery_fixtures.py`, `migrations/versions/0024_public_run_query.py`, `src/shaidago/discovery/{pipeline,service,pages}.py`, tests (`test_discovery_replay.py`, `tests/live/test_discovery_live.py`), `docs/evidence/BE-097-live-evidence.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** The public run creation function now takes and stores the planned query and policy version.
+- **Security/privacy impact:** Fixtures use reserved `.test` domains and invented pages; the replay page source refuses private and metadata addresses like the live fetcher.
+- **Failure behaviour verified:** all twelve scenarios. The work also found a real gap: public runs were created without a query (so a real run would have failed with `query_not_approved`), fixed by planning the query at creation.
+- **Commands run and results:** `make backend-verify` exit 0 (1948 passed, 1 live test deselected); Circle 0 validators passed.
+- **Tests added or changed:** 14 replay tests; one skipped opt-in live test.
+- **Generated artifacts checked:** the fixtures against their generator; OpenAPI unchanged.
+- **Known limitations/open decisions:** **The live search and analysis evidence is pending** (hard stop, live provider). In replay mode with no matching fixture a run finds nothing, which is honest but means the hosted demo shows no discovery results until fixtures for real projects exist or a live run is authorised.
+- **Commit/PR:** `feat: add discovery replay fixtures, scenario tests, and the live evidence procedure`
+- **Next task may rely on:** replay providers and the fixtures for any discovery test.
+- **AI assistance used:** Designed and wrote the generator, fixtures, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

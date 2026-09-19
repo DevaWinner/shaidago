@@ -4,6 +4,7 @@ from fastapi import APIRouter
 
 from shaidago.api.v1 import (
     auth,
+    discovery,
     follow_ups,
     project_questions,
     projects,
@@ -11,6 +12,7 @@ from shaidago.api.v1 import (
     reporter_handles,
     reports,
     reviewer_decisions,
+    reviewer_discovery,
     reviewer_evidence,
     reviewer_notes,
     reviewer_publication,
@@ -31,3 +33,5 @@ router.include_router(reviewer_decisions.router)
 router.include_router(reviewer_notes.router)
 router.include_router(reviewer_evidence.router)
 router.include_router(reviewer_publication.router)
+router.include_router(discovery.router)
+router.include_router(reviewer_discovery.router)
