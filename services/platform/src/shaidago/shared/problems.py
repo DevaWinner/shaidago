@@ -65,6 +65,12 @@ ALREADY_RECEIVED: Final = Problem(
     "Already received",
     "This request was already received and its result is no longer available.",
 )
+PUBLICATION_INCOMPLETE: Final = Problem(
+    422,
+    "publication_incomplete",
+    "Publication requirements not met",
+    "The evidence required to publish this item is incomplete.",
+)
 UNAUTHENTICATED: Final = Problem(
     401, "unauthenticated", "Authentication required", "The request could not be authenticated."
 )

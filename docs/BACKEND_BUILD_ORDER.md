@@ -483,6 +483,8 @@ Rules:
 
 Add database constraints where feasible and service-level checks where cross-row conditions require them. Add mutation tests proving incomplete publication fails closed.
 
+> **Execution status (2026-09-19): complete.** Six tables, exact-passage citations, immutable content-addressed versions, database-backstopped fail-closed publication, and citation-complete public views are proven by 45 PostgreSQL test cases plus unit tests (`make backend-verify` exit 0, 284 passed). Reviewer identity, audit events, and reviewer-role write grants come with Circle 5 to 7.
+
 ### BE-042 — Escalation routes and trust vocabulary
 
 Implement locality/category/locale escalation records with organisation, instructions, source/verification date, non-emergency disclaimer, validity window, and active state. Do not seed an unverified phone number, address, or protection promise.
