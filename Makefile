@@ -26,12 +26,13 @@ COMPOSE := docker compose --project-name shaidago --env-file $(INFRA_ENV) -f inf
 .DEFAULT_GOAL := help
 .PHONY: help backend-sync backend-format backend-format-check backend-lint backend-typecheck \
 	backend-unit backend-integration backend-contract backend-security backend-test backend-verify \
-	openapi-generate openapi-check infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
+	openapi-generate openapi-check migrate db-roles infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
 
 help:
 	@echo "Backend targets: backend-sync backend-format backend-format-check backend-lint"
 	@echo "  backend-typecheck backend-unit backend-integration backend-contract"
 	@echo "  backend-security backend-test backend-verify openapi-generate openapi-check"
+	@echo "Database targets: migrate db-roles (need make infra-up-core first)"
 	@echo "Infrastructure targets: infra-up infra-up-core infra-down infra-logs infra-clean"
 	@echo "  (need $(INFRA_ENV); copy .env.example first)"
 
@@ -77,6 +78,14 @@ openapi-check:
 
 backend-verify: backend-sync backend-format-check backend-lint backend-typecheck backend-security \
 	openapi-check backend-test
+
+# Applies Alembic revisions as the migration owner (DATABASE_URL). Idempotent.
+migrate:
+	$(RUN_WITH_ENV) alembic upgrade head
+
+# Enables application-role logins from the DB_PASSWORD_* variables. Run after `make migrate`.
+db-roles:
+	$(RUN_WITH_ENV) python -m shaidago.db.provision
 
 infra-check-env:
 	@test -f "$(INFRA_ENV)" || { echo "infra: $(INFRA_ENV) not found; run: cp .env.example .env"; exit 1; }

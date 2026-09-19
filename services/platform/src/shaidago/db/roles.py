@@ -36,16 +36,21 @@ async def apply_security_baseline(connection: AsyncConnection) -> None:
     await _execute_script(connection, baseline_sql())
 
 
-async def enable_login(connection: AsyncConnection, role: str, password: str) -> None:
-    """Give an application role a login password. The password is never logged or returned."""
+def login_statement(role: str, password: str) -> sql.Composed:
+    """The ALTER ROLE statement enabling login. Validates inputs; never logs the password."""
     if role not in APPLICATION_ROLES:
         raise ValueError("not an application role")
     if len(password) < MIN_PASSWORD_CHARS:
         raise ValueError("password is too short")
     # ALTER ROLE cannot take a bind parameter, so identifier and literal are rendered with
-    # psycopg's own escaping and sent without parameter parsing.
-    raw = await connection.get_raw_connection()
-    statement = sql.SQL("ALTER ROLE {} LOGIN PASSWORD {}").format(
+    # psycopg's own escaping.
+    return sql.SQL("ALTER ROLE {} LOGIN PASSWORD {}").format(
         sql.Identifier(role), sql.Literal(password)
     )
+
+
+async def enable_login(connection: AsyncConnection, role: str, password: str) -> None:
+    """Give an application role a login password on an open SQLAlchemy connection."""
+    statement = login_statement(role, password)
+    raw = await connection.get_raw_connection()
     await _execute_script(connection, statement.as_string(raw.driver_connection))  # pyright: ignore[reportArgumentType]

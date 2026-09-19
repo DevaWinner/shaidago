@@ -36,6 +36,9 @@ BEGIN
 END
 $$;
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
+-- USAGE only (no CREATE) so application roles can resolve pgvector types installed in "public".
+GRANT USAGE ON SCHEMA public TO
+    shaidago_public, shaidago_reviewer, shaidago_worker, shaidago_readonly_ops;
 
 -- "app" holds tables (private by default); "public_api" holds views over public columns only.
 CREATE SCHEMA IF NOT EXISTS app AUTHORIZATION shaidago_owner;

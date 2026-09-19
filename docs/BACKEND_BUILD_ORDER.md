@@ -361,7 +361,7 @@ Implement one RFC 9457-style `application/problem+json` shape containing `type`,
 - Bound every dependency check by a short timeout and run independent checks concurrently where safe.
 - Test healthy, degraded optional provider, required dependency failure, timeout, and no-detail public output.
 
-> **Execution status (2026-09-19): partial.** Liveness, readiness semantics (ready, degraded, unavailable), bounded concurrent checks, and no-detail output are implemented and proven with fake probes (117 passing tests). Real database, migration-revision, Redis, and object-storage probes are not registered yet; BE-031, BE-033, and the Redis and storage tasks must add them.
+> **Execution status (2026-09-19): partial.** Liveness, readiness semantics (ready, degraded, unavailable), bounded concurrent checks, and no-detail output are implemented and proven with fake probes (117 passing tests). The database probe (BE-031) and the migration-revision probe (BE-033) are now registered; Redis and object-storage probes are still not, and belong to the tasks that add those clients.
 
 ### Circle 2 exit gate
 
@@ -424,6 +424,8 @@ Implement public views/projections, least-privilege grants, and row-security pol
 3. Give every constraint and index a stable name.
 4. Add a migration test: empty database → head, head → one revision down/up when reversible, model metadata drift check, and second run idempotence where applicable.
 5. Never edit an applied migration; use a corrective revision.
+
+> **Execution status (2026-09-19): complete.** Alembic runs empty-to-head, head-to-base-and-back, and repeat upgrades against PostgreSQL 18, drift and ownership checks pass, and readiness now includes a migration-revision probe (`make backend-verify` exit 0, 170 passed). The drift check is vacuous until the first model tables arrive.
 
 ### BE-034 — Shared identifiers, clock, pagination, and idempotency primitives
 

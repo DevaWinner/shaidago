@@ -310,3 +310,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the baseline SQL, helpers, and the allow/deny matrix; the tests found and fixed a `%` handling defect in script execution.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-033 Alembic discipline and baseline
+
+- **Task:** BE-033 — Alembic discipline and baseline.
+- **Outcome delivered:** Alembic under `services/platform/migrations` with one shared metadata registry (`shaidago/db/metadata.py`, a naming convention for every constraint and index), a sync `env.py` that never imports the FastAPI app and runs one transaction per revision, and revision `0001_baseline` that installs pgvector, applies the versioned security SQL (refusing it if its SHA-256 changed), and lets application roles read the applied revision. `use_owner_role()` is the helper every later revision starts with. `make migrate` and `make db-roles` (via `shaidago.db.provision`) are the local and deployment commands. `MigrationRevisionCheck` makes readiness depend on the database being exactly at the build's head.
+- **Files changed:** `services/platform/{alembic.ini,migrations/*}`, `src/shaidago/db/{metadata,migration_helpers,revision,provision,roles}.py`, `db/sql/0001_security_baseline.sql` (added `USAGE` on `public` for application roles before it was ever applied), `api/main.py`, `Makefile`, `.env.example` (`DB_PASSWORD_*`), tests `tests/integration/{test_migrations,test_provision,test_configured_app}.py`.
+- **Schema/contract changes:** Baseline revision only: `vector` extension, roles, `app` and `public_api` schemas, default privileges. The OpenAPI contract is unchanged.
+- **Security/privacy impact:** Role passwords come from the environment and are refused as placeholders in staging and production; the provisioning CLI never echoes a password. The baseline SQL is pinned by hash so an applied migration cannot be edited silently. Roles are cluster-wide, so the baseline downgrade keeps them.
+- **Failure behaviour verified:** Empty database to head; a second upgrade is a no-op; head to base and back up; model metadata drift check finds nothing; every object in `app` and `public_api` is owned by `shaidago_owner`; each application role can read `alembic_version`; the naming convention names primary, foreign, unique, and index objects; an edited SQL hash is refused. Readiness through HTTP is `ready` only when migrated, and `unavailable` (503) for an unmigrated or unreachable database. Provisioning enables logins, is repeatable and rotates passwords, and rejects missing, short, and deployed placeholder passwords. End to end through the make targets on a scratch database: `make migrate`, `make db-roles`, a repeat `make migrate`, then a real login as `shaidago_public` read the revision.
+- **Commands run and results:** `make backend-verify` exit 0 (170 passed). Circle 0 validators passed.
+- **Tests added or changed:** 8 migration, 6 provisioning, and 3 configured-app tests (the latter rewritten to include the revision probe).
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** No model tables exist, so the drift check is vacuous until BE-040; the check and the ownership test are in place for when they appear. pgvector is installed in `public`; BE-080 may move it if retrieval permissions need that, through a new revision. The downgrade leaves roles behind by design. `expected_head()` reads the `migrations/` directory beside the source tree, so container images must copy it (BE-111). Offline SQL generation is refused because revisions run driver-level scripts.
+- **Commit/PR:** `feat: add Alembic migrations and the baseline revision`
+- **Next task may rely on:** `Base`/`metadata` for mappings, `use_owner_role()` for revisions, and `make migrate` then `make db-roles` for a ready local database.
+- **AI assistance used:** Designed the migration environment, baseline revision, provisioning CLI, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
