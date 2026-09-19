@@ -229,6 +229,8 @@ Provide synthetic fixtures for layout testing and clearly distinguish them from 
 
 ### FE-004 — BFF operation map
 
+> **Execution status (2026-09-20): complete.** [`FRONTEND_BFF_OPERATION_MAP.md`](FRONTEND_BFF_OPERATION_MAP.md) gives every 35 implemented non-health operations one direct Server Component read or exact purpose-built same-origin BFF route, with typed input bounds, safe forwarding, Origin/CSRF/cookie policy, timeout, response allowlist, cache, and redaction rules. Its validator rejects coverage drift and forbidden generic boundary designs.
+
 Map each browser action to one purpose-built Route Handler, backend operation ID, accepted content type, body limit, forwarded safe headers, cookie/CSRF/origin behaviour, timeout, response mapping, cache header, and redaction rule. Map each Server Component read directly to the private API operation.
 
 Explicitly forbid:
@@ -240,6 +242,8 @@ Explicitly forbid:
 - BFF reinterpretation of reviewer roles, report state, citations, or publishability.
 
 ### Circle 0 exit gate
+
+> **Gate status (2026-09-20): closed.** FE-000 through FE-004 provide validated authority, route, state, content-range, and operation ownership contracts. All 35 non-health OpenAPI operations have an owner; long/minimum/maximum fixtures, data classification, cache policy, and prohibition of undocumented frontend fields are explicit.
 
 - Every route and mutation has a documented owner and backend operation.
 - Every async surface has named fixtures for all material states.

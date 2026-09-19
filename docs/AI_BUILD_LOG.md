@@ -1489,3 +1489,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Derived a contract-safe fixture taxonomy from the frontend handoff and task requirements; added an adversarial validator rather than using source-register data as plausible-looking UI content.
 - **Prompt summary:** Use the frontend loop and work the next frontend task.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-004 BFF operation map
+
+- **Task:** FE-004 — BFF operation map.
+- **User outcome delivered:** Every 35 implemented non-health API operation now has one named direct Server Component read or exact purpose-built same-origin BFF route, with a complete implementation profile before the web app is scaffolded.
+- **Routes/components changed:** No runtime route/component changed. Added `docs/FRONTEND_BFF_OPERATION_MAP.md` and `scripts/validate_frontend_bff_operation_map.py`; documented future `app/api/` ownership only.
+- **Backend operations/contract version:** No generated contract changed. The map validates exact coverage of OpenAPI `0.0.0` operation IDs excluding health endpoints and preserves generated types as the future source of request/response shapes.
+- **Public/private data handled:** Profiles permit only safe request ID, locale, and client-HMAC forwarding; service credentials are added server-side. They block browser cookies/authorisation/arbitrary headers, internal hostnames, report content, contacts, tracking/handle credentials, session/CSRF values, object keys, signed URLs, and evidence bytes from logs/caches/client bundles.
+- **States implemented:** No UI state changed. The map defines safe problem mapping, `304` retain-body polling/read behaviour, timeout/cancellation propagation, idempotency replay/conflict handling, session-expiry recovery, and distinct public/private cache rules for later state-matrix consumers.
+- **Accessibility evidence:** No UI changed. Future BFF errors use stable localisable codes and request IDs so FE-053 can associate accessible field/status recovery without raw backend detail.
+- **Locales reviewed:** No message copy changed. Safe locale forwarding covers `en`, `ha`, `ig`, and `yo`; human translation review remains pending.
+- **Performance/cache impact:** Public Server Component reads retain only the documented `ETag`/public response policy. Every mutation, tracking, Q&A, discovery, reviewer, auth, and evidence route is no-store; timeouts are bounded and streaming upload/download avoids full-body buffering.
+- **Commands run and results:** `make frontend-contract-check`; `python3 scripts/validate_frontend_bff_operation_map.py --self-test`; the four frontend Circle 0 validators; and the six repository Circle 0 validators passed. No planned web build/test command was run because `apps/web` does not exist yet.
+- **Screenshots/traces/artifacts checked:** Reviewed every generated non-health operation, route-matrix ownership, handoff cache/session semantics, and final diff. No runtime BFF/UI exists yet to screenshot or trace.
+- **Known limitations/open decisions:** The map is a design/implementation contract, not a Route Handler implementation. Concrete headers, schemas, generated client imports, CSRF token lifecycle, and bundle tests begin in Circle 2/3. Circle 1 visual direction remains human-gated.
+- **Commit/PR:** `docs: map frontend BFF operations`
+- **Next task may rely on:** Exact BFF path ownership, profile-based guard/caching/redaction rules, and complete operation coverage without a generic proxy.
+- **AI assistance used:** Reconciled OpenAPI, route ownership, state rules, and backend handoff into one validator-backed BFF ledger; explicitly excluded unsafe generic forwarding and frontend policy decisions.
+- **Prompt summary:** Use the frontend loop and continue the next eligible frontend task.
+- **Human review:** none yet; unattended run, pending maintainer review.
