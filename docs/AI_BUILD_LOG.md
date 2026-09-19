@@ -1333,3 +1333,17 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Ran the redacted repository/history review, classified synthetic candidates, added the public-schema guard, consolidated privacy evidence, and refused to substitute AI review for the required manual source audit.
 - **Prompt summary:** Continue Circle 12 from the existing branch and in-progress work.
 - **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
+
+## 2026-09-20 — FE-000 frontend scope and authority reconciliation
+
+- **Task:** FE-000 — Reconcile frontend scope and authority.
+- **Outcome delivered:** A frontend traceability contract maps all five journeys, 16 must-have capabilities, Product Brief acceptance criteria, routes, data classes, cache/render rules, backend operations, enforcement boundaries, non-goals, and proof owners before UI or BFF implementation begins.
+- **Files changed:** `PRODUCT.md`, `docs/FRONTEND_REQUIREMENTS_TRACEABILITY.md`, `docs/FRONTEND_BUILD_ORDER.md`, `docs/README.md`, `scripts/validate_frontend_traceability.py`, and this log.
+- **Contract/schema impact:** No generated contract or runtime schema changed. The register consumes the committed OpenAPI `0.0.0` operation IDs and frontend fixture schema `1` without inspecting backend implementation.
+- **Security/privacy impact:** Public, public-after-review, private, one-time-secret, and operational-only fields now have explicit browser/cache handling. The BFF is explicitly excluded as sole domain, authorisation, verification, or publication authority.
+- **Accessibility/localisation impact:** Ownership is assigned for keyboard, focus, error association, text-not-colour status, WCAG 2.2 AA, four-locale parity, honest translation status, and source-language preservation; no translated copy or accessibility implementation is claimed yet.
+- **Verification:** `python3 scripts/validate_frontend_traceability.py --self-test` validates all frontend task references, all 35 non-health OpenAPI operations, five journeys, 16 capabilities, 29 acceptance criteria, five data classes, eight non-goals, and three negative mutations. JSON/OpenAPI parsing, local Markdown links, Python compilation, whitespace, and staged-diff checks are run before commit.
+- **Human review:** The maintainer directed frontend work from the completed backend baseline. The mapping remains reviewable in its task commit; no visual direction or fluent language review has been approved yet.
+- **Result:** FE-001 may define the detailed route/journey matrix without inventing backend fields. The evidence register's unresolved human-audit gaps remain visible and are not misrepresented as frontend work.
+- **AI assistance used:** Reconciled product, frontend build order, OpenAPI, controlled vocabulary, source register, and backend handoff into one validated authority map; updated stale product evidence wording to match repository reality.
+- **Prompt summary:** Create a frontend branch from the maintainer's in-progress backend branch and begin the frontend build order while leaving backend gate-closing work out of scope.

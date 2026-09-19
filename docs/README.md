@@ -24,6 +24,7 @@ If implementation reveals a conflict, do not silently choose one version. Correc
 | [`BACKEND_BUILD_ORDER.md`](BACKEND_BUILD_ORDER.md) | Execution specification | In what exact order should the API, worker, persistence, security, and operations be implemented and proven? |
 | [`FRONTEND_BUILD_ORDER.md`](FRONTEND_BUILD_ORDER.md) | Execution specification | In what exact order should the UI/BFF, visual system, four-language experience, PWA, and reviewer surfaces be implemented and proven? |
 | [`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md) | Active control | Which backend task and proof owns every accepted capability, acceptance criterion, journey, and non-goal? |
+| [`FRONTEND_REQUIREMENTS_TRACEABILITY.md`](FRONTEND_REQUIREMENTS_TRACEABILITY.md) | Active control | Which frontend task, route, operation, data class, cache rule, and proof owns every user-facing requirement? |
 | [`decisions/`](decisions/README.md) | Accepted decision records | Which hard-to-reverse backend choices are binding, what was rejected, and which tasks enforce them? |
 | [`THREAT_MODEL.md`](THREAT_MODEL.md) | Design contract | Which data is private or secret, where may it flow, how is it deleted, and which task proves each control? |
 | [`PRIVACY_AND_SAFETY.md`](PRIVACY_AND_SAFETY.md) | Implemented prototype controls | Which privacy controls exist, what evidence proves them, and what still blocks production? |

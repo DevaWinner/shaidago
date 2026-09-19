@@ -160,6 +160,8 @@ Colocate a component with a feature when it has one domain owner. Promote it to 
 
 ### FE-000 — Reconcile frontend scope and authority
 
+> **Execution status (2026-09-20): complete.** [`FRONTEND_REQUIREMENTS_TRACEABILITY.md`](FRONTEND_REQUIREMENTS_TRACEABILITY.md) maps all accepted journeys, capabilities, acceptance criteria, routes, data classes, backend operations, enforcement boundaries, and proof owners. Its dependency-free validator checks frontend task and OpenAPI-operation coverage.
+
 1. Read `PRODUCT.md`, `AGENTS.md`, `docs/PRODUCT_BRIEF.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/BACKEND_BUILD_ORDER.md`, and the committed OpenAPI contract.
 2. Map every frontend acceptance criterion to a circle/task in this document.
 3. Confirm route ownership and render/cache rules from the implementation plan.
