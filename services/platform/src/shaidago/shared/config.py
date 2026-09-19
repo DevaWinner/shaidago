@@ -305,6 +305,14 @@ class RateLimitSettings(_Section):
     )
     qa_per_hour: PositiveInt = Field(default=30, validation_alias="RATE_QA_PER_HOUR")
     discovery_per_hour: PositiveInt = Field(default=5, validation_alias="RATE_DISCOVERY_PER_HOUR")
+    # Global cap on fresh public discovery runs per Africa/Lagos day (provider budget).
+    discovery_public_daily_runs: PositiveInt = Field(
+        default=20, validation_alias="DISCOVERY_PUBLIC_DAILY_RUNS"
+    )
+    # Per-reviewer cap on reviewer-started runs per hour.
+    discovery_reviewer_per_hour: PositiveInt = Field(
+        default=10, validation_alias="RATE_DISCOVERY_REVIEWER_PER_HOUR"
+    )
 
 
 class ObservabilitySettings(_Section):

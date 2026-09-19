@@ -985,6 +985,8 @@ Implement Brave Search behind an interface with maximum ten results, strict time
 - Reviewer runs: authenticated/audited, separate per-reviewer cap, no public cache reuse for private scope.
 - Budget exhaustion returns latest completed public run/date where safe, not a hidden provider error.
 
+> **Execution status (2026-09-19): complete.** `discovery/search.py` defines a `SearchProvider` that returns URLs only (no rank, snippet, or popularity in the result type, so none can be persisted), with a Brave adapter (at most ten results, strict timeout, bounded retries for 429, 5xx, and network errors, non-retryable client errors, a response byte cap, http(s)-only deduplicated URLs, and an outbound query re-check before any request) and a labelled `demo_replay` fixture adapter keyed by query fingerprint. `discovery/budget.py` is the pure public-run decision: reuse a fresh or in-flight run, create while the daily budget (`DISCOVERY_PUBLIC_DAILY_RUNS`, default 20) remains, otherwise show the latest completed run or say unavailable; `RATE_DISCOVERY_REVIEWER_PER_HOUR` adds a per-reviewer cap. 72 unit tests use `httpx.MockTransport` (no network) and cover request shape, unsafe queries never reaching the transport, retry and backoff bounds, timeouts leaking nothing, every budget branch, and fixture-file validation. The atomic database function that applies the budget and the per-IP-HMAC limit belong to the run APIs (BE-096); a live Brave call was not made.
+
 ### BE-093 — SSRF-safe public fetcher
 
 Implement from primitives; do not rely on a URL regex alone.

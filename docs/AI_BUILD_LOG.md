@@ -1009,3 +1009,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the planner and property tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-092 Search provider adapter and budgets
+
+- **Task:** BE-092 — Search provider adapter and budgets.
+- **Outcome delivered:** A URL-only search provider interface, a Brave adapter, a labelled replay adapter, and a pure public-run budget decision, with two new settings.
+- **Files changed:** `services/platform/src/shaidago/discovery/{search,budget}.py`, `src/shaidago/shared/config.py`, `tests/unit/discovery/test_search.py`, `.env.example`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** The adapter refuses any query the planner would refuse, before a request exists; the credential is never in a repr, log, or exception; results cannot carry snippets or ranks.
+- **Failure behaviour verified:** see the build order note.
+- **Commands run and results:** `make backend-verify` exit 0 (1615 passed).
+- **Tests added or changed:** 72 unit tests (adapter, fixtures, budget).
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** No live Brave call was made (hard stop: live provider). The Brave response shape (`web.results[].url`) follows the provider's documented format and is unverified against a live response. Whether the active Brave plan permits storing snippets is unresolved, so none are stored.
+- **Commit/PR:** `feat: add the search provider adapter and public-run budget decision`
+- **Next task may rely on:** `SearchProvider`, `FixtureSearchProvider`, and `decide_public_run`.
+- **AI assistance used:** Designed and wrote the adapters, decision function, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
