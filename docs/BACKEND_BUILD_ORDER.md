@@ -1133,6 +1133,8 @@ Define testable budgets before measurement:
 
 Use realistic six-to-eight project data plus scaled synthetic rows to catch pagination/N+1 issues. Preserve command, dataset size, environment, results, and accepted variance. Optimise measured bottlenecks only.
 
+> **Execution status (2026-09-19): complete.** The budgets are declared in `docs/PERFORMANCE_BUDGETS.md` before measurement (p95 latency, SQL statement counts, response sizes, upload and worker limits, database pool and timeouts, readiness, chunk size) and enforced by `tests/integration/test_performance_budgets.py` on 600 scaled synthetic projects and 600 scaled private reports plus the real fictional data. Measured with 120 requests per endpoint through the ASGI app against real roles: public list 4.0 ms p95 (1 statement), public detail 3.8 ms (6), reviewer queue 6.2 ms (2), reviewer detail 5.7 ms (7), tracking 255.6 ms (the intentional 250 ms equalisation floor); statement counts are identical with and without the scaled rows (no hidden N+1). The command, dataset, environment, and accepted variance are in `docs/evidence/BE-104-performance.md`. No optimisation was made because nothing approached its budget. Hosted latency, multi-user load, and Argon2 cost on the deployed instance size were not measured.
+
 ### BE-105 — Security scanning and dependency review
 
 Run Ruff security rules as selected, Semgrep, Bandit if retained, `pip-audit`, Gitleaks, Trivy for the container, and CodeQL. Triage findings with file, reachability, severity, decision, owner, and deadline. High/critical exploitable findings block release. Suppressions are narrow, justified inline/configured, and reviewed.

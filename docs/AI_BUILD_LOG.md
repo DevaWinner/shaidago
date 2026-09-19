@@ -1189,3 +1189,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and wrote the suite and fixes.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-104 Performance and resource budgets
+
+- **Task:** BE-104 — Performance and resource budgets.
+- **Outcome delivered:** Declared budgets, a scaled-data budget test, and preserved measurements.
+- **Files changed:** `docs/PERFORMANCE_BUDGETS.md`, `docs/evidence/BE-104-performance.md`, `services/platform/tests/integration/test_performance_budgets.py`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** None.
+- **Failure behaviour verified:** Not applicable; the test caught nothing to fix.
+- **Commands run and results:** `make backend-verify` exit 0 (1990 passed).
+- **Tests added or changed:** 5 tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** Latency is in-process (no network); the budgets are generous by design; production Argon2 timing must be repeated on the Railway instance size.
+- **Commit/PR:** `test: declare performance budgets and measure them on scaled data`
+- **Next task may rely on:** the budget table as the reference for Circle 11 sizing.
+- **AI assistance used:** Wrote the budgets, test, and evidence note.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
