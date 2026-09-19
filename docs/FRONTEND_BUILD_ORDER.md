@@ -301,6 +301,8 @@ Record the standing preference in `.impeccable/config.json` if that workflow is 
 
 ### FE-013 — Direction contract and surface brief
 
+> **Execution status (2026-09-20): complete.** [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) defines the Field ledger contract, semantic starting tokens, `/{locale}` surface brief, cross-surface grammar, exact code-led first viewport, citation stitch, responsive transformation, and review boundaries. `DESIGN.md` remains intentionally absent until Circle 15 documents a reviewed implementation.
+
 Write a compact direction contract containing:
 
 - **THESIS:** what ShaidaGo's interface uniquely demonstrates and which category default it rejects;
@@ -314,7 +316,7 @@ Plan for this contract to survive as the first emitted body comment in the root 
 
 ### Circle 1 exit gate
 
-> **Gate status (2026-09-20): open.** Awaiting maintainer-approved visual direction and build path from FE-010. FE-011 through FE-013 and all visible Circle 4+ surfaces remain ineligible; Circle 2/3 work whose dependencies are otherwise met may proceed.
+> **Gate status (2026-09-20): closed.** The maintainer approved Field ledger and the code-led workflow; FE-010 through FE-013 record the human constraints, comparison, execution preference, exact first viewport, token roles, citation interaction, and cross-surface grammar. Visible Circle 4+ tasks may begin only from this contract, not library defaults. `DESIGN.md` remains deferred until Circle 15.
 
 - Human has selected one direction and build path.
 - Direction handles public, report, reviewer, and source-reading modes within one world.
