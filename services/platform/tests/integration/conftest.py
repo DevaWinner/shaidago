@@ -11,10 +11,13 @@ from contextlib import contextmanager
 
 import psycopg
 import pytest
+from alembic import command
 from psycopg import sql
 from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from shaidago.db.provision import PASSWORD_VARIABLES, provision
+from shaidago.db.revision import alembic_config
 from shaidago.shared.database import Database, build_engine
 
 
@@ -89,3 +92,20 @@ async def engine(database_url: URL) -> AsyncIterator[AsyncEngine]:
 @pytest.fixture
 async def database(engine: AsyncEngine) -> Database:
     return Database(engine)
+
+
+@pytest.fixture(scope="module")
+def role_urls(
+    admin_connection: psycopg.Connection[tuple[object, ...]],
+) -> Iterator[dict[str, URL]]:
+    """A migrated database with every application role able to log in, keyed by role name."""
+    password = "module-role-password-"
+    with disposable_database(admin_connection) as owner:
+        command.upgrade(alembic_config(owner.render_as_string(hide_password=False)), "head")
+        provision(
+            {"DATABASE_URL": owner.render_as_string(hide_password=False)}
+            | {variable: password + role for role, variable in PASSWORD_VARIABLES.items()}
+        )
+        yield {
+            role: owner.set(username=role, password=password + role) for role in PASSWORD_VARIABLES
+        } | {"owner": owner}

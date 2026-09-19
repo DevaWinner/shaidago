@@ -5,6 +5,7 @@ import pytest
 from alembic import command
 from alembic.autogenerate import compare_metadata
 from alembic.migration import MigrationContext
+from alembic.script import ScriptDirectory
 from sqlalchemy import Column, ForeignKey, Integer, MetaData, String, Table, create_engine, text
 from sqlalchemy.engine import URL
 from sqlalchemy.schema import CreateTable
@@ -77,10 +78,10 @@ def test_second_upgrade_is_a_no_op(empty_url: URL) -> None:
 
 def test_head_can_step_down_one_revision_and_up_again(empty_url: URL) -> None:
     config = alembic_config(render(empty_url))
+    parent = ScriptDirectory.from_config(config).get_revision(expected_head()).down_revision
     command.upgrade(config, "head")
     command.downgrade(config, "-1")
-    assert applied_revision(empty_url) == ["0001_baseline"]
-    assert query(empty_url, "SELECT to_regclass('app.idempotency_records')") == [(None,)]
+    assert applied_revision(empty_url) == [parent]
     command.upgrade(config, "head")
     assert applied_revision(empty_url) == [expected_head()]
 

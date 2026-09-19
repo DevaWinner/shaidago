@@ -466,6 +466,8 @@ Create migrations, ORM mappings, domain types, repositories, and services for:
 
 Constraints enforce unique slugs, supported locale values, non-future last-checked dates unless explicitly allowed for scheduled data, and no public project without at least one approved locale representation. Repositories return explicit projections, not ORM entities.
 
+> **Execution status (2026-09-19): complete.** Three tables, the deferred English-source-text rule, and public views are proven by 19 PostgreSQL integration tests plus vocabulary parity tests (`make backend-verify` exit 0, 246 passed). No rows were seeded; the repository never labels fallback text as translated.
+
 ### BE-041 — Sources, immutable versions, and citations
 
 Implement `sources`, `source_versions`, `project_facts`, `fact_citations`, `project_updates`, and `update_citations`.
