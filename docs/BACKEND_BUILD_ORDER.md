@@ -264,6 +264,8 @@ Add Make targets or scripts with one implementation behind each name:
 
 Targets must fail on the first failed child command, use no developer-global packages, and produce the same result locally and in CI.
 
+> **Execution status (2026-09-19): complete.** The root `Makefile` provides every listed target except `openapi-generate` and `openapi-check`, which wait for the Circle 2 app. `make backend-verify` ran green locally, and negative checks confirmed that a failing test and a lint violation each produce a non-zero exit. The integration and contract layers hold no tests yet, so their targets print that fact and exit 0 (pytest exit code 5 only); BE-030 and BE-045 must add the first tests there.
+
 ### BE-012 — Add backend CI without false claims
 
 1. Create a least-privilege GitHub Actions workflow pinned by full action commit SHA with version comments.

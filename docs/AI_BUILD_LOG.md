@@ -93,3 +93,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Chose dependency purposes, tool configuration, and the smoke test; checked licences and vulnerabilities.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-011 canonical backend commands
+
+- **Task:** BE-011 — Establish canonical backend commands.
+- **Outcome delivered:** A root `Makefile` with one implementation per backend command name, all running through `uv run --frozen` in `services/platform`.
+- **Files changed:** `Makefile`, `services/platform/README.md`, `README.md`, `CLAUDE.md`, build order note.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** Adds Bandit and pip-audit as `backend-security`; no runtime change.
+- **Failure behaviour verified:** A deliberately failing test made `make backend-unit` exit 2, and an unused import made `make backend-lint` exit 2; both temporary files were removed. Empty integration and contract layers are reported explicitly and pass only on pytest exit code 5.
+- **Commands run and results:** `make backend-verify` passed (sync, format check, lint, Pyright 0 errors, Bandit, pip-audit no known vulnerabilities, pytest 1 passed). `make backend-integration backend-contract` printed "no tests collected yet". Circle 0 validators passed.
+- **Tests added or changed:** None; negative checks were temporary.
+- **Generated artifacts checked:** `uv.lock` unchanged.
+- **Known limitations/open decisions:** `openapi-generate` and `openapi-check` are absent until Circle 2. The empty-layer allowance must be removed once each layer has tests. `pip-audit` needs network access to the vulnerability service, so it is not fully offline.
+- **Commit/PR:** `build: add canonical backend make targets`
+- **Next task may rely on:** `make backend-verify` as the single local gate for CI to call (BE-012).
+- **AI assistance used:** Designed the Makefile targets and the empty-layer handling.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

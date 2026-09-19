@@ -19,7 +19,7 @@ uv run pyright
 uv run pytest
 ```
 
-Canonical `make` targets arrive with BE-011.
+From the repository root, `make backend-verify` runs the canonical backend gate (frozen sync, format check, lint, Pyright, Bandit, pip-audit, tests); `make help` lists the individual targets. `openapi-generate` and `openapi-check` arrive with the Circle 2 app.
 
 ## Layout
 
