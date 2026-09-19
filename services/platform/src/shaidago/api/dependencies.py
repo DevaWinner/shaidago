@@ -2,12 +2,14 @@
 
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from time import monotonic
 
 from fastapi import Request
 
 from shaidago.auth.passwords import PasswordVerifier
 from shaidago.files.pipeline import EvidencePipeline
 from shaidago.files.storage import ObjectStore
+from shaidago.retrieval.language import LanguageModel
 from shaidago.shared.clock import Clock, SystemClock
 from shaidago.shared.config import Settings
 from shaidago.shared.context import new_request_id
@@ -37,6 +39,8 @@ class Dependencies:
     ids: IdGenerator = field(default_factory=Uuid7Generator)
     password_verifier: PasswordVerifier = field(default_factory=PasswordVerifier)
     rate_limiter: RateLimiter | None = None
+    language_model: LanguageModel | None = None
+    monotonic: Callable[[], float] = monotonic
     # None means attachments cannot be processed; reports are still accepted without them.
     evidence_pipeline: EvidencePipeline | None = None
     # Private evidence bytes for the reviewer download broker; None means downloads are unavailable.

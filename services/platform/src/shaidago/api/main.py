@@ -12,6 +12,8 @@ from shaidago.files.pipeline import EvidencePipeline, PipelineParts, SanitiserPo
 from shaidago.files.rules import FileLimits
 from shaidago.files.scanner import ClamdScanner, build_scanner
 from shaidago.files.storage import S3ObjectStore
+from shaidago.retrieval.language import QA_FIXTURES_ROOT, FixtureLanguageModel
+from shaidago.retrieval.openai import OpenAILanguageModel
 from shaidago.shared.config import load_settings
 from shaidago.shared.database import Database, create_engine
 from shaidago.shared.health import HealthCheck
@@ -65,6 +67,18 @@ def create_configured_app() -> FastAPI:
         timeout_seconds=limits.store_timeout_seconds,
     )
     pipeline = EvidencePipeline(PipelineParts(scanner, store, pool.executor), limits=limits)
+    language_model: FixtureLanguageModel | OpenAILanguageModel
+    managed_providers: tuple[OpenAILanguageModel, ...] = ()
+    if settings.providers.mode == "replay":
+        language_model = FixtureLanguageModel.from_path(QA_FIXTURES_ROOT / "grounded-qa-v1.json")
+    else:
+        key = settings.providers.openai_api_key
+        if key is None:  # load_settings enforces this; keep the construction boundary explicit.
+            raise RuntimeError("live Q&A provider is not configured")
+        language_model = OpenAILanguageModel(
+            api_key=key.get_secret_value(), model_id=settings.providers.qa_model
+        )
+        managed_providers = (language_model,)
     probes: list[HealthCheck] = [
         public,
         revision_check,
@@ -76,11 +90,12 @@ def create_configured_app() -> FastAPI:
     return create_app(
         settings,
         Dependencies(
-            resources=(public, reviewer, limiter, pool),
+            resources=(public, reviewer, limiter, pool, *managed_providers),
             health_checks=tuple(probes),
             public_database=public,
             reviewer_database=reviewer,
             rate_limiter=limiter,
+            language_model=language_model,
             evidence_pipeline=pipeline,
             evidence_store=store,
         ),

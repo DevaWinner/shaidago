@@ -90,6 +90,10 @@ class OpenAILanguageModel:
             demo_replay=False,
         )
 
+    async def open(self) -> None:
+        """The HTTP pool connects lazily; lifecycle symmetry keeps shutdown deterministic."""
+        return
+
     async def _send(self, body: dict[str, object]) -> object:
         request = self._client.build_request(
             "POST",

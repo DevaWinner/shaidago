@@ -1251,6 +1251,93 @@
         "title": "ProjectPageOut",
         "type": "object"
       },
+      "ProjectQuestionIn": {
+        "additionalProperties": false,
+        "properties": {
+          "question": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Question",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question"
+        ],
+        "title": "ProjectQuestionIn",
+        "type": "object"
+      },
+      "ProjectQuestionOut": {
+        "properties": {
+          "answer": {
+            "title": "Answer",
+            "type": "string"
+          },
+          "confidence_note": {
+            "title": "Confidence Note",
+            "type": "string"
+          },
+          "generated_at": {
+            "format": "date-time",
+            "title": "Generated At",
+            "type": "string"
+          },
+          "insufficient_evidence": {
+            "title": "Insufficient Evidence",
+            "type": "boolean"
+          },
+          "requested_locale": {
+            "enum": [
+              "en",
+              "ha",
+              "ig",
+              "yo"
+            ],
+            "title": "Requested Locale",
+            "type": "string"
+          },
+          "retrieval": {
+            "$ref": "#/components/schemas/RetrievalOut"
+          },
+          "served_locale": {
+            "enum": [
+              "en",
+              "ha",
+              "ig",
+              "yo"
+            ],
+            "title": "Served Locale",
+            "type": "string"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/QuestionSourceOut"
+            },
+            "title": "Sources",
+            "type": "array"
+          },
+          "statements": {
+            "items": {
+              "$ref": "#/components/schemas/QuestionStatementOut"
+            },
+            "title": "Statements",
+            "type": "array"
+          }
+        },
+        "required": [
+          "answer",
+          "statements",
+          "insufficient_evidence",
+          "confidence_note",
+          "requested_locale",
+          "served_locale",
+          "generated_at",
+          "retrieval",
+          "sources"
+        ],
+        "title": "ProjectQuestionOut",
+        "type": "object"
+      },
       "ProjectSummaryOut": {
         "properties": {
           "category": {
@@ -1457,6 +1544,84 @@
           "question"
         ],
         "title": "QuestionRequest",
+        "type": "object"
+      },
+      "QuestionSourceOut": {
+        "properties": {
+          "citation_id": {
+            "title": "Citation Id",
+            "type": "string"
+          },
+          "passage": {
+            "title": "Passage",
+            "type": "string"
+          },
+          "publisher": {
+            "title": "Publisher",
+            "type": "string"
+          },
+          "retrieved_at": {
+            "format": "date-time",
+            "title": "Retrieved At",
+            "type": "string"
+          },
+          "section_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Section Label"
+          },
+          "source_id": {
+            "format": "uuid",
+            "title": "Source Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "citation_id",
+          "source_id",
+          "title",
+          "publisher",
+          "url",
+          "retrieved_at",
+          "passage",
+          "section_label"
+        ],
+        "title": "QuestionSourceOut",
+        "type": "object"
+      },
+      "QuestionStatementOut": {
+        "properties": {
+          "citation_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Citation Ids",
+            "type": "array"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "citation_ids"
+        ],
+        "title": "QuestionStatementOut",
         "type": "object"
       },
       "QueueItemOut": {
@@ -1824,6 +1989,28 @@
           "follow_up_questions"
         ],
         "title": "ReportStatusOut",
+        "type": "object"
+      },
+      "RetrievalOut": {
+        "properties": {
+          "chunks_considered": {
+            "title": "Chunks Considered",
+            "type": "integer"
+          },
+          "mode": {
+            "enum": [
+              "keyword",
+              "hybrid"
+            ],
+            "title": "Mode",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mode",
+          "chunks_considered"
+        ],
+        "title": "RetrievalOut",
         "type": "object"
       },
       "ReviewerOut": {
@@ -2926,6 +3113,100 @@
           }
         },
         "summary": "Get Project",
+        "tags": [
+          "projects"
+        ]
+      }
+    },
+    "/v1/projects/{slug}/questions": {
+      "post": {
+        "operationId": "ask_project_question_v1_projects__slug__questions_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "maxLength": 80,
+              "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectQuestionIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectQuestionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "429": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Ask Project Question",
         "tags": [
           "projects"
         ]

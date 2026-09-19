@@ -5,6 +5,7 @@ import pytest
 from shaidago.retrieval.search import (
     EMBEDDING_DIMENSIONS,
     MAX_QUERY_CHARS,
+    keyword_expression,
     normalise_query,
     vector_literal,
 )
@@ -13,6 +14,12 @@ from shaidago.retrieval.search import (
 def test_query_normalisation_is_bounded_unicode_aware_and_deterministic() -> None:
     assert normalise_query("  \uff21\uff2d\uff21\uff23 road  ") == "AMAC road"
     assert normalise_query("a\u0301") == "á"
+
+
+def test_conversational_query_uses_deduplicated_or_terms_for_keyword_fallback() -> None:
+    assert keyword_expression("When did the synthetic clinic open, synthetic?") == (
+        "when OR did OR the OR synthetic OR clinic OR open"
+    )
 
 
 @pytest.mark.parametrize(

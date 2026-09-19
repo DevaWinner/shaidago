@@ -1,6 +1,7 @@
 """Project-isolated full-text and vector retrieval with reciprocal-rank fusion."""
 
 import math
+import re
 import unicodedata
 from collections.abc import Sequence
 from dataclasses import dataclass
@@ -17,6 +18,9 @@ MAX_RESULTS = 10
 RRF_K = 60
 EMBEDDING_MODEL_MAX_CHARS = 100
 VECTOR_ABS_MAX = 100
+MAX_KEYWORD_TERMS = 30
+
+_QUERY_TERMS = re.compile(r"[^\W_]+", re.UNICODE)
 
 RetrievalMode = Literal["keyword", "hybrid"]
 
@@ -96,6 +100,13 @@ def normalise_query(value: str) -> str:
     return normalised
 
 
+def keyword_expression(value: str) -> str:
+    """Build a bounded web-search OR query so conversational filler cannot hide a useful hit."""
+    normalised = normalise_query(value)
+    terms = list(dict.fromkeys(_QUERY_TERMS.findall(normalised.casefold())))[:MAX_KEYWORD_TERMS]
+    return " OR ".join(terms)
+
+
 def vector_literal(values: Sequence[float]) -> str:
     if len(values) != EMBEDDING_DIMENSIONS:
         raise ValueError(f"embedding must have {EMBEDDING_DIMENSIONS} dimensions")
@@ -125,7 +136,7 @@ class Retriever:
         statement: TextClause = _KEYWORD
         parameters: dict[str, object] = {
             "project": project_id,
-            "query": safe_query,
+            "query": keyword_expression(safe_query),
             "rrf_k": RRF_K,
             "limit": limit,
         }
