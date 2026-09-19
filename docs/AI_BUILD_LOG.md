@@ -1207,3 +1207,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the budgets, test, and evidence note.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-105 Security scanning and dependency review
+
+- **Task:** BE-105 — Security scanning and dependency review.
+- **Outcome delivered:** Scanners run and triaged, a narrow secret-scan allowlist, and a security workflow.
+- **Files changed:** `.gitleaks.toml`, `.github/workflows/security.yml`, `docs/SECURITY_SCAN_TRIAGE.md`, `docs/BACKEND_BUILD_ORDER.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** Confirms no committed secret; documents the scan gaps.
+- **Failure behaviour verified:** Not applicable.
+- **Commands run and results:** `gitleaks detect` (6 findings, then 0 with the allowlist), `uvx semgrep@1.177.0` (0 findings, 9 partial parses), `make backend-verify` (Bandit, pip-audit, Ruff clean).
+- **Tests added or changed:** None.
+- **Generated artifacts checked:** The workflow YAML parses.
+- **Known limitations/open decisions:** **CodeQL and Trivy are pending** and are open items of the Circle 10 gate. Docker images for Gitleaks were pulled from a public registry to run the scan. The allowlist would hide the same placeholder wherever it appeared, so a real key must never look like it.
+- **Commit/PR:** `ci: add secret, static-analysis, and CodeQL scanning with a triage record`
+- **Next task may rely on:** the security workflow, where the Trivy job for BE-110 belongs.
+- **AI assistance used:** Ran the scanners, triaged the findings, and wrote the workflow and record.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

@@ -1139,6 +1139,8 @@ Use realistic six-to-eight project data plus scaled synthetic rows to catch pagi
 
 Run Ruff security rules as selected, Semgrep, Bandit if retained, `pip-audit`, Gitleaks, Trivy for the container, and CodeQL. Triage findings with file, reachability, severity, decision, owner, and deadline. High/critical exploitable findings block release. Suppressions are narrow, justified inline/configured, and reviewed.
 
+> **Execution status (2026-09-19): partial.** Run and triaged in `docs/SECURITY_SCAN_TRIAGE.md`: Ruff security rules, Bandit, and `pip-audit` (all through `make backend-verify`) pass; Gitleaks over the whole history found 6 `generic-api-key` matches, all documented synthetic placeholders, now allowlisted by exact value in `.gitleaks.toml` (0 findings after); Semgrep 1.177.0 (`p/python`, `p/security-audit`) reported 0 findings over 172 files, with a named gap (9 files use Python 3.14's unparenthesised `except A, B:` form, which this Semgrep version only partially parses). `.github/workflows/security.yml` runs Gitleaks (image pinned by digest), Semgrep (version pinned), and CodeQL (pinned action SHAs, least-privilege permissions) on every pull request, push, and weekly; its YAML parses, but it has not run on GitHub. **Pending:** the first CodeQL run (hosted, and its Python 3.14 support is unconfirmed) and Trivy on the container, which does not exist until BE-110. No high or critical finding is open.
+
 ### BE-106 — Retention, deletion, and operational privacy
 
 Implement or document enforceable prototype policies for:
