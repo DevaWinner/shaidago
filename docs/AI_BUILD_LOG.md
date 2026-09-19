@@ -1619,3 +1619,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Framed and evaluated candidate worlds against audience identification and product clarity, then documented the maintainer's selected system without using unverified cultural or public-record claims.
 - **Prompt summary:** Using Impeccable, present choices for ShaidaGo's frontend feel, look, and tokens; maintainer selected Field ledger.
 - **Human review:** The maintainer selected Field ledger after the comparison on 20 September 2026.
+
+## 2026-09-20 — FE-012 choose code-led execution
+
+- **Task:** FE-012 — Choose comp-led or code-led execution.
+- **User outcome delivered:** The frontend has a durable code-led workflow preference, so future UI work has an explicit fidelity contract instead of treating the absence of a comp as permission to use defaults.
+- **Routes/components changed:** No runtime route or component changed. [`.impeccable/config.json`](../.impeccable/config.json) sets the standing workflow; [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) explains the execution implications.
+- **Backend operations/contract version:** No backend operation or contract changed.
+- **Public/private data handled:** No data flow changed.
+- **States implemented:** No UI state changed. Future states must preserve the selected world without visual motion or media being necessary to understand a state.
+- **Accessibility evidence:** The workflow requires keyboard, semantic, reduced-motion, responsive, and low-data evidence when components are built; none can be claimed before implementation.
+- **Locales reviewed:** No message copy or translation changed.
+- **Performance/cache impact:** No runtime asset, bundle, or cache changed. Code-led execution avoids making the public experience depend on generated raster imagery.
+- **Commands run and results:** Verified the committed JSON is intentionally minimal and valid; project documentation validators remain the available checks before the frontend toolchain branch is integrated.
+- **Screenshots/traces/artifacts checked:** None; a code-led direction has no approved comp. Later visual review compares renders to the written direction contract.
+- **Known limitations/open decisions:** FE-013 must now define the exact first viewport and token roles. `DESIGN.md` remains deferred until the reviewed product exists.
+- **Commit/PR:** `docs: set the code-led visual workflow`
+- **Next task may rely on:** FE-013 can write the implementation contract without inventing an execution preference.
+- **AI assistance used:** Explained the code-led trade-off and persisted the selection without adding imagery, providers, or runtime dependencies.
+- **Prompt summary:** Using Impeccable, present choices for ShaidaGo's frontend feel, look, and tokens; maintainer selected Field ledger.
+- **Human review:** The Field ledger decision board recorded code-led execution as the selected build path on 20 September 2026.
