@@ -897,3 +897,22 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the schema, retrieval and fixture paths, explicit provider command, tests, dependency review, and documentation.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-082 OpenAI provider and strict schema
+
+- **Task:** BE-082 — OpenAI provider and strict schema.
+- **Outcome delivered:** A typed language-model boundary for grounded answers, a deterministic checked-in replay adapter, and a bounded OpenAI Responses API adapter that returns only strictly shaped answer data plus application-owned generation time.
+- **Files changed:** `data/qa-fixtures/{README.md,grounded-qa-v1.json}`, `services/platform/src/shaidago/retrieval/{language,openai}.py`, `services/platform/tests/unit/retrieval/{test_language,test_openai}.py`, and backend execution documentation.
+- **Schema/contract changes:** No database or HTTP contract change. The internal `grounded-answer-v1` schema contains `answer`, bounded `statements[{text,citation_ids}]`, `insufficient_evidence`, a bounded coverage note, and `generated_at`; every object forbids additional properties and citation IDs use an opaque application format.
+- **Security/privacy impact:** The outbound payload is an explicit allowlist of locale, bounded question, up to five approved public passages, opaque citation IDs, and the application timestamp. The request sets `store: false`, supplies no tools, carries no metadata or user identifier, caps generated tokens, and uses a streamed 64 KiB response limit. Provider and transport errors expose stable codes only; neither the adapter nor tests log prompts, passage text, upstream bodies, or credentials. Checked-in replay data stores a fingerprint and synthetic structured output, not the raw question or passage.
+- **Dependencies added:** None; the existing `httpx` and Pydantic dependencies implement the transport and strict boundary.
+- **Failure behaviour verified:** Timeouts, transport failures, 408/409/429, and 5xx are classified retryable but are not retried by the adapter. Other 4xx, malformed JSON/schema, oversized output, incomplete output, multiple messages, and timestamp changes are non-retryable. Refusals and provider-added tool/action content are policy failures. A missing replay fingerprint is explicit and non-retryable. All failure strings omit upstream and input content.
+- **Commands run and results:** Official OpenAI Responses and Structured Outputs documentation was checked before implementation; targeted Ruff and Pyright passed; provider and replay unit tests passed (24); the corrected retrieval unit/integration run passed (47); `make backend-verify` exited 0 with formatting, lint, strict types, Bandit, `pip-audit`, OpenAPI drift, and 1191 deterministic tests passing. No live provider call was made.
+- **Tests added or changed:** Seven request/schema/replay fixture tests and seventeen Responses transport tests, including exact outbound shape, `store: false`, empty tools, model selection, body cap, safe classifications, one-attempt behaviour, refusal/action rejection, and timestamp validation.
+- **Generated artifacts checked:** `make openapi-check` passed inside the full gate; OpenAPI and lockfiles are unchanged. The replay fixture contains only a synthetic answer and a stable request digest.
+- **Known limitations/open decisions:** Shape validation is deliberately not the citation/safety judgement: unknown citations, statement support, guarded language, and approved insufficient-evidence fallback belong to the next validator task. The single replay record proves the adapter path but the four-language evaluation corpus arrives later. Live interoperability remains unclaimed until an authorised opt-in provider run.
+- **Commit/PR:** `feat: add strict grounded-answer provider boundary`
+- **Next task may rely on:** `GroundedAnswerRequest`, `LanguageModelResult`, `RetryClass`, the exact application timestamp check, and the distinction between replay and live results.
+- **AI assistance used:** Used official OpenAI documentation to confirm the current Responses request fields, then designed and implemented the provider boundary, replay fixture, safe parser, and adversarial transport tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

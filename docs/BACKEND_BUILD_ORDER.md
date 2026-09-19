@@ -893,6 +893,8 @@ Required output schema:
 
 Implement deterministic fixture adapter for every CI path. Do not retry validation/policy failures blindly or log prompt/source text.
 
+> **Execution status (2026-09-19): complete.** `retrieval/language.py` defines a strict, bounded `LanguageModel` contract, opaque citation passages, the required answer/statement/coverage/timestamp schema, safe retry classifications, stable request fingerprints, and a checked-in synthetic replay adapter. `retrieval/openai.py` sends only the bounded locale, question, approved passages, opaque IDs, and application timestamp to the configured Responses model using strict `text.format` JSON Schema, `store: false`, no tools, a 20-second default timeout, a 64 KiB response cap, and no internal retry loop; it accepts one completed text message, permits inert reasoning items, and rejects refusals, tool/action output, malformed content, or a changed timestamp without logging bodies. Twenty-four transport/schema/replay tests cover request allowlisting, fixture hygiene, strict object closure, timeout and HTTP classification, no blind retry, response limits, tool/refusal rejection, safe errors, and timestamp ownership. `make backend-verify` passes with 1191 tests.
+
 ### BE-083 — Deterministic citation and safety validator
 
 Reject or fall back when output contains:
