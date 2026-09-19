@@ -264,7 +264,7 @@ Add Make targets or scripts with one implementation behind each name:
 
 Targets must fail on the first failed child command, use no developer-global packages, and produce the same result locally and in CI.
 
-> **Execution status (2026-09-19): complete.** The root `Makefile` provides every listed target except `openapi-generate` and `openapi-check`, which wait for the Circle 2 app. `make backend-verify` ran green locally, and negative checks confirmed that a failing test and a lint violation each produce a non-zero exit. The integration and contract layers hold no tests yet, so their targets print that fact and exit 0 (pytest exit code 5 only); BE-030 and BE-045 must add the first tests there.
+> **Execution status (2026-09-19): complete.** The root `Makefile` provides every listed target (`openapi-generate` and `openapi-check` were added later; see below). `make backend-verify` ran green locally, and negative checks confirmed that a failing test and a lint violation each produce a non-zero exit. The integration layer holds no tests yet, so its target prints that fact and exits 0 (pytest exit code 5 only); BE-030 must add the first tests there. `openapi-generate` and `openapi-check` were added at the Circle 2 gate and `openapi-check` is part of `backend-verify`.
 
 ### BE-012 — Add backend CI without false claims
 
@@ -306,6 +306,8 @@ Requirements:
 - `.env.example` documents purpose and safe placeholder, never a usable credential;
 - a settings test covers each fail-fast production invariant.
 
+> **Execution status (2026-09-19): complete.** `load_settings` validates nine typed sections and every fail-fast production and staging invariant is covered by `tests/unit/shared/test_config.py` (51 passing tests, Ruff and Pyright strict clean); `.env.example` is loaded by a test and refused in production.
+
 ### BE-021 — Application factory and lifespan
 
 1. Implement `create_app(settings, dependencies)` rather than constructing global I/O at import time.
@@ -313,6 +315,8 @@ Requirements:
 3. Open connection pools and provider clients during lifespan; close them deterministically.
 4. Keep docs/OpenAPI available in development/test, authenticated or disabled in staging/production, while still supporting deterministic schema generation.
 5. Add a test factory that injects clocks, randomness, repositories, and provider fixtures.
+
+> **Execution status (2026-09-19): partial.** The factory, `/v1` router mount, config-gated docs, deterministic schema generation, and reverse-order resource lifecycle are implemented and tested (60 passing tests, Ruff and Pyright strict clean). Item 5's clock and randomness injection is deferred to BE-034, which owns those primitives, and real pools and provider clients arrive with BE-031 and later; the lifespan is proven with recording fakes.
 
 ### BE-022 — Internal caller authentication
 
@@ -326,6 +330,8 @@ The API is private but must not trust network location alone.
 
 Do not confuse internal caller authentication with reviewer authentication or report tracking credentials.
 
+> **Execution status (2026-09-19): complete.** `InternalAuthMiddleware` runs before every router; `tests/unit/auth/test_internal_auth.py` covers missing, malformed, wrong-caller, rotated, retired, and valid credentials (79 passing tests, Ruff and Pyright strict clean). No worker identity exists because the worker does not call the API (ADR-0001).
+
 ### BE-023 — Request context and structured logging
 
 1. Accept a syntactically valid inbound request ID from the trusted BFF or generate a UUIDv7.
@@ -335,6 +341,8 @@ Do not confuse internal caller authentication with reviewer authentication or re
 5. Add canary tests that fail if any sensitive value reaches captured logs or exception output.
 6. Never log full request/response bodies.
 
+> **Execution status (2026-09-19): partial.** Request context, the redacting JSON logger, and canary tests for logs and exception output are implemented (99 passing tests, Ruff and Pyright strict clean). Propagation of the request ID into database audit metadata and worker messages is deferred to the tasks that create the audit table and the worker envelope (BE-090), and the error code in the access line arrives with BE-024.
+
 ### BE-024 — Problem details and exception boundary
 
 Implement one RFC 9457-style `application/problem+json` shape containing `type`, `title`, safe `status`, stable `code`, safe `detail`, `instance` or request ID, and field errors where appropriate.
@@ -342,6 +350,8 @@ Implement one RFC 9457-style `application/problem+json` shape containing `type`,
 - Map validation, authentication, authorisation, conflict, rate limit, dependency unavailable, unsupported media, payload too large, and internal failure centrally.
 - Keep internal exceptions chained in server logs after redaction; never return stack traces, SQL, object keys, provider text, or record existence.
 - Test response media type, schema, stable code, localisation handoff field if used, and redaction.
+
+> **Execution status (2026-09-19): complete.** One problem+json shape and one exception boundary are implemented; `tests/unit/api/test_errors.py` proves canary values never reach responses or redacted logs and that framework, validation, domain, and unexpected errors share the shape.
 
 ### BE-025 — Health and readiness
 
@@ -351,6 +361,8 @@ Implement one RFC 9457-style `application/problem+json` shape containing `type`,
 - Bound every dependency check by a short timeout and run independent checks concurrently where safe.
 - Test healthy, degraded optional provider, required dependency failure, timeout, and no-detail public output.
 
+> **Execution status (2026-09-19): partial.** Liveness, readiness semantics (ready, degraded, unavailable), bounded concurrent checks, and no-detail output are implemented and proven with fake probes (117 passing tests). Real database, migration-revision, Redis, and object-storage probes are not registered yet; BE-031, BE-033, and the Redis and storage tasks must add them.
+
 ### Circle 2 exit gate
 
 - App starts and stops without leaked resources.
@@ -359,6 +371,8 @@ Implement one RFC 9457-style `application/problem+json` shape containing `type`,
 - Canary secrets never appear in logs or responses.
 - Health semantics distinguish live, ready, and optional-feature degradation.
 - Deterministic `contracts/openapi.json` generation is available even with external providers offline.
+
+> **Gate status (2026-09-19): open, with two named gaps.** Evidence: (1) a real `uvicorn --factory` process started, served `/health/live` (200, request ID, `no-store`) and `/health/ready` (401 without the credential, 200 with it), logged redacted JSON, and shut down cleanly, and lifespan open/close order is unit-tested with fakes; (2) unauthenticated callers, including for unknown paths, get one generic 401 before any router; (3) framework, validation, domain, and unexpected errors all use the problem shape; (4) canary values are absent from redacted logs, exception output, and responses in tests; (5) `contracts/openapi.json` is generated deterministically from synthetic settings and `make openapi-check` is part of `make backend-verify` (121 tests passing, exit 0). **Gaps:** BE-021's clock/randomness injection is deferred to BE-034, and BE-025's real database, migration-revision, Redis, and object-storage probes are not registered (the API currently reports `ready` with no components), so "readiness distinguishes required dependency failure" is proven only with fake probes. BE-023 request-ID propagation into audit metadata and worker messages also remains. Circle 3 may start: it supplies those pieces.
 
 ## 6. Circle 3 — local infrastructure, database roles, and migration baseline
 

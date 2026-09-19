@@ -129,3 +129,130 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the workflow and resolved action SHAs.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-020 Typed environment configuration
+
+- **Task:** BE-020 — Typed environment configuration.
+- **Outcome delivered:** `shaidago.shared.config.load_settings(environ)` validates nine sections (app, database, Redis, storage, crypto, authentication, providers, rate limits, observability) into frozen models and fails fast with a `ConfigurationError` that names variables and failure kinds but never values.
+- **Files changed:** `services/platform/src/shaidago/shared/{__init__,config}.py`, `services/platform/tests/unit/shared/test_config.py`, `services/platform/pyproject.toml` (Ruff `runtime-evaluated-base-classes` for Pydantic), `.env.example`, build order note.
+- **Schema/contract changes:** None. Establishes the environment variable names later tasks read.
+- **Security/privacy impact:** Secrets are `SecretStr`; keys must decode to 32 bytes; staging and production refuse debug, docs, DEBUG logs, non-`__Host-` or insecure cookies, public buckets, and placeholder secrets; production also refuses `SCANNER_MODE=not_deployed` and `PROVIDER_MODE=replay`. `.env.example` holds placeholders that decode to `change-me` and are refused outside development and test.
+- **Failure behaviour verified:** 51 unit tests (parametrised) cover each production invariant in both staging and production, malformed URLs and keys, missing variables, active-key-version mismatch, live mode without keys, `__Host-` without Secure, and canary secrets absent from error text, `repr`, and `model_dump` output. One test loads `.env.example` in development and asserts production refuses it.
+- **Commands run and results:** From `services/platform`: `uv run ruff format`, `ruff check`, `pyright` (0 errors), `pytest` (51 passed). Circle 0 validators passed.
+- **Tests added or changed:** `tests/unit/shared/test_config.py`.
+- **Generated artifacts checked:** `uv.lock` unchanged.
+- **Known limitations/open decisions:** Rate-limit numbers and session cookie defaults are reviewable defaults, not documented requirements. Database role URLs (BE-032), storage/scanner host settings, and session TTLs are added by their owning tasks. `.env` file loading is not implemented; pass variables through the process environment.
+- **Commit/PR:** `feat: add typed environment configuration`
+- **Next task may rely on:** `load_settings(os.environ)` and the `Settings` sections, with no import-time I/O.
+- **AI assistance used:** Designed the sections, invariants, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-021 Application factory and lifespan
+
+- **Task:** BE-021 — Application factory and lifespan.
+- **Outcome delivered:** `create_app(settings, dependencies)` builds the FastAPI app with no import-time I/O, a `/v1` router mount point, config-gated docs, and a lifespan that opens `ManagedResource`s in order and closes them in reverse; `create_configured_app` is the `uvicorn --factory` entry point.
+- **Files changed:** `services/platform/src/shaidago/api/{__init__,app,dependencies,main}.py`, `api/v1/__init__.py`, `shared/lifecycle.py`; tests `tests/factories.py`, `tests/unit/api/test_app_factory.py`, `tests/unit/shared/test_lifecycle.py` (config test constants moved into `tests/factories.py`); `pyproject.toml` and `uv.lock` (dev dependency `httpx2`, Ruff `TCH` not selected).
+- **Schema/contract changes:** None; the `/v1` router has no routes yet.
+- **Security/privacy impact:** Docs and `/openapi.json` are unmounted unless `DOCS_ENABLED` (which staging and production refuse). `httpx2` (BSD-3-Clause, pydantic organisation, no known vulnerabilities in `pip-audit`) is a dev-only dependency required by Starlette's `TestClient`.
+- **Failure behaviour verified:** Resources close in reverse order when the body fails or a later resource fails to open, and a resource that failed to open is not closed. The schema generates identically twice with docs disabled and without any running dependency.
+- **Commands run and results:** From `services/platform`: `ruff format`, `ruff check`, `pyright` (0 errors), `pytest` (60 passed, one third-party deprecation warning from Starlette's test client). Circle 0 validators passed.
+- **Tests added or changed:** Factory, docs gating, lifespan order, determinism, and entry-point tests; lifecycle unit tests.
+- **Generated artifacts checked:** `uv.lock` regenerated for `httpx2`.
+- **Known limitations/open decisions:** The spec asks for injectable clocks and randomness; those belong to BE-034 and will be added to `Dependencies`. No pools or provider clients exist yet (BE-031 onward), so the lifespan is proven with recording fakes. Docs are disabled rather than authenticated in staging and production. Ruff `TCH` is off because FastAPI and Pydantic need runtime annotations.
+- **Commit/PR:** `feat: add application factory and lifespan`
+- **Next task may rely on:** `create_app`, `Dependencies`, `build_test_app`, and `open_resources` as the registration points for middleware, routers, and resources.
+- **AI assistance used:** Designed the factory, lifecycle helper, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-022 Internal caller authentication
+
+- **Task:** BE-022 — Internal caller authentication.
+- **Outcome delivered:** A pure-ASGI middleware, installed outermost by `create_app`, requires `Authorization: Bearer <caller-id>.<secret>` on every HTTP request except `/health/live` and answers every failure with one generic 401 problem response. `web` is the only identity (ADR-0002); its current and previous secrets come from configuration.
+- **Files changed:** `services/platform/src/shaidago/auth/{__init__,internal}.py`, `shared/problems.py` (the shared problem shape, extended by BE-024), `api/app.py`; tests `tests/unit/auth/test_internal_auth.py` and updated docs tests.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** Unknown, malformed, wrong-caller, and removed credentials never reach a router, including for unknown paths, so path existence is not disclosed. Comparison uses `hmac.compare_digest` for both the current and previous secret on every attempt, with a decoy for unknown callers. Logs record the event only, never the caller claim or secret. The middleware refuses WebSocket scopes.
+- **Failure behaviour verified:** 13 parametrised bad-header cases return an identical body, `application/problem+json`, `WWW-Authenticate: Bearer`, and `Cache-Control: no-store`, and no route handler runs. The previous credential works only while configured. Only `/health/live` is exempt; `/health/ready`, `/openapi.json`, and unknown paths are denied.
+- **Commands run and results:** From `services/platform`: `ruff format`, `ruff check`, `pyright` (0 errors), `pytest` (79 passed). Circle 0 validators passed.
+- **Tests added or changed:** Auth tests as above; app-factory docs tests now send the credential.
+- **Generated artifacts checked:** None.
+- **Known limitations/open decisions:** ADR-0002 exempts only `/health/live`, so interactive docs in development need the bearer header. Forwarded-header handling after authentication is BE-023. The 401 carries no request ID until BE-023. There is no worker identity because the worker does not call the API (ADR-0001). Timing behaviour is asserted by construction (calls counted), not by measurement.
+- **Commit/PR:** `feat: authenticate internal API callers`
+- **Next task may rely on:** `request.state.caller_id` on authenticated requests, and `Problem`/`problem_response` for error bodies.
+- **AI assistance used:** Designed the middleware, decoy comparison, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-023 Request context and structured logging
+
+- **Task:** BE-023 — Request context and structured logging.
+- **Outcome delivered:** `RequestContextMiddleware` (inside authentication) validates or mints a UUID request ID, validates the forwarded locale (`en`/`ha`/`ig`/`yo`, default `en`) and client HMAC (64 lower-case hex characters), echoes `X-Request-Id`, and writes one access log line. `configure_logging` sends structlog, stdlib, and uvicorn records through a single recursive redactor and JSON renderer.
+- **Files changed:** `services/platform/src/shaidago/shared/{context,logging}.py`, `auth/internal.py` (a denied caller gets a freshly minted request ID), `api/{app,dependencies,main}.py`; tests `tests/unit/shared/{test_logging,test_context}.py` and the updated auth test.
+- **Schema/contract changes:** None. Introduces the `X-Request-Id` response header and the `request_id` problem field.
+- **Security/privacy impact:** Redaction is by key (exact names and suffixes such as `_token`, `_secret`, `_hmac`) and by pattern (bearer tokens, session cookies, signed URLs, tracking codes, emails, phone numbers, valid IPv4/IPv6), and bytes are never logged. Exception text is redacted after formatting. The access line logs the route template (`unmatched` for unknown paths), never path values, query strings, bodies, or headers. Forwarded headers are honoured only after authentication; forged ones from a denied caller are ignored. Uvicorn's access logger, which records raw paths, is disabled.
+- **Failure behaviour verified:** Canary tests prove pattern canaries never reach output under innocent keys, messages, nested values, stdlib `extra`, or exception tracebacks, and key canaries (password, report text, passphrase) never reach output under their keys. Invalid, oversized, upper-case, and path-like request IDs are replaced. Request ID does not leak between requests. Lookalikes (`tokens_used`, `cache_key`, version strings, non-IP dotted numbers, ISO timestamps) are preserved.
+- **Commands run and results:** From `services/platform`: `ruff format`, `ruff check`, `pyright` (0 errors), `pytest` (99 passed). Circle 0 validators passed.
+- **Tests added or changed:** 25 new tests in `test_logging.py` and `test_context.py`; the auth test now ignores the per-response request ID.
+- **Generated artifacts checked:** None.
+- **Known limitations/open decisions:** Free text under an innocent key cannot be recognised by pattern; it is protected only by the denylist, so domain code must not log report text at all. The client HMAC format (SHA-256, hex) is chosen here because ADR-0002 does not specify one; the BFF must match it. Propagation into database audit metadata and worker messages waits for the audit table (Circle 3 and 5 onward) and BE-090. Error codes appear in the access line once BE-024 sets `error_code` on the request state. The Circle 2 exit criteria on canary logs and responses are only partly proven until BE-024.
+- **Commit/PR:** `feat: add request context and redacted structured logging`
+- **Next task may rely on:** `request.state.request_id/locale/client_hmac`, `configure_logging`, `redact`, and `structlog` context binding.
+- **AI assistance used:** Designed the redactor, middleware, and canary tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-024 Problem details and exception boundary
+
+- **Task:** BE-024 — Problem details and exception boundary.
+- **Outcome delivered:** One RFC 9457-style `application/problem+json` shape (`type`, `title`, `status`, `code`, `detail`, `request_id`, optional `errors`) built by `problem_response`, a fixed catalogue (400, 401, 403, 404, 405, 409, 413, 415, 422, 429, 500, 503), a `ProblemError` for expected domain outcomes, and `register_exception_handlers` as the single exception boundary.
+- **Files changed:** `services/platform/src/shaidago/shared/problems.py`, `api/errors.py`, `api/app.py`, `auth/internal.py`, `shared/context.py` (no duplicate `X-Request-Id`), `shared/logging.py` (credentialed-URL pattern), `pyproject.toml` (test-only Ruff `S105`/`S106` ignores for synthetic canaries); tests `tests/unit/api/test_errors.py` and a DSN canary in `test_logging.py`.
+- **Schema/contract changes:** Defines the error contract and its stable codes (the BFF localises from `code`). No routes yet.
+- **Security/privacy impact:** Validation errors return the field location and Pydantic rule type only, never the submitted value or message text. Unhandled exceptions return a generic 500; the exception is logged after redaction. Unknown routes and wrong methods share the same shape. Every error is `no-store` and carries the request ID. Writing the test found that a database URL with credentials in exception text was not redacted; a `user:password@` URL pattern now covers it.
+- **Failure behaviour verified:** Canary values submitted in a malformed body, a type-mismatched field, and an exception message (containing a DSN password and SQL text) appear in neither the response nor the redacted log; the response has no stack trace, class name, or SQL. Domain problems carry their headers (`Retry-After`) and field errors. `Allow` is kept on 405. The error code reaches the access log.
+- **Commands run and results:** From `services/platform`: `ruff format`, `ruff check`, `pyright` (0 errors), `pytest` (all passed). Circle 0 validators passed.
+- **Tests added or changed:** `test_errors.py` (9 tests including parametrised fallbacks), DSN canary, and the auth/context tests for a single request-ID header.
+- **Generated artifacts checked:** None; OpenAPI generation arrives at the Circle 2 gate.
+- **Known limitations/open decisions:** No separate localisation field is emitted (the spec says "if used"); `code` is the handoff. FastAPI's automatic 422 documentation still describes its own schema, and `ProblemDetails` is defined but not yet attached to route `responses`; BE-045 owns contract polish. Free text under an innocent key remains unrecognisable to the redactor, as recorded for BE-023.
+- **Commit/PR:** `feat: add problem details and exception boundary`
+- **Next task may rely on:** `ProblemError` plus the problem catalogue for every domain error, and `request.state.error_code` in access logs.
+- **AI assistance used:** Designed the catalogue, handlers, and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+- **Correction (same day):** BE-024 was committed after Ruff, Pyright, and pytest but before `make backend-verify` was run. The full gate then failed in Bandit (B101) because the exception handlers used `assert` for type narrowing, which is stripped under `python -O`. Fixed in `fix: replace assert narrowing in exception handlers` by using `cast`; `make backend-verify` then passed (exit 0, 117 tests).
+
+## 2026-09-19 — BE-025 Health and readiness
+
+- **Task:** BE-025 — Health and readiness.
+- **Outcome delivered:** `GET /health/live` (process only, no credential) and `GET /health/ready` (internal credential required) backed by a `HealthCheck` protocol registered through `Dependencies.health_checks`. Checks run concurrently under `READINESS_CHECK_TIMEOUT_SECONDS`; the verdict is `ready`, `degraded` (only optional checks failed, HTTP 200), or `unavailable` (a required check failed, HTTP 503).
+- **Files changed:** `services/platform/src/shaidago/shared/health.py`, `api/health.py`, `api/app.py`, `api/dependencies.py`, `shared/config.py` (`READINESS_CHECK_TIMEOUT_SECONDS`), `.env.example`; tests `tests/unit/api/test_health.py`.
+- **Schema/contract changes:** Adds the two unversioned health routes and their response models.
+- **Security/privacy impact:** Responses list components as `ok` or `unavailable` only; exception text, DSNs, and hostnames appear in neither the response nor the redacted log (only the component name and exception class). Readiness stays behind ADR-0002 authentication.
+- **Failure behaviour verified:** Healthy, degraded optional provider (two providers down), required failure (503), a hung dependency (timeout under 1.2 s while three 0.3 s checks run concurrently), no detail leakage with a canary DSN password, no checks registered, and liveness making zero dependency calls even with a failing check registered.
+- **Commands run and results:** From `services/platform`: `ruff format`, `ruff check`, `pyright` (0 errors), `pytest` (117 passed). Circle 0 validators passed.
+- **Tests added or changed:** 8 tests in `test_health.py`.
+- **Generated artifacts checked:** None.
+- **Known limitations/open decisions:** Only the semantics are implemented and proven, with fake probes. No real database, Redis, or object-storage check is registered yet, so the running API reports `ready` with no components; those probes, and the migration-revision check, belong to BE-031, BE-033, and the tasks that add Redis and storage clients, each of which must register its check. The timeout test asserts elapsed time under a bound and could be flaky on a heavily loaded machine.
+- **Commit/PR:** `feat: add liveness and readiness endpoints`
+- **Next task may rely on:** `Dependencies.health_checks` as the registration point for real probes.
+- **AI assistance used:** Designed the readiness semantics and tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — Circle 2 gate: deterministic OpenAPI contract
+
+- **Task:** Close the Circle 2 exit criterion "deterministic `contracts/openapi.json` generation is available even with external providers offline", and add the `openapi-generate` and `openapi-check` targets that BE-011 deferred.
+- **Outcome delivered:** `python -m shaidago.api.openapi` renders the schema from fixed synthetic settings (sorted keys, LF, final newline) and can check it against the committed file; `contracts/openapi.json` is committed; `make openapi-check` is part of `make backend-verify`. `docs/API.md` documents calling convention, the error catalogue, and health semantics.
+- **Files changed:** `services/platform/src/shaidago/api/openapi.py`, `services/platform/tests/contract/test_openapi.py`, `Makefile`, `contracts/openapi.json` (generated), `docs/API.md`, `docs/README.md`, build order notes.
+- **Schema/contract changes:** First committed OpenAPI contract: the two health routes and their models.
+- **Security/privacy impact:** The generator reads no environment and contacts nothing; a test asserts the rendered schema contains no placeholder secret, DSN, or host. Bandit flagged a placeholder assignment; the placeholder is now a shared constant rather than a suppression.
+- **Failure behaviour verified:** Check mode fails for a missing file and for drift and passes after regeneration; generation is identical with the relevant environment variables unset; the committed contract equals the application's output.
+- **Commands run and results:** `make backend-verify` exit 0 (121 tests); `make openapi-check` exit 0. A real `uvicorn --factory` process was started with `.env.example` values and queried with `curl` for the gate. The Circle 0 validators passed.
+- **Tests added or changed:** 4 contract tests.
+- **Generated artifacts checked:** `contracts/openapi.json` regenerated and diffed by `make openapi-check`.
+- **Known limitations/open decisions:** Uvicorn's own startup lines are not JSON (it installs its own logging configuration); the container command in BE-111 should pass a log configuration. The empty-integration-layer allowance in the Makefile remains until BE-030.
+- **Commit/PR:** `build: generate the deterministic OpenAPI contract`
+- **Next task may rely on:** A committed contract and a gate that fails on drift, ready for the TypeScript client generation the frontend adds.
+- **AI assistance used:** Wrote the generator, tests, Makefile targets, and API document.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
