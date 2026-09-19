@@ -655,6 +655,8 @@ Implement `SG-XXXXX-XXXXX-XXXXX-XXXXX-C` using 100 random bits of Crockford Base
 5. Show the raw code exactly once in the create response.
 6. Property-test round trips, typo detection, entropy source calls, normalisation, and collision handling.
 
+> **Execution status (2026-09-19): partial.** Code generation, strict normalisation with a Luhn mod 32 check (every single-symbol typo detected; transposition misses measured under 5%), redacting code objects, and the keyed lookup hash with pepper ordering are proven by 30 tests (`make backend-verify` exit 0, 561 passed). The tracking-key table, indexed lookup, and one-time create response depend on BE-061 and BE-063 and are not built.
+
 ### BE-063 — Multipart report submission
 
 Implement `POST /v1/reports`:

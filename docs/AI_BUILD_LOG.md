@@ -569,3 +569,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the envelope, key service, rotation, and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-062 Tracking code design and lookup primitive (pure core)
+
+- **Task:** BE-062 — Tracking code design and lookup primitive.
+- **Outcome delivered:** `shaidago/reports/tracking.py`: generation of `SG-XXXXX-XXXXX-XXXXX-XXXXX-C` from 100 random bits of Crockford Base32 with a Luhn mod 32 check symbol; strict normalisation; bounded collision retry; the keyed lookup hash `HMAC-SHA-256(pepper, "sg-track-v1:" + code)`; and pepper-ordered lookup candidates for rotation. The database side is not built.
+- **Files changed:** `services/platform/src/shaidago/reports/{__init__,tracking}.py`, `tests/unit/reports/test_tracking.py`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** A `TrackingCode` renders as `TrackingCode(<redacted>)` in `repr`, `str`, and f-strings, so a code cannot leak through logging by accident; its formatted value is exposed only through an explicit property meant for the one-time create response. Normalisation accepts only case, spaces, hyphens, and the Crockford look-alikes (O to 0; I and L to 1) and rejects `U` and every other symbol, and its error never repeats the input. Validation (format and checksum) happens with no database access. The stored value is a keyed hash, not an unkeyed digest, with a domain-separation prefix and an explicit checksum version constant.
+- **Failure behaviour verified (30 tests, deterministic and Hypothesis):** the alphabet has 32 symbols and no I, L, O, or U; the byte source is called exactly once for 13 bytes and only the top 100 bits matter; 200 formatted codes all match the documented shape; any 13 bytes round-trip through format and normalise; 5,000 random codes are distinct; case, space, hyphen, and padding variants normalise identically; the `SG` prefix is recognised by length only; look-alikes map and eight kinds of foreign symbol (including a non-Latin digit and NUL) are rejected; wrong lengths and empty input are rejected; **every single-symbol substitution in every position is detected** (exhaustive for one code and by property for arbitrary codes); adjacent transpositions are missed in under 5% of cases (measured, and the ADR's "most" claim is now a tested bound); arbitrary text is either a valid code or a generic rejection; collisions retry a bounded number of times then raise; lookup keys are keyed, deterministic, 32 bytes, and differ across peppers and codes; retired peppers are tried after the active one.
+- **Commands run and results:** `make backend-verify` exit 0 (561 passed). Circle 0 validators passed.
+- **Tests added or changed:** 30 unit and property tests.
+- **Generated artifacts checked:** OpenAPI unchanged.
+- **Known limitations/open decisions:** **Steps 4 and 5 are only half done.** The `app.report_tracking_keys` table and the indexed lookup function need the private report tables (BE-061), and the "raw code shown exactly once" response is BE-063; this task proves the code, the hash, and the pepper ordering, not their storage. BE-061 was not started, so the build order's sequence was not followed for this pure task (it has no dependency on the tables). Peppers are read from `TRACKING_PEPPERS` and `TRACKING_ACTIVE_PEPPER_VERSION` (BE-020). 100 random bits are not brute-forceable, but rate limits on lookups are BE-065 and BE-100.
+- **Commit/PR:** `feat: add tracking code generation, validation, and lookup hashing`
+- **Next task may rely on:** `generate`, `normalise`, `lookup_key`, and `lookup_candidates` for the report tables and endpoints.
+- **AI assistance used:** Designed the code format handling and the exhaustive typo and normalisation tests.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.
