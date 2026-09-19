@@ -21,13 +21,13 @@ class LiveResponse(BaseModel):
 router = APIRouter(prefix="/health", tags=["health"])
 
 
-@router.get("/live", response_model=LiveResponse)
+@router.get("/live", response_model=LiveResponse, operation_id="health_live")
 async def live(response: Response) -> LiveResponse:
     response.headers["Cache-Control"] = "no-store"
     return LiveResponse(status="live")
 
 
-@router.get("/ready", response_model=ReadinessResponse)
+@router.get("/ready", response_model=ReadinessResponse, operation_id="health_ready")
 async def ready(
     response: Response,
     dependencies: Annotated[Dependencies, Depends(get_dependencies)],

@@ -79,7 +79,12 @@ class QuestionOut(BaseModel):
     question_id: UUID
 
 
-@router.post("/status-transitions", response_model=TransitionOut, responses=PROBLEMS)
+@router.post(
+    "/status-transitions",
+    response_model=TransitionOut,
+    responses=PROBLEMS,
+    operation_id="reviewer_decisions_transition",
+)
 async def transition(  # noqa: PLR0913 - a route names its collaborators
     report_id: UUID,
     body: TransitionRequest,
@@ -132,7 +137,11 @@ async def transition(  # noqa: PLR0913 - a route names its collaborators
 
 
 @router.post(
-    "/follow-up-questions", response_model=QuestionOut, status_code=201, responses=PROBLEMS
+    "/follow-up-questions",
+    response_model=QuestionOut,
+    status_code=201,
+    responses=PROBLEMS,
+    operation_id="reviewer_decisions_ask_follow_up",
 )
 async def ask_follow_up(  # noqa: PLR0913 - a route names its collaborators
     report_id: UUID,
@@ -155,7 +164,12 @@ async def ask_follow_up(  # noqa: PLR0913 - a route names its collaborators
     return QuestionOut(question_id=question_id)
 
 
-@router.post("/follow-up-questions/{question_id}:withdraw", status_code=204, responses=PROBLEMS)
+@router.post(
+    "/follow-up-questions/{question_id}:withdraw",
+    status_code=204,
+    responses=PROBLEMS,
+    operation_id="reviewer_decisions_withdraw_follow_up",
+)
 async def withdraw_follow_up(  # noqa: PLR0913 - a route names its collaborators
     report_id: UUID,
     question_id: UUID,

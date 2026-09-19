@@ -86,7 +86,12 @@ def _source(value: QuestionSource) -> QuestionSourceOut:
     return QuestionSourceOut.model_validate(value, from_attributes=True)
 
 
-@router.post("/{slug}/questions", response_model=ProjectQuestionOut, responses=PROBLEMS)
+@router.post(
+    "/{slug}/questions",
+    response_model=ProjectQuestionOut,
+    responses=PROBLEMS,
+    operation_id="projects_ask_question",
+)
 async def ask_project_question(  # noqa: PLR0913,PLR0917 - a route names its collaborators
     slug: Annotated[str, Path(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$", max_length=80)],
     body: ProjectQuestionIn,

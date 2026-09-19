@@ -1279,3 +1279,57 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Provisioned staging with the Railway CLI, exercised rotation and rollback, wrote the smoke script and records.
 - **Prompt summary:** Unattended backend build loop; maintainer authorised the Railway deploy.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-120 Canonical backend verification
+
+- **Task:** BE-120 — Canonical backend verification.
+- **Outcome delivered:** The local and hosted backend gates share `make backend-verify`; it checks the frozen environment, formatting, lint, strict types, all deterministic test layers with an enforced backend branch-coverage floor, OpenAPI drift, static and dependency security, while the separate container target retains the image/runtime/Trivy proof.
+- **Files changed:** `Makefile`, `.github/workflows/backend.yml`, `services/platform/README.md`, `docs/BACKEND_BUILD_ORDER.md`, `docs/AI_BUILD_LOG.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** The gate excludes live provider tests, runs public/private leak and role-boundary suites, fails below 85% total branch coverage, audits dependencies, and scans code; it introduces no data flow.
+- **Failure behaviour verified:** Every stage stops the gate on a non-zero result; contract drift, a coverage result below 85%, a known dependency vulnerability, or a deterministic test failure blocks the build.
+- **Commands run and results:** `make backend-verify` exited 0: frozen sync, Ruff format and lint, Pyright (0 errors), 1,997 deterministic tests passed with one live test deselected and 94.03% total branch coverage, OpenAPI check passed, Bandit passed, and `pip-audit` found no known vulnerability.
+- **Tests added or changed:** No behaviour tests; the full suite now runs with coverage measurement and an 85% failure threshold.
+- **Generated artifacts checked:** `make openapi-check` passed inside the canonical gate.
+- **Known limitations/open decisions:** The branch has not been published, so its first GitHub CI run is pending. The test suite proves empty-to-head migrations in an isolated database; the developer's persistent local volumes were not destroyed merely to call the surrounding services clean.
+- **Commit/PR:** `ci: enforce the canonical backend release gate`.
+- **Next task may rely on:** one local command and one CI command covering every deterministic backend layer, with container verification remaining explicit because it needs Docker.
+- **AI assistance used:** Completed the in-progress gate, added the measurable coverage floor, aligned CI with the canonical target, ran it, and recorded the remaining hosted evidence honestly.
+- **Prompt summary:** Continue Circle 12 from the existing branch and in-progress work.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-121 Frontend contract package
+
+- **Task:** BE-121 — Frontend contract package.
+- **Outcome delivered:** A frozen frontend handoff: explicit stable operation IDs, a generated and drift-checked operation/response fixture manifest, named MSW-ready UI states, and one document for every browser/BFF semantic not expressible in OpenAPI.
+- **Files changed:** `services/platform/src/shaidago/api/{health,openapi}.py`, every route module under `api/v1`, `services/platform/tests/contract/test_openapi.py`, `contracts/{openapi,frontend-fixtures}.json`, `scripts/render_frontend_contract.py`, `Makefile`, `docs/{API,FRONTEND_BACKEND_CONTRACT,BACKEND_BUILD_ORDER,AI_BUILD_LOG}.md`, `README.md`, `services/platform/README.md`.
+- **Schema/contract changes:** All 37 existing operations receive explicit stable IDs; their paths, methods, request/response schemas, and runtime behaviour are unchanged. The frontend fixture schema is version 1.
+- **Security/privacy impact:** The handoff makes BFF-only tokens, one-time reporter credentials, no-store surfaces, public cache boundaries, partial uploads, private discovery, and citation trust states explicit. Fixtures are visibly synthetic and contain no usable secret or real report.
+- **Failure behaviour verified:** Contract tests reject a missing, invalid, or duplicate operation ID; reject a fixture manifest missing any operation or documented response status; and the renderer's check mode fails on drift.
+- **Commands run and results:** Targeted Ruff and Pyright passed; 7 targeted contract tests passed; `make openapi-generate`; `python3 scripts/render_frontend_contract.py`; `make backend-verify` exited 0 with 1,999 deterministic tests passed, one live test deselected, 94.03% branch coverage, both generated-contract drift checks, Bandit, and `pip-audit`; all six Circle 0 validators passed.
+- **Tests added or changed:** Two contract tests enforce explicit IDs, complete response-fixture coverage, all eight named state fixtures, and generated-file drift.
+- **Generated artifacts checked:** `contracts/openapi.json` and `contracts/frontend-fixtures.json` are generated from executable API schemas and checked by `make backend-verify`.
+- **Known limitations/open decisions:** The fixture copy is transport-oriented synthetic English, not reviewed locale UI copy. The frontend still owns its accessible presentation and the review status of translations. There is no deployed frontend consumer requiring an operation-ID deprecation window.
+- **Commit/PR:** `feat: freeze the frontend backend contract`.
+- **Next task may rely on:** generated types from stable operation IDs, exact transport examples for every response status, and documented handling for privacy, retries, polling, and trust states without inspecting backend internals.
+- **AI assistance used:** Corrected the inherited generated-ID approach to comply with ADR-0007, built the fixture generator and enforcement, and wrote the frontend handoff semantics.
+- **Prompt summary:** Continue Circle 12 from the existing branch and in-progress work.
+- **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-122 Final backend evidence review
+
+- **Task:** BE-122 — Final backend evidence review.
+- **Outcome delivered:** A reproducible final evidence record, an implemented privacy/safety summary, an explicit public-schema private-field denylist, refreshed repository status/limitations, and a precise list of human/hosted release blockers.
+- **Files changed:** `services/platform/tests/contract/test_openapi.py`, `docs/{PRIVACY_AND_SAFETY,THREAT_MODEL,README,BACKEND_BUILD_ORDER,AI_BUILD_LOG}.md`, `docs/evidence/BE-122-final-backend-review.md`, `README.md`.
+- **Schema/contract changes:** None. A test now recursively inspects the successful public catalogue, Q&A, and public-discovery schemas and rejects private field names.
+- **Security/privacy impact:** Whole-history and tracked-file review found no real secret, contact, report, signed URL, raw credential, or unlabelled private fixture. The document separates implemented prototype controls from the human, provider, legal, and operational gates that still prohibit real data.
+- **Failure behaviour verified:** Public schemas fail the contract test if a forbidden private field becomes reachable. The existing runtime canaries prove private values remain absent from public/tracking/error responses and logs; cache auditing proves every documented route declares a policy.
+- **Commands run and results:** Gitleaks scanned 83 commits/about 3.67 MB with redaction and found no leak; candidate-pattern inventory was reviewed by file; 15 targeted contract/public-shape/public-canary/cache tests passed after rerunning with the required local environment; `make backend-verify` exited 0 with 2,000 tests passed, one live test deselected, 94.03% branch coverage, generated artifacts clean, Bandit clean, and no known audited dependency vulnerability; all six Circle 0 validators passed.
+- **Tests added or changed:** One recursive public-success-schema denylist test covering nine public operations; existing runtime public-shape, canary, and cache tests were rerun together.
+- **Generated artifacts checked:** OpenAPI and frontend fixtures remain drift-free; source-register and controlled-vocabulary rendered documents match their JSON sources.
+- **Known limitations/open decisions:** BE-122 remains blocked on a named/date-stamped human audit of all six projects, current source passages, public wording, and reuse terms. Locale human review, live providers, hosted CI, and the complete staging smoke also remain open; production and real report data remain prohibited.
+- **Commit/PR:** `docs: record the final backend privacy and evidence review`.
+- **Next task may rely on:** the automated release evidence and exact blocker list, but may not claim the backend final gate or production readiness closed.
+- **AI assistance used:** Ran the redacted repository/history review, classified synthetic candidates, added the public-schema guard, consolidated privacy evidence, and refused to substitute AI review for the required manual source audit.
+- **Prompt summary:** Continue Circle 12 from the existing branch and in-progress work.
+- **Human review:** None yet; unattended run, pending maintainer review.

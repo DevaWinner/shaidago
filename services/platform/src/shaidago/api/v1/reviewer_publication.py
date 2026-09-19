@@ -126,7 +126,13 @@ def preview_out(preview: publication.Preview) -> PreviewOut:
     )
 
 
-@router.post("", response_model=PreviewOut, status_code=201, responses=PROBLEMS)
+@router.post(
+    "",
+    response_model=PreviewOut,
+    status_code=201,
+    responses=PROBLEMS,
+    operation_id="reviewer_publication_create_draft",
+)
 async def create_draft(  # noqa: PLR0913 - a route names its collaborators
     report_id: UUID,
     body: DraftIn,
@@ -160,7 +166,9 @@ async def create_draft(  # noqa: PLR0913 - a route names its collaborators
     return preview_out(preview)
 
 
-@router.get("", response_model=DraftListOut, responses=PROBLEMS)
+@router.get(
+    "", response_model=DraftListOut, responses=PROBLEMS, operation_id="reviewer_publication_list"
+)
 async def list_drafts(
     report_id: UUID,
     *,
@@ -180,7 +188,12 @@ async def list_drafts(
 
 
 # ":uuid" keeps ".../{id}:publish" from also matching this route (it would answer 401, not 405).
-@router.get("/{update_id:uuid}", response_model=PreviewOut, responses=PROBLEMS)
+@router.get(
+    "/{update_id:uuid}",
+    response_model=PreviewOut,
+    responses=PROBLEMS,
+    operation_id="reviewer_publication_preview",
+)
 async def preview(  # noqa: PLR0913 - a route names its collaborators
     report_id: UUID,
     update_id: UUID,
@@ -202,7 +215,12 @@ async def preview(  # noqa: PLR0913 - a route names its collaborators
     return preview_out(built)
 
 
-@router.post("/{update_id}:publish", response_model=PublishedOut, responses=PROBLEMS)
+@router.post(
+    "/{update_id}:publish",
+    response_model=PublishedOut,
+    responses=PROBLEMS,
+    operation_id="reviewer_publication_publish",
+)
 async def publish(  # noqa: PLR0913 - a route names its collaborators
     report_id: UUID,
     update_id: UUID,
@@ -226,7 +244,12 @@ async def publish(  # noqa: PLR0913 - a route names its collaborators
     )
 
 
-@router.post("/{update_id}:withdraw", status_code=204, responses=PROBLEMS)
+@router.post(
+    "/{update_id}:withdraw",
+    status_code=204,
+    responses=PROBLEMS,
+    operation_id="reviewer_publication_withdraw",
+)
 async def withdraw(  # noqa: PLR0913 - a route names its collaborators
     report_id: UUID,
     update_id: UUID,

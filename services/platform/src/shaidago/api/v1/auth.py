@@ -130,6 +130,7 @@ def refuse_large_body(request: Request) -> None:
     status_code=201,
     responses=PROBLEMS,
     dependencies=[Depends(refuse_large_body)],
+    operation_id="auth_sign_in",
 )
 async def sign_in(
     body: SignInRequest,
@@ -208,7 +209,9 @@ async def sign_in(
     )
 
 
-@router.delete("/sessions/current", status_code=204, responses=PROBLEMS)
+@router.delete(
+    "/sessions/current", status_code=204, responses=PROBLEMS, operation_id="auth_sign_out"
+)
 async def sign_out(
     reviewer: Annotated[AuthenticatedReviewer, Depends(authenticated_reviewer)],
     request: Request,

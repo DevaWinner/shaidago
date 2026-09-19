@@ -66,7 +66,13 @@ class NoteParams(BaseModel):
     cursor: Annotated[str | None, Field(max_length=512)] = None
 
 
-@router.post("", response_model=NoteCreatedOut, status_code=201, responses=PROBLEMS)
+@router.post(
+    "",
+    response_model=NoteCreatedOut,
+    status_code=201,
+    responses=PROBLEMS,
+    operation_id="reviewer_notes_create",
+)
 async def add_note(  # noqa: PLR0913 - a route names its collaborators
     report_id: UUID,
     body: NoteRequest,
@@ -88,7 +94,7 @@ async def add_note(  # noqa: PLR0913 - a route names its collaborators
     return NoteCreatedOut(note_id=note_id, created_at=created_at)
 
 
-@router.get("", response_model=NotePageOut, responses=PROBLEMS)
+@router.get("", response_model=NotePageOut, responses=PROBLEMS, operation_id="reviewer_notes_list")
 async def list_notes(  # noqa: PLR0913 - a route names its collaborators
     report_id: UUID,
     *,

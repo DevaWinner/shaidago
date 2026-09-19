@@ -137,6 +137,7 @@ async def verified_handle(
     response_model=HandleCreated,
     status_code=201,
     responses=PROBLEMS,
+    operation_id="reporter_handles_create",
 )
 async def create_handle(
     request: Request,
@@ -200,6 +201,7 @@ def _created(payload: bytes, *, replayed: bool) -> Response:
     response_model=HandleReports,
     responses=PROBLEMS,
     dependencies=[Depends(_refuse_large_body)],
+    operation_id="reporter_handles_list_reports",
 )
 async def list_handle_reports(
     body: Credentials,
@@ -234,6 +236,7 @@ async def list_handle_reports(
     status_code=204,
     responses=PROBLEMS,
     dependencies=[Depends(_refuse_large_body)],
+    operation_id="reporter_handles_delete",
 )
 async def delete_handle(
     body: Credentials,

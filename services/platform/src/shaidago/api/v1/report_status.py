@@ -97,6 +97,7 @@ def code_bucket(client: str, prefix: str) -> str:
     response_model=ReportStatusOut,
     responses=PROBLEMS,
     dependencies=[Depends(_refuse_large_body)],
+    operation_id="report_status_lookup",
 )
 async def look_up_report_status(
     body: StatusLookupRequest,
