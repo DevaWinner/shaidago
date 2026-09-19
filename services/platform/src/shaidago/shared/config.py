@@ -87,7 +87,7 @@ def _secret_is_placeholder(value: str) -> bool:
         try:
             if base64.b64decode(candidate, validate=True).startswith(PLACEHOLDER_PREFIX.encode()):
                 return True
-        except binascii.Error, ValueError:
+        except ValueError:  # binascii.Error is a ValueError
             continue
     return False
 
@@ -271,20 +271,32 @@ class AuthSettings(_Section):
 
 class ProviderSettings(_Section):
     mode: ProviderMode = Field(default="replay", validation_alias="PROVIDER_MODE")
-    openai_api_key: SecretStr | None = Field(default=None, validation_alias="OPENAI_API_KEY")
+    # Groq serves both the short Q&A model and the larger discovery synthesis model (ADR-0009).
+    language_api_key: SecretStr | None = Field(default=None, validation_alias="GROQ_API_KEY")
+    language_base_url: str = Field(
+        default="https://api.groq.com", min_length=1, validation_alias="GROQ_BASE_URL"
+    )
     search_api_key: SecretStr | None = Field(default=None, validation_alias="SEARCH_API_KEY")
-    qa_model: str = Field(default="gpt-5.6-terra", min_length=1, validation_alias="OPENAI_QA_MODEL")
+    qa_model: str = Field(
+        default="openai/gpt-oss-20b", min_length=1, validation_alias="GROQ_QA_MODEL"
+    )
     discovery_model: str = Field(
-        default="gpt-6-astra", min_length=1, validation_alias="OPENAI_DISCOVERY_MODEL"
+        default="openai/gpt-oss-120b", min_length=1, validation_alias="GROQ_DISCOVERY_MODEL"
+    )
+    # Groq serves no embedding model. Without an OpenAI-compatible embeddings key, retrieval runs
+    # in keyword mode and says so in `retrieval_mode`.
+    embedding_api_key: SecretStr | None = Field(default=None, validation_alias="EMBEDDING_API_KEY")
+    embedding_base_url: str = Field(
+        default="https://api.openai.com", min_length=1, validation_alias="EMBEDDING_BASE_URL"
     )
     embedding_model: str = Field(
-        default="text-embedding-3-small", min_length=1, validation_alias="OPENAI_EMBEDDING_MODEL"
+        default="text-embedding-3-small", min_length=1, validation_alias="EMBEDDING_MODEL"
     )
     discovery_public_daily_runs: Annotated[int, Field(ge=0, le=1000)] = Field(
         default=20, validation_alias="DISCOVERY_PUBLIC_DAILY_RUNS"
     )
 
-    @field_validator("openai_api_key", "search_api_key", mode="before")
+    @field_validator("language_api_key", "search_api_key", "embedding_api_key", mode="before")
     @classmethod
     def _blank_key_is_absent(cls, value: object) -> object:
         return None if value == "" else value
@@ -385,8 +397,9 @@ def load_settings(environ: Mapping[str, str]) -> Settings:
 def _secret_values(settings: Settings) -> dict[str, str]:
     optional = {
         "INTERNAL_WEB_CREDENTIAL_PREVIOUS": settings.auth.web_credential_previous,
-        "OPENAI_API_KEY": settings.providers.openai_api_key,
+        "GROQ_API_KEY": settings.providers.language_api_key,
         "SEARCH_API_KEY": settings.providers.search_api_key,
+        "EMBEDDING_API_KEY": settings.providers.embedding_api_key,
     }
     values = {
         "DATABASE_URL": settings.database.url,
@@ -427,8 +440,8 @@ def _consistency_problems(settings: Settings) -> list[str]:
         problems.append("INTERNAL_WEB_CREDENTIAL_PREVIOUS: must differ from the current credential")
     providers = settings.providers
     if providers.mode == "live":
-        if providers.openai_api_key is None:
-            problems.append("OPENAI_API_KEY: required when PROVIDER_MODE=live")
+        if providers.language_api_key is None:
+            problems.append("GROQ_API_KEY: required when PROVIDER_MODE=live")
         if providers.search_api_key is None:
             problems.append("SEARCH_API_KEY: required when PROVIDER_MODE=live")
     return problems

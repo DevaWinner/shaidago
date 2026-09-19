@@ -31,7 +31,7 @@ def test_valid_development_environment_loads_with_safe_defaults() -> None:
     assert settings.app.debug is False
     assert settings.providers.mode == "replay"
     assert settings.storage.scanner_mode == "clamd"
-    assert settings.providers.qa_model == "gpt-5.6-terra"
+    assert settings.providers.qa_model == "openai/gpt-oss-20b"
     assert settings.auth.session_cookie_name == "sg_session"
 
 
@@ -117,15 +117,15 @@ def test_previous_internal_credential_must_differ_from_current() -> None:
 
 
 def test_blank_optional_secrets_are_treated_as_absent() -> None:
-    environ = development_environ() | {"INTERNAL_WEB_CREDENTIAL_PREVIOUS": "", "OPENAI_API_KEY": ""}
+    environ = development_environ() | {"INTERNAL_WEB_CREDENTIAL_PREVIOUS": "", "GROQ_API_KEY": ""}
     settings = load_settings(environ)
     assert settings.auth.web_credential_previous is None
-    assert settings.providers.openai_api_key is None
+    assert settings.providers.language_api_key is None
 
 
 def test_live_provider_mode_requires_provider_keys() -> None:
     environ = development_environ() | {"PROVIDER_MODE": "live"}
-    assert {"OPENAI_API_KEY: required when PROVIDER_MODE=live"} <= set(failure(environ).problems)
+    assert {"GROQ_API_KEY: required when PROVIDER_MODE=live"} <= set(failure(environ).problems)
 
 
 @pytest.mark.parametrize(

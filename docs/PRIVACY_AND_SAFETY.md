@@ -49,7 +49,7 @@ private/reserved networks and unsafe ports, revalidates DNS and every redirect, 
 time, compression, and content type. Retrieved text is inert untrusted data. Search results stay
 `discovered — not yet reviewed`; AI and ranking cannot attach, verify, publish, or change status.
 
-Replay providers and synthetic fixtures are the deterministic default. Live OpenAI and Brave
+Replay providers and synthetic fixtures are the deterministic default. Live Groq and Brave
 evidence is still pending an explicitly authorised credentialed run. No live provider was called
 during the backend build loop.
 
@@ -86,7 +86,7 @@ Exact commands and current results are recorded in [`AI_BUILD_LOG.md`](AI_BUILD_
   access-restricted. A fresh manual audit of all six project records and reuse terms is pending.
 - The hosted demo uses `SCANNER_MODE=not_deployed`; sanitised attachments are visibly marked
   `not_scanned_demo`. Production refuses this mode and needs a deployed malware scanner.
-- Live OpenAI/Brave interoperability and provider-side retention/terms have not been verified.
+- Live Groq/Brave interoperability and provider-side retention/terms have not been verified.
 - The complete fictional staging smoke journey is pending private-network access through a
   maintainer-registered Railway SSH key.
 - Production has not been created. Legal basis, privacy notice, real retention periods, backup and

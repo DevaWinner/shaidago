@@ -38,21 +38,26 @@ class _EmbeddingResponse(BaseModel):
     data: list[_EmbeddingItem]
 
 
-class OpenAIEmbeddingModel(EmbeddingModel):
-    """Minimal embeddings adapter used only by this explicit command."""
+class CompatibleEmbeddingModel(EmbeddingModel):
+    """Minimal OpenAI-compatible embeddings adapter used only by this explicit command.
+
+    Groq serves no embedding model, so this command needs a separate OpenAI-compatible endpoint
+    and key. Without one, the corpus keeps its checked-in vectors or retrieval runs keyword-only.
+    """
 
     def __init__(
         self,
         *,
         api_key: str,
         model_id: str,
+        base_url: str = "https://api.openai.com",
         client: httpx.AsyncClient | None = None,
     ) -> None:
         self.model_id = model_id
         self._authorization = f"Bearer {api_key}"
         self._owns_client = client is None
         self._client = client or httpx.AsyncClient(
-            base_url="https://api.openai.com",
+            base_url=base_url,
             timeout=httpx.Timeout(30.0, connect=5.0),
         )
 
@@ -91,9 +96,9 @@ async def run(
     client: httpx.AsyncClient | None = None,
 ) -> str:
     settings = load_settings(environ)
-    key = settings.providers.openai_api_key
+    key = settings.providers.embedding_api_key
     if key is None:
-        raise ConfigurationError(["OPENAI_API_KEY: required for explicit embedding generation"])
+        raise ConfigurationError(["EMBEDDING_API_KEY: required for explicit embedding generation"])
     engine = create_engine(
         settings.database,
         application_name="generate-embeddings",
@@ -104,9 +109,10 @@ async def run(
             chunks = [tuple(row) for row in (await session.execute(_CHUNKS)).all()]
     finally:
         await engine.dispose()
-    provider = OpenAIEmbeddingModel(
+    provider = CompatibleEmbeddingModel(
         api_key=key.get_secret_value(),
         model_id=settings.providers.embedding_model,
+        base_url=settings.providers.embedding_base_url,
         client=client,
     )
     try:

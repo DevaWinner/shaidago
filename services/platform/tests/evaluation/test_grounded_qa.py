@@ -92,7 +92,7 @@ def test_command_reports_safe_aggregate_without_a_live_provider(
     assert body["human_review_status"] == dict.fromkeys(LOCALES, "pending")
     assert body["live_provider_called"] is False
     rendered = json.dumps(body)
-    for forbidden in ("question", "passage", "OPENAI_API_KEY", "Synthetic Clinic"):
+    for forbidden in ("question", "passage", "GROQ_API_KEY", "Synthetic Clinic"):
         assert forbidden not in rendered
 
 

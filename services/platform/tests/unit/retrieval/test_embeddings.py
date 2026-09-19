@@ -12,7 +12,7 @@ from shaidago.retrieval.embeddings import (
     read_embedding_file,
     write_embedding_file,
 )
-from shaidago.retrieval.generate_embeddings import OpenAIEmbeddingModel
+from shaidago.retrieval.generate_embeddings import CompatibleEmbeddingModel
 from shaidago.retrieval.search import EMBEDDING_DIMENSIONS
 
 
@@ -83,7 +83,7 @@ async def test_openai_embedding_adapter_sends_only_bounded_explicit_inputs() -> 
         )
 
     client = httpx.AsyncClient(transport=httpx.MockTransport(respond), base_url="https://api.test")
-    provider = OpenAIEmbeddingModel(
+    provider = CompatibleEmbeddingModel(
         api_key="secret-canary", model_id="fixture-model", client=client
     )
     try:

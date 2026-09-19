@@ -4,6 +4,7 @@
 - **Date:** 2026-09-19
 - **Task:** BE-004
 - **Supersedes:** none
+- **Amended by:** [ADR-0009](0009-groq-as-the-language-provider.md), which replaces OpenAI with Groq as the live language provider and moves embeddings behind their own optional key. Every other decision here still applies.
 
 ## Context
 

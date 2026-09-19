@@ -205,7 +205,7 @@ async def test_seed_command_uses_keyword_fallback_without_a_provider_key(
         {
             "APP_ENV": "development",
             "DATABASE_URL": role_urls["owner"].render_as_string(hide_password=False),
-            "OPENAI_EMBEDDING_MODEL": "no-checked-in-fixture",
+            "EMBEDDING_MODEL": "no-checked-in-fixture",
         }
     )
 

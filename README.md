@@ -41,7 +41,7 @@ flowchart LR
     A --> O[(Private object storage)]
     R --> K[Python worker]
     K --> S[Search provider]
-    K --> L[OpenAI Responses API]
+    K --> L[Groq language models]
 ```
 
 - **Frontend/BFF:** Next.js App Router, React, strict TypeScript, Tailwind CSS, accessible project-owned components, and `next-intl`.
@@ -80,7 +80,7 @@ Start with the [documentation index](docs/README.md).
 
 ## Development
 
-`services/platform` has a pinned Python toolchain (see its README); the root `Makefile` provides `make backend-*` targets (`make backend-verify` is the backend gate); the judge-facing `make setup`/`make verify` do not exist yet. The frozen frontend handoff is [`docs/FRONTEND_BACKEND_CONTRACT.md`](docs/FRONTEND_BACKEND_CONTRACT.md), backed by generated OpenAPI and MSW-ready response fixtures. `make infra-up-core` (after `cp .env.example .env`) starts local PostgreSQL 18 + pgvector, Redis, and MinIO through Docker Compose on loopback-only ports; `make infra-up` adds the ClamAV scanner, which needs 1.5-3 GB of memory. `make migrate` then `make db-roles` prepare the database (schema, roles, and role logins), and `make seed-demo` loads local demo data, refreshes approved public source chunks, and loads a matching checked-in embedding fixture when present. It never calls an AI provider. `make embeddings` is the separate, explicit OpenAI-backed generation command and requires `OPENAI_API_KEY`.
+`services/platform` has a pinned Python toolchain (see its README); the root `Makefile` provides `make backend-*` targets (`make backend-verify` is the backend gate); the judge-facing `make setup`/`make verify` do not exist yet. The frozen frontend handoff is [`docs/FRONTEND_BACKEND_CONTRACT.md`](docs/FRONTEND_BACKEND_CONTRACT.md), backed by generated OpenAPI and MSW-ready response fixtures. `make infra-up-core` (after `cp .env.example .env`) starts local PostgreSQL 18 + pgvector, Redis, and MinIO through Docker Compose on loopback-only ports; `make infra-up` adds the ClamAV scanner, which needs 1.5-3 GB of memory. `make migrate` then `make db-roles` prepare the database (schema, roles, and role logins), and `make seed-demo` loads local demo data, refreshes approved public source chunks, and loads a matching checked-in embedding fixture when present. It never calls an AI provider. `make embeddings` is the separate, explicit generation command for an OpenAI-compatible embeddings endpoint and requires `EMBEDDING_API_KEY`; Groq serves no embedding model, so retrieval otherwise runs keyword-only and says so (ADR-0009).
 
 When implementation starts, the separate stacks remain independently owned:
 
@@ -91,7 +91,7 @@ When implementation starts, the separate stacks remain independently owned:
 ## Known limitations
 
 This remains a fictional-data prototype, not an emergency service. Three source-register projects
-have no verified fact, multilingual Q&A copy awaits fluent human review, live OpenAI/Brave evidence
+have no verified fact, multilingual Q&A copy awaits fluent human review, live Groq/Brave evidence
 has not been run, the hosted demo has no malware scanner, the complete staging smoke is pending,
 and production is closed until legal, privacy, security, and operational review. See the
 [`BE-122 evidence review`](docs/evidence/BE-122-final-backend-review.md) for the exact release items.

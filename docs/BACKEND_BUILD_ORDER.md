@@ -49,7 +49,7 @@ If any field is unknowable, stop that task and resolve the decision in documenta
 - Use one focused commit per task or tightly coupled pair of tasks. Use Conventional Commit messages.
 - Start every task with `git status --short --branch`; preserve unrelated work, including `CLAUDE.md` until its owner chooses to commit it.
 - The commands in this document become real only after the circle that creates them. Never report a planned command as executed.
-- Use fixture adapters by default. Live OpenAI, Brave, R2, or hosted-service checks are opt-in and never required for deterministic CI.
+- Use fixture adapters by default. Live Groq, Brave, R2, or hosted-service checks are opt-in and never required for deterministic CI.
 - A new dependency requires a written purpose, maintenance/security check, licence check, and lockfile update.
 - Never lower a test threshold, bypass a migration, loosen a database grant, or suppress an error to make a gate pass.
 - Backend code owns domain rules. The BFF may transport and reshape safe responses, but it must not become a second authority.
@@ -369,7 +369,7 @@ Implement one RFC 9457-style `application/problem+json` shape containing `type`,
 
 - Liveness checks process responsiveness only.
 - Readiness checks database connectivity and migration revision, Redis, and required object storage; it reports only safe component status.
-- OpenAI and search outages do not make the API globally unready.
+- Language-model and search outages do not make the API globally unready.
 - Bound every dependency check by a short timeout and run independent checks concurrently where safe.
 - Test healthy, degraded optional provider, required dependency failure, timeout, and no-detail public output.
 
@@ -879,9 +879,9 @@ Tests must try contact values, tracking code, handle, reviewer name, raw allegat
 
 > **Execution status (2026-09-19): complete.** Migration `0019_hybrid_retrieval` adds generated full-text search, nullable 1,536-dimension embeddings, completeness checks, and GIN/HNSW indexes to the approved-source corpus. `retrieval/search.py` performs project-scoped reciprocal-rank fusion with stable tie ordering and reports keyword mode unless a same-model semantic rank actually participates; the live eligibility-rechecking view still excludes unavailable or unapproved sources. Seed processing only loads strict checked-in JSONL records keyed by exact chunk hash and otherwise announces keyword fallback, while `make embeddings` is the sole explicit credentialed provider workflow. Unit and PostgreSQL integration tests cover bounded Unicode queries and vectors, fixture validation, provider request shape without a live call, cross-project isolation, empty results, immediate availability loss, deterministic ties, model mismatch, and hybrid activation. `make backend-verify` passes with 1167 tests.
 
-### BE-082 — OpenAI provider and strict schema
+### BE-082 — Language provider and strict schema
 
-Define a provider interface and Responses API adapter with configured model ID, timeout, retry classification, `store: false`, no tools, minimal passages, and opaque citation IDs.
+Define a provider interface and a live adapter (Groq's OpenAI-compatible Chat Completions per ADR-0009) with configured model ID, timeout, retry classification, no tools, deterministic decoding, minimal passages, and opaque citation IDs.
 
 Required output schema:
 
@@ -937,7 +937,7 @@ Score citation validity and policy deterministically. Human language reviewers r
 > **Gate status (2026-09-19): open.** The approved-only corpus, keyless keyword mode, project-scoped citations, fail-closed validation, and four-language deterministic corpus all pass. The remaining criterion is substantive human language review: all four explicit review records are still `pending`, so Circle 8 is not complete and dependent Circle 9 work must not start.
 
 - Retrieval corpus contains approved public chunks only.
-- Keyword-only setup works without an OpenAI key.
+- Keyword-only setup works without an embedding key.
 - Every returned factual statement has valid project-scoped citations.
 - Invalid/model-unsafe output fails closed.
 - Four-language golden corpus passes deterministic checks and has an explicit human-review status.

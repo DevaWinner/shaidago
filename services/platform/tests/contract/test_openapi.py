@@ -84,7 +84,7 @@ def schema_property_names(
 def test_generation_is_deterministic_and_needs_no_environment(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    for name in ("DATABASE_URL", "REDIS_URL", "OPENAI_API_KEY", "APP_ENV"):
+    for name in ("DATABASE_URL", "REDIS_URL", "GROQ_API_KEY", "APP_ENV"):
         monkeypatch.delenv(name, raising=False)
     assert render_openapi() == render_openapi()
 

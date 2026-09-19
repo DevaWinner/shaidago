@@ -452,12 +452,12 @@ def _deterministic_report(summary: EvaluationSummary) -> dict[str, object]:
 
 
 async def _run_live(output: Path, model_id: str) -> int:
-    from shaidago.retrieval.openai import OpenAILanguageModel  # noqa: PLC0415 - live-only import
+    from shaidago.retrieval.groq import GroqLanguageModel  # noqa: PLC0415 - live-only import
 
-    key = os.environ.get("OPENAI_API_KEY")
+    key = os.environ.get("GROQ_API_KEY")
     if not key:
-        raise ValueError("OPENAI_API_KEY is required for an explicit live evaluation")
-    provider = OpenAILanguageModel(api_key=key, model_id=model_id)
+        raise ValueError("GROQ_API_KEY is required for an explicit live evaluation")
+    provider = GroqLanguageModel(api_key=key, model_id=model_id)
     try:
         summary = await evaluate_live(load_corpus(), provider)
     finally:

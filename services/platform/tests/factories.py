@@ -45,7 +45,7 @@ def production_environ() -> dict[str, str]:
             "SESSION_COOKIE_NAME": "__Host-sg_session",
             "SESSION_COOKIE_SECURE": "true",
             "PROVIDER_MODE": "live",
-            "OPENAI_API_KEY": "openai-live-key-canary",
+            "GROQ_API_KEY": "groq-live-key-canary",
             "SEARCH_API_KEY": "search-live-key-canary",
         }
     )

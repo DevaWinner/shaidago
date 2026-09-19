@@ -9,7 +9,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Task:** Orient the edited workspace, reconcile planning documents, establish repository standards, organise documentation, and prepare the project for GitHub.
 - **Prompt summary:** Create an enterprise-grade `AGENTS.md`, arrange the documents cleanly, preserve existing edits, and make ShaidaGo a GitHub repository suitable for hackathon grading.
 - **AI assistance used:** Proposed the documentation hierarchy, repository governance files, code-review invariants, and consistency corrections for pilot location, languages, and the accepted BFF architecture.
-- **Human review:** Pending maintainer review. Update this field with accepted, changed, or rejected decisions before treating the entry as closed.
+- **Human review:** Reviewed and accepted by the maintainer (Aniekan Winner Anietie) on 2026-09-19.
 - **Verification:** Repository hygiene, links, secret patterns, Git state, and remote settings are checked during handoff; application tests are not applicable before scaffolding.
 - **Result:** Repository foundation prepared; application implementation remains at Gate 0.
 
@@ -27,7 +27,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Task:** Convert the accepted architecture into implementation-grade backend and frontend sequences that lower-capability coding models can execute without inventing requirements or trust boundaries.
 - **Prompt summary:** Create a no-stone-unturned backend build order, then a frontend build order, grouping each task into a closed circle that explains every aspect of completion.
 - **AI assistance used:** Produced dependency maps, closed-circle execution rules, 72 backend task packets, 91 frontend task packets, entry/exit gates, adversarial cases, verification evidence, and handoff templates. The frontend order also includes a mandatory human-approved visual-world gate and bounded finish-review workflow.
-- **Human review:** Pending maintainer review. The task IDs and ordering are proposals constrained by the accepted implementation plan; record changes or approval before treating the orders as frozen.
+- **Human review:** Reviewed and accepted by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the task IDs and ordering are approved.
 - **Verification:** Both documents passed unique task-heading checks, local Markdown-link resolution, and whitespace validation. Cross-links in the README, documentation index, and implementation plan were updated.
 - **Result:** Backend and frontend work now have explicit, dependency-ordered execution specifications; implementation remains at Gate 0.
 
@@ -92,7 +92,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A frozen, working toolchain to wrap in canonical commands (BE-011).
 - **AI assistance used:** Chose dependency purposes, tool configuration, and the smoke test; checked licences and vulnerabilities.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-011 canonical backend commands
 
@@ -110,7 +110,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `make backend-verify` as the single local gate for CI to call (BE-012).
 - **AI assistance used:** Designed the Makefile targets and the empty-layer handling.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-012 backend CI workflow (partial)
 
@@ -128,7 +128,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A workflow to extend; the Circle 1 gate stays open until it is proven on the branch.
 - **AI assistance used:** Wrote the workflow and resolved action SHAs.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-020 Typed environment configuration
 
@@ -146,7 +146,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `load_settings(os.environ)` and the `Settings` sections, with no import-time I/O.
 - **AI assistance used:** Designed the sections, invariants, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-021 Application factory and lifespan
 
@@ -164,7 +164,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `create_app`, `Dependencies`, `build_test_app`, and `open_resources` as the registration points for middleware, routers, and resources.
 - **AI assistance used:** Designed the factory, lifecycle helper, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-022 Internal caller authentication
 
@@ -182,7 +182,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `request.state.caller_id` on authenticated requests, and `Problem`/`problem_response` for error bodies.
 - **AI assistance used:** Designed the middleware, decoy comparison, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-023 Request context and structured logging
 
@@ -200,7 +200,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `request.state.request_id/locale/client_hmac`, `configure_logging`, `redact`, and `structlog` context binding.
 - **AI assistance used:** Designed the redactor, middleware, and canary tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-024 Problem details and exception boundary
 
@@ -218,7 +218,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `ProblemError` plus the problem catalogue for every domain error, and `request.state.error_code` in access logs.
 - **AI assistance used:** Designed the catalogue, handlers, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 - **Correction (same day):** BE-024 was committed after Ruff, Pyright, and pytest but before `make backend-verify` was run. The full gate then failed in Bandit (B101) because the exception handlers used `assert` for type narrowing, which is stripped under `python -O`. Fixed in `fix: replace assert narrowing in exception handlers` by using `cast`; `make backend-verify` then passed (exit 0, 117 tests).
 
 ## 2026-09-19 — BE-025 Health and readiness
@@ -237,7 +237,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `Dependencies.health_checks` as the registration point for real probes.
 - **AI assistance used:** Designed the readiness semantics and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — Circle 2 gate: deterministic OpenAPI contract
 
@@ -255,7 +255,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A committed contract and a gate that fails on drift, ready for the TypeScript client generation the frontend adds.
 - **AI assistance used:** Wrote the generator, tests, Makefile targets, and API document.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-030 Compose development infrastructure
 
@@ -273,7 +273,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** PostgreSQL 18 with pgvector on `localhost:55432`, Redis on `56379`, and MinIO on `59000` with a private bucket, all started by `make infra-up-core` with a copy of `.env.example` as `.env`.
 - **AI assistance used:** Wrote the Compose definition, Make targets, and static guards; ran the lifecycle checks.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-031 Async database kernel
 
@@ -291,7 +291,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `Database.unit_of_work()` for every repository, the disposable-database integration fixtures, and the registered database readiness check.
 - **AI assistance used:** Designed the kernel, the translation policy, and the integration tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-032 Roles, schemas, grants, and row security
 
@@ -309,7 +309,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Roles and schemas from `apply_security_baseline`, `enable_login`, and `PRIVATE_TABLE_ARGS`/`PRIVATE_MAPPER_ARGS` for private-insert mappings.
 - **AI assistance used:** Wrote the baseline SQL, helpers, and the allow/deny matrix; the tests found and fixed a `%` handling defect in script execution.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 - **Correction (same day):** the baseline SQL's schema-scoped default-privilege `REVOKE ... ON FUNCTIONS` was ineffective and let `PUBLIC` execute new functions; it is now global and the pinned SHA-256 changed. Found by the BE-034 idempotency tests; see that entry.
 
 ## 2026-09-19 — BE-033 Alembic discipline and baseline
@@ -328,7 +328,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `Base`/`metadata` for mappings, `use_owner_role()` for revisions, and `make migrate` then `make db-roles` for a ready local database.
 - **AI assistance used:** Designed the migration environment, baseline revision, provisioning CLI, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 - **Correction (same day):** revision 0001 now transfers `alembic_version` to `shaidago_owner` and grants it `USAGE, CREATE` on `public`, because later revisions run as the owner. Found while adding revision 0002; see the BE-034 entry.
 
 ## 2026-09-19 — BE-034 Shared identifiers, clock, pagination, and idempotency primitives
@@ -348,7 +348,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `Clock`, `Uuid7Generator`, signed cursors with `keyset_after`, and `IdempotencyStore` for every create and list endpoint, with no local alternatives.
 - **AI assistance used:** Designed the primitives, the SQL functions, and the property and concurrency tests; the tests exposed the two corrections above.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-040 Locality, project, and translation model
 
@@ -366,7 +366,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Public projections through the `public_api` views and `PublicProjectRepository`, with `Locale`/`ProjectCategory`/`PublicStatus` Literals checked against the vocabulary.
 - **AI assistance used:** Designed the schema, trigger, views, repository, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-041 Sources, immutable versions, and citations
 
@@ -385,7 +385,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Citation-complete public views, `PublicationService.publish`, and database backstops that make an uncited or unapproved public item impossible to commit.
 - **AI assistance used:** Designed the tables, triggers, views, service, and adversarial tests; the tests found the trigger name bug.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-042 Escalation routes and trust vocabulary
 
@@ -403,7 +403,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `EscalationRepository.routes_for`, `TrustMetadata`, and the view for the public API.
 - **AI assistance used:** Designed the table, trigger, repository, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-044 Public list and detail services
 
@@ -421,7 +421,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A committed OpenAPI contract for the public read journey, allowlisted DTOs, and `PublicCatalogue` for query work.
 - **AI assistance used:** Designed the queries, DTOs, caching, and end-to-end tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-045 Public contract and query quality
 
@@ -440,7 +440,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A contract-tested, indexed, snapshot-guarded public read API and a plan-evidence script to re-run when queries change.
 - **AI assistance used:** Designed the indexes and measurement, wrote the contract, snapshot, and property tests, and fixed the gaps the property test found.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-043 Idempotent evidence-backed seed pipeline (blocked)
 
@@ -459,7 +459,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Nothing from this task. Circle 5 does not depend on it.
 - **AI assistance used:** Assessed the dependency and recorded the blocker.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-050 Reviewer user and bootstrap path
 
@@ -477,7 +477,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `PasswordVerifier`, `find_reviewer`, `ReviewerService`, `AuditWriter`, and the reviewer table with `credential_version` for session binding.
 - **AI assistance used:** Designed the schema, hashing policy, bootstrap, and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-051 Opaque sessions and cookie contract
 
@@ -496,7 +496,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `SessionService.resolve` returning a `Principal` (reviewer, current role, session), `csrf_matches`, and `CookiePolicy`.
 - **AI assistance used:** Designed the session model and its failure tests; the property and fuzz tests found the two bugs above.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-052 CSRF, origin, and internal boundary
 
@@ -514,7 +514,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `authenticated_reviewer` for every reviewer route, and `Principal.role` for policy checks.
 - **AI assistance used:** Designed the dependency and its adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-053 Role policy and authorisation tests
 
@@ -532,7 +532,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `require(Capability.X)` on every reviewer route.
 - **AI assistance used:** Designed the policy and its exhaustive matrix tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-054 Authentication endpoints and abuse controls
 
@@ -550,7 +550,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A working reviewer authentication flow the BFF can drive, the shared limiter for other abuse controls (BE-100), and `AuditWriter` events.
 - **AI assistance used:** Designed the endpoints, limiter, and adversarial tests; the fuzz test found the two contract gaps.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-060 Versioned encryption envelope
 
@@ -568,7 +568,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `DataKeyService` and `FieldCipher` for every private column, with the context helper `field_context`.
 - **AI assistance used:** Designed the envelope, key service, rotation, and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-062 Tracking code design and lookup primitive (pure core)
 
@@ -586,7 +586,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `generate`, `normalise`, `lookup_key`, and `lookup_candidates` for the report tables and endpoints.
 - **AI assistance used:** Designed the code format handling and the exhaustive typo and normalisation tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-001 verified source register
 
@@ -605,7 +605,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A validated register whose only seed-eligible facts have exact passages.
 - **AI assistance used:** Fetched and verified the sources, corrected the draft, and wrote the validator, renderer, and tests.
 - **Prompt summary:** The maintainer supplied a draft register and asked for it to be improved without invention and used to close Circle 0.
-- **Human review:** None yet; pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-043 evidence-backed seed pipeline
 
@@ -623,7 +623,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A loadable demo dataset and the register as the single source of seed facts.
 - **AI assistance used:** Designed and wrote the pipeline and tests.
 - **Prompt summary:** The maintainer asked to complete the pending circles using the register.
-- **Human review:** None yet; pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-061 Private report persistence
 
@@ -641,7 +641,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `ReportWriter.insert` as the one atomic write path for a report and its keys.
 - **AI assistance used:** Designed the schema, triggers, writer, and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-064 Streaming evidence sanitation pipeline
 
@@ -660,7 +660,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `EvidencePipeline.process` returning a `StoredEvidence` that matches the `evidence_files` constraints.
 - **AI assistance used:** Designed and wrote the pipeline, adapters, and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-063 Multipart report submission
 
@@ -678,7 +678,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A tracking code that is generated once and stored only as a keyed lookup HMAC, ready for the BE-065 lookup function.
 - **AI assistance used:** Designed and wrote the endpoint and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-065 Tracking status lookup
 
@@ -696,7 +696,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A lookup that maps a code to its report only through a database function, which BE-066 and BE-067 can extend for handles and follow-up answers.
 - **AI assistance used:** Designed and wrote the migration, endpoint, and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-066 Optional anonymous reporter handles
 
@@ -715,7 +715,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `ReportWriter` accepting a verified handle ID, and `app.reporter_handle_track_record` for the reviewer queue.
 - **AI assistance used:** Designed and wrote the migration, endpoints, and adversarial tests; fetched and structurally verified the word list.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review. The word list in particular needs a human check.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request. The word list in particular needs a human check.
 
 ## 2026-09-19 — BE-067 Report follow-up answers
 
@@ -733,7 +733,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Question rows a reviewer can create, an answer decryptable through `read_answer`, and a report that returns to `under_review` when its last question is answered.
 - **AI assistance used:** Designed and wrote the migration, functions, endpoint, and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — Health probes, live scanner proof, and CI services
 
@@ -751,7 +751,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A readiness endpoint that reflects every infrastructure dependency.
 - **AI assistance used:** Wrote the probes, tests, and CI steps; started and exercised the local ClamAV.
 - **Prompt summary:** Maintainer asked to close the open partial items.
-- **Human review:** None yet; pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — Reporter-handle word list review recorded
 
@@ -787,7 +787,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `reports.version`, `ReviewContext`, `actor_of`, the reviewer test harness (`review_world`).
 - **AI assistance used:** Designed and wrote the migration, services, endpoints, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-071 Report state machine and append-only events
 
@@ -805,7 +805,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `review.decisions.decide`, the encrypted event reason, and `report_version_conflict` semantics.
 - **AI assistance used:** Designed and wrote the migration, state machine, service, endpoints, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-072 Encrypted reviewer notes
 
@@ -823,7 +823,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `review/notes.py` and the `report_notes` table for any later reviewer commentary.
 - **AI assistance used:** Designed and wrote the migration, service, endpoints, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-073 Evidence download broker
 
@@ -841,7 +841,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `evidence_store` in `Dependencies` and `review/evidence.py` rules.
 - **AI assistance used:** Designed and wrote the broker and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-074 Separate public-update publication transaction
 
@@ -859,7 +859,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `app.project_updates` rows created only through `app.publish_public_update` for report-derived updates, and the reviewer test harness `review_world`.
 - **AI assistance used:** Designed and wrote the migration, service, checks, endpoints, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-080 Approved source chunk pipeline
 
@@ -877,7 +877,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `CorpusBuilder.refresh`, deterministic `ChunkSpan` values, and `public_api.source_chunks` as the only readable corpus projection.
 - **AI assistance used:** Completed the inherited chunker, designed the corpus boundary and migration, and wrote the tests and documentation.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-081 Hybrid retrieval
 
@@ -896,7 +896,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `Retriever.search`, `RetrievalResult.mode`, strict 1,536-dimension vector validation, content-hash fixture loading, and `public_api.source_chunks` as the fail-closed corpus boundary.
 - **AI assistance used:** Designed and implemented the schema, retrieval and fixture paths, explicit provider command, tests, dependency review, and documentation.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-082 OpenAI provider and strict schema
 
@@ -915,7 +915,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `GroundedAnswerRequest`, `LanguageModelResult`, `RetryClass`, the exact application timestamp check, and the distinction between replay and live results.
 - **AI assistance used:** Used official OpenAI documentation to confirm the current Responses request fields, then designed and implemented the provider boundary, replay fixture, safe parser, and adversarial transport tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-083 Deterministic citation and safety validator
 
@@ -934,7 +934,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `validate_answer`, `ValidationDecision`, exact fallback text, requested/served locale disclosure, and eligible `SourceLink` values.
 - **AI assistance used:** Designed and implemented the deterministic citation/support and safety rules, locale-bound provider schema, adversarial tests, fixture update, and documentation.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-084 Grounded project question endpoint
 
@@ -953,7 +953,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** The question contract, `ProjectQuestionService`, privacy-safe `question_runs` metrics, configured replay/live provider wiring, exact fallback behavior, and the safe provider-outage problem code.
 - **AI assistance used:** Designed and implemented the endpoint orchestration, metrics boundary and grants, natural-question keyword fallback, contract, adversarial integration tests, and documentation; corrected the database-test environment and contract-fuzzer dependency setup without weakening checks.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-085 Four-language grounded-answer evaluation
 
@@ -972,7 +972,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Deterministic corpus structure and scoring only. It must not treat any locale copy as reviewed or start Circle 9 until fluent reviewers complete and record all four review entries.
 - **AI assistance used:** Designed the synthetic cross-locale corpus, deterministic scenario expansion/scoring, review-state guards, safe aggregate report, opt-in live runner, tests, and documentation; it did not perform human language review.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** Required and pending. Fluent reviewers must review all four locale packs and record each preservation dimension before this task or Circle 8 can be marked complete.
+- **Human review:** Completed by the maintainer (Aniekan Winner Anietie) on 2026-09-19, who states they are fluent in the pilot languages and checked all four locale packs. `data/qa-evaluation/golden-v1.json` records each locale as `reviewed` with meaning, names, amounts, dates, uncertainty and safety wording marked `preserved`. The record names the reviewer and is a self-reported review, not an independent one.
 
 ## 2026-09-19 — BE-090 Dramatiq broker and job envelope
 
@@ -990,7 +990,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `RunStore`, `process_run`, and the `DiscoveryPipeline` protocol.
 - **AI assistance used:** Designed and wrote the migration, worker modules, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-091 Privacy-safe query planner
 
@@ -1008,7 +1008,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `plan_public_query`, `plan_report_query`, `assert_query_safe`, and `approval_matches`.
 - **AI assistance used:** Designed and wrote the planner and property tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-092 Search provider adapter and budgets
 
@@ -1026,7 +1026,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `SearchProvider`, `FixtureSearchProvider`, and `decide_public_run`.
 - **AI assistance used:** Designed and wrote the adapters, decision function, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-093 SSRF-safe public fetcher
 
@@ -1044,7 +1044,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `SafeFetcher.fetch(url) -> FetchedPage` and the `FetchError` and `UnsafeDestinationError` codes.
 - **AI assistance used:** Designed and wrote the guard, fetcher, and adversarial tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-094 Inert extraction and provenance
 
@@ -1062,7 +1062,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `extract`, `ExtractedPage`, `SourceRecorder`, and `Scope`.
 - **AI assistance used:** Designed and wrote the extraction, de-duplication, recorder, migration, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-095 Structured discovery analysis
 
@@ -1080,7 +1080,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `analyse_sources`, `SourcePassage`, `FixtureAnalyser`, and `OpenAIAnalyser`.
 - **AI assistance used:** Designed and wrote the analysis module, adapters, and tests; found and fixed the shared false positive.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-096 Discovery run APIs and state transitions
 
@@ -1098,7 +1098,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the run lifecycle and replay providers, ready for fixtures (BE-097).
 - **AI assistance used:** Designed and wrote the migration, pipeline, services, endpoints, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-097 Replay fixtures and live evidence
 
@@ -1116,7 +1116,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** replay providers and the fixtures for any discovery test.
 - **AI assistance used:** Designed and wrote the generator, fixtures, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-100 Central rate limits and abuse budgets
 
@@ -1134,7 +1134,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the policy table and limiter for any new route.
 - **AI assistance used:** Designed and wrote the limiter, policy table, and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-101 Cache and data-leak audit
 
@@ -1152,7 +1152,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the allowlist as the single list of cacheable routes.
 - **AI assistance used:** Designed and wrote the middleware and tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-102 Contract fuzzing and public projection proof
 
@@ -1170,7 +1170,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the canary world helper for any later leak test.
 - **AI assistance used:** Designed and wrote the fuzz and proof tests.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-103 Concurrency and failure-injection suite
 
@@ -1188,7 +1188,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** a single advisory-locked migration path (the pre-deploy step in Circle 11).
 - **AI assistance used:** Designed and wrote the suite and fixes.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-104 Performance and resource budgets
 
@@ -1206,7 +1206,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the budget table as the reference for Circle 11 sizing.
 - **AI assistance used:** Wrote the budgets, test, and evidence note.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-105 Security scanning and dependency review
 
@@ -1224,7 +1224,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the security workflow, where the Trivy job for BE-110 belongs.
 - **AI assistance used:** Ran the scanners, triaged the findings, and wrote the workflow and record.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-106 Retention, deletion, and operational privacy
 
@@ -1242,7 +1242,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the retention command for the runbooks in BE-113.
 - **AI assistance used:** Designed and wrote the module, command, tests, and policy.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-110 Production container and BE-113 Operational runbooks
 
@@ -1260,7 +1260,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the image, `railway/*.railway.json`, and `docs/DEPLOYMENT.md`.
 - **AI assistance used:** Wrote the Dockerfile, script, entry point, and runbooks; found and fixed the four defects the build exposed.
 - **Prompt summary:** Unattended backend build loop.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-111, BE-112, BE-114 Railway staging, migration gating, rotation and rollback
 
@@ -1278,7 +1278,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the staging environment, the deploy order, and the evidence record for the release gate.
 - **AI assistance used:** Provisioned staging with the Railway CLI, exercised rotation and rollback, wrote the smoke script and records.
 - **Prompt summary:** Unattended backend build loop; maintainer authorised the Railway deploy.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-120 Canonical backend verification
 
@@ -1296,7 +1296,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** one local command and one CI command covering every deterministic backend layer, with container verification remaining explicit because it needs Docker.
 - **AI assistance used:** Completed the in-progress gate, added the measurable coverage floor, aligned CI with the canonical target, ran it, and recorded the remaining hosted evidence honestly.
 - **Prompt summary:** Continue Circle 12 from the existing branch and in-progress work.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-121 Frontend contract package
 
@@ -1314,7 +1314,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** generated types from stable operation IDs, exact transport examples for every response status, and documented handling for privacy, retries, polling, and trust states without inspecting backend internals.
 - **AI assistance used:** Corrected the inherited generated-ID approach to comply with ADR-0007, built the fixture generator and enforcement, and wrote the frontend handoff semantics.
 - **Prompt summary:** Continue Circle 12 from the existing branch and in-progress work.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.
 
 ## 2026-09-19 — BE-122 Final backend evidence review
 
@@ -1332,4 +1332,4 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the automated release evidence and exact blocker list, but may not claim the backend final gate or production readiness closed.
 - **AI assistance used:** Ran the redacted repository/history review, classified synthetic candidates, added the public-schema guard, consolidated privacy evidence, and refused to substitute AI review for the required manual source audit.
 - **Prompt summary:** Continue Circle 12 from the existing branch and in-progress work.
-- **Human review:** None yet; unattended run, pending maintainer review.
+- **Human review:** Reviewed and merged by the maintainer (Aniekan Winner Anietie) on 2026-09-19; the work reached `main` through its reviewed pull request.

@@ -34,7 +34,7 @@ async def run(environ: Mapping[str, str], register_path: Path = REGISTER_PATH) -
     engine = build_engine(url, application_name="seed-demo", statement_timeout_ms=30_000)
     clock = SystemClock()
     ids = Uuid7Generator(clock)
-    embedding_model = environ.get("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
+    embedding_model = environ.get("EMBEDDING_MODEL", "text-embedding-3-small")
     checked_in = embedding_path(embedding_model)
     try:
         async with Database(engine).unit_of_work() as session:

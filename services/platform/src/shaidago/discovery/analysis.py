@@ -19,8 +19,8 @@ from typing import Annotated, Final, Literal, Protocol
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from shaidago.discovery.planner import sensitive_reason
+from shaidago.retrieval.groq import GroqLanguageModel, StructuredCall
 from shaidago.retrieval.language import LanguageModelError, RetryClass
-from shaidago.retrieval.openai import OpenAILanguageModel
 from shaidago.retrieval.validation import safety_findings, statement_supported
 from shaidago.review.private_references import PrivateContext, find_private_references
 
@@ -167,35 +167,31 @@ requesting personal details. confidence_note describes source coverage only. Cop
 exactly. Return only the required schema."""
 
 
-class OpenAIAnalyser:
-    """Responses API, ``store: false``, no tools, strict schema; transport shared with Q&A."""
+# Measured against openai/gpt-oss-120b on 2026-09-19: two sources needed about 1,750 completion
+# tokens, and a run of five needed more than 2,500, which the provider reports as a failed
+# constrained generation rather than a truncated one. 6,000 leaves room for a ten-source run.
+ANALYSIS_MAX_TOKENS = 6000
 
-    def __init__(self, transport: OpenAILanguageModel, model_id: str) -> None:
+
+class LiveAnalyser:
+    """Strict schema, no tools, deterministic decoding; transport shared with grounded Q&A."""
+
+    def __init__(self, transport: GroqLanguageModel, model_id: str) -> None:
         self._transport = transport
         self.model_id = model_id
 
     async def analyse(self, request: AnalysisRequest) -> AnalysisResult:
-        body: dict[str, object] = {
-            "input": provider_input(request),
-            "instructions": INSTRUCTIONS,
-            "max_output_tokens": 2500,
-            "model": self.model_id,
-            "parallel_tool_calls": False,
-            "store": False,
-            "text": {
-                "format": {
-                    "name": "discovery_analysis",
-                    "schema": analysis_schema(),
-                    "strict": True,
-                    "type": "json_schema",
-                }
-            },
-            "tools": list[object](),
-        }
-        response = await self._transport.send(body)
-        return AnalysisResult(
-            self._transport.output_text(response), self.model_id, PROMPT_VERSION, demo_replay=False
+        text = await self._transport.structured(
+            StructuredCall(
+                name="discovery_analysis",
+                schema=analysis_schema(),
+                instructions=INSTRUCTIONS,
+                payload=provider_input(request),
+                max_tokens=ANALYSIS_MAX_TOKENS,
+                model_id=self.model_id,
+            )
         )
+        return AnalysisResult(text, self.model_id, PROMPT_VERSION, demo_replay=False)
 
 
 class FixtureAnalyser:
