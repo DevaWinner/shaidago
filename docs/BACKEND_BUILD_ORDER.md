@@ -756,7 +756,7 @@ Build only after BE-060 through BE-065 pass end to end.
 
 Required endpoints: create, list reports, delete. Required tests: no-PII schema introspection, generic failure, backoff, unlink-on-delete, public/log absence, concurrency, and no recovery path.
 
-> **Execution status (2026-09-19): complete.** Migration `0012_reporter_handles`, `reports/{handles,handle_store}.py`, and `api/v1/reporter_handles.py` implement creation, listing, deletion, and handle-linked submission with the committed EFF long list (provenance in `docs/evidence/BE-066-wordlist.md`); 16 unit and 13 integration tests cover every required test area. **The word list has not been reviewed by a human**, and reviewer-facing history exists only as the `reporter_handle_track_record` database function until the queue (BE-070) uses it.
+> **Execution status (2026-09-19): complete.** Migration `0012_reporter_handles`, `reports/{handles,handle_store}.py`, and `api/v1/reporter_handles.py` implement creation, listing, deletion, and handle-linked submission with the committed EFF long list (provenance in `docs/evidence/BE-066-wordlist.md`); 16 unit and 13 integration tests cover every required test area. The word list was later reviewed and approved by the maintainer (see the update below), and reviewer-facing history exists only as the `reporter_handle_track_record` database function until the queue (BE-070) uses it.
 
 ### BE-067 — Report follow-up answers
 
@@ -776,6 +776,8 @@ Implement code-authenticated or handle-authenticated private follow-up answer su
 > **Gate status (2026-09-19): closed for the fictional local path, with one open item.** Anonymous reports work with and without attachment and contact (BE-063 tests). Tracking codes are random, keyed at rest, shown once, and safe in failure paths (BE-062, BE-063, BE-065). The insert-only role's lack of read-back is proven (BE-061). Sanitised artifacts carry no test metadata or active content and no raw file remains (BE-064). Tracking, handle, follow-up, and submission responses and logs are tested for private-data absence. The handle path passes its no-PII and unlink tests (BE-066). **Open:** ClamAV was never started, so real malware scanning is proven only against a protocol double and EICAR through the test scanner, and the EFF word list has had no human review.
 
 > **Gate status (2026-09-19, updated): closed.** ClamAV was started and a real scan is now proven (clean content passes; the EICAR test file is refused; a dead scanner fails closed). The only remaining item is human review of the EFF word list. One measured limit: ClamAV does not flag the EICAR string when it is appended to an image, so the pipeline's protection there is the sniff, decode, re-encode, and rewrite steps, not the scanner alone.
+
+> **Gate status (2026-09-19, updated again): closed with no open item from this circle.** The maintainer reviewed and approved the EFF word list, so the handle path's last review item is done. What remains is outside the circle: the Next.js `Set-Cookie` proof and worker-message request-ID propagation.
 
 ## 10. Circle 7 — reviewer queue, decision history, and publication
 

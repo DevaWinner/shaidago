@@ -752,3 +752,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the probes, tests, and CI steps; started and exercised the local ClamAV.
 - **Prompt summary:** Maintainer asked to close the open partial items.
 - **Human review:** None yet; pending maintainer review.
+
+## 2026-09-19 — Reporter-handle word list review recorded
+
+- **Task:** Record the maintainer's review of the passphrase word list.
+- **Outcome delivered:** `docs/evidence/BE-066-wordlist.md` and the task and gate notes now record the human approval.
+- **Files changed:** `docs/evidence/BE-066-wordlist.md`, `docs/BACKEND_BUILD_ORDER.md`, `docs/AI_BUILD_LOG.md`.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** None; documentation only.
+- **Failure behaviour verified:** Not applicable.
+- **Commands run and results:** Circle 0 validators passed.
+- **Tests added or changed:** None.
+- **Generated artifacts checked:** None affected.
+- **Known limitations/open decisions:** The approval is recorded as stated by the maintainer in the session, without a list of the checks made. The file hash is unchanged, so the approval applies to the committed list.
+- **Commit/PR:** `docs: record the maintainer review of the reporter-handle word list`
+- **Next task may rely on:** The word list being human-approved.
+- **AI assistance used:** Wrote the record only; the review itself was the maintainer's.
+- **Prompt summary:** Maintainer confirmed they reviewed and approved the list.
+- **Human review:** Maintainer approved the word list on 2026-09-19.

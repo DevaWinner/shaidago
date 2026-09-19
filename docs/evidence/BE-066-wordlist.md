@@ -15,4 +15,6 @@ The file is unmodified so its hash can be compared with a fresh download. `tests
 
 ## Review status
 
-Fetched and structurally checked by the AI-assisted build. **No human has reviewed the list for offensive or confusable words or confirmed the licence terms.** Until a maintainer does, treat the list as unreviewed; the handle feature stays optional and off the anonymous path.
+Fetched and structurally checked by the AI-assisted build on 2026-09-19.
+
+**Human review: approved by the maintainer on 2026-09-19** (stated in the working session; the maintainer did not record which checks they made, and no separate review artefact exists). The handle feature remains optional and off the anonymous path.
