@@ -1639,3 +1639,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Explained the code-led trade-off and persisted the selection without adding imagery, providers, or runtime dependencies.
 - **Prompt summary:** Using Impeccable, present choices for ShaidaGo's frontend feel, look, and tokens; maintainer selected Field ledger.
 - **Human review:** The Field ledger decision board recorded code-led execution as the selected build path on 20 September 2026.
+
+## 2026-09-20 — FE-013 Field ledger direction contract
+
+- **Task:** FE-013 — Direction contract and surface brief.
+- **User outcome delivered:** Future frontend work now has an exact Field ledger visual contract: semantic starting tokens, a code-led first viewport, evidence interaction, responsive behaviour, mode-specific grammar, and explicit anti-default boundaries.
+- **Routes/components changed:** No runtime route or component changed. [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) adds the contract and `/{locale}` surface brief; `PRODUCT.md` now records the accepted brand commitment.
+- **Backend operations/contract version:** No backend operation or contract changed.
+- **Public/private data handled:** No runtime data flow changed. The contract explicitly preserves source attribution, private-report separation, no one-time-secret display, and public/private cache differences.
+- **States implemented:** No UI state changed. Later components must implement the named loading, empty, stale, limited-evidence, error, and recovery grammar.
+- **Accessibility evidence:** The contract requires visible keyboard focus, semantic citation links, text-plus-icon-plus-colour states, 200% zoom, forced colours, reduced motion, and four-locale text testing. No implementation test is claimed yet.
+- **Locales reviewed:** No message copy or translation changed. Noto font coverage and rendered Hausa, Igbo, Yoruba, and English locale expansion are explicit future verification requirements.
+- **Performance/cache impact:** No runtime bundle, cache, font, image, or provider request changed. The direction rejects a decorative asset dependency and keeps public pages text-first; private-cache rules remain unchanged.
+- **Commands run and results:** Ran all five current frontend contract/inventory validators after the documentation change; each passed. `git diff --check` passed. No planned frontend command or visual test is reported as run.
+- **Screenshots/traces/artifacts checked:** No runtime surface, comp, or screenshot exists. `DESIGN.md` is intentionally absent until the Circle 15 render/review gate.
+- **Known limitations/open decisions:** Actual primitives, font licensing/subsetting, contrast values, layout implementation, and visual verification belong to Circle 4 and later. The contract is authoritative until a reviewed implementation updates the final design documentation.
+- **Commit/PR:** `docs: establish the field ledger direction contract`
+- **Next task may rely on:** Circle 4 design-foundation work can implement tokens and primitives; all visible work must preserve this contract.
+- **AI assistance used:** Converted the selected direction into a bounded implementation contract and semantic token system while retaining the product's evidence, accessibility, locale, low-data, and privacy constraints.
+- **Prompt summary:** Using Impeccable, present choices for ShaidaGo's frontend feel, look, and tokens; maintainer selected Field ledger.
+- **Human review:** The maintainer selected Field ledger and the decision board recorded code-led execution on 20 September 2026.
