@@ -7,13 +7,14 @@ checks status codes, content types, and response bodies against the schema. The 
 the seeded synthetic catalogue in a real database as the restricted public role.
 """
 
+from http import HTTPStatus
 from typing import Any
 
 import pytest
 import schemathesis
 from hypothesis import HealthCheck, settings
 from schemathesis import Case
-from schemathesis.specs.openapi.checks import positive_data_acceptance
+from schemathesis.specs.openapi.checks import negative_data_rejection, positive_data_acceptance
 from sqlalchemy.engine import URL
 from starlette.types import ASGIApp, Receive, Scope, Send
 
@@ -21,6 +22,7 @@ from shaidago.api.app import create_app
 from shaidago.api.dependencies import Dependencies
 from shaidago.shared.clock import ManualClock
 from shaidago.shared.database import Database, build_engine
+from shaidago.shared.ratelimit import InMemoryRateLimiter
 from tests.factories import CREDENTIAL, build_settings
 from tests.integration.public_catalogue import PUBLISH_AT, Seed
 
@@ -42,12 +44,21 @@ class WithCredential:
 @pytest.fixture(scope="module")
 def api_schema(role_urls: dict[str, URL], seed: Seed) -> Any:
     del seed
-    engine = build_engine(
+    public = build_engine(
         role_urls["shaidago_public"], application_name="fuzz", statement_timeout_ms=8000
     )
+    reviewer = build_engine(
+        role_urls["shaidago_reviewer"], application_name="fuzz-reviewer", statement_timeout_ms=8000
+    )
+    clock = ManualClock(PUBLISH_AT)
     app = create_app(
         build_settings(DOCS_ENABLED="true"),
-        Dependencies(public_database=Database(engine), clock=ManualClock(PUBLISH_AT)),
+        Dependencies(
+            public_database=Database(public),
+            reviewer_database=Database(reviewer),
+            clock=clock,
+            rate_limiter=InMemoryRateLimiter(clock),
+        ),
     )
     return schemathesis.openapi.from_asgi("/openapi.json", WithCredential(app))
 
@@ -68,6 +79,10 @@ schema = schemathesis.pytest.from_fixture("api_schema")
 def test_public_api_conforms_to_its_contract(case: Case[Any]) -> None:
     # The cursor is an opaque signed token, so an arbitrary well-formed string is rightly rejected
     # with the documented 400; positive-data acceptance is covered by test_public_api.py instead.
-    case.call_and_validate(
-        excluded_checks=[positive_data_acceptance]  # pyright: ignore[reportArgumentType]
-    )
+    # A body over the size cap is deliberately answered 413, which the generic "invalid data must
+    # be rejected" check does not list, so it is exempt from that one check only.
+    response = case.call()
+    excluded = [positive_data_acceptance]
+    if response.status_code == HTTPStatus.CONTENT_TOO_LARGE:
+        excluded.append(negative_data_rejection)
+    case.validate_response(response, excluded_checks=excluded)  # pyright: ignore[reportArgumentType]

@@ -599,6 +599,8 @@ Test:
 
 Implement `POST /v1/auth/sessions` and `DELETE /v1/auth/sessions/current` with generic credential failures, per-IP-HMAC and per-identifier backoff, bounded request size, audit events, and no username/password logging. Do not hard-lock an account in a way an attacker can weaponise without an administrative recovery path.
 
+> **Execution status (2026-09-19): complete.** Sign-in and sign-out, per-client and per-client-and-identifier limits that cannot lock an account from another address, generic credential failures, audit events without identifiers, and a fail-closed Redis limiter are proven (`make backend-verify` exit 0, 505 passed; the fuzz test was repeated 15 times cleanly). The BFF owns the browser cookie.
+
 ### Circle 5 exit gate
 
 - Session tokens never persist or log in raw form.
@@ -606,6 +608,8 @@ Implement `POST /v1/auth/sessions` and `DELETE /v1/auth/sessions/current` with g
 - Every reviewer capability has allow/deny policy tests.
 - Disabled/revoked/expired sessions fail consistently.
 - Authentication responses do not reveal identifier or record existence.
+
+> **Gate status (2026-09-19): open, one named gap.** Met: session tokens are stored only as an HMAC and never appear in logs, audit rows, or storage (canary tests); the production and development cookie policy is a tested contract; every reviewer capability has an allow/deny policy test, exhaustive across roles; disabled, revoked, expired, downgraded, and replayed sessions fail with one identical response; sign-in responses are identical for unknown identifiers, wrong passwords, and disabled accounts, and rate limits cannot lock a reviewer out from another address (505 passing tests). **Gap:** "the BFF's final `Set-Cookie` behaviour" cannot be tested here because the Next.js BFF does not exist yet; the API supplies the exact policy and only the frontend build order can prove the final header. Horizontal-access tests wait for an assignment model that the pilot does not define.
 
 ## 9. Circle 6 — anonymous reporting, tracking, evidence, and optional handles
 

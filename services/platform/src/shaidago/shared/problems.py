@@ -71,6 +71,12 @@ PUBLICATION_INCOMPLETE: Final = Problem(
     "Publication requirements not met",
     "The evidence required to publish this item is incomplete.",
 )
+INVALID_CREDENTIALS: Final = Problem(
+    401,
+    "invalid_credentials",
+    "Sign-in failed",
+    "The identifier or password is not correct.",
+)
 UNAUTHENTICATED: Final = Problem(
     401, "unauthenticated", "Authentication required", "The request could not be authenticated."
 )
