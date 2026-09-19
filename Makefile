@@ -13,15 +13,22 @@ if [ $$status -eq 5 ]; then echo "backend: no tests collected yet for $(1)"; exi
 exit $$status
 endef
 
+# Local infrastructure. Every command names the fixed project "shaidago", so it can only see or
+# change ShaidaGo's own containers, networks, and volumes.
+INFRA_ENV ?= .env
+COMPOSE := docker compose --project-name shaidago --env-file $(INFRA_ENV) -f infra/docker/compose.yml
+
 .DEFAULT_GOAL := help
 .PHONY: help backend-sync backend-format backend-format-check backend-lint backend-typecheck \
 	backend-unit backend-integration backend-contract backend-security backend-test backend-verify \
-	openapi-generate openapi-check
+	openapi-generate openapi-check infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
 
 help:
 	@echo "Backend targets: backend-sync backend-format backend-format-check backend-lint"
 	@echo "  backend-typecheck backend-unit backend-integration backend-contract"
 	@echo "  backend-security backend-test backend-verify openapi-generate openapi-check"
+	@echo "Infrastructure targets: infra-up infra-up-core infra-down infra-logs infra-clean"
+	@echo "  (need $(INFRA_ENV); copy .env.example first)"
 
 backend-sync:
 	$(UV) sync --all-groups --frozen
@@ -65,3 +72,32 @@ openapi-check:
 
 backend-verify: backend-sync backend-format-check backend-lint backend-typecheck backend-security \
 	openapi-check backend-test
+
+infra-check-env:
+	@test -f "$(INFRA_ENV)" || { echo "infra: $(INFRA_ENV) not found; run: cp .env.example .env"; exit 1; }
+
+# PostgreSQL, Redis, MinIO with its private bucket, and the ClamAV scanner.
+# `up --wait` treats an exited one-shot container as failure, so the bucket provisioner runs
+# separately after the long-running services are healthy.
+infra-up: infra-check-env
+	$(COMPOSE) --profile scanner up --detach --wait postgres redis minio clamav
+	$(COMPOSE) run --rm minio-init
+
+# Everything except ClamAV, which needs about 1.5-3 GB of memory.
+infra-up-core: infra-check-env
+	$(COMPOSE) up --detach --wait postgres redis minio
+	$(COMPOSE) run --rm minio-init
+
+# Stops containers and keeps volumes.
+infra-down: infra-check-env
+	$(COMPOSE) --profile scanner down --remove-orphans
+
+infra-logs: infra-check-env
+	$(COMPOSE) --profile scanner logs --tail=200
+
+# Deletes ShaidaGo's local database, queue, object, and signature volumes. Destructive.
+infra-clean: infra-check-env
+	@test "$(CONFIRM_DESTROY_SHAIDAGO_DATA)" = "yes" || { \
+		echo "infra-clean deletes ShaidaGo's local Docker volumes."; \
+		echo "Re-run with CONFIRM_DESTROY_SHAIDAGO_DATA=yes to proceed."; exit 1; }
+	$(COMPOSE) --profile scanner down --volumes --remove-orphans

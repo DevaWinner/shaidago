@@ -256,3 +256,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the generator, tests, Makefile targets, and API document.
 - **Prompt summary:** Unattended backend build loop.
 - **Human review:** None yet; unattended run, pending maintainer review.
+
+## 2026-09-19 — BE-030 Compose development infrastructure
+
+- **Task:** BE-030 — Compose development infrastructure.
+- **Outcome delivered:** `infra/docker/compose.yml` (project `shaidago`) defining PostgreSQL 18 with pgvector 0.8.6, Redis 8 with append-only persistence and a required password, MinIO with a one-shot provisioner that creates the evidence bucket and sets anonymous access to none, and an optional ClamAV service under the `scanner` profile. Make targets `infra-up`, `infra-up-core`, `infra-down`, `infra-logs`, and `infra-clean`.
+- **Files changed:** `infra/docker/compose.yml`, `Makefile`, `.env.example` (bootstrap credentials, ports, memory limit; local URLs now use the compose ports), `services/platform/tests/unit/infra/test_compose.py`, `pyproject.toml`/`uv.lock` (dev dependencies `pyyaml`, `types-pyyaml`), README and docs notes.
+- **Schema/contract changes:** None.
+- **Security/privacy impact:** All published ports bind to `127.0.0.1` by default on unusual host ports (55432, 56379, 59000, 59001, 53310). Every credential is a required variable with no default, so Compose refuses to start without an env file. Images are pinned by digest. `infra-clean` refuses without `CONFIRM_DESTROY_SHAIDAGO_DATA=yes` and every target uses the fixed project name, so it cannot act on other projects' containers or volumes. Dependency check: `pyyaml` (MIT, dev only). MinIO's community edition is source-only maintenance mode and is used for local development only.
+- **Failure behaviour verified:** With a synthetic env file (from `.env.example`): postgres, redis, and minio became healthy; the bucket reported `private`; an anonymous request to the bucket returned 403; Redis rejected a wrong password; `CREATE EXTENSION vector` succeeded; `infra-up-core` was idempotent; `infra-down` kept the three volumes and a row written before it was still present after restart; `infra-clean` without confirmation exited 2 and deleted nothing; with confirmation it removed all ShaidaGo volumes while the other tenant's containers kept running; a missing env file fails fast. Missing credential variables make `docker compose config` fail.
+- **Commands run and results:** `docker compose config` for the scanner profile; `make infra-up-core`, `infra-down`, `infra-clean` against a temporary env file outside the repository; `make backend-verify` exit 0 (129 tests); Circle 0 validators passed.
+- **Tests added or changed:** 8 static Compose and Makefile guards (digest pins, loopback ports, no literal credentials, health checks, limits, private bucket, guarded clean); they run without Docker.
+- **Generated artifacts checked:** `uv.lock` for the new dev dependencies.
+- **Known limitations/open decisions:** **The ClamAV service was not started.** The machine's Docker VM had about 2.6 GB free and hosts unrelated containers, and clamd needs roughly 1.5-3 GB, so starting it risked destabilising them; its `clamdcheck.sh` readiness health check is therefore unproven here and `make infra-up` (which includes it) was not run end to end. The Alpine ClamAV image has no arm64 build, so the Debian image is pinned. `infra-up` runs the bucket provisioner after `--wait` because Compose treats an exited one-shot container as failure. The password in `.env.example` is a placeholder with a loopback-only bind; nothing enforces rotation locally.
+- **Commit/PR:** `build: add compose development infrastructure`
+- **Next task may rely on:** PostgreSQL 18 with pgvector on `localhost:55432`, Redis on `56379`, and MinIO on `59000` with a private bucket, all started by `make infra-up-core` with a copy of `.env.example` as `.env`.
+- **AI assistance used:** Wrote the Compose definition, Make targets, and static guards; ran the lifecycle checks.
+- **Prompt summary:** Unattended backend build loop.
+- **Human review:** None yet; unattended run, pending maintainer review.

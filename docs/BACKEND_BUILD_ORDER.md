@@ -391,6 +391,8 @@ Create Docker Compose definitions for:
 
 Use named project-scoped volumes, explicit ports configurable for local use, resource limits where supported, and no default production passwords. `make infra-up`, `infra-down`, `infra-logs`, and `infra-clean` must target only ShaidaGo resources. `infra-clean` requires an explicit destructive confirmation variable and never targets an unresolved path or external database.
 
+> **Execution status (2026-09-19): partial.** PostgreSQL 18 + pgvector, Redis, and MinIO with a private bucket were brought up healthy, persisted data across restart, and were removed only by a confirmed `infra-clean`; static Compose guards run in the unit suite. ClamAV is defined with a signature-aware health check but was **not started** (the Docker VM had about 2.6 GB free alongside unrelated containers), so scanner readiness and `make infra-up` end to end are unproven.
+
 ### BE-031 — Async database kernel
 
 1. Build async engine/session factories with pool configuration, statement timeout, UTC session expectations, and connection health checks.

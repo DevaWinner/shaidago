@@ -77,7 +77,7 @@ Start with the [documentation index](docs/README.md).
 
 ## Development
 
-`services/platform` now has a pinned Python toolchain (see its README); the root `Makefile` provides `make backend-*` targets (`make backend-verify` is the backend gate); the judge-facing `make setup`/`make verify` do not exist yet. Gate 1 will add the pnpm workspace, Python project, lockfiles, Docker Compose services, migrations, seed command, and canonical root `make` targets. Until those artifacts exist, commands shown in the implementation plan are target interfaces rather than working claims.
+`services/platform` now has a pinned Python toolchain (see its README); the root `Makefile` provides `make backend-*` targets (`make backend-verify` is the backend gate); the judge-facing `make setup`/`make verify` do not exist yet. `make infra-up-core` (after `cp .env.example .env`) starts local PostgreSQL 18 + pgvector, Redis, and MinIO through Docker Compose on loopback-only ports; `make infra-up` adds the ClamAV scanner, which needs 1.5-3 GB of memory. Gate 1 will add the pnpm workspace, Python project, lockfiles, Docker Compose services, migrations, seed command, and canonical root `make` targets. Until those artifacts exist, commands shown in the implementation plan are target interfaces rather than working claims.
 
 When implementation starts, the separate stacks remain independently owned:
 
