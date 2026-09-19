@@ -1189,6 +1189,8 @@ Create one multi-stage backend image used by API and worker with different comma
 
 Test API and worker commands from the same image and verify graceful termination drains requests/jobs within timeout.
 
+> **Execution status (2026-09-19): complete.** `services/platform/Dockerfile` builds one multi-stage image (base pinned by digest, uv pinned, frozen install without development dependencies, no compiler, uv, git, curl, pip, or setuptools in the final image, OCI labels including the commit) that runs the API, the worker, and the migration job with different commands, as an unprivileged user (uid 10001). `python -m shaidago.api.serve` binds one dual-stack socket on `::` with `IPV6_V6ONLY` off (a bare `--host ::` was IPv6-only in the container runtime and unreachable over IPv4) and drains on SIGTERM. `scripts/verify-container.sh` (run with `TRIVY=1`) passed every check: builds, non-root, revision label equals the commit, no build or development tooling, no credential files, the API answering liveness and readiness (200) with a read-only root filesystem, no capabilities, and no privilege escalation, a `401` without credentials, SIGTERM exiting 0 in about one second, the worker starting and draining from the same image, the migration job creating an empty database from the same image, and Trivy reporting no fixable high or critical vulnerability. Building the image found four real defects, now fixed: the API needs its package metadata (the project is now installed editable at its repository-relative path), the migration job demanded every application role's URL (it now needs only `DATABASE_URL`), the first Trivy findings were the base image's unused pip and setuptools (removed), and the `::` bind. A Trivy job was added to `.github/workflows/security.yml`.
+
 ### BE-111 — Railway services and environment matrix
 
 Define web-independent backend topology:
@@ -1202,6 +1204,8 @@ Define web-independent backend topology:
 
 Only the Next.js service receives the internal API URL/credential. Provider and object-storage secrets stay API/worker-side as needed. Document ownership and rotation for every secret.
 
+> **Execution status (2026-09-19): complete for staging; production not created.** The topology, secret ownership and rotation table, and per-service variable matrix are in `docs/DEPLOYMENT.md`, with per-service config in `railway/{api,worker,migrate}.railway.json`. Staging was created on Railway (`shaidago-staging`, environment `staging`): a pgvector PostgreSQL 18 image with a volume, managed Redis, a private bucket, and `api`, `worker`, and `migrate` from the verified image, none with a public domain. `scripts/railway_staging_variables.py` generated every key and role password and set them without printing anything; only `migrate` holds the owner URL, and the worker and API hold no owner credential. Staging runs `PROVIDER_MODE=replay` and `SCANNER_MODE=not_deployed`, and no live provider key was set. The web service does not exist yet, so nothing holds the internal API URL. A separate production project, with its own database, Redis, bucket, keys, reviewers, and budgets, is specified but was deliberately not created.
+
 ### BE-112 — Pre-deploy migration and compatibility
 
 1. Run migrations as a one-shot pre-deploy job under migration credentials.
@@ -1210,6 +1214,8 @@ Only the Next.js service receives the internal API URL/credential. Provider and 
 4. Never auto-seed production.
 5. Back up and test restore before a destructive/irreversible migration.
 6. Document rollback as app rollback plus schema/data decision, not simply `alembic downgrade`.
+
+> **Execution status (2026-09-19): complete.** `migrate` is a one-shot service (restart policy never) that runs `alembic upgrade head` under the owner role, serialised by an advisory lock so concurrent runs cannot collide (proven by a three-process test), then provisions role logins; `api` and `worker` are deployed only after it reports SUCCESS, and the API's readiness reports `unavailable` on a revision mismatch. On staging the order was executed: `migrate` SUCCESS ("enabled login for 4 roles"), then `api` and `worker` SUCCESS. `docs/DEPLOYMENT.md` records the expand, migrate, contract sequencing, the requirement to back up and test-restore before a destructive migration, that production is never auto-seeded (the seed refuses non-local targets), and that rollback is an app rollback plus an explicit schema decision, not `alembic downgrade`. A backup and restore drill was not run (no backup is configured; runbook 10 says so).
 
 ### BE-113 — Operational runbooks
 
@@ -1229,9 +1235,13 @@ Create concise runbooks for:
 
 Each runbook has trigger, immediate containment, safe diagnostic commands, decision owner, recovery, verification, and follow-up. Commands must not print secrets/private rows.
 
+> **Execution status (2026-09-19): complete.** `docs/RUNBOOKS.md` has the eleven runbooks the task lists (API not ready, migration failure or lock, Redis and job backlog and dead letters, object storage unavailable, provider outage or budget exhausted, suspected private-data leak, credential and key rotation, reviewer disablement and session revocation, evidence sanitation or scanner failure, database backup and restore including replaying shredded reports, and rollback with incident evidence preservation). Each states the trigger, containment, read-only diagnostics that print counts and identifiers only, the decision owner, recovery, verification, and follow-up. The runbooks were written against the shipped commands and states (`/health/ready` components, the `shaidago:discovery` queue and its dead-letter queue, `python -m shaidago.retention`, `rotate_keks`); commands that use `railway ssh` and the Railway CLI were exercised only as far as BE-114 records.
+
 ### BE-114 — Staging smoke and rollback exercise
 
 Run public project read, anonymous fictional submission, tracking, reviewer transition, Q&A fixture/live as approved, public Source Scout, report-scoped reviewer discovery, safe publication, logout/revocation, and failure states. Exercise one rollback and one secret rotation. Record commit/image, environment, timestamps, safe outcomes, and limitations.
+
+> **Execution status (2026-09-19): partial.** Exercised on staging and recorded in `docs/evidence/BE-114-staging-smoke.md`: the ordered deploy, a secret rotation (`INTERNAL_WEB_CREDENTIAL_CURRENT` replaced with the old value kept as `_PREVIOUS`; the service redeployed to SUCCESS), and a rollback of `api` to the previous deployment (`deploymentRollback`, new deployment SUCCESS, startup confirmed in its log). **Not run:** the full fictional smoke journey on staging. It needs access inside Railway's private network (`railway ssh`), and no SSH key is registered on the Railway account; registering one is an account change left to the maintainer. `scripts/staging_smoke.py` implements the whole journey (public read, anonymous submission, tracking, reviewer decision and stale-decision refusal, verification, previewed publication, Q&A in replay, public and report-scoped discovery, sign-out and revocation) and the record lists the exact steps to run it.
 
 ### Circle 11 exit gate
 
@@ -1240,6 +1250,8 @@ Run public project read, anonymous fictional submission, tracking, reviewer tran
 - Migrations gate deploy and rollback is exercised.
 - Runbooks contain executable safe diagnostics.
 - Staging smoke covers the complete fictional journey without public/private leakage.
+
+> **Gate status (2026-09-19): open, two named items.** Met: the container is non-root, scanned (no fixable high or critical finding), and runs the API, worker, and migration job (BE-110); staging uses private networking and isolated resources with no public domain (BE-111); migrations gate the deploy and one rollback and one secret rotation were exercised on staging (BE-112, BE-114); the runbooks contain safe, count-only diagnostics (BE-113). **Open:** (1) the complete staging smoke journey has not been run, because it needs a registered Railway SSH key (see `docs/evidence/BE-114-staging-smoke.md`); (2) the Railway commands in the runbooks are unproven beyond deploy, logs, variables, and rollback. A production project and a backup and restore drill do not exist and are production-gate items.
 
 ## 15. Circle 12 — backend release and frontend handoff gate
 

@@ -1,0 +1,22 @@
+# Only what the image needs is copied; this keeps secrets, local state, and caches out of the build.
+.git
+.github
+.env
+.env.*
+!.env.example
+**/.venv
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.ruff_cache
+**/.pyright
+**/.mypy_cache
+**/.coverage
+**/htmlcov
+node_modules
+apps
+docs
+infra
+scripts
+services/platform/tests
+services/platform/scripts
