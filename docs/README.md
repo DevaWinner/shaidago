@@ -35,6 +35,7 @@ If implementation reveals a conflict, do not silently choose one version. Correc
 | [`KEY_MANAGEMENT.md`](KEY_MANAGEMENT.md) | Active | How are private-field keys held, rotated, destroyed, and later moved to a managed KMS? |
 | [`SOURCE_REGISTER.md`](SOURCE_REGISTER.md) | Generated, active | Which real sources support each seed fact, with exact passages, dates, availability, and gaps? |
 | [`AI_BUILD_LOG.md`](AI_BUILD_LOG.md) | Active log | Where did AI assist, what was reviewed, and what was the result? |
+| [`../.claude/commands/`](../.claude/commands/) | Active developer workflow | How do unattended backend and frontend build loops select, prove, record, and commit one build-order task at a time? |
 
 ## Planned evidence documents
 

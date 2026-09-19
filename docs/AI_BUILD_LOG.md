@@ -1375,3 +1375,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Result:** FE-003 may size content fixtures against stable state names; later component and E2E tests must consume these names rather than invent local error labels.
 - **AI assistance used:** Separated materially different recovery paths and converted backend response semantics into implementation-ready UI fixture contracts.
 - **Prompt summary:** Continue the frontend Circle 0 inventory from the updated backend handoff.
+
+## 2026-09-20 — Frontend/BFF unattended build-loop command
+
+- **Task:** Repository developer workflow — frontend/BFF loop aligned with the backend loop.
+- **User outcome delivered:** A repeatable command now drives eligible frontend tasks through the accepted frontend build order with one coherent task packet, implementation, proof, record, and commit lifecycle.
+- **Routes/components changed:** No runtime route, component, BFF handler, or client bundle changed; added `.claude/commands/frontend-build-loop.md`.
+- **Backend operations/contract version:** No contract changed. The command requires the committed OpenAPI, frontend fixture, controlled-vocabulary, and frontend-backend handoff contracts before an affected task begins.
+- **Public/private data handled:** No data flow changed. The loop explicitly preserves browser-to-Next-only routing, server-only API access, purpose-built BFF handlers, no-store private handling, and prohibited sensitive browser/cache/log locations.
+- **States implemented:** No product UI state changed. The workflow requires task packets to enumerate initial, loading, empty, success, stale, partial, validation, denied, rate-limited, offline, dependency-down, and recovery states as applicable.
+- **Accessibility evidence:** No UI changed. The command requires semantic, focus, keyboard, assistive announcement, zoom, contrast, reduced-motion, locale-length, mobile, and screenshot evidence for relevant visible tasks.
+- **Locales reviewed:** No message or translation changed. The workflow requires parity for `en`, `ha`, `ig`, and `yo` and prevents a claim of fluent human review without that review.
+- **Performance/cache impact:** No runtime cache or bundle changed. The command requires public/private cache inspection, server/client boundary checks, and viewport/network evidence when a task affects them.
+- **Commands run and results:** Inspected the current `CLAUDE.md`, backend loop command, frontend build order, documentation index, AI log, repository status, and recent commits. No planned frontend build command was run because no `apps/web` package exists yet.
+- **Screenshots/traces/artifacts checked:** Reviewed the tracked backend loop and the frontend execution specification; no rendered surface exists to inspect.
+- **Known limitations/open decisions:** Circle 1 remains human-directed. An unattended run must record FE-010 as blocked and may continue only with eligible non-visual work; Circle 4 and visible product surfaces wait for approval.
+- **Commit/PR:** `docs: add the frontend build loop command`
+- **Next task may rely on:** The frontend loop's task-selection, safety-boundary, validation, documentation, commit, blocked-task, and hard-stop rules.
+- **AI assistance used:** Mirrored the proven backend loop structure, then adapted it to the frontend's Server Component/BFF boundary, state-matrix proof, four-locale requirements, and mandatory human visual-direction gate.
+- **Prompt summary:** Create a frontend loop equivalent to the backend loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
