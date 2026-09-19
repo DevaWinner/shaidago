@@ -159,6 +159,8 @@ def test_a_cursor_only_works_for_the_request_that_produced_it(client: TestClient
         {"verification": "awaiting_verification"},
         {"q": "x" * 101},
         {"q": ""},
+        {"q": "a\x00b"},
+        {"q": "line\nbreak"},
         {"limit": "0"},
         {"limit": "abc"},
         {"locality": "Not A Slug"},

@@ -71,10 +71,19 @@ PUBLICATION_INCOMPLETE: Final = Problem(
     "Publication requirements not met",
     "The evidence required to publish this item is incomplete.",
 )
+INVALID_CREDENTIALS: Final = Problem(
+    401,
+    "invalid_credentials",
+    "Sign-in failed",
+    "The identifier or password is not correct.",
+)
 UNAUTHENTICATED: Final = Problem(
     401, "unauthenticated", "Authentication required", "The request could not be authenticated."
 )
 FORBIDDEN: Final = Problem(403, "forbidden", "Not permitted", "The request is not permitted.")
+CSRF_INVALID: Final = Problem(
+    403, "csrf_invalid", "Request not permitted", "The request could not be verified."
+)
 NOT_FOUND: Final = Problem(404, "not_found", "Not found", "The requested resource was not found.")
 METHOD_NOT_ALLOWED: Final = Problem(
     405, "method_not_allowed", "Method not allowed", "This method is not supported here."

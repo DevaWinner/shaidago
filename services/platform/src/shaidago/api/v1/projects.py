@@ -81,7 +81,11 @@ class ListParams(BaseModel):
     category: Category | None = None
     status: PublicStatus | None = None
     verification: VerificationState | None = None
-    q: Annotated[str | None, Field(min_length=1, max_length=MAX_QUERY_CHARS)] = None
+    # No control characters: NUL cannot be stored or searched in PostgreSQL text.
+    q: Annotated[
+        str | None,
+        Field(min_length=1, max_length=MAX_QUERY_CHARS, pattern=r"^[^\x00-\x1f\x7f]+$"),
+    ] = None
     limit: Annotated[int | None, Field(ge=1, le=1000)] = None
     cursor: Annotated[str | None, Field(max_length=512)] = None
 

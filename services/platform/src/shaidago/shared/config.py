@@ -124,6 +124,7 @@ class DatabaseSettings(_Section):
 
     url: SecretStr = Field(validation_alias="DATABASE_URL")
     public_url: SecretStr = Field(validation_alias="DATABASE_URL_PUBLIC")
+    reviewer_url: SecretStr = Field(validation_alias="DATABASE_URL_REVIEWER")
     pool_size: PositiveInt = Field(default=5, le=50, validation_alias="DATABASE_POOL_SIZE")
     connect_timeout_seconds: PositiveInt = Field(
         default=5, le=60, validation_alias="DATABASE_CONNECT_TIMEOUT_SECONDS"
@@ -132,7 +133,7 @@ class DatabaseSettings(_Section):
         default=5000, le=60_000, validation_alias="DATABASE_STATEMENT_TIMEOUT_MS"
     )
 
-    @field_validator("url", "public_url")
+    @field_validator("url", "public_url", "reviewer_url")
     @classmethod
     def _parse_url(cls, value: SecretStr) -> SecretStr:
         return _validate_database_url(value)
@@ -142,6 +143,9 @@ class DatabaseSettings(_Section):
 
     def public_sqlalchemy_url(self) -> URL:
         return make_url(self.public_url.get_secret_value())
+
+    def reviewer_sqlalchemy_url(self) -> URL:
+        return make_url(self.reviewer_url.get_secret_value())
 
 
 class RedisSettings(_Section):
@@ -231,6 +235,15 @@ class AuthSettings(_Section):
     session_hmac_key: SecretStr = Field(validation_alias="SESSION_HMAC_KEY")
     session_cookie_name: str = Field(default="sg_session", validation_alias="SESSION_COOKIE_NAME")
     session_cookie_secure: bool = Field(default=False, validation_alias="SESSION_COOKIE_SECURE")
+    session_idle_minutes: PositiveInt = Field(
+        default=30, le=1440, validation_alias="SESSION_IDLE_MINUTES"
+    )
+    session_absolute_hours: PositiveInt = Field(
+        default=8, le=72, validation_alias="SESSION_ABSOLUTE_HOURS"
+    )
+
+    def session_key(self) -> bytes:
+        return _decode_single_key(self.session_hmac_key.get_secret_value())
 
     @field_validator("web_credential_previous", mode="before")
     @classmethod
@@ -345,6 +358,7 @@ def _secret_values(settings: Settings) -> dict[str, str]:
     values = {
         "DATABASE_URL": settings.database.url,
         "DATABASE_URL_PUBLIC": settings.database.public_url,
+        "DATABASE_URL_REVIEWER": settings.database.reviewer_url,
         "REDIS_URL": settings.redis.url,
         "OBJECT_STORE_ACCESS_KEY_ID": settings.storage.access_key_id,
         "OBJECT_STORE_SECRET_ACCESS_KEY": settings.storage.secret_access_key,
@@ -407,6 +421,11 @@ def _deployment_problems(settings: Settings) -> list[str]:
     owner_user = settings.database.sqlalchemy_url().username
     if settings.database.public_sqlalchemy_url().username == owner_user:
         problems.append("DATABASE_URL_PUBLIC: must use a different login than DATABASE_URL")
+    if settings.database.reviewer_sqlalchemy_url().username in {
+        owner_user,
+        settings.database.public_sqlalchemy_url().username,
+    }:
+        problems.append("DATABASE_URL_REVIEWER: must use its own login")
     problems.extend(
         f"{name}: placeholder value refused in staging and production"
         for name, value in _secret_values(settings).items()

@@ -558,6 +558,8 @@ Requirements:
 4. Refuse duplicate identifiers and weak/demo defaults outside development/test.
 5. Make disablement revoke active sessions transactionally.
 
+> **Execution status (2026-09-19): partial.** Reviewer users, the append-only audit log, Argon2id hashing with rehash-on-success, and an idempotent bootstrap are proven (`make backend-verify` exit 0, 58 new tests). Step 5, disablement revoking active sessions, was delivered by BE-051 (`ReviewerService.disable`), so this task is effectively complete.
+
 ### BE-051 — Opaque sessions and cookie contract
 
 1. Generate at least 256 bits of session entropy.
@@ -567,6 +569,8 @@ Requirements:
 5. FastAPI owns session creation and validity. It returns the raw token exactly once to the trusted BFF in an internal `no-store` response; the BFF owns the final same-origin `Set-Cookie`/clear-cookie header. The internal response and token never reach client JavaScript, logs, traces, or error bodies.
 6. Apply idle and absolute expiry using the injectable clock.
 
+> **Execution status (2026-09-19): complete.** Opaque HMAC-stored sessions, session-bound CSRF tokens, idle and absolute expiry, revocation on disable, password change, and role change, and the production and development cookie contracts are proven (`make backend-verify` exit 0, 395 passed). Two real bugs found by property and fuzz tests were fixed. The HTTP endpoints and BFF header contract are BE-052 and BE-054.
+
 ### BE-052 — CSRF, origin, and internal boundary
 
 - The BFF performs browser Origin and CSRF checks before forwarding cookie-authenticated mutations.
@@ -574,6 +578,8 @@ Requirements:
 - Define a CSRF token contract that is bound to the session, readable only where the browser must echo it, rotated appropriately, and excluded from logs.
 - Reject missing/mismatched origin proof with the same safe problem shape.
 - Never treat possession of the internal service credential as reviewer authorisation.
+
+> **Execution status (2026-09-19): complete.** The reviewer session and CSRF dependency, the separate reviewer database login, and the rule that the internal credential is never reviewer authority are proven by 9 integration tests (`make backend-verify` exit 0). Browser Origin checks remain the BFF's job.
 
 ### BE-053 — Role policy and authorisation tests
 
@@ -587,9 +593,13 @@ Test:
 - session fixation and replay after logout;
 - generic failures without record-existence leakage.
 
+> **Execution status (2026-09-19): complete.** A deny-by-default capability policy independent of HTTP, an exhaustive role-by-capability matrix, and route-level checks (identical generic denials, immediate effect of a downgrade) are proven (`make backend-verify` exit 0). Horizontal-assignment tests are not possible because no assignment model exists.
+
 ### BE-054 — Authentication endpoints and abuse controls
 
 Implement `POST /v1/auth/sessions` and `DELETE /v1/auth/sessions/current` with generic credential failures, per-IP-HMAC and per-identifier backoff, bounded request size, audit events, and no username/password logging. Do not hard-lock an account in a way an attacker can weaponise without an administrative recovery path.
+
+> **Execution status (2026-09-19): complete.** Sign-in and sign-out, per-client and per-client-and-identifier limits that cannot lock an account from another address, generic credential failures, audit events without identifiers, and a fail-closed Redis limiter are proven (`make backend-verify` exit 0, 505 passed; the fuzz test was repeated 15 times cleanly). The BFF owns the browser cookie.
 
 ### Circle 5 exit gate
 
@@ -598,6 +608,8 @@ Implement `POST /v1/auth/sessions` and `DELETE /v1/auth/sessions/current` with g
 - Every reviewer capability has allow/deny policy tests.
 - Disabled/revoked/expired sessions fail consistently.
 - Authentication responses do not reveal identifier or record existence.
+
+> **Gate status (2026-09-19): open, one named gap.** Met: session tokens are stored only as an HMAC and never appear in logs, audit rows, or storage (canary tests); the production and development cookie policy is a tested contract; every reviewer capability has an allow/deny policy test, exhaustive across roles; disabled, revoked, expired, downgraded, and replayed sessions fail with one identical response; sign-in responses are identical for unknown identifiers, wrong passwords, and disabled accounts, and rate limits cannot lock a reviewer out from another address (505 passing tests). **Gap:** "the BFF's final `Set-Cookie` behaviour" cannot be tested here because the Next.js BFF does not exist yet; the API supplies the exact policy and only the frontend build order can prove the final header. Horizontal-access tests wait for an assignment model that the pilot does not define.
 
 ## 9. Circle 6 — anonymous reporting, tracking, evidence, and optional handles
 

@@ -28,6 +28,14 @@ All are `GET`, read only through the restricted `shaidago_public` database role 
 
 An unknown, hidden, or unpublished project or source returns the same `404 not_found` body. A fact or update with no visible citation is never returned.
 
+## Reviewer sign-in
+
+Both endpoints are for the trusted BFF only; the BFF, not the API, sets the browser cookie.
+
+- `POST /v1/auth/sessions` with `{identifier, password}` returns `201` once with `session_token`, `csrf_token`, `expires_at`, `idle_timeout_seconds`, the cookie policy the BFF must apply (`name`, `secure`, `http_only`, `same_site`, `path`, `max_age_seconds`), and `reviewer.role`. It is `no-store`. Every failure (unknown identifier, wrong password, disabled account, malformed identifier) is the same `401 invalid_credentials`. Attempts are limited per client and per client-and-identifier (`429` with `Retry-After`), keyed by the forwarded client HMAC, so an attacker elsewhere cannot lock a reviewer out. Bodies over 2 KiB are `413`. If the limiter's Redis is unreachable the request fails closed (`503`).
+- `DELETE /v1/auth/sessions/current` revokes the session (`204`).
+- Every later reviewer request carries the session token in `X-Shaidago-Session` and, for state-changing methods, the CSRF token in `X-Shaidago-Csrf` (`403 csrf_invalid` otherwise). The API never reads cookies, and the internal service credential is never reviewer authority (`401 unauthenticated` without a session; `403 forbidden` when the role lacks the capability).
+
 ## Errors
 
 Every error is `application/problem+json`, `Cache-Control: no-store`, with `type`, `title`, `status`, `code`, `detail`, `request_id`, and, for validation failures, `errors` (`field` and rule `code`, never the submitted value). The `code` is the stable contract; the BFF localises display text from it.

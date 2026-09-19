@@ -5,12 +5,15 @@ from dataclasses import dataclass, field
 
 from fastapi import Request
 
+from shaidago.auth.passwords import PasswordVerifier
 from shaidago.shared.clock import Clock, SystemClock
 from shaidago.shared.config import Settings
 from shaidago.shared.context import new_request_id
 from shaidago.shared.database import Database
 from shaidago.shared.health import HealthCheck
+from shaidago.shared.ids import IdGenerator, Uuid7Generator
 from shaidago.shared.lifecycle import ManagedResource
+from shaidago.shared.ratelimit import RateLimiter
 
 
 @dataclass(frozen=True)
@@ -27,6 +30,11 @@ class Dependencies:
     clock: Clock = field(default_factory=SystemClock)
     # Public reads connect as shaidago_public (ADR-0003); None only in tests without a database.
     public_database: Database | None = None
+    # Reviewer sign-in and reviewer routes connect as shaidago_reviewer.
+    reviewer_database: Database | None = None
+    ids: IdGenerator = field(default_factory=Uuid7Generator)
+    password_verifier: PasswordVerifier = field(default_factory=PasswordVerifier)
+    rate_limiter: RateLimiter | None = None
 
 
 def get_settings(request: Request) -> Settings:

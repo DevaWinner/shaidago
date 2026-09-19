@@ -23,6 +23,7 @@ _SYNTHETIC_ENVIRON = {
     "APP_ENV": "development",
     "DATABASE_URL": "postgresql+psycopg://user:change-me@localhost:5432/openapi",
     "DATABASE_URL_PUBLIC": "postgresql+psycopg://public:change-me@localhost:5432/openapi",
+    "DATABASE_URL_REVIEWER": "postgresql+psycopg://reviewer:change-me@localhost:5432/openapi",
     "REDIS_URL": "redis://localhost:6379/0",
     "OBJECT_STORE_ENDPOINT_URL": "http://localhost:9000",
     "OBJECT_STORE_BUCKET": "openapi-schema-only",
