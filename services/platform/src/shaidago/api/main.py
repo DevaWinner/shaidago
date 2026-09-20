@@ -14,6 +14,7 @@ from shaidago.files.scanner import ClamdScanner, build_scanner
 from shaidago.files.storage import S3ObjectStore
 from shaidago.retrieval.groq import GroqLanguageModel
 from shaidago.retrieval.language import QA_FIXTURES_ROOT, FixtureLanguageModel
+from shaidago.retrieval.local_embeddings import FastEmbedModel
 from shaidago.shared.config import load_settings
 from shaidago.shared.database import Database, create_engine
 from shaidago.shared.health import HealthCheck
@@ -82,6 +83,12 @@ def create_configured_app() -> FastAPI:
             base_url=settings.providers.language_base_url,
         )
         managed_providers = (language_model,)
+    embedder: FastEmbedModel | None = None
+    model_path = settings.providers.embedding_model_path
+    if settings.providers.embedding_backend == "fastembed" and model_path is not None:
+        # Optional: a model that fails to load degrades to keyword retrieval, not a failed start.
+        embedder = FastEmbedModel(model_path, threads=settings.providers.embedding_threads)
+    managed_embedder: tuple[FastEmbedModel, ...] = (embedder,) if embedder is not None else ()
     probes: list[HealthCheck] = [
         public,
         revision_check,
@@ -90,15 +97,18 @@ def create_configured_app() -> FastAPI:
     ]
     if isinstance(scanner, ClamdScanner):  # the hosted demo runs without a scanner
         probes.append(CallableProbe("scanner", scanner.ping, required=True))
+    if embedder is not None:
+        probes.append(CallableProbe("embedding", embedder.ping, required=False))
     return create_app(
         settings,
         Dependencies(
-            resources=(public, reviewer, limiter, pool, *managed_providers),
+            resources=(public, reviewer, limiter, pool, *managed_providers, *managed_embedder),
             health_checks=tuple(probes),
             public_database=public,
             reviewer_database=reviewer,
             rate_limiter=limiter,
             language_model=language_model,
+            query_embedder=embedder,
             evidence_pipeline=pipeline,
             evidence_store=store,
             job_queue=build_producer_queue(settings.redis.url.get_secret_value()),

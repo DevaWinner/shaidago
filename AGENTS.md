@@ -143,8 +143,8 @@ Maintain separate, independently tooled stacks with a deliberate BFF boundary:
 
 ## AI and source-grounding standards
 
-- Use the OpenAI Responses API through a provider interface with configured model IDs; do not hard-code a model throughout domain code.
-- Send the minimum approved source passages, opaque citation IDs, and `store: false` where specified. Never send private reports into the public Q&A index.
+- Use a provider interface with configured model IDs: Groq's OpenAI-compatible Chat Completions for language (ADR-0009) and local FastEmbed for embeddings (ADR-0010). Do not hard-code a model throughout domain code, and do not add another provider without an accepted decision record.
+- Send the minimum approved source passages and opaque citation IDs, with no tools offered to the model. Never send private reports into the public Q&A index. Embed questions locally; a question is never sent to a provider to be embedded.
 - Require strict structured outputs. Deterministically reject unknown citations, cross-project citations, uncited factual statements, malformed output, and more than five follow-up questions.
 - Fail closed to the approved insufficient-evidence response when retrieval coverage or output validation is inadequate.
 - Preserve prompt/schema/model versions and evaluation metrics without retaining sensitive raw inputs.
