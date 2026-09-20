@@ -12,8 +12,7 @@ function primitiveSheetMarkup(): string {
   return readFileSync(SHEET_PATH, "utf8");
 }
 
-const CONTROL_SELECTOR =
-  ".primitive-button, .primitive-input, .primitive-file, .primitive-choice, summary";
+const CONTROL_SELECTOR = "[data-slot=button], [data-slot=input], [data-slot=choice], summary";
 
 async function loadSheet(page: Page): Promise<void> {
   await page.goto("/");
@@ -99,8 +98,8 @@ test("controls use project tokens, not native browser styling", async ({ page })
 
     return {
       body: getComputedStyle(document.body).fontFamily,
-      primary: read(".primitive-button--primary"),
-      secondary: read(".primitive-button--secondary"),
+      primary: read("[data-slot=button][data-variant=primary]"),
+      secondary: read("[data-slot=button][data-variant=secondary]"),
       input: read("#f2"),
       readOnly: read("#f3")
     };
@@ -132,7 +131,7 @@ test("keyboard focus is a visible three-pixel ring, and stronger under forced co
   const forced = await page.evaluate(() => {
     const focused = getComputedStyle(document.activeElement as Element);
     const button = getComputedStyle(
-      document.querySelector(".primitive-button--primary") as Element
+      document.querySelector("[data-slot=button][data-variant=primary]") as Element
     );
 
     return {
@@ -151,7 +150,7 @@ test("reduced motion leaves no transition or animation on primitives", async ({ 
   await loadSheet(page);
 
   const motion = await page.$$eval(
-    ".primitive-button, .primitive-skeleton, .primitive-input",
+    "[data-slot=button], [data-slot=skeleton], [data-slot=input]",
     (elements) =>
       elements.map((element) => {
         const style = getComputedStyle(element);

@@ -179,8 +179,9 @@ describe("actions", () => {
     const icon = screen.getByRole("button", { name: "Close notice" });
     expect(icon).toHaveAccessibleName("Close notice");
     expect(within(icon).getByText("×")).toHaveAttribute("aria-hidden", "true");
-    expect(screen.getByRole("button", { name: "Delete draft" })).toHaveClass(
-      "primitive-button--danger"
+    expect(screen.getByRole("button", { name: "Delete draft" })).toHaveAttribute(
+      "data-variant",
+      "danger"
     );
   });
 
@@ -312,7 +313,7 @@ describe("overlays and focus restoration", () => {
     );
     await user.click(screen.getByRole("button", { name: "Filters" }));
     const dialog = await screen.findByRole("dialog", { name: "Filters" });
-    expect(dialog).toHaveClass("primitive-overlay--sheet");
+    expect(dialog).toHaveAttribute("data-placement", "sheet");
   });
 
   it("never confirms on cancel, Escape, or dismissal, and confirms exactly once", async () => {
@@ -346,7 +347,7 @@ describe("overlays and focus restoration", () => {
     await user.click(trigger);
     await user.click(await screen.findByRole("button", { name: "Delete draft" }));
     expect(onConfirm).toHaveBeenCalledOnce();
-    expect(screen.getByRole("button", { name: "Delete" })).toHaveClass("primitive-button");
+    expect(screen.getByRole("button", { name: "Delete" })).toHaveAttribute("data-slot", "button");
   });
 
   it("opens a popover from its trigger and restores focus on Escape", async () => {

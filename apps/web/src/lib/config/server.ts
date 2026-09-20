@@ -9,7 +9,9 @@ type EnvironmentValues = Readonly<Record<string, string | undefined>>;
 const fieldToEnvironmentName = {
   appEnvironment: "APP_ENV",
   apiInternalUrl: "API_INTERNAL_URL",
-  internalWebCredential: "INTERNAL_WEB_CREDENTIAL_CURRENT"
+  internalWebCredential: "INTERNAL_WEB_CREDENTIAL_CURRENT",
+  clientHmacKey: "CLIENT_HMAC_KEY",
+  trustedProxyHops: "TRUSTED_PROXY_HOPS"
 } as const;
 
 const serverEnvironmentSchema = z
@@ -22,7 +24,17 @@ const serverEnvironmentSchema = z
       },
       { message: "must use http or https" }
     ),
-    internalWebCredential: z.string().trim().min(32)
+    internalWebCredential: z.string().trim().min(32),
+    // 32+ random bytes, base64. Optional locally; required in staging and production (below).
+    clientHmacKey: z
+      .string()
+      .optional()
+      .transform((value) =>
+        value === undefined || value === "" ? undefined : Buffer.from(value, "base64")
+      )
+      .refine((key) => key === undefined || key.length >= 32, { message: "too short" }),
+    // Proxies in front of the web process that append to X-Forwarded-For (0 disables the address).
+    trustedProxyHops: z.coerce.number().int().min(0).max(5)
   })
   .readonly();
 
@@ -57,6 +69,14 @@ function invalidServerEnvironmentNames(
     if (placeholderPattern.test(environment["INTERNAL_WEB_CREDENTIAL_CURRENT"] ?? "")) {
       names.add("INTERNAL_WEB_CREDENTIAL_CURRENT");
     }
+
+    // Without a key every client would share one rate-limit bucket, so deployed stages refuse it.
+    if (
+      (environment["CLIENT_HMAC_KEY"] ?? "") === "" ||
+      placeholderPattern.test(environment["CLIENT_HMAC_KEY"] ?? "")
+    ) {
+      names.add("CLIENT_HMAC_KEY");
+    }
   }
 
   return [...names].toSorted();
@@ -72,7 +92,9 @@ export function loadServerEnvironment(
   const parsedEnvironment = serverEnvironmentSchema.safeParse({
     appEnvironment: environment["APP_ENV"],
     apiInternalUrl: environment["API_INTERNAL_URL"],
-    internalWebCredential: environment["INTERNAL_WEB_CREDENTIAL_CURRENT"]
+    internalWebCredential: environment["INTERNAL_WEB_CREDENTIAL_CURRENT"],
+    clientHmacKey: environment["CLIENT_HMAC_KEY"],
+    trustedProxyHops: environment["TRUSTED_PROXY_HOPS"] ?? "1"
   });
   const invalidNames = invalidServerEnvironmentNames(environment, parsedEnvironment);
 

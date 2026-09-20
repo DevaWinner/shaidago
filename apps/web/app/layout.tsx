@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
 import "./globals.css";
-import "../src/components/primitives/primitives.css";
-import "../src/components/evidence/evidence.css";
 
 export const metadata: Metadata = {
   applicationName: "ShaidaGo",

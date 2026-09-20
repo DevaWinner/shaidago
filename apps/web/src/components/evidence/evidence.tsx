@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 
+import { buttonVariants } from "@/components/ui/button";
+import { Glyph } from "@/components/ui/feedback";
 import type { components } from "@/lib/api/generated/schema";
+import { cn } from "@/lib/utils";
 
 /**
  * Evidence components encode how the product shows truth, not what is true. Every state arrives
@@ -33,6 +36,18 @@ const VERIFICATION_GLYPHS: Readonly<Record<VerificationState, string>> = {
   outdated: "⌛"
 };
 
+const VERIFICATION_BORDERS: Readonly<Record<VerificationState, string>> = {
+  awaiting_verification: "border-ledger-warning",
+  verified_official: "border-ledger-success",
+  corroborated: "border-ledger-success",
+  community_reviewed: "border-ledger-information",
+  disputed: "border-ledger-danger",
+  outdated: "border-ledger-warning"
+};
+
+const datesClasses =
+  "m-0 grid grid-cols-[repeat(auto-fit,minmax(min(100%,12rem),1fr))] gap-x-6 gap-y-1 text-sm [&_dt]:text-muted-foreground [&_dd]:m-0 [&_dd]:[overflow-wrap:anywhere]";
+
 const CLASS_GLYPHS: Readonly<Record<InformationClass, string>> = {
   official_source: "O",
   independent_source: "I",
@@ -43,14 +58,6 @@ const CLASS_GLYPHS: Readonly<Record<InformationClass, string>> = {
 
 /** A localised formatter for an ISO date or timestamp; FE-052 supplies the `Africa/Lagos` one. */
 export type DateFormatter = (isoValue: string) => string;
-
-function Glyph({ children }: Readonly<{ children: ReactNode }>): ReactNode {
-  return (
-    <span aria-hidden="true" className="primitive-glyph evidence-glyph">
-      {children}
-    </span>
-  );
-}
 
 // ---------------------------------------------------------------------------------------------
 
@@ -63,8 +70,15 @@ export function VerificationLabel({
   state: VerificationState;
 }>): ReactNode {
   return (
-    <span className={`primitive-status evidence-verification evidence-verification--${state}`}>
-      <Glyph>{VERIFICATION_GLYPHS[state]}</Glyph>
+    <span
+      className={cn(
+        "inline-flex items-start gap-2 rounded-lg border bg-card px-2 py-1 text-sm font-bold [overflow-wrap:anywhere]",
+        VERIFICATION_BORDERS[state]
+      )}
+      data-slot="verification-label"
+      data-state={state}
+    >
+      <Glyph className="px-1">{VERIFICATION_GLYPHS[state]}</Glyph>
       {labels[state]}
     </span>
   );
@@ -78,7 +92,11 @@ export function InformationClassMarker({
   value: InformationClass;
 }>): ReactNode {
   return (
-    <span className={`evidence-class evidence-class--${value}`}>
+    <span
+      className="inline-flex items-start gap-2 text-sm font-semibold text-muted-foreground [overflow-wrap:anywhere]"
+      data-slot="class-marker"
+      data-class={value}
+    >
       <Glyph>{CLASS_GLYPHS[value]}</Glyph>
       {labels[value]}
     </span>
@@ -117,7 +135,7 @@ export function DateGroup({
   ];
 
   return (
-    <dl className="evidence-dates">
+    <dl className={datesClasses} data-slot="dates">
       {entries
         // The last-checked date is mandatory on every fact: absence is shown, never hidden.
         .filter(([, value, always]) => always || (value !== undefined && value !== null))
@@ -165,14 +183,18 @@ export function SourceCard({
   source
 }: Readonly<{ format: DateFormatter; labels: SourceCardLabels; source: SourceView }>): ReactNode {
   return (
-    <article className="evidence-source" id={`source-${source.id}`}>
-      <h3 className="evidence-source-title">
+    <article
+      className="grid gap-2 border border-border bg-card p-3"
+      data-slot="source-card"
+      id={`source-${source.id}`}
+    >
+      <h3 className="m-0 text-base [overflow-wrap:anywhere]">
         <a href={source.canonicalUrl} rel="noopener noreferrer" target="_blank">
           {source.title} <span className="sr-only">({labels.externalNotice})</span>
         </a>
       </h3>
       <InformationClassMarker labels={labels.classes} value={source.informationClass} />
-      <dl className="evidence-dates">
+      <dl className={datesClasses} data-slot="dates">
         <div>
           <dt>{labels.publisherHeading}</dt>
           <dd>{source.publisher}</dd>
@@ -232,15 +254,20 @@ export function ClaimWithCitations({
   }
 
   return (
-    <div className="evidence-claim" id={`claim-${claimId}`}>
-      <p className="evidence-claim-text">{children}</p>
+    <div
+      className="grid gap-2 border-t border-border py-3"
+      data-slot="claim"
+      id={`claim-${claimId}`}
+    >
+      <p className="m-0 max-w-[68ch] [overflow-wrap:anywhere]">{children}</p>
       {verification}
-      <ul aria-label={citedLabel} className="evidence-citations">
+      <ul aria-label={citedLabel} className="m-0 flex list-none flex-wrap gap-2 p-0">
         {citations.map((citation) => (
           <li key={citation.id}>
             <a
               aria-describedby={`citation-${citation.id}`}
-              className="primitive-button primitive-button--secondary evidence-cite"
+              className={cn(buttonVariants({ variant: "secondary" }), "text-sm")}
+              data-slot="citation-trigger"
               href={`#citation-${citation.id}`}
             >
               {citation.label}
@@ -259,10 +286,17 @@ export function CitationEntry({
   citation
 }: Readonly<{ backHref: string; backLabel: string; citation: CitationView }>): ReactNode {
   return (
-    <li className="evidence-citation-entry" id={`citation-${citation.id}`} tabIndex={-1}>
-      <span className="evidence-citation-id">{citation.label}</span>
-      <blockquote className="evidence-passage">{citation.passage}</blockquote>
-      <p className="evidence-citation-meta">
+    <li
+      className="grid list-none gap-1 border border-border border-s-[0.375rem] border-s-border bg-card p-3 [overflow-wrap:anywhere] target:border-s-primary target:outline-[length:var(--focus-width)] target:outline-offset-[var(--focus-offset)] target:outline-ring target:outline-solid"
+      data-slot="citation-entry"
+      id={`citation-${citation.id}`}
+      tabIndex={-1}
+    >
+      <span className="font-extrabold">{citation.label}</span>
+      <blockquote className="m-0 max-w-[68ch] font-ledger-documentary leading-[1.7]">
+        {citation.passage}
+      </blockquote>
+      <p className="m-0 text-sm text-muted-foreground">
         {citation.sourceTitle}, {citation.publisher}, {citation.locationLabel}
       </p>
       <a href={backHref}>{backLabel}</a>
@@ -293,8 +327,17 @@ export function TimelineItem({
   verification: ReactNode;
 }>): ReactNode {
   return (
-    <li className={`evidence-timeline-item evidence-timeline-item--${origin}`}>
-      <div className="evidence-timeline-meta">
+    <li
+      className={cn(
+        "grid list-none gap-2 border-s-[0.375rem] px-4 py-2",
+        origin === "official"
+          ? "border-s-primary border-solid"
+          : "border-s-ledger-information border-dashed"
+      )}
+      data-origin={origin}
+      data-slot="timeline-item"
+    >
+      <div className="flex flex-wrap items-center gap-2 text-sm">
         <Glyph>{origin === "official" ? "O" : "C"}</Glyph>
         <strong>{originLabels[origin]}</strong>
         {date === null ? null : (
@@ -320,7 +363,12 @@ export function TranslationNotice({
 }>): ReactNode {
   // A reviewed translation needs no warning; every other state is stated plainly.
   return status === "reviewed" ? null : (
-    <p className={`evidence-notice evidence-notice--${status}`} role="note">
+    <p
+      className="m-0 flex items-start gap-2 rounded-ledger-control border border-border bg-card p-3 [overflow-wrap:anywhere]"
+      data-slot="translation-notice"
+      data-status={status}
+      role="note"
+    >
       <Glyph>T</Glyph>
       {labels[status]}
     </p>
@@ -333,8 +381,12 @@ export function AiExplanationNotice({
   label
 }: Readonly<{ children: ReactNode; label: string }>): ReactNode {
   return (
-    <div className="evidence-ai" role="note">
-      <strong>
+    <div
+      className="grid gap-2 rounded-ledger-control border border-dashed border-border bg-card p-3 [overflow-wrap:anywhere]"
+      data-slot="ai-notice"
+      role="note"
+    >
+      <strong className="flex items-start gap-2">
         <Glyph>AI</Glyph>
         {label}
       </strong>
@@ -344,6 +396,12 @@ export function AiExplanationNotice({
 }
 
 export type EvidenceGapKind = "contradiction" | "information_gap" | "insufficient_evidence";
+
+const GAP_BORDERS: Readonly<Record<EvidenceGapKind, string>> = {
+  contradiction: "border-s-ledger-danger",
+  information_gap: "border-s-ledger-warning",
+  insufficient_evidence: "border-s-double border-s-ledger-muted"
+};
 
 const GAP_GLYPHS: Readonly<Record<EvidenceGapKind, string>> = {
   contradiction: "≠",
@@ -358,8 +416,16 @@ export function EvidenceGap({
   title
 }: Readonly<{ children?: ReactNode; kind: EvidenceGapKind; title: string }>): ReactNode {
   return (
-    <div className={`evidence-gap evidence-gap--${kind}`} role="note">
-      <strong>
+    <div
+      className={cn(
+        "grid gap-2 rounded-ledger-control border border-border border-s-[0.375rem] bg-card p-3 [overflow-wrap:anywhere]",
+        GAP_BORDERS[kind]
+      )}
+      data-gap={kind}
+      data-slot="evidence-gap"
+      role="note"
+    >
+      <strong className="flex items-start gap-2">
         <Glyph>{GAP_GLYPHS[kind]}</Glyph>
         {title}
       </strong>

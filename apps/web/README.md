@@ -119,3 +119,21 @@ every browser mutation is refused. The 17 handlers under `app/api/reviewer/` cal
 each, apply Origin then session then CSRF then body limits, and never decide roles, transitions, or
 publication. Evidence downloads are streamed with re-asserted `attachment`, `nosniff`, sandbox CSP,
 and `no-store` headers.
+
+## Styling and components
+
+Styling is Tailwind CSS 4 with shadcn conventions: `components/ui/*` built with `cva` variants,
+`cn()` (`clsx` + `tailwind-merge`, aware of the theme's `text-ledger-*` sizes), and `data-slot`
+attributes that tests select by. `components.json` records the shadcn setup. The shadcn semantic
+names (`bg-primary`, `text-muted-foreground`, `border-border`, ...) are aliases for the approved
+Field ledger tokens in `app/globals.css`, so the visual direction stays authoritative. Base element
+rules live in `@layer base` so utilities on components win. Every string is a prop or a typed
+message record (`src/content/`); nothing hard-codes copy.
+
+## Client HMAC
+
+The BFF forwards `X-Shaidago-Client-Hmac`: HMAC-SHA256 of the client address and the UTC day under
+the web-only `CLIENT_HMAC_KEY` (base64, 32+ bytes; required in staging and production). Only the
+`X-Forwarded-For` entry `TRUSTED_PROXY_HOPS` places from the right is used (Railway edge: 1), so a
+client cannot choose its own address. The address is never forwarded or stored, and the value
+rotates daily.

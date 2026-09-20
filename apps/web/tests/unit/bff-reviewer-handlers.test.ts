@@ -147,6 +147,7 @@ describe("reviewer sign-in", () => {
 
   it("uses Secure __Host- cookies in staging and refuses a policy that disagrees", async () => {
     vi.stubEnv("APP_ENV", "staging");
+    vi.stubEnv("CLIENT_HMAC_KEY", Buffer.alloc(32, 9).toString("base64"));
     vi.stubEnv("NEXT_PUBLIC_APP_ORIGIN", origin);
     backend.mockResolvedValueOnce(
       okJson(sessionOut({ cookie: { name: "__Host-sg_session", secure: true } }), 201)

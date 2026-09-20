@@ -17,6 +17,7 @@ import {
   problemResponse,
   unavailableResponse
 } from "@/lib/bff/problem";
+import { forwardedContextFor } from "@/lib/bff/request-context";
 
 /**
  * Shared plumbing for the purpose-built public handlers. It is deliberately not a proxy: every
@@ -128,7 +129,7 @@ export async function handlePublicJson<TInput, TData>(
 
     return resultResponse(
       await spec.call(serverApi(), input.data, {
-        context: { requestId, locale: request.headers.get("X-Shaidago-Locale") },
+        context: forwardedContextFor(request, requestId),
         signal: request.signal,
         idempotencyKey: guard.idempotencyKey
       })
@@ -166,7 +167,7 @@ export async function handlePublicEmpty<TData>(
 
     return resultResponse(
       await spec.call(serverApi(), {
-        context: { requestId, locale: request.headers.get("X-Shaidago-Locale") },
+        context: forwardedContextFor(request, requestId),
         signal: request.signal,
         idempotencyKey: guard.idempotencyKey
       })
@@ -205,7 +206,7 @@ export async function handleReportSubmission(request: Request): Promise<Response
       }),
       contentType,
       {
-        context: { requestId, locale: request.headers.get("X-Shaidago-Locale") },
+        context: forwardedContextFor(request, requestId),
         signal: request.signal,
         idempotencyKey: guard.idempotencyKey
       }

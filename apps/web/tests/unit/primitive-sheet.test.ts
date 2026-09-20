@@ -14,6 +14,6 @@ it("renders the primitive sheet fixture used by the browser accessibility suite"
   mkdirSync(directory, { recursive: true });
   writeFileSync(join(directory, "primitives-sheet.html"), markup);
 
-  expect(markup).toContain("primitive-button--primary");
+  expect(markup).toContain('data-variant="primary"');
   expect(markup).toContain('role="switch"');
 });
