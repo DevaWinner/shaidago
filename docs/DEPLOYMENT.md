@@ -1,6 +1,6 @@
 # Backend deployment on Railway
 
-Applies to the backend only (BE-110 to BE-112). The Next.js service, when it exists, is the only thing that receives the internal API URL and credential; nothing here exposes the API publicly.
+The first part applies to the backend (BE-110 to BE-112); the web service is described at the end. The Next.js service is the only thing that receives the internal API URL and credential; nothing here exposes the API publicly.
 
 ## Topology (per environment)
 
@@ -46,3 +46,42 @@ Staging and production are separate Railway environments in separate projects wh
 `railway init --name shaidago-staging`, rename the environment to `staging`, then `railway add` for `postgres` (`pgvector/pgvector:pg18`, plus a volume at `/var/lib/postgresql/data`), a managed Redis, a bucket in `ams`, and empty `api`, `worker`, and `migrate` services; start commands and restart policies were set through the Railway API to match `railway/*.railway.json`; `scripts/railway_staging_variables.py` generated every key and role password and set the variables without printing them. Deploy order: `migrate` (wait for SUCCESS), then `api` and `worker` (`railway up --service <name> --detach`, then follow the deployment ID to SUCCESS). Two deliberate details: the backend's settings require `DATABASE_URL` to exist, so `api` and `worker` carry the worker role's URL in it (they never connect with it), which keeps the owner URL on `migrate` alone; and no service has a public domain.
 
 Not created: a production project. Production must be its own project with its own database, Redis, bucket, keys, reviewer accounts, provider keys, and budgets, and must start from `PROVIDER_MODE=live`, `SCANNER_MODE=clamd`, and a real scanner service.
+
+# Web service on Railway (FE-160 and FE-161)
+
+The public origin is the Next.js service (`railway/web.railway.json`, image from `apps/web/Dockerfile`). It is the only service with a public domain and the only one that knows the private API address.
+
+## What the image is
+
+Built with `docker build -f apps/web/Dockerfile --build-arg REVISION=$(git rev-parse HEAD) -t shaidago-web .` from the repository root. The build needs no network access to the API and no secret. The final image holds only the framework's standalone output, static files, and the small public folder; it runs as user 10001 with no npm, corepack, or git, no tests, no source maps in served files, and no credential files. `apps/web/scripts/serve.mjs` is the entry point: on SIGTERM it stops accepting connections, lets in-flight requests finish, and exits 0 (after at most 20 s, under the 25 s platform drain). `scripts/verify-web-container.sh` (`make web-container-verify`, with a Trivy scan) proves this on a build, running the container with a read-only root filesystem, no capabilities, and no privilege escalation. Run it with `--read-only --tmpfs /app/apps/web/.next/cache`.
+
+## Variables (names only; values live in Railway secrets)
+
+| Variable | Notes |
+| --- | --- |
+| `APP_ENV` | `staging` or `production`. Turns on `__Host-` cookies, secure cookies, and HSTS. |
+| `API_INTERNAL_URL` | The API's private Railway address. Read at run time only. Never `NEXT_PUBLIC_`. |
+| `INTERNAL_WEB_CREDENTIAL_CURRENT` (and `_PREVIOUS` while rotating) | Same value as on the API; at least 32 characters. |
+| `CLIENT_HMAC_KEY` | Base64, 32+ random bytes; required in staging and production. |
+| `TRUSTED_PROXY_HOPS` | `1` behind the Railway edge. |
+| `NEXT_PUBLIC_APP_ORIGIN` | Optional; the public origin only. |
+
+`PORT` is provided by Railway; the image defaults to 3000 and binds all interfaces. Liveness is `/health/live` (no dependency, so an API outage never restarts the web service); `/health/ready` reports only whether this service's own configuration is valid.
+
+## Hosted verification (FE-161): run against the deployed origin, not the config
+
+Nothing below has been run against a hosted deployment; deploying is a maintainer action. After the first deploy, from any machine, with `ORIGIN=https://<the public domain>`:
+
+```text
+curl -sI $ORIGIN/en | grep -iE 'content-security-policy|x-frame-options|x-content-type-options|referrer-policy|permissions-policy|strict-transport-security|cache-control'
+curl -sI $ORIGIN/en/track | grep -i cache-control              # must contain no-store
+curl -sI $ORIGIN/en/reviewer/sign-in | grep -i cache-control   # must contain no-store
+curl -sI $ORIGIN/sw.js | grep -iE 'cache-control|service-worker-allowed'
+curl -s  $ORIGIN/health/live ; curl -s $ORIGIN/health/ready
+```
+
+Expected: the CSP allows only `'self'`; `X-Frame-Options: DENY`; `strict-transport-security` is present (HTTPS only); public catalogue pages are `public, max-age=0, must-revalidate` and private routes `no-store`; the worker is `no-cache`. Then confirm the API is unreachable from outside: its private hostname must not resolve or connect from the internet, and a search of the served JavaScript for the API hostname and the credential must find nothing (`pnpm --dir apps/web bundle:check` does the latter for a build). Record the date, commit, image digest, and outcome in the build log.
+
+## Rollback
+
+Redeploy the previous web image. The web service holds no durable state; the only browser-side state is the service-worker caches, which are versioned and cleaned when a new worker activates.

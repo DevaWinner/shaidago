@@ -29,7 +29,7 @@ COMPOSE := docker compose --project-name shaidago --env-file $(INFRA_ENV) -f inf
 .PHONY: help backend-sync backend-format backend-format-check backend-lint backend-typecheck \
 	backend-unit backend-integration backend-contract backend-security backend-test backend-verify \
 	openapi-generate openapi-check frontend-contract-generate frontend-contract-check \
-	web-format web-format-check web-lint web-typecheck web-unit web-component web-install-check web-coverage web-contract web-boundary web-ci-check web-e2e web-a11y web-build web-verify web-verify-full \
+	web-format web-format-check web-lint web-typecheck web-unit web-component web-install-check web-coverage web-contract web-boundary web-ci-check web-e2e web-a11y web-build web-verify web-verify-full web-container-verify setup verify \
 	migrate db-roles seed-demo embedding-model embeddings reviewer-bootstrap kek-rotate retention-purge worker container-verify infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
 
 help:
@@ -147,6 +147,21 @@ web-verify: web-install-check web-format-check web-lint web-typecheck web-covera
 
 web-verify-full: web-verify web-e2e web-a11y
 
+# The judge-facing entry points. `make setup` prepares a fresh checkout for the deterministic demo
+# (fictional data, replay providers, no live key); `make verify` is the whole gate: the backend
+# (`backend-verify`, which needs the local services from `make infra-up-core`, `make migrate`, and
+# `make db-roles`) and then the frontend including the browser suites. Neither calls a live provider.
+setup:
+	test -f .env || cp .env.example .env
+	pnpm install --frozen-lockfile
+	$(MAKE) backend-sync
+	$(MAKE) infra-up-core
+	$(MAKE) migrate
+	$(MAKE) db-roles
+	$(MAKE) seed-demo
+
+verify: backend-verify web-verify-full
+
 # The canonical backend gate, in this order (BE-120):
 #   1 frozen dependency sync   2 Ruff format check and lint   3 Pyright strict
 #   4 every deterministic test layer with branch coverage >= 85%: unit/property, migration and
@@ -224,6 +239,9 @@ retention-purge:
 # Builds the image and proves its properties, including the Trivy scan (needs Docker and infra).
 container-verify:
 	TRIVY=1 scripts/verify-container.sh
+
+web-container-verify:
+	TRIVY=1 scripts/verify-web-container.sh
 
 # The background worker (needs Redis, the database, and DATABASE_URL_WORKER in the environment).
 worker:

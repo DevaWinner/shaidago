@@ -99,9 +99,9 @@ describe("locale negotiation", () => {
     }
   });
 
-  it("excludes the BFF, framework assets, and files from negotiation by matcher", () => {
+  it("excludes the BFF, the health routes, framework assets, and files from negotiation by matcher", () => {
     // Behaviour (API routes and /robots.txt answer unprefixed) is proven in the browser suite.
-    expect(config.matcher).toEqual(["/((?!api|_next|_vercel|.*\\..*).*)"]);
+    expect(config.matcher).toEqual(["/((?!api|health|_next|_vercel|.*\\..*).*)"]);
   });
 });
 

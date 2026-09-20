@@ -2771,3 +2771,103 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the journeys, gate, design record, and fixes; found the three visual defects by inspecting screenshots and the unit-tested edge contrast.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-160 Production Next.js container/service
+
+- **Task:** FE-160 — Production Next.js container/service (Circle 16). Status: complete locally, not deployed. Delivered in one commit with the other Circle 16 tasks.
+- **User outcome delivered:** A hardened, pinned, non-root web image that starts under a read-only filesystem, shuts down gracefully, and passes a vulnerability scan, ready for the maintainer to deploy.
+- **Routes/components changed:** `apps/web/Dockerfile`, `Dockerfile.dockerignore`, `scripts/serve.mjs`, `app/health/{live,ready}`, `railway/web.railway.json`, `scripts/verify-web-container.sh`, `Makefile`, `proxy.ts`, unit and e2e tests.
+- **Backend operations/contract version:** none (OpenAPI 0.0.0 unchanged; `backend-verify` drift checks pass).
+- **Public/private data handled:** Fictional data only; the image holds no secret and the scripts print no environment value.
+- **States implemented:** see the task note in `docs/FRONTEND_BUILD_ORDER.md`.
+- **Accessibility evidence:** `make web-a11y` 356 passed on the final tree.
+- **Locales reviewed:** unchanged; Hausa, Igbo, and Yoruba copy remains largely pending fluent review.
+- **Performance/cache impact:** none beyond the health routes and the container.
+- **Commands run and results:** `make backend-verify` exit 0 (2,096 passed, 93.9% coverage, pip-audit clean; a first run failed seven integration tests because the local ClamAV container was unhealthy, and passed after restarting it, then `make db-roles` restored the dev logins); `make web-verify` exit 0 (767 tests); `make web-e2e` 447 passed and 11 skipped; `make web-a11y` 356 passed; `make web-container-verify` (with Trivy) all checks passed. Nothing was deployed or pushed.
+- **Screenshots/traces/artifacts checked:** the six README screenshots were opened and checked (the Source Scout, record, report, and queue images), all synthetic.
+- **Known limitations/open decisions:** No hosted deployment, hosted header check, link check, demo video, clean-clone `make verify` twice, green hosted CI, or submission tag; the Source Scout panel showed its introduction twice and one copy was removed after the screenshot.
+- **Commit/PR:** `feat: add the hardened web container, health routes, judge README, and demo script`
+- **Next task may rely on:** `make verify`, `make web-container-verify`, `docs/DEPLOYMENT.md`, and `docs/DEMO_SCRIPT.md`.
+- **AI assistance used:** Wrote the Dockerfile, entry point, verification script, docs, and found the missing graceful shutdown and the base-image findings.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-161 Public-origin security and cache configuration
+
+- **Task:** FE-161 — Public-origin security and cache configuration (Circle 16). Status: partial. Delivered in one commit with the other Circle 16 tasks.
+- **User outcome delivered:** The production headers and cache policy are configured and proven on the local build and inside the container; hosted validation is left to the maintainer.
+- **Routes/components changed:** `next.config.ts`, `proxy.ts`, `docs/DEPLOYMENT.md` (hosted verification commands).
+- **Backend operations/contract version:** none (OpenAPI 0.0.0 unchanged; `backend-verify` drift checks pass).
+- **Public/private data handled:** Fictional data only; the image holds no secret and the scripts print no environment value.
+- **States implemented:** see the task note in `docs/FRONTEND_BUILD_ORDER.md`.
+- **Accessibility evidence:** `make web-a11y` 356 passed on the final tree.
+- **Locales reviewed:** unchanged; Hausa, Igbo, and Yoruba copy remains largely pending fluent review.
+- **Performance/cache impact:** none beyond the health routes and the container.
+- **Commands run and results:** `make backend-verify` exit 0 (2,096 passed, 93.9% coverage, pip-audit clean; a first run failed seven integration tests because the local ClamAV container was unhealthy, and passed after restarting it, then `make db-roles` restored the dev logins); `make web-verify` exit 0 (767 tests); `make web-e2e` 447 passed and 11 skipped; `make web-a11y` 356 passed; `make web-container-verify` (with Trivy) all checks passed. Nothing was deployed or pushed.
+- **Screenshots/traces/artifacts checked:** the six README screenshots were opened and checked (the Source Scout, record, report, and queue images), all synthetic.
+- **Known limitations/open decisions:** No hosted deployment, hosted header check, link check, demo video, clean-clone `make verify` twice, green hosted CI, or submission tag; the Source Scout panel showed its introduction twice and one copy was removed after the screenshot.
+- **Commit/PR:** `feat: add the hardened web container, health routes, judge README, and demo script`
+- **Next task may rely on:** `make verify`, `make web-container-verify`, `docs/DEPLOYMENT.md`, and `docs/DEMO_SCRIPT.md`.
+- **AI assistance used:** Wrote the Dockerfile, entry point, verification script, docs, and found the missing graceful shutdown and the base-image findings.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-162 Hosted smoke matrix
+
+- **Task:** FE-162 — Hosted smoke matrix (Circle 16). Status: blocked. Delivered in one commit with the other Circle 16 tasks.
+- **User outcome delivered:** Nothing hosted exists; every item in the matrix has a passing local, deterministic equivalent, and the hosted run is scripted for the maintainer.
+- **Routes/components changed:** none (docs only).
+- **Backend operations/contract version:** none (OpenAPI 0.0.0 unchanged; `backend-verify` drift checks pass).
+- **Public/private data handled:** Fictional data only; the image holds no secret and the scripts print no environment value.
+- **States implemented:** see the task note in `docs/FRONTEND_BUILD_ORDER.md`.
+- **Accessibility evidence:** `make web-a11y` 356 passed on the final tree.
+- **Locales reviewed:** unchanged; Hausa, Igbo, and Yoruba copy remains largely pending fluent review.
+- **Performance/cache impact:** none beyond the health routes and the container.
+- **Commands run and results:** `make backend-verify` exit 0 (2,096 passed, 93.9% coverage, pip-audit clean; a first run failed seven integration tests because the local ClamAV container was unhealthy, and passed after restarting it, then `make db-roles` restored the dev logins); `make web-verify` exit 0 (767 tests); `make web-e2e` 447 passed and 11 skipped; `make web-a11y` 356 passed; `make web-container-verify` (with Trivy) all checks passed. Nothing was deployed or pushed.
+- **Screenshots/traces/artifacts checked:** the six README screenshots were opened and checked (the Source Scout, record, report, and queue images), all synthetic.
+- **Known limitations/open decisions:** No hosted deployment, hosted header check, link check, demo video, clean-clone `make verify` twice, green hosted CI, or submission tag; the Source Scout panel showed its introduction twice and one copy was removed after the screenshot.
+- **Commit/PR:** `feat: add the hardened web container, health routes, judge README, and demo script`
+- **Next task may rely on:** `make verify`, `make web-container-verify`, `docs/DEPLOYMENT.md`, and `docs/DEMO_SCRIPT.md`.
+- **AI assistance used:** Wrote the Dockerfile, entry point, verification script, docs, and found the missing graceful shutdown and the base-image findings.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-163 Judge-facing evidence package
+
+- **Task:** FE-163 — Judge-facing evidence package (Circle 16). Status: partial. Delivered in one commit with the other Circle 16 tasks.
+- **User outcome delivered:** A judge can read the README, see synthetic screenshots, follow a sub-four-minute demo path, and run one documented gate; no video or hosted link exists.
+- **Routes/components changed:** `README.md`, `docs/DEMO_SCRIPT.md`, `docs/evidence/frontend-visual/readme/*`, `docs/README.md`.
+- **Backend operations/contract version:** none (OpenAPI 0.0.0 unchanged; `backend-verify` drift checks pass).
+- **Public/private data handled:** Fictional data only; the image holds no secret and the scripts print no environment value.
+- **States implemented:** see the task note in `docs/FRONTEND_BUILD_ORDER.md`.
+- **Accessibility evidence:** `make web-a11y` 356 passed on the final tree.
+- **Locales reviewed:** unchanged; Hausa, Igbo, and Yoruba copy remains largely pending fluent review.
+- **Performance/cache impact:** none beyond the health routes and the container.
+- **Commands run and results:** `make backend-verify` exit 0 (2,096 passed, 93.9% coverage, pip-audit clean; a first run failed seven integration tests because the local ClamAV container was unhealthy, and passed after restarting it, then `make db-roles` restored the dev logins); `make web-verify` exit 0 (767 tests); `make web-e2e` 447 passed and 11 skipped; `make web-a11y` 356 passed; `make web-container-verify` (with Trivy) all checks passed. Nothing was deployed or pushed.
+- **Screenshots/traces/artifacts checked:** the six README screenshots were opened and checked (the Source Scout, record, report, and queue images), all synthetic.
+- **Known limitations/open decisions:** No hosted deployment, hosted header check, link check, demo video, clean-clone `make verify` twice, green hosted CI, or submission tag; the Source Scout panel showed its introduction twice and one copy was removed after the screenshot.
+- **Commit/PR:** `feat: add the hardened web container, health routes, judge README, and demo script`
+- **Next task may rely on:** `make verify`, `make web-container-verify`, `docs/DEPLOYMENT.md`, and `docs/DEMO_SCRIPT.md`.
+- **AI assistance used:** Wrote the Dockerfile, entry point, verification script, docs, and found the missing graceful shutdown and the base-image findings.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-164 Repository release gate
+
+- **Task:** FE-164 — Repository release gate (Circle 16). Status: partial. Delivered in one commit with the other Circle 16 tasks.
+- **User outcome delivered:** `make setup` and `make verify` exist and the gates pass on the final tree; the clean-clone twice run, hosted CI, and tag are the maintainer's.
+- **Routes/components changed:** `Makefile`.
+- **Backend operations/contract version:** none (OpenAPI 0.0.0 unchanged; `backend-verify` drift checks pass).
+- **Public/private data handled:** Fictional data only; the image holds no secret and the scripts print no environment value.
+- **States implemented:** see the task note in `docs/FRONTEND_BUILD_ORDER.md`.
+- **Accessibility evidence:** `make web-a11y` 356 passed on the final tree.
+- **Locales reviewed:** unchanged; Hausa, Igbo, and Yoruba copy remains largely pending fluent review.
+- **Performance/cache impact:** none beyond the health routes and the container.
+- **Commands run and results:** `make backend-verify` exit 0 (2,096 passed, 93.9% coverage, pip-audit clean; a first run failed seven integration tests because the local ClamAV container was unhealthy, and passed after restarting it, then `make db-roles` restored the dev logins); `make web-verify` exit 0 (767 tests); `make web-e2e` 447 passed and 11 skipped; `make web-a11y` 356 passed; `make web-container-verify` (with Trivy) all checks passed. Nothing was deployed or pushed.
+- **Screenshots/traces/artifacts checked:** the six README screenshots were opened and checked (the Source Scout, record, report, and queue images), all synthetic.
+- **Known limitations/open decisions:** No hosted deployment, hosted header check, link check, demo video, clean-clone `make verify` twice, green hosted CI, or submission tag; the Source Scout panel showed its introduction twice and one copy was removed after the screenshot.
+- **Commit/PR:** `feat: add the hardened web container, health routes, judge README, and demo script`
+- **Next task may rely on:** `make verify`, `make web-container-verify`, `docs/DEPLOYMENT.md`, and `docs/DEMO_SCRIPT.md`.
+- **AI assistance used:** Wrote the Dockerfile, entry point, verification script, docs, and found the missing graceful shutdown and the base-image findings.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
