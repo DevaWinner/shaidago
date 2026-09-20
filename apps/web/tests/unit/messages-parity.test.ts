@@ -13,7 +13,16 @@ import { REVIEWED_LOCALES } from "@/i18n/routing";
 
 type Json = Record<string, unknown>;
 // Domains added after the maintainer's translation pass: `null` in ha, ig, and yo until the end.
-const PENDING_DOMAINS = ["problems", "language", "directory", "home", "project", "source", "trust"];
+const PENDING_DOMAINS = [
+  "problems",
+  "language",
+  "directory",
+  "home",
+  "project",
+  "source",
+  "trust",
+  "qa"
+];
 const root = join(import.meta.dirname, "..", "..", "messages");
 const read = (name: string): Json =>
   JSON.parse(readFileSync(join(root, `${name}.json`), "utf8")) as Json;
@@ -95,7 +104,8 @@ describe("real catalogues", () => {
           key.startsWith("home.") ||
           key.startsWith("project.") ||
           key.startsWith("source.") ||
-          key.startsWith("trust.")
+          key.startsWith("trust.") ||
+          key.startsWith("qa.")
       )
     ).toBe(true);
     expect((read("status") as { pendingKeysAllowed?: boolean }).pendingKeysAllowed).toBe(true);

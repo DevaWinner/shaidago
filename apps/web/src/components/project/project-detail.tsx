@@ -60,7 +60,8 @@ export function ProjectDetailView({
   localityName,
   locale,
   now,
-  project
+  project,
+  questionPanel
 }: Readonly<{
   copy: Copy;
   format: Formatters;
@@ -69,6 +70,8 @@ export function ProjectDetailView({
   locale: string;
   now: Date;
   project: ProjectDetail;
+  /** The client-enhanced question island, supplied by the page so this view stays server-rendered. */
+  questionPanel?: ReactNode;
 }>): ReactNode {
   const text = copy.project;
   const base = `/${locale}/projects/${encodeURIComponent(project.slug)}`;
@@ -284,6 +287,7 @@ export function ProjectDetailView({
           <h2 className={heading} id="actions-heading">
             {text.actions.heading}
           </h2>
+          {questionPanel}
           <div className="grid max-w-[40ch] gap-2">
             <ButtonLink
               href={`/${locale}/report?project=${encodeURIComponent(project.slug)}`}

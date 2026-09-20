@@ -22,7 +22,15 @@ async function firstLoadScriptBytes(
   return { bytes: sizes.reduce((sum, size) => sum + size, 0), files: sizes.length };
 }
 
-for (const path of ["/en", "/en/projects", "/en/projects?category=health", "/ha", "/yo/projects"]) {
+for (const path of [
+  "/en",
+  "/en/projects",
+  "/en/projects?category=health",
+  "/ha",
+  "/yo/projects",
+  "/en/projects/synthetic-record-full",
+  "/en/trust"
+]) {
   test(`first-load JavaScript for ${path} stays inside the plan's budget`, async ({
     page
   }, info) => {
