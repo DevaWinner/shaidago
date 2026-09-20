@@ -118,4 +118,18 @@ describe("Field Ledger design tokens", async () => {
     expect(stylesheet).toContain("@media (prefers-reduced-motion: reduce)");
     expect(stylesheet).toContain("transition-duration: var(--motion-none) !important;");
   });
+
+  it("draws the edge of every form field at 3:1 or more against the page (WCAG 1.4.11), and keeps the pale rule for dividers only", () => {
+    const fieldEdge = stylesheet.match(/--color-input:\s*var\((--[\w-]+)\)/)?.[1] ?? "";
+
+    expect(fieldEdge).toBe("--color-muted");
+    for (const ground of ["--color-canvas", "--color-surface"]) {
+      expect(
+        contrastRatio(tokens.get(fieldEdge) ?? "", tokens.get(ground) ?? "")
+      ).toBeGreaterThanOrEqual(3);
+    }
+    expect(
+      contrastRatio(tokens.get("--color-rule") ?? "", tokens.get("--color-canvas") ?? "")
+    ).toBeLessThan(3);
+  });
 });

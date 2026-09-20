@@ -1234,6 +1234,8 @@ Implement Playwright journeys for:
 
 Run critical public/report/reviewer smoke in Chromium and mobile WebKit. Use synthetic secrets and sanitise traces/screenshots/videos.
 
+> **Execution status (2026-09-20): complete.** `apps/web/tests/e2e/journeys.spec.ts` runs the ten journeys as continuous paths against the fictional mock and recorded replay data, on Chromium and mobile WebKit (J10, which needs a service worker offline, runs on Chromium only because Playwright's WebKit cannot navigate offline with one): J1 landing to a locality-filtered directory, a record, a cited statement, and its source page; J2 a cited answer and a fail-closed unsupported one; J3 an anonymous fictional report to a one-time code that does not survive a reload; J4 a tracking code to a public-safe status and follow-up; J5 reviewer sign-in, queue, report, note, evidence download, and status change; J6 a public update previewed, confirmed, and then on the public timeline; J7 public Source Scout to a labelled shared replay; J8 approved safe query, private run, follow-up answer, and source decision, with a private canary absent from every request body; J9 a handle created once, a linked report list, and deletion that leaves the reports; J10 an offline revisit of a saved record and low-data mode with every action intact. Each journey ends by checking that its synthetic secrets are in no address, storage, cookie, or page. Traces are retained only on failure and contain fictional data.
+
 ### FE-151 — Canonical frontend verification
 
 Make `make web-verify` run in documented order:
@@ -1254,6 +1256,8 @@ Make `make web-verify` run in documented order:
 
 Run from a clean checkout locally and in CI. Report targeted and full-suite outcomes separately.
 
+> **Execution status (2026-09-20): complete.** The `Makefile` now documents and runs the gate in order: `make web-verify` is the Node-only steps (frozen install check, format and lint, strict TypeScript, unit and component tests with the 80% coverage floor, message parity and ICU checks, generated-client and OpenAPI drift, and a production build with the API unreachable followed by the client-bundle secret scan; the BFF security tests run inside the unit suite), and `make web-verify-full` adds the browser steps (the journeys, the service-worker private-cache inspection and the JavaScript and performance budgets, which live in the end-to-end suite, and the accessibility suite). Browsers are never installed implicitly, so the browser steps need `pnpm --dir apps/web exec playwright install chromium webkit` first. CI runs the same steps as separate jobs and now includes `make web-coverage` (its workflow validator was updated). Results are reported separately below.
+
 ### FE-152 — Bounded visual inspection
 
 Capture one batched round at approved desktop and mobile sizes, plus any known user viewport. Settle/disable entrance motion first, capture from top, and open each image to confirm it is valid. Compare comp-led builds side by side at the comp dimensions; code-led builds against the direction contract and chosen quality reference.
@@ -1262,11 +1266,15 @@ Inspect hierarchy, product-specific first viewport, typography, spacing/rhythm, 
 
 When the Impeccable workflow is active and no hook is installed, run its detector once over changed UI targets after the fix batch, address mechanical findings, and pass remaining findings into finish review. Do not run the detector repeatedly.
 
+> **Execution status (2026-09-20): complete.** One batched round: 20 screenshots at 1440x900 and 390x844 (landing in English and Hausa, directory, record, report, tracking, reviewer queue and report, offline, trust), captured at the top with motion reduced, each opened and confirmed valid, then one fix batch and one confirmation capture (`docs/evidence/frontend-visual/`). Findings fixed: the low-data switch above every first viewport (moved to the footer), the reviewer filter form stacking four fields on a phone (two columns from 360 px, with a browser test), and form-field edges at 1.43:1 (now 5.75:1, with a unit test). A one-line alignment fix followed the last capture and was not re-captured. The Impeccable detector was not run. Direction contract: code-led against `docs/FRONTEND_VISUAL_DIRECTION.md`; no comp exists.
+
 ### FE-153 — Independent finish review
 
 Use a fresh reviewer context/agent when available, passing original brief, confirmed visual answers, artifact paths, valid screenshot paths, direction contract, detector findings, quality reference, approved comp if any, and craft-floor reference. The reviewer disposition is `recapture`, `rebuild`, `fix`, or `ship`; follow it exactly. A fix verdict covers named fixes only and is not whole-surface approval.
 
 If another fix/rebuild round creates raster assets, preserve prompt/origin provenance and delete abandoned assets. Do not self-certify after a reviewer identifies material failures.
+
+> **Execution status (2026-09-20): blocked.** No independent reviewer was used: this run must not self-certify, and starting a separate reviewer agent was not asked for. `docs/FRONTEND_FINISH_REVIEW_PACKET.md` collects the brief, direction contract, valid screenshots, findings, and questions for a fresh reviewer. Unblock: a reviewer who did not build the interface gives a `recapture`, `rebuild`, `fix`, or `ship` disposition from that packet, and any named fixes are then applied.
 
 ### FE-154 — Write `DESIGN.md` from shipped reality
 
@@ -1286,6 +1294,8 @@ After final corrections, document the implemented world:
 
 Update the surface brief and ensure the emitted direction contract survives the production build. Documentation describes the final render, not the earlier intention.
 
+> **Execution status (2026-09-20): complete.** `DESIGN.md` at the repository root describes the shipped system: thesis and three modes, measured palette and contrast, typography (system fonts only, Noto named but not shipped), spacing and density, evidence and status language, primitives and states, the public, report, reviewer, and offline adaptations, motion, responsive transformations, accessibility and low-data rules, asset provenance (only the letter-mark SVG and PNG icons), anti-patterns, and known gaps. `docs/FRONTEND_VISUAL_DIRECTION.md` gains an "Implemented reality" section recording the corrections, and both are linked from `docs/README.md`. The direction contract is a document, not a build output, so there is nothing for the production build to drop; the tokens it names are asserted against the built stylesheet's source by `design-tokens.test.ts`.
+
 ### Circle 15 exit gate
 
 - Ten end-to-end journeys pass with deterministic fixtures.
@@ -1294,6 +1304,8 @@ Update the surface brief and ensure the emitted direction contract survives the 
 - `DESIGN.md` and surface brief reflect the corrected implementation.
 - Shipping raster assets contain provenance.
 - No screenshot, trace, video, or report contains a real/private secret.
+
+> **Gate status (2026-09-20): open.** Met: ten journeys pass deterministically; `make web-verify` is the documented ordered gate and passes locally (see the results in the AI build log entry), with `make web-verify-full` for the browser steps; visual evidence is valid and one fix round is closed; `DESIGN.md` and the direction document describe the corrected implementation; the only shipped raster assets are the letter-mark PNGs, rendered by a committed script from committed SVG; and no screenshot, trace, or report holds a real or private value (all data is fictional). Open: the independent finish review (FE-153) has not happened, so the visual finish is unaccepted; CI has not run this branch (no push is allowed here), so "locally and in CI" is half proven. A clean-checkout run was performed: a fresh detached `git worktree` of the committed tree, `pnpm install --frozen-lockfile --offline`, then `make web-verify-full` exited 0 (765 unit and component tests, coverage 91.4% statements, 85.3% branches, 91.6% functions, 92.0% lines against the 80% floor, the client-bundle scan clean, 443 browser tests passed and 11 skipped, and 357 accessibility tests passed). One earlier clean run failed a cache-inspection test because the mock's shared request counters saw the reviewer tests running in parallel; the counters now ignore reviewer and sign-in traffic, and the run passed.
 
 ## 19. Circle 16 — Railway deployment and judge-facing handoff
 

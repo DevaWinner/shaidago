@@ -99,7 +99,8 @@
   --color-destructive: var(--color-danger);
   --color-destructive-foreground: var(--color-on-danger);
   --color-border: var(--color-rule);
-  --color-input: var(--color-rule);
+  /* Field edges must reach 3:1 against the page (WCAG 1.4.11); the rule colour (1.43:1) is for dividers. */
+  --color-input: var(--color-muted);
   --color-ring: var(--focus-color);
   --radius-lg: var(--corner-notice);
   --radius-md: var(--corner-control);

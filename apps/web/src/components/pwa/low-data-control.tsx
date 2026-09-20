@@ -46,44 +46,55 @@ function subscribe(callback: () => void): () => void {
  * and polling frequency drop, while every fact and action stays. The browser's data-saving signal
  * only produces a suggestion that can be declined, and an explicit choice is never overridden.
  */
-export function LowDataControl({ copy }: Readonly<{ copy: Copy }>): ReactNode {
+export function LowDataControl({
+  copy,
+  part
+}: Readonly<{
+  copy: Copy;
+  /** "suggestion" is the only part shown near the top of a page; "switch" lives in the page footer. */
+  part: "suggestion" | "switch";
+}>): ReactNode {
   const on = useSyncExternalStore(subscribe, isLowData, () => false);
   const [, refresh] = useState(0);
   // Read after hydration only (the server snapshot is always false), so it can never mismatch.
   const suggest = useSyncExternalStore(subscribe, suggestionSnapshot, () => false);
 
+  if (part === "suggestion") {
+    return suggest ? (
+      <div
+        className="flex flex-wrap items-center gap-3 border border-border bg-card p-2 text-sm"
+        data-slot="low-data-suggestion"
+        role="status"
+      >
+        <span>{copy.suggest}</span>
+        <Button
+          onClick={() => {
+            applyLowData(true);
+          }}
+          variant="secondary"
+        >
+          {copy.turnOn}
+        </Button>
+        <Button
+          onClick={() => {
+            try {
+              window.sessionStorage.setItem(DISMISSED, "1");
+            } catch {
+              // A blocked store only means the suggestion may reappear.
+            }
+            refresh((value) => value + 1);
+            window.dispatchEvent(new Event(LOW_DATA_EVENT));
+          }}
+          variant="secondary"
+        >
+          {copy.dismiss}
+        </Button>
+      </div>
+    ) : null;
+  }
+
   return (
     <div className="grid gap-2 text-sm" data-slot="low-data">
-      {suggest ? (
-        <div
-          className="flex flex-wrap items-center gap-3 border border-border bg-card p-2"
-          role="status"
-        >
-          <span>{copy.suggest}</span>
-          <Button
-            onClick={() => {
-              applyLowData(true);
-            }}
-            variant="secondary"
-          >
-            {copy.turnOn}
-          </Button>
-          <Button
-            onClick={() => {
-              try {
-                window.sessionStorage.setItem(DISMISSED, "1");
-              } catch {
-                // A blocked store only means the suggestion may reappear.
-              }
-              refresh((value) => value + 1);
-              window.dispatchEvent(new Event(LOW_DATA_EVENT));
-            }}
-            variant="secondary"
-          >
-            {copy.dismiss}
-          </Button>
-        </div>
-      ) : null}
       <div className="flex flex-wrap items-center gap-3">
         <span aria-live="polite" role="status">
           {on ? copy.on : copy.off}

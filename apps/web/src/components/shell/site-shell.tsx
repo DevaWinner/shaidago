@@ -50,7 +50,7 @@ export function SiteShell({
     >
       <div className="mb-4">
         <PwaSupport copy={offline.messages} language={offline.language} />
-        <LowDataControl copy={offline.messages.lowData} />
+        <LowDataControl copy={offline.messages.lowData} part="suggestion" />
       </div>
       {shell.isOriginal || evidence.isOriginal ? (
         <div className="mb-6">
@@ -58,6 +58,9 @@ export function SiteShell({
         </div>
       ) : null}
       {children}
+      <div className="mt-12 border-t border-border pt-4" data-slot="page-preferences">
+        <LowDataControl copy={offline.messages.lowData} part="switch" />
+      </div>
     </PublicShell>
   );
 }

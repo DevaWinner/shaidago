@@ -143,3 +143,13 @@ test("the queue links do not prefetch private pages", async ({ page }) => {
   await page.waitForTimeout(500);
   expect(requests.some((url) => /\/reviewer\/reports\/[0-9a-f-]{36}/.test(url))).toBe(false);
 });
+
+test("on a phone the first queue row is visible without scrolling past the filters", async ({
+  page
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(QUEUE);
+  const box = await page.locator("[data-slot=queue-item]").first().boundingBox();
+
+  expect(box?.y ?? Infinity).toBeLessThan(844);
+});
