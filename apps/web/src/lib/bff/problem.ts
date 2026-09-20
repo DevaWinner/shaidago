@@ -7,6 +7,7 @@ export const BFF_PROBLEM_CODES = [
   "payload_too_large",
   "unsupported_media_type",
   "invalid_json",
+  "bad_request",
   "idempotency_key_invalid",
   "request_aborted",
   "upstream_timeout",
@@ -27,6 +28,7 @@ const FALLBACK_TITLES: Readonly<Record<string, string>> = {
   payload_too_large: "Request too large",
   unsupported_media_type: "Unsupported content type",
   invalid_json: "Request could not be read",
+  bad_request: "Request could not be read",
   idempotency_key_invalid: "Request could not be read",
   request_aborted: "Request cancelled",
   upstream_timeout: "The service took too long",
@@ -94,9 +96,15 @@ export function apiProblemResponse(problem: ApiProblem): Response {
 }
 
 export function unavailableResponse(reason: ApiUnavailableReason, requestId: string): Response {
-  return reason === "timeout"
-    ? problemResponse({ status: 504, code: "upstream_timeout", requestId })
-    : problemResponse({ status: 503, code: "dependency_unavailable", requestId });
+  switch (reason) {
+    case "timeout":
+      return problemResponse({ status: 504, code: "upstream_timeout", requestId });
+    case "aborted":
+      return abortedResponse(requestId);
+    case "network":
+    case "malformed_response":
+      return problemResponse({ status: 503, code: "dependency_unavailable", requestId });
+  }
 }
 
 export function bodyRejectedResponse(error: BodyRejectedError, requestId: string): Response {

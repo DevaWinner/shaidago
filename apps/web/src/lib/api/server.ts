@@ -40,13 +40,16 @@ export type ApiProblem = {
   readonly retryAfterSeconds: number | undefined;
 };
 
-export type ApiUnavailableReason = "timeout" | "network" | "malformed_response";
+export type ApiUnavailableReason = "timeout" | "network" | "malformed_response" | "aborted";
 
 export type ApiResult<TData> =
   | {
       readonly kind: "ok";
+      readonly status: number;
       readonly data: TData;
       readonly etag: string | undefined;
+      /** True when the API replayed an earlier identical idempotent request. */
+      readonly replayed: boolean;
       readonly requestId: string;
     }
   | { readonly kind: "not_modified"; readonly etag: string | undefined; readonly requestId: string }
@@ -118,27 +121,63 @@ function isTransient(raw: RawResult<unknown>): boolean {
   return retryAfter === undefined || retryAfter <= MAX_RETRY_AFTER_FOR_RETRY_SECONDS;
 }
 
-function isAbortError(error: unknown): boolean {
-  return (
-    error instanceof DOMException && (error.name === "TimeoutError" || error.name === "AbortError")
-  );
+function abortKind(error: unknown): "timeout" | "aborted" | undefined {
+  if (!(error instanceof DOMException)) {
+    return undefined;
+  }
+
+  // `AbortSignal.any` rethrows the reason of whichever signal fired first: a TimeoutError for our
+  // deadline, an AbortError when the caller (a disconnected browser) cancelled.
+  return error.name === "TimeoutError"
+    ? "timeout"
+    : error.name === "AbortError"
+      ? "aborted"
+      : undefined;
 }
+
+type CallPolicy = {
+  readonly context: ReadContext;
+  readonly timeoutMs: number;
+  /** Reads may retry once; a mutation is never retried automatically. */
+  readonly retry: boolean;
+  readonly cache: "public" | "no-store";
+  /** Cancels the call when the browser disconnects. */
+  readonly signal?: AbortSignal | undefined;
+  /** Already-validated extra headers, such as `Idempotency-Key`. */
+  readonly headers?: Readonly<Record<string, string>> | undefined;
+};
+
+export type MutationOptions = {
+  readonly context: ForwardedContext;
+  readonly signal?: AbortSignal | undefined;
+  readonly idempotencyKey?: string | undefined;
+};
+
+// Transport budgets from the BFF operation map (connect is folded into the total).
+const PUBLIC_JSON_TIMEOUT_MS = 8_000;
+const PUBLIC_POLL_TIMEOUT_MS = 3_000;
+const REPORT_SUBMIT_TIMEOUT_MS = 65_000;
 
 export function createServerApi(dependencies: ServerApiDependencies) {
   const baseUrl = dependencies.environment.apiInternalUrl;
   const authorization = `Bearer ${INTERNAL_CALLER_ID}.${dependencies.environment.internalWebCredential}`;
 
   /**
-   * Reads are retried once, and only for a transient 503 or a network failure. A timeout is not
-   * retried (it already consumed the operation's budget) and mutations never go through here.
+   * Every call goes through here. Reads may retry once, and only for a transient 503 or a network
+   * failure. Mutations never retry: a network error after sending means completion is unknown, and
+   * the caller must reuse the same idempotency key or refetch state.
    */
-  async function read<TData>(
+  async function execute<TData>(
     send: (init: SendInit) => Promise<RawResult<TData>>,
-    context: ReadContext
+    policy: CallPolicy
   ): Promise<ApiResult<TData>> {
-    const { headers, requestId } = buildForwardedHeaders(context, dependencies.generateRequestId);
-    const etag = toEntityTag(context.ifNoneMatch);
+    const { headers, requestId } = buildForwardedHeaders(
+      policy.context,
+      dependencies.generateRequestId
+    );
+    const etag = toEntityTag(policy.context.ifNoneMatch);
     const requestHeaders: Record<string, string> = {
+      ...policy.headers,
       ...headers,
       Authorization: authorization,
       Accept: "application/json, application/problem+json"
@@ -149,29 +188,37 @@ export function createServerApi(dependencies: ServerApiDependencies) {
     }
 
     const cachedFetch = (request: Request): Promise<Response> =>
-      dependencies.fetch(request, {
-        next: { revalidate: PUBLIC_REVALIDATE_SECONDS }
-      } as RequestInit);
+      dependencies.fetch(
+        request,
+        (policy.cache === "public"
+          ? { next: { revalidate: PUBLIC_REVALIDATE_SECONDS } }
+          : { cache: "no-store" }) as RequestInit
+      );
+    const attempts = policy.retry ? 2 : 1;
 
-    for (let attempt = 0; attempt < 2; attempt += 1) {
+    for (let attempt = 0; attempt < attempts; attempt += 1) {
+      const deadline = AbortSignal.timeout(policy.timeoutMs);
       let raw: RawResult<TData>;
 
       try {
         raw = await send({
           headers: requestHeaders,
           fetch: cachedFetch,
-          signal: AbortSignal.timeout(PUBLIC_READ_TIMEOUT_MS)
+          signal:
+            policy.signal === undefined ? deadline : AbortSignal.any([policy.signal, deadline])
         });
       } catch (error) {
-        if (isAbortError(error)) {
-          return { kind: "unavailable", reason: "timeout", requestId };
+        const aborted = abortKind(error);
+
+        if (aborted !== undefined) {
+          return { kind: "unavailable", reason: aborted, requestId };
         }
 
         if (error instanceof SyntaxError) {
           return { kind: "unavailable", reason: "malformed_response", requestId };
         }
 
-        if (attempt === 0) {
+        if (attempt + 1 < attempts) {
           await dependencies.sleep(READ_RETRY_DELAY_MS);
           continue;
         }
@@ -185,11 +232,19 @@ export function createServerApi(dependencies: ServerApiDependencies) {
         return { kind: "not_modified", etag: responseEtag ?? etag, requestId };
       }
 
-      if (raw.response.ok && raw.data !== undefined) {
-        return { kind: "ok", data: raw.data, etag: responseEtag, requestId };
+      if (raw.response.ok && (raw.data !== undefined || raw.response.status === 204)) {
+        return {
+          kind: "ok",
+          status: raw.response.status,
+          // A 204 has no body; its operations are typed as `undefined` data.
+          data: raw.data as TData,
+          etag: responseEtag,
+          replayed: raw.response.headers.get("Idempotency-Replayed") === "true",
+          requestId
+        };
       }
 
-      if (attempt === 0 && isTransient(raw)) {
+      if (attempt + 1 < attempts && isTransient(raw)) {
         await dependencies.sleep(READ_RETRY_DELAY_MS);
         continue;
       }
@@ -203,6 +258,34 @@ export function createServerApi(dependencies: ServerApiDependencies) {
 
     return { kind: "unavailable", reason: "network", requestId };
   }
+
+  const read = <TData>(
+    send: (init: SendInit) => Promise<RawResult<TData>>,
+    context: ReadContext
+  ): Promise<ApiResult<TData>> =>
+    execute(send, {
+      context,
+      timeoutMs: PUBLIC_READ_TIMEOUT_MS,
+      retry: true,
+      cache: "public"
+    });
+
+  const mutate = <TData>(
+    send: (init: SendInit) => Promise<RawResult<TData>>,
+    options: MutationOptions,
+    timeoutMs: number = PUBLIC_JSON_TIMEOUT_MS
+  ): Promise<ApiResult<TData>> =>
+    execute(send, {
+      context: options.context,
+      timeoutMs,
+      retry: false,
+      cache: "no-store",
+      signal: options.signal,
+      headers:
+        options.idempotencyKey === undefined
+          ? undefined
+          : { "Idempotency-Key": options.idempotencyKey }
+    });
 
   const client = createGeneratedClient(baseUrl);
 
@@ -236,6 +319,109 @@ export function createServerApi(dependencies: ServerApiDependencies) {
             params: { path: { slug, source_id: sourceId } }
           }),
         context
+      ),
+
+    // Public mutations and polling. Each names exactly one operation; none accepts a path, method,
+    // or header chosen by the browser.
+    askQuestion: (
+      slug: string,
+      body: components["schemas"]["ProjectQuestionIn"],
+      options: MutationOptions
+    ) =>
+      mutate<components["schemas"]["ProjectQuestionOut"]>(
+        (init) =>
+          client.POST("/v1/projects/{slug}/questions", {
+            ...init,
+            params: { path: { slug } },
+            body
+          }),
+        options
+      ),
+
+    startPublicDiscovery: (slug: string, options: MutationOptions) =>
+      mutate<components["schemas"]["RunStartedOut"]>(
+        (init) =>
+          client.POST("/v1/projects/{slug}/discovery-runs", {
+            ...init,
+            params: { path: { slug } }
+          }),
+        options
+      ),
+
+    getPublicDiscoveryRun: (
+      runId: string,
+      sinceVersion: number | undefined,
+      options: MutationOptions
+    ) =>
+      execute<components["schemas"]["RunOut"]>(
+        (init) =>
+          client.GET("/v1/discovery-runs/{run_id}", {
+            ...init,
+            params: {
+              path: { run_id: runId },
+              query: sinceVersion === undefined ? {} : { since_version: sinceVersion }
+            }
+          }),
+        {
+          context: options.context,
+          timeoutMs: PUBLIC_POLL_TIMEOUT_MS,
+          retry: false,
+          cache: "no-store",
+          signal: options.signal
+        }
+      ),
+
+    /** Streams the browser's multipart body; the caller has already capped it and set the boundary. */
+    submitReport: (
+      body: ReadableStream<Uint8Array>,
+      multipartContentType: string,
+      options: MutationOptions
+    ) =>
+      mutate<components["schemas"]["ReportReceipt"]>(
+        (init) =>
+          client.POST("/v1/reports", {
+            ...init,
+            headers: { ...init.headers, "Content-Type": multipartContentType },
+            // The generated multipart type describes parsed fields; the stream is forwarded as-is.
+            body: body as unknown as never,
+            bodySerializer: (value: unknown) => value as BodyInit,
+            duplex: "half"
+          } as never),
+        options,
+        REPORT_SUBMIT_TIMEOUT_MS
+      ),
+
+    lookupReportStatus: (
+      body: components["schemas"]["StatusLookupRequest"],
+      options: MutationOptions
+    ) =>
+      mutate<components["schemas"]["ReportStatusOut"]>(
+        (init) => client.POST("/v1/report-status:lookup", { ...init, body }),
+        options
+      ),
+
+    answerFollowUp: (body: components["schemas"]["AnswerRequest"], options: MutationOptions) =>
+      mutate<components["schemas"]["AnswerAck"]>(
+        (init) => client.POST("/v1/report-status:answer-follow-up", { ...init, body }),
+        options
+      ),
+
+    createReporterHandle: (options: MutationOptions) =>
+      mutate<components["schemas"]["HandleCreated"]>(
+        (init) => client.POST("/v1/reporter-handles", init),
+        options
+      ),
+
+    listHandleReports: (body: components["schemas"]["Credentials"], options: MutationOptions) =>
+      mutate<components["schemas"]["HandleReports"]>(
+        (init) => client.POST("/v1/reporter-handles:list-reports", { ...init, body }),
+        options
+      ),
+
+    deleteReporterHandle: (body: components["schemas"]["Credentials"], options: MutationOptions) =>
+      mutate<undefined>(
+        (init) => client.POST("/v1/reporter-handles:delete", { ...init, body }),
+        options
       )
   };
 }

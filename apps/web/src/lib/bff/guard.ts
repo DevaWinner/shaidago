@@ -18,10 +18,15 @@ export type GuardResult =
   | { readonly ok: true; readonly idempotencyKey: string | undefined }
   | { readonly ok: false; readonly response: Response };
 
-function emptyBodyRejected(headers: Headers): boolean {
-  const declared = headers.get("Content-Length");
+function emptyBodyRejected(request: Request): boolean {
+  const declared = request.headers.get("Content-Length");
 
-  return headers.has("Transfer-Encoding") || (declared !== null && declared !== "0");
+  // A runtime may not surface Content-Length for a buffered body, so the body itself is checked too.
+  return (
+    request.body !== null ||
+    request.headers.has("Transfer-Encoding") ||
+    (declared !== null && declared !== "0")
+  );
 }
 
 /**
@@ -50,7 +55,7 @@ export function guardMutation(request: Request, options: MutationGuardOptions): 
 
   try {
     if (options.body.rule === "empty") {
-      if (emptyBodyRejected(request.headers)) {
+      if (emptyBodyRejected(request)) {
         throw new BodyRejectedError("payload_too_large");
       }
     } else {

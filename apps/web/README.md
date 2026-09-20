@@ -99,3 +99,12 @@ CSRF, header-only body preflight, idempotency key, in that order), `readBoundedJ
 (streamed byte caps), `buildBackendHeaders` (allowlist only), `backendSignal` (abort and timeout), and
 `problemResponse` (stable code, no backend text, `no-store`). Idempotency keys are lower-case
 canonical UUIDs, matching the API.
+
+## Public mutation handlers
+
+The nine handlers under `app/api/` (`public/questions`, `public/discovery`, `public/discovery/[runId]`,
+`reports`, `tracking/lookup`, `tracking/follow-up`, `reporter-handle`, `reporter-handle/reports`,
+`reporter-handle/delete`) each call one typed operation through `src/lib/bff/public-handler.ts`. Browsers
+send an optional `X-Shaidago-Locale` and, for idempotent operations, a lower-case UUID
+`Idempotency-Key` that is generated once per user intent and reused only for retries of that intent.
+Responses are always `no-store`; failures are `application/problem+json` with a stable `code`.

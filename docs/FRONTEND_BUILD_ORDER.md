@@ -440,6 +440,8 @@ Unit-test spoofed forwarded headers, multiple Origin values, missing/malformed C
 
 ### FE-033 — Purpose-built public mutation handlers
 
+> **Execution status (2026-09-20): complete.** Nine explicit `runtime = "nodejs"`, `force-dynamic` Route Handlers under `apps/web/app/api/` (question, discovery start/poll, report multipart, tracking lookup, follow-up answer, handle create/list/delete) each name exactly one typed backend operation through `src/lib/bff/public-handler.ts`, with strict Zod input schemas, per-route body caps, Origin-before-body ordering, mandatory idempotency keys where the operation map requires them, no mutation retry, safe problem mapping, and `no-store`. Reports stream under a 30 MiB + 64 KiB cap without buffering. Unit tests cover every handler for success, validation, unknown fields, backend problem, timeout, network loss, cancellation (499), wrong content type, oversized body, foreign/missing/repeated Origin, cookie and forwarded-header exclusion, and secret-free URLs. Cancel-a-public-run and public follow-up are correctly absent because the API forbids public callers those actions. Not yet done: forwarding `X-Shaidago-Client-Hmac` (see the AI build log's open decision), and real-API integration.
+
 Create explicit Route Handlers for project question, public discovery start/poll/cancel/follow-up, report submission, status lookup, reporter handle create/list/delete, and report follow-up answers.
 
 Each handler declares:

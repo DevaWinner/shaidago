@@ -55,7 +55,8 @@ export function preflightBody(headers: Headers, rule: ContentTypeRule, maxBytes:
 /** Counts bytes as they pass and errors the stream the moment the cap is exceeded. */
 export function limitBodyStream(
   body: ReadableStream<Uint8Array>,
-  maxBytes: number
+  maxBytes: number,
+  onExceeded?: () => void
 ): ReadableStream<Uint8Array> {
   let seen = 0;
 
@@ -65,6 +66,7 @@ export function limitBodyStream(
         seen += chunk.byteLength;
 
         if (seen > maxBytes) {
+          onExceeded?.();
           controller.error(new BodyRejectedError("payload_too_large"));
           return;
         }
