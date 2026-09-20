@@ -25,8 +25,7 @@ describe("resolveDomain", () => {
     const catalogues = { ha, ig, yo };
 
     for (const locale of ["ha", "ig", "yo"] as const) {
-      // `recovery` still has a pending key (see below), so only complete domains are checked here.
-      for (const domain of ["shell", "evidence", "landing"] as const) {
+      for (const domain of Object.keys(en) as Array<keyof typeof en>) {
         const copy = resolveDomain(locale, domain);
 
         expect(copy, `${locale}.${domain}`).toMatchObject({ language: locale, isOriginal: false });
@@ -36,10 +35,16 @@ describe("resolveDomain", () => {
     expect(isDomainReviewed("ha", "shell")).toBe(true);
   });
 
-  it("returns the flagged English original for a domain that still has a pending key", () => {
+  it("serves formerly pending safety and problem copy in each reviewed locale", () => {
     for (const locale of ["ha", "ig", "yo"] as const) {
-      expect(resolveDomain(locale, "recovery")).toMatchObject({ language: "en", isOriginal: true });
-      expect(resolveDomain(locale, "problems")).toMatchObject({ language: "en", isOriginal: true });
+      expect(resolveDomain(locale, "recovery")).toMatchObject({
+        language: locale,
+        isOriginal: false
+      });
+      expect(resolveDomain(locale, "problems")).toMatchObject({
+        language: locale,
+        isOriginal: false
+      });
     }
   });
 

@@ -3,6 +3,8 @@
 **Status:** architecture decision and build plan
 **Prepared:** 19 September 2026
 **Pilot:** Abuja — AMAC and Bwari Area Councils
+
+AMAC and Bwari are the initial judge dataset, not a product boundary. Localities are configured data; product identity, global navigation, shared routes, and reusable interface copy remain location-neutral.
 **Public languages:** English, Hausa, Igbo, and Yoruba
 **Source brief:** [`docs/PRODUCT_BRIEF.md`](PRODUCT_BRIEF.md)
 
@@ -16,24 +18,24 @@ The Abuja pilot is one deployment with two configured localities (`amac` and `bw
 
 ### Chosen stack
 
-| Area                     | Choice                                                                    | Reason                                                                                                                                                                                                                                                       |
-| ------------------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Frontend runtime         | Node.js 24 LTS                                                            | Current supported LTS rather than Node 26 Current or an end-of-life release.                                                                                                                                                                                 |
-| Web framework            | Next.js 16 App Router, React 19.3, strict TypeScript                      | Server-rendered public pages, small client islands, native BFF route handlers, streaming, metadata, and a strong PWA path.                                                                                                                                   |
-| UI system                | Tailwind CSS 4.3, shadcn/ui with Base UI primitives, project-owned tokens | Modern CSS-first tokens with accessible, inspectable components that remain in the repository.                                                                                                                                                               |
-| Frontend data and forms  | TanStack Query for polling/mutations, React Hook Form, Zod                | Keep public reads server-rendered; use client state only where uploads, polling, and multi-step forms need it.                                                                                                                                               |
-| Internationalisation     | `next-intl`, locale-prefixed routes, ICU messages                       | Server Components support, key parity, plural/date/number formatting, and explicit`en`, `ha`, `ig`, `yo` URLs.                                                                                                                                       |
-| Frontend package manager | pnpm with a committed lockfile                                            | Fast, deterministic Node installs without coupling Python dependencies to JavaScript tooling.                                                                                                                                                                |
-| Backend runtime          | Python 3.14                                                               | Current stable Python line with a mature FastAPI ecosystem.                                                                                                                                                                                                  |
-| API framework            | FastAPI, Pydantic 2 strict models, SQLAlchemy 2 async, Alembic, psycopg 3 | Typed REST/OpenAPI contracts, explicit validation, async I/O, migrations, and strong AI/document tooling.                                                                                                                                                    |
-| Python tooling           | `uv`, Ruff, Pyright, pytest                                             | Reproducible lockfile, fast environment setup, one formatter/linter, strict types, and mature tests.                                                                                                                                                         |
-| Database                 | PostgreSQL 18 with`pgvector`                                            | Relational integrity, full-text search, JSON where justified, row security/grants, audit history, and hybrid retrieval without another database.                                                                                                             |
-| Jobs and rate limits     | Redis 8 and Dramatiq                                                      | Discovery and file work cannot block requests; bounded retries and dead letters are visible and testable. Redis also provides shared token-bucket limits.                                                                                                    |
-| Evidence storage         | Private Cloudflare R2 buckets through the S3 API                          | Encrypted object storage, short-lived signed access, and no public bucket. Local development uses MinIO.                                                                                                                                                     |
-| Search provider          | Brave Search API behind a provider interface                              | Returns search results rather than making truth judgments; the application retains control of safe fetching, provenance, and review.                                                                                                                         |
+| Area                     | Choice                                                                                                                                    | Reason                                                                                                                                                                                                                                                                                    |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Frontend runtime         | Node.js 24 LTS                                                                                                                            | Current supported LTS rather than Node 26 Current or an end-of-life release.                                                                                                                                                                                                              |
+| Web framework            | Next.js 16 App Router, React 19.3, strict TypeScript                                                                                      | Server-rendered public pages, small client islands, native BFF route handlers, streaming, metadata, and a strong PWA path.                                                                                                                                                                |
+| UI system                | Tailwind CSS 4.3, shadcn/ui with Base UI primitives, project-owned tokens                                                                 | Modern CSS-first tokens with accessible, inspectable components that remain in the repository.                                                                                                                                                                                            |
+| Frontend data and forms  | TanStack Query for polling/mutations, React Hook Form, Zod                                                                                | Keep public reads server-rendered; use client state only where uploads, polling, and multi-step forms need it.                                                                                                                                                                            |
+| Internationalisation     | `next-intl`, locale-prefixed routes, ICU messages                                                                                         | Server Components support, key parity, plural/date/number formatting, and explicit`en`, `ha`, `ig`, `yo` URLs.                                                                                                                                                                            |
+| Frontend package manager | pnpm with a committed lockfile                                                                                                            | Fast, deterministic Node installs without coupling Python dependencies to JavaScript tooling.                                                                                                                                                                                             |
+| Backend runtime          | Python 3.14                                                                                                                               | Current stable Python line with a mature FastAPI ecosystem.                                                                                                                                                                                                                               |
+| API framework            | FastAPI, Pydantic 2 strict models, SQLAlchemy 2 async, Alembic, psycopg 3                                                                 | Typed REST/OpenAPI contracts, explicit validation, async I/O, migrations, and strong AI/document tooling.                                                                                                                                                                                 |
+| Python tooling           | `uv`, Ruff, Pyright, pytest                                                                                                               | Reproducible lockfile, fast environment setup, one formatter/linter, strict types, and mature tests.                                                                                                                                                                                      |
+| Database                 | PostgreSQL 18 with`pgvector`                                                                                                              | Relational integrity, full-text search, JSON where justified, row security/grants, audit history, and hybrid retrieval without another database.                                                                                                                                          |
+| Jobs and rate limits     | Redis 8 and Dramatiq                                                                                                                      | Discovery and file work cannot block requests; bounded retries and dead letters are visible and testable. Redis also provides shared token-bucket limits.                                                                                                                                 |
+| Evidence storage         | Private Cloudflare R2 buckets through the S3 API                                                                                          | Encrypted object storage, short-lived signed access, and no public bucket. Local development uses MinIO.                                                                                                                                                                                  |
+| Search provider          | Brave Search API behind a provider interface                                                                                              | Returns search results rather than making truth judgments; the application retains control of safe fetching, provenance, and review.                                                                                                                                                      |
 | AI                       | Groq OpenAI-compatible Chat Completions with strict JSON schemas; configurable model IDs (ADR-0009 supersedes the original OpenAI choice) | Strict output schemas, multilingual responses, and provider isolation. Use `openai/gpt-oss-120b` for the few complex discovery syntheses and `openai/gpt-oss-20b` for short Q&A/explanations (both served by Groq), and local FastEmbed `multilingual-e5-small` for retrieval (ADR-0010). |
-| Deployment               | Railway for web, private API, worker, PostgreSQL, and Redis; R2 for files | One public origin, private service-to-service networking, background workers, and a reproducible container topology.                                                                                                                                         |
-| CI/CD                    | GitHub Actions, Docker BuildKit, GitHub code/security scanning            | The repository itself proves formatting, types, tests, contracts, migrations, security checks, and buildability.                                                                                                                                             |
+| Deployment               | Railway for web, private API, worker, PostgreSQL, and Redis; R2 for files                                                                 | One public origin, private service-to-service networking, background workers, and a reproducible container topology.                                                                                                                                                                      |
+| CI/CD                    | GitHub Actions, Docker BuildKit, GitHub code/security scanning                                                                            | The repository itself proves formatting, types, tests, contracts, migrations, security checks, and buildability.                                                                                                                                                                          |
 
 All dependency versions are pinned in `pnpm-lock.yaml` and `uv.lock`. Runtime major versions are pinned in `.nvmrc`/`package.json`, `.python-version`, and Dockerfiles; patch releases are upgraded through reviewed pull requests.
 
@@ -147,8 +149,8 @@ The stacks stay separate: pnpm controls `apps/web`; `uv` controls `services/plat
 
 ### Routes
 
-| Route                                      | Purpose                                                           | Rendering/cache rule                            |
-| ------------------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------- |
+| Route                                    | Purpose                                                           | Rendering/cache rule                            |
+| ---------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------- |
 | `/[locale]`                              | Purpose, AMAC/Bwari entry, search, trust promise                  | Server-rendered; public cache                   |
 | `/[locale]/projects`                     | Paginated directory and filters                                   | Server-rendered initial page; URL-owned filters |
 | `/[locale]/projects/[slug]`              | Facts, timeline, sources, Q&A, report action                      | Server-rendered; tag-revalidated public cache   |
@@ -202,7 +204,7 @@ The central UI object is a **fact with evidence**, not a generic card. Each fact
 - Original source titles and excerpts remain visibly connected to the source language. A translation is an explanation, not a replacement for the source.
 - AI answers use the selected locale but preserve source titles and citations. Prompts prohibit translating names, amounts, dates, and quoted claims into different facts.
 - Dates use `Africa/Lagos`; money uses `NGN` with locale-aware formatting; stored timestamps remain UTC.
-- Hausa, Igbo, and Yoruba copy must receive a human language review before the final video. Automated translation is only a draft accelerator.
+- The maintainer completed and reviewed the Hausa, Igbo, and Yoruba interface catalogues on 2026-09-20. This is recorded as maintainer review, not an independent second-language review; any later independent review must update the catalogue status with the actual reviewer and date.
 
 ### PWA and low-data behaviour
 
@@ -221,8 +223,8 @@ The central UI object is a **fact with evidence**, not a generic card. Each fact
 
 Use one FastAPI codebase with two process entry points: `api` and `worker`. Modules communicate through typed services and repository interfaces, not HTTP. This is easier to deliver and inspect than microservices while keeping boundaries clear enough to split later.
 
-| Module        | Owns                                                                            |
-| ------------- | ------------------------------------------------------------------------------- |
+| Module      | Owns                                                                            |
+| ----------- | ------------------------------------------------------------------------------- |
 | `projects`  | Localities, projects, facts, translations, timelines, public projections        |
 | `sources`   | Source metadata, approved excerpts, versions, availability, citations           |
 | `reports`   | Anonymous submission, encrypted private content, tracking lookup, state machine |
@@ -369,7 +371,7 @@ A handle lets a repeat reporter build a track record without an identity. It is 
 6. **Deletion.** The reporter can delete the handle. The link is removed from every report; the reports remain as fully anonymous reports.
 7. **Abuse limits.** Rate-limit credential checks on a rotating IP HMAC and apply per-handle exponential backoff. There is no hard lockout, which an attacker could use to lock out a real reporter.
 
-Public corroboration is worded as a reviewer finding, not a count of people: "A reviewer found *N* consistent reports." Anonymous reports cannot prove they come from different people. Reports sharing a handle count once.
+Public corroboration is worded as a reviewer finding, not a count of people: "A reviewer found _N_ consistent reports." Anonymous reports cannot prove they come from different people. Reports sharing a handle count once.
 
 ### Reviewer publication
 
@@ -432,17 +434,17 @@ Runs move through `queued`, `searching`, `analysing`, `needs_review`, `complete`
 
 ## 9. Test strategy and quality gates
 
-| Layer                   | Tools                                                          | Required evidence                                                                                     |
-| ----------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Frontend unit/component | Vitest, Testing Library, MSW                                   | Forms, labels, status text, locale rendering, retry/offline states                                    |
-| Backend unit            | pytest, Hypothesis, Pyright                                    | State machines, code generation/hash, redaction, URL guard, citation validator, encryption envelope   |
-| Database/integration    | pytest + Testcontainers for PostgreSQL/Redis/MinIO             | Migrations, grants/RLS, repositories, jobs, idempotency, file pipeline                                |
-| Contract                | Generated OpenAPI client, Schemathesis                         | No schema drift; safe errors; malformed request coverage                                              |
-| End-to-end              | Playwright                                                     | Five journeys in all critical states; Chromium plus a mobile WebKit smoke pass                        |
-| Accessibility           | axe-core, keyboard scripts, manual screen-reader smoke         | WCAG 2.2 AA, focus order, 200% zoom, reduced motion, no colour-only status                            |
-| AI evaluation           | Versioned golden corpus with mocked and live opt-in runs       | Correct citations, insufficient-evidence behaviour, contradictions, four-language answer preservation |
+| Layer                   | Tools                                                      | Required evidence                                                                                     |
+| ----------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Frontend unit/component | Vitest, Testing Library, MSW                               | Forms, labels, status text, locale rendering, retry/offline states                                    |
+| Backend unit            | pytest, Hypothesis, Pyright                                | State machines, code generation/hash, redaction, URL guard, citation validator, encryption envelope   |
+| Database/integration    | pytest + Testcontainers for PostgreSQL/Redis/MinIO         | Migrations, grants/RLS, repositories, jobs, idempotency, file pipeline                                |
+| Contract                | Generated OpenAPI client, Schemathesis                     | No schema drift; safe errors; malformed request coverage                                              |
+| End-to-end              | Playwright                                                 | Five journeys in all critical states; Chromium plus a mobile WebKit smoke pass                        |
+| Accessibility           | axe-core, keyboard scripts, manual screen-reader smoke     | WCAG 2.2 AA, focus order, 200% zoom, reduced motion, no colour-only status                            |
+| AI evaluation           | Versioned golden corpus with mocked and live opt-in runs   | Correct citations, insufficient-evidence behaviour, contradictions, four-language answer preservation |
 | Security                | Semgrep, CodeQL, Gitleaks,`pnpm audit`, `pip-audit`, Trivy | No committed secrets; no high/critical release blocker                                                |
-| Performance/resilience  | Lighthouse CI, Playwright network throttling                   | Public JS budget, narrow viewport, offline revisit, failed-upload retry, low-data mode                |
+| Performance/resilience  | Lighthouse CI, Playwright network throttling               | Public JS budget, narrow viewport, offline revisit, failed-upload retry, low-data mode                |
 
 Set overall coverage floors at 80% frontend and 85% backend, but require 100% branch coverage for the tracking-code normaliser, public-response allowlists, privacy-safe query builder, SSRF guard, citation validator, and report state machine.
 
@@ -585,7 +587,7 @@ Do not cut the four public languages, but prioritise essential journey and safet
 
 | Brief capability            | Implementation proof                                                                                       |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Browse/search projects      | Paginated`/projects`, URL filters, AMAC/Bwari seeds, mobile E2E                                          |
+| Browse/search projects      | Paginated`/projects`, URL filters, AMAC/Bwari seeds, mobile E2E                                            |
 | Project profile             | Source-backed facts and public response snapshots                                                          |
 | Official/community timeline | Typed update labels plus citation and visibility constraints                                               |
 | Plain-language explanation  | Reviewed locale summary or visibly labelled AI explanation                                                 |

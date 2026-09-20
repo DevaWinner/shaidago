@@ -14,8 +14,10 @@
       },
       "localeUnavailable": "a kò tíì ṣàyẹ̀wò",
       "navLabel": "Àkójọ àkọ́kọ́",
-      "navLocalities": "Àwọn àgbègbè",
+      "navLocalities": "Àwọn àkọsílẹ̀ iṣẹ́",
       "navReport": "Jábọ̀ nípa ìṣòro kan",
+      "navReviewer": "Ìwọlé olùṣàyẹ̀wò",
+      "navTrack": "Tọpinpin tàbí wọlé sí ìjábọ̀",
       "navTrust": "Bí àwọn àkọsílẹ̀ ṣe ń ṣiṣẹ́",
       "notEmergency": "ShaidaGo kì í ṣe iṣẹ́ pàjáwìrì. Bí ẹnì kan bá wà nínú ewu, kọ́kọ́ kàn sí àwọn iṣẹ́ pàjáwìrì agbègbè.",
       "productName": "ShaidaGo",
@@ -80,7 +82,7 @@
     "citedLabel": "Àwọn orísun fún gbólóhùn yìí",
     "citationBack": "Padà sí gbólóhùn náà",
     "evidenceHeading": "Ẹ̀rí tó ní ọjọ́",
-    "heading": "Àwọn àkọsílẹ̀ iṣẹ́ àkànṣe gbogbogbò ti AMAC àti Bwari, pẹ̀lú àwọn orísun wọn",
+    "heading": "Àwọn àkọsílẹ̀ iṣẹ́ àkànṣe gbogbogbò, pẹ̀lú àwọn orísun tó ṣe àtìlẹ́yìn fún wọn",
     "lead": "Àkọsílẹ̀ kọ̀ọ̀kan ń fi ohun tí a ṣèlérí, ohun tí àwọn orísun sọ, ìgbà tí a ṣàyẹ̀wò rẹ̀ gbẹ̀yìn, àti ohun tí a kò tíì mọ̀ hàn.",
     "localityLabel": "Àpẹẹrẹ àgbègbè",
     "recordKind": "Àkọsílẹ̀ iṣẹ́ àkànṣe gbogbogbò",
@@ -121,1401 +123,1401 @@
     },
     "loading": "A ń múra ojú ìwé yìí sílẹ̀.",
     "fatal": {
-      "title": null
+      "title": "A kò lè ṣí ShaidaGo"
     }
   },
   "problems": {
     "codes": {
-      "badRequest": null,
-      "unauthenticated": null,
-      "forbidden": null,
-      "notFound": null,
-      "codeNotRecognised": null,
-      "invalidCredentials": null,
-      "rateLimited": null,
-      "conflict": null,
-      "idempotencyConflict": null,
-      "notAllowedNow": null,
-      "tooLarge": null,
-      "unsupportedType": null,
-      "validationFailed": null,
-      "markupNotAllowed": null,
-      "publicationIncomplete": null,
-      "invalidCursor": null,
-      "queryChanged": null,
-      "notVerified": null,
-      "timeout": null,
-      "unavailable": null,
-      "aborted": null,
-      "network": null,
-      "internal": null,
-      "unknown": null
+      "badRequest": "A kò lè yege ìbéèrè náà. Ṣàyẹ̀wò ohun tí o tẹ̀ wọlé kí o sì gbìyànjú lẹ́ẹ̀kan sí i.",
+      "unauthenticated": "Wọlé láti tẹ̀síwájú.",
+      "forbidden": "O kò ní àṣẹ láti ṣe ìyẹn.",
+      "notFound": "A kò lè rí ìyẹn.",
+      "codeNotRecognised": "A kò lè rí ìròyìn fún kódù yẹn. Ṣàyẹ̀wò kódù náà kí o sì gbìyànjú lẹ́ẹ̀kan sí i.",
+      "invalidCredentials": "A kò tẹ́wọ́ gba àwọn àlàyé yẹn. Ṣàyẹ̀wò wọn kí o sì gbìyànjú lẹ́ẹ̀kan sí i.",
+      "rateLimited": "Ìgbìyànjú ti pọ̀ jù. Dúró díẹ̀ kí o sì gbìyànjú lẹ́ẹ̀kan sí i.",
+      "conflict": "Èyí yí padà nígbà tí o ń ṣiṣẹ́. Sọ ọ́ dọ̀tun kí o sì gbìyànjú lẹ́ẹ̀kan sí i.",
+      "idempotencyConflict": "A ti lo ìbéèrè yìí tẹ́lẹ̀ pẹ̀lú àwọn àlàyé ọ̀tọ̀. Bẹ̀rẹ̀ lẹ́ẹ̀kan sí i.",
+      "notAllowedNow": "Ìgbésẹ̀ yẹn kò ṣeé ṣe ní ipò tí o wà lọ́wọ́lọ́wọ́.",
+      "tooLarge": "Ìyẹn tóbí jù láti fi ránṣẹ́. Dín ìwọ̀n rẹ̀ kù kí o sì gbìyànjú lẹ́ẹ̀kan sí i.",
+      "unsupportedType": "A kò ṣe àtìlẹ́yìn fún irúfẹ́ yẹn.",
+      "validationFailed": "Àwọn àlàyé kan nílò àkíyèsí.",
+      "markupNotAllowed": "Yọ ìwé-àkọsílẹ̀ tàbí àmì kúrò kí o sì gbìyànjú lẹ́ẹ̀kan sí i.",
+      "publicationIncomplete": "Ohun kan tí a nílò kò sí kí a tó lè tẹ̀ èyí jáde.",
+      "invalidCursor": "Ojú ìwé àwọn àbájáde yẹn kò wúlò mọ́. Padà sí ojú ìwé àkọ́kọ́.",
+      "queryChanged": "Àwárí náà ti yí padà. Ṣàyẹ̀wò ètò tuntun náà kí o tó tẹ̀síwájú.",
+      "notVerified": "A kò lè fìdí ìbéèrè yìí múlẹ̀. Tún ojú ìwé náà rù kí o sì gbìyànjú lẹ́ẹ̀kan sí i.",
+      "timeout": "Iṣẹ́ náà pẹ́ jù láti dáhùn. Gbìyànjú lẹ́ẹ̀kan sí i.",
+      "unavailable": "Iṣẹ́ náà kò sí lọ́wọ́lọ́wọ́. Gbìyànjú lẹ́ẹ̀kan sí i ní kété.",
+      "aborted": "A ti fagilé ìbéèrè náà.",
+      "network": "Kò lè rí ShaidaGo. Ṣàyẹ̀wò ìsopọ̀ rẹ kí o sì gbìyànjú lẹ́ẹ̀kan sí i.",
+      "internal": "Ohun kan ti jẹ́ àṣìṣe láti ọ̀dọ̀ wa.",
+      "unknown": "Ohun kan ti jẹ́ àṣìṣe."
     },
     "rules": {
-      "required": null,
-      "tooShort": null,
-      "tooLong": null,
-      "invalidFormat": null,
-      "notAccepted": null,
-      "markup": null,
-      "invalid": null
+      "required": "Tẹ iye kan wọlé.",
+      "tooShort": "Èyí kéré jù.",
+      "tooLong": "Èyí gùn jù.",
+      "invalidFormat": "Èyí kò sí nínú ìrísí tí a ń rètí.",
+      "notAccepted": "A kò tẹ́wọ́ gba ààyè yìí.",
+      "markup": "Yọ ìwé-àkọsílẹ̀ tàbí àmì kúrò.",
+      "invalid": "Ṣàyẹ̀wò iye yìí."
     },
     "summary": {
-      "title": null
+      "title": "{count, plural, one {Ṣàtúnṣe ìṣòro # láti tẹ̀síwájú} other {Ṣàtúnṣe àwọn ìṣòro # láti tẹ̀síwájú}}"
     },
-    "mayHaveCompleted": null,
-    "retryAfter": null,
-    "reference": null
+    "mayHaveCompleted": "Bí o bá ti fi èyí ránṣẹ́, ṣàyẹ̀wò kí o tó tún fi ránṣẹ́.",
+    "retryAfter": "Gbìyànjú lẹ́ẹ̀kan sí i ní {seconds, plural, one {ìṣẹ́jú ààyá #} other {ìṣẹ́jú ààyá #}}.",
+    "reference": "Nọ́ńbà ìtọ́kasí ìrànlọ́wọ́: {reference}"
   },
   "language": {
-    "changed": null,
+    "changed": "A ti yí èdè padà sí {language}.",
     "draft": {
-      "title": null,
-      "body": null,
-      "stay": null,
-      "leave": null
+      "title": "Yí èdè padà?",
+      "body": "Yíyí èdè padà yóò tún ojú ìwé yìí rù. Ohunkóhun tí o kò bá fipamọ́ yóò sọnù.",
+      "stay": "Dúró lórí ojú ìwé yìí",
+      "leave": "Yí èdè padà"
     }
   },
   "directory": {
-    "title": null,
-    "intro": null,
+    "title": "Àwọn àkọsílẹ̀ iṣẹ́ àkànṣe",
+    "intro": "Àwọn àkọsílẹ̀ iṣẹ́ àkànṣe gbogbogbò, kọ̀ọ̀kan pẹ̀lú àwọn orísun rẹ̀ àti ọjọ́ tí a ṣàyẹ̀wò rẹ̀ gbẹ̀yìn.",
     "form": {
-      "label": null,
-      "searchLabel": null,
-      "searchHelp": null,
-      "locality": null,
-      "category": null,
-      "status": null,
-      "verification": null,
-      "any": null,
-      "apply": null,
-      "clear": null
+      "label": "Ṣàwárí kí o sì sẹ́ àwọn àkọsílẹ̀ iṣẹ́ àkànṣe",
+      "searchLabel": "Ṣàwárí àwọn àkọsílẹ̀ iṣẹ́ àkànṣe",
+      "searchHelp": "Ṣàwárí nípa orúkọ iṣẹ́ àkànṣe tàbí ohun tí a ṣèlérí.",
+      "locality": "Àgbègbè",
+      "category": "Ìsọ̀rí",
+      "status": "Ipò tí a ṣe àkọsílẹ̀ rẹ̀",
+      "verification": "Ìjẹ́rìísí",
+      "any": "Èyíkéyìí",
+      "apply": "Ṣàwárí",
+      "clear": "Mú gbogbo àlẹ́mọ́ kúrò"
     },
     "categories": {
-      "health": null,
-      "education": null,
-      "water_sanitation": null,
-      "roads_public_works": null,
-      "other_public_service": null
+      "health": "Ìlera",
+      "education": "Ẹ̀kọ́",
+      "water_sanitation": "Omi àti ìmọ́tótó",
+      "roads_public_works": "Àwọn ọ̀nà àti iṣẹ́ gbogbogbò",
+      "other_public_service": "Àwọn iṣẹ́ gbogbogbò mìíràn"
     },
     "statuses": {
-      "unknown": null,
-      "planned": null,
-      "procurement": null,
-      "in_progress": null,
-      "on_hold": null,
-      "completed": null,
-      "cancelled": null
+      "unknown": "A kò mọ̀",
+      "planned": "A wéwèé",
+      "procurement": "Nínú ìrèsè",
+      "in_progress": "Ó ń lọ lọ́wọ́",
+      "on_hold": "A dá dúró",
+      "completed": "A ti parí",
+      "cancelled": "A ti fagilé"
     },
     "pills": {
-      "label": null,
-      "remove": null,
-      "search": null
+      "label": "Àwọn àlẹ́mọ́ tí ń ṣiṣẹ́",
+      "remove": "Mú àlẹ́mọ́ kúrò: {filter}",
+      "search": "Ṣàwárí: {value}"
     },
     "results": {
-      "heading": null,
-      "shown": null,
-      "moreAvailable": null
+      "heading": "Àwọn àbájáde",
+      "shown": "{count, plural, one {Ń fi àkọsílẹ̀ iṣẹ́ àkànṣe # hàn.} other {Ń fi àwọn àkọsílẹ̀ iṣẹ́ àkànṣe # hàn.}}",
+      "moreAvailable": "Àwọn àkọsílẹ̀ púpọ̀ sí i wà."
     },
     "card": {
-      "recordedStatus": null,
-      "lastChecked": null,
-      "notChecked": null,
-      "staleNote": null,
-      "original": null
+      "recordedStatus": "Ipò tí a ṣe àkọsílẹ̀ rẹ̀",
+      "lastChecked": "Àyẹ̀wò tó kẹ́yìn",
+      "notChecked": "A kò tíì ṣàyẹ̀wò",
+      "staleNote": "A ṣàyẹ̀wò tó kẹ́yìn ju {days, plural, one {ọjọ́ #} other {ọjọ́ #}} sẹ́yìn.",
+      "original": "A fi hàn ní èdè àkọ́kọ́: kò sí ìtumọ̀ fún àkọsílẹ̀ yìí."
     },
     "states": {
       "empty": {
-        "title": null,
-        "body": null
+        "title": "Kò tíì sí àwọn àkọsílẹ̀ iṣẹ́ àkànṣe",
+        "body": "Kò sí àwọn àkọsílẹ̀ iṣẹ́ àkànṣe gbogbogbò lọ́wọ́lọ́wọ́. Ṣàyẹ̀wò lẹ́ẹ̀kan sí i nígbà mìíràn."
       },
       "noMatches": {
-        "title": null,
-        "body": null
+        "title": "Kò sí àkọsílẹ̀ tó bá àwọn àlẹ́mọ́ yìí mu",
+        "body": "Gbìyànjú láti mú àlẹ́mọ́ kan kúrò tàbí ṣàwárí fún àwọn ọ̀rọ̀ mìíràn. Àwọn àkọsílẹ̀ lè wà lábẹ́ àwọn àlẹ́mọ́ mìíràn."
       },
       "unavailable": {
-        "title": null,
-        "body": null,
-        "retry": null
+        "title": "A kò lè gbé àwọn àkọsílẹ̀ iṣẹ́ àkànṣe jáde",
+        "body": "Iṣẹ́ náà kò dáhùn lọ́wọ́lọ́wọ́. Kò sí ohun tó sọnù. Gbìyànjú lẹ́ẹ̀kan sí i láìpẹ́.",
+        "retry": "Gbìyànjú lẹ́ẹ̀kan sí i"
       },
       "invalidCursor": {
-        "title": null,
-        "body": null,
-        "first": null
+        "title": "Ojú ìwé àwọn àbájáde yẹn kò wúlò mọ́",
+        "body": "Àtòjọ náà ti yí padà láti ìgbà tí a ti ṣe ìsopọ̀ yìí. Bẹ̀rẹ̀ lẹ́ẹ̀kan sí i láti ojú ìwé àkọ́kọ́.",
+        "first": "Lọ sí ojú ìwé àkọ́kọ́"
       }
     },
     "pagination": {
-      "label": null,
-      "next": null,
-      "first": null
+      "label": "Àwọn ojú ìwé àkọsílẹ̀ iṣẹ́ àkànṣe",
+      "next": "Àwọn àkọsílẹ̀ tó kàn",
+      "first": "Padà sí ojú ìwé àkọ́kọ́"
     }
   },
   "home": {
     "search": {
-      "apply": null,
-      "label": null,
-      "help": null
+      "apply": "Ṣàwárí",
+      "label": "Ṣàwárí àwọn àkọsílẹ̀ iṣẹ́ àkànṣe",
+      "help": "Ṣàwárí nípa orúkọ iṣẹ́ àkànṣe tàbí ohun tí a ṣèlérí."
     },
     "localities": {
-      "heading": null,
-      "all": null
+      "heading": "Yàn ibi tí o fẹ́ wò",
+      "all": "Gbogbo àwọn àgbègbè"
     },
     "categories": {
-      "heading": null,
-      "note": null
+      "heading": "Ṣàwárí nípa ìsọ̀rí",
+      "note": "Àwọn ìsọ̀rí tí ó ní àkọsílẹ̀ nìkan ni a tò jọ."
     },
     "latest": {
-      "heading": null,
-      "recordedStatus": null,
-      "lastChecked": null,
-      "notChecked": null,
-      "view": null,
-      "unavailable": null,
-      "empty": null
+      "heading": "Àkọsílẹ̀ tuntun",
+      "recordedStatus": "Ipò tí a ṣe àkọsílẹ̀ rẹ̀",
+      "lastChecked": "Àyẹ̀wò tó kẹ́yìn",
+      "notChecked": "A kò tíì ṣàyẹ̀wò",
+      "view": "Wo àkọsílẹ̀",
+      "unavailable": "A kò lè gbé àwọn àkọsílẹ̀ iṣẹ́ àkànṣe jáde lọ́wọ́lọ́wọ́. Iyókù ojú ìwé yìí ṣì ń ṣiṣẹ́.",
+      "empty": "Kò tíì sí àwọn àkọsílẹ̀ iṣẹ́ àkànṣe gbogbogbò kankan nílẹ̀."
     },
     "trust": {
-      "heading": null,
-      "sources": null,
-      "review": null,
-      "privacy": null,
-      "link": null
+      "heading": "Bí o ṣe lè ṣàyẹ̀wò ohun tí o kà",
+      "sources": "Òtítọ́ kọ̀ọ̀kan ní ìsopọ̀ pẹ̀lú orísun rẹ̀, pẹ̀lú gbólóhùn gangan àti ọjọ́ tí a ṣàyẹ̀wò rẹ̀.",
+      "review": "Ènìyàn ń ṣàyẹ̀wò ẹ̀rí kí ó tó yí àkọsílẹ̀ gbogbogbò padà. Àwọn ẹ̀rọ aládàáṣiṣẹ́ ń ṣàlàyé wọ́n sì ń ṣàwárí, ṣùgbọ́n wọn kì í ṣe orísun.",
+      "privacy": "Àwọn ìròyìn jẹ́ àṣírí tẹ́lẹ̀, a kì í sì tẹ̀ wọ́n jáde láìfọwọ́yí.",
+      "link": "Bí àwọn àkọsílẹ̀ ṣe ń ṣiṣẹ́"
     },
     "how": {
-      "heading": null,
+      "heading": "Bí ShaidaGo ṣe ń ṣiṣẹ́",
       "read": {
-        "title": null,
-        "body": null
+        "title": "Ka àkọsílẹ̀ náà",
+        "body": "Wá iṣẹ́ àkànṣe kan kí o sì rí ohun tí a ṣèlérí àti ohun tí àwọn orísun sọ."
       },
       "report": {
-        "title": null,
-        "body": null
+        "title": "Jábọ̀ nípa ìṣòro kan láìséwu",
+        "body": "Fi ìròyìn àṣírí ránṣẹ́ láìní àkọ́ọ́ǹtì. Olùṣàyẹ̀wò nìkan ló lè kà á."
       },
       "review": {
-        "title": null,
-        "body": null
+        "title": "Ènìyàn ń ṣàyẹ̀wò",
+        "body": "Àwọn olùṣàyẹ̀wò ń pinnu ohun tí a máa fi kún àkọsílẹ̀ gbogbogbò, bí ó bá wà, pẹ̀lú àwọn ìtọ́kasí."
       }
     },
-    "limitation": null
+    "limitation": "Àwòṣe ìdánwò ni ShaidaGo. Kì í ṣe iṣẹ́ pàjáwìrì. Bí ẹnì kan bá wà nínú ewu, kọ́kọ́ kàn sí àwọn iṣẹ́ pàjáwìrì agbègbè."
   },
   "project": {
     "breadcrumb": {
-      "label": null,
-      "directory": null
+      "label": "O wà níhìn-ín",
+      "directory": "Àwọn àkọsílẹ̀ iṣẹ́ àkànṣe"
     },
     "promised": {
-      "heading": null,
-      "notRecorded": null
+      "heading": "Ohun tí a ṣèlérí",
+      "notRecorded": "A kò ṣe àkọsílẹ̀ ìlérí fún àkọsílẹ̀ yìí."
     },
     "state": {
-      "heading": null,
-      "status": null,
-      "lastChecked": null,
-      "notChecked": null,
-      "caveat": null,
-      "stale": null
+      "heading": "Ipò tí a ṣe àkọsílẹ̀ rẹ̀ lọ́wọ́lọ́wọ́",
+      "status": "Ipò tí a ṣe àkọsílẹ̀ rẹ̀",
+      "lastChecked": "Àyẹ̀wò tó kẹ́yìn",
+      "notChecked": "A kò tíì ṣàyẹ̀wò",
+      "caveat": "Ipò tí a ṣe àkọsílẹ̀ ni ohun tí àkọsílẹ̀ yìí sọ. Kì í ṣe ìdájọ́. Gbólóhùn kọ̀ọ̀kan nísàlẹ̀ ń fi bí a ṣe ṣàtìlẹ́yìn fún un tó hàn.",
+      "stale": "A ṣàyẹ̀wò àkọsílẹ̀ yìí gbẹ̀yìn ju {days, plural, one {ọjọ́ #} other {ọjọ́ #}} sẹ́yìn."
     },
     "facts": {
-      "heading": null,
-      "empty": null,
-      "sourceCount": null,
-      "sourceLabel": null,
-      "citedLabel": null,
-      "evidenceHeading": null,
-      "openSource": null,
-      "back": null,
-      "triggerName": null
+      "heading": "Ohun tí àwọn orísun sọ",
+      "empty": "A kò tíì tẹ̀jáde àwọn gbólóhùn kankan tó ní orísun fún àkọsílẹ̀ yìí.",
+      "sourceCount": "{count, plural, one {orísun #} other {orísun #}}",
+      "sourceLabel": "Orísun {number, number}",
+      "citedLabel": "Àwọn orísun fún gbólóhùn yìí",
+      "evidenceHeading": "Ẹ̀rí",
+      "openSource": "Ṣí ojú ìwé orísun",
+      "back": "Padà sí gbólóhùn náà",
+      "triggerName": "{label}: ṣe àtìlẹ́yìn fún gbólóhùn náà \"{statement}\""
     },
     "timeline": {
-      "heading": null,
-      "empty": null,
-      "scheduled": null,
-      "date": null
+      "heading": "Àwọn ìmúdójúìwọ̀n bí àkókò ti ń lọ",
+      "empty": "A kò tẹ̀jáde àwọn ìmúdójúìwọ̀n kankan fún àkọsílẹ̀ yìí.",
+      "scheduled": "A wéwèé",
+      "date": "Ọjọ́"
     },
     "unknown": {
-      "heading": null,
-      "none": null,
-      "awaiting": null,
-      "disputed": null,
-      "outdated": null
+      "heading": "Ohun tí a kò mọ̀",
+      "none": "Kò sí ohun tí a sàmì sí gẹ́gẹ́ bí èyí tí a kò fìdí rẹ̀ múlẹ̀, tá a ń jiyàn lé lórí, tàbí tó ti kọjá àkókò fún àwọn gbólóhùn tí a fi hàn. Ìyẹn kò túmọ̀ sí pé àkọsílẹ̀ náà ti pé.",
+      "awaiting": "A kò tíì fìdí rẹ̀ múlẹ̀: {statement}",
+      "disputed": "Àwọn orísun kò fara mọ́ra: {statement}",
+      "outdated": "Ó lè jẹ́ àlàyé àtijọ́: {statement}"
     },
     "actions": {
-      "heading": null,
-      "report": null,
-      "note": null
+      "heading": "Àwọn ìgbésẹ̀ tó kàn",
+      "report": "Jábọ̀ nípa ìṣòro kan lórí iṣẹ́ àkànṣe yìí",
+      "note": "Àwọn ìròyìn jẹ́ àṣírí, a kì í sì tẹ̀ wọ́n jáde láìfọwọ́yí."
     },
     "discovery": {
-      "heading": null,
-      "intro": null,
-      "notice": null,
-      "start": null,
-      "stop": null,
-      "resume": null,
-      "checking": null,
+      "heading": "Wá àwọn àlàyé gbogbogbò tó jọra",
+      "intro": "Àwọn àwárí ń lo àkọsílẹ̀ iṣẹ́ àkànṣe gbogbogbò yìí nìkan. A kò fìdí àwọn àlàyé tuntun múlẹ̀, wọn kò sì lè yí àkọsílẹ̀ yìí padà fúnra wọn.",
+      "notice": "Àwárí yìí kò lo àwọn ìròyìn, ìbánisọ̀rọ̀, àwọn fáìlì tí a fi kún un, tàbí àwọn àlàyé ìtọpinpin.",
+      "start": "Wá àlàyé gbogbogbò",
+      "stop": "Dáwọ́ ṣíṣàyẹ̀wò ojú ìwé yìí dúró",
+      "resume": "Bẹ̀rẹ̀ ṣíṣàyẹ̀wò padà",
+      "checking": "Ń ṣàyẹ̀wò bí iṣẹ́ náà ṣe ń lọ.",
       "action": {
-        "create": null,
-        "reuse_fresh": null,
-        "show_latest_completed": null
+        "create": "Àwárí gbogbogbò tuntun ti bẹ̀rẹ̀.",
+        "reuse_fresh": "Ń fi àwárí gbogbogbò ti a ṣe láìpẹ́ tí a pín pẹ̀lú elòmíràn hàn.",
+        "show_latest_completed": "Ń fi àwárí gbogbogbò tó kẹ́yìn tí a parí hàn."
       },
       "states": {
-        "queued": null,
-        "searching": null,
-        "analysing": null,
-        "needs_review": null,
-        "complete": null
+        "queued": "Ń dúró láti ṣàwárí",
+        "searching": "Ń ṣàwárí àwọn orísun gbogbogbò",
+        "analysing": "Ń ṣàyẹ̀wò àwọn àlàyé tí a rí",
+        "needs_review": "Ń dúró de àyẹ̀wò",
+        "complete": "Àwárí ti parí"
       },
-      "counts": null,
-      "replay": null,
-      "live": null,
-      "started": null,
-      "unavailable": null,
-      "invalid": null
+      "counts": "A rí {found}; a gba wọlé {fetched}; a ṣàyẹ̀wò {analysed}.",
+      "replay": "Ń fi àtúnyẹ̀wò àròsọ fún àwòṣe hàn.",
+      "live": "Iṣẹ́ yìí lo iṣẹ́ orísun gbogbogbò tí a ṣètò rẹ̀.",
+      "started": "Ó bẹ̀rẹ̀:",
+      "unavailable": "Àwárí gbogbogbò kò sí lọ́wọ́lọ́wọ́. Àkọsílẹ̀ iṣẹ́ àkànṣe náà kò yí padà.",
+      "invalid": "A kò lè fi àbájáde àwárí yìí hàn láìséwu."
     },
     "notFound": {
-      "title": null,
-      "body": null,
-      "back": null
+      "title": "Àkọsílẹ̀ yìí kò sí",
+      "body": "Ṣàyẹ̀wò àdírẹ́sì náà tàbí padà sí àwọn àkọsílẹ̀ iṣẹ́ àkànṣe. ShaidaGo kì í fìdí rẹ̀ múlẹ̀ bóyá àkọsílẹ̀ àṣírí kan wà.",
+      "back": "Padà sí àwọn àkọsílẹ̀ iṣẹ́ àkànṣe"
     },
     "unavailable": {
-      "title": null,
-      "body": null,
-      "retry": null
+      "title": "A kò lè gbé àkọsílẹ̀ yìí jáde",
+      "body": "Iṣẹ́ náà kò dáhùn lọ́wọ́lọ́wọ́. Kò sí ohun tó sọnù. Gbìyànjú lẹ́ẹ̀kan sí i láìpẹ́.",
+      "retry": "Gbìyànjú lẹ́ẹ̀kan sí i"
     }
   },
   "source": {
-    "heading": null,
-    "back": null,
+    "heading": "Orísun",
+    "back": "Padà sí àkọsílẹ̀ náà",
     "facts": {
-      "publisher": null,
-      "type": null,
-      "availability": null,
-      "checked": null,
-      "unchecked": null
+      "publisher": "Olùtẹ̀jáde",
+      "type": "Irúfẹ́ orísun",
+      "availability": "Wíwà nílẹ̀",
+      "checked": "A ṣàyẹ̀wò wíwà nílẹ̀ kẹ́yìn",
+      "unchecked": "A kò tíì ṣàyẹ̀wò"
     },
     "types": {
-      "government_publication": null,
-      "budget_document": null,
-      "procurement_record": null,
-      "audit_oversight_report": null,
-      "independent_media": null,
-      "civic_research": null,
-      "community_evidence": null,
-      "other_public_source": null
+      "government_publication": "Ìtẹ̀jáde ìjọba",
+      "budget_document": "Àkọsílẹ̀ ìṣúnná owó",
+      "procurement_record": "Àkọsílẹ̀ ríra ọjà",
+      "audit_oversight_report": "Ìròyìn àyẹ̀wò owó tàbí àmójútó",
+      "independent_media": "Ilé iṣẹ́ ìròyìn aláìgbẹ̀kẹ̀lé",
+      "civic_research": "Ìwádìí àwùjọ",
+      "community_evidence": "Ẹ̀rí àwùjọ",
+      "other_public_source": "Àwọn orísun gbogbogbò mìíràn"
     },
     "availabilityNote": {
-      "unchecked": null,
-      "available": null,
-      "temporarily_unavailable": null,
-      "access_restricted": null,
-      "permanently_unavailable": null
+      "unchecked": "A kò tíì ṣàyẹ̀wò ojú ìwé àkọ́kọ́ náà. A gba àwọn ọ̀rọ̀ tó wà nísàlẹ̀ yìí pamọ́ nígbà tí a fọwọ́sí orísun náà.",
+      "available": "A lè ṣí ojú ìwé àkọ́kọ́ náà nígbà tí a ṣàyẹ̀wò rẹ̀ kẹ́yìn.",
+      "temporarily_unavailable": "A kò lè ṣí ojú ìwé àkọ́kọ́ náà nígbà tí a ṣàyẹ̀wò rẹ̀ kẹ́yìn. A gba àwọn ọ̀rọ̀ tó wà nísàlẹ̀ yìí pamọ́ nígbà tí a fọwọ́sí orísun náà, wọ́n sì wúlò.",
+      "access_restricted": "Ojú ìwé àkọ́kọ́ náà kò gba kálukú láàyè láti wọlé, nítorí náà ó lè má ṣí fún ọ. A gba àwọn ọ̀rọ̀ tó wà nísàlẹ̀ yìí pamọ́ nígbà tí a fọwọ́sí orísun náà.",
+      "permanently_unavailable": "Ojú ìwé àkọ́kọ́ náà kò sí mọ́. A gba àwọn ọ̀rọ̀ tó wà nísàlẹ̀ yìí pamọ́ nígbà tí a fọwọ́sí orísun náà."
     },
     "excerpts": {
-      "heading": null,
-      "quoteNote": null,
-      "location": null,
-      "supportsFact": null,
-      "supportsUpdate": null,
-      "seeUse": null,
-      "showFull": null,
-      "empty": null
+      "heading": "Àwọn ọ̀rọ̀ tí a lò nínú àkọsílẹ̀ yìí",
+      "quoteNote": "A yọ ọ́ látinú orísun náà nínú ọ̀rọ̀ àkọ́kọ́ rẹ̀. Kì í ṣe ọ̀rọ̀ ShaidaGo fúnra rẹ̀.",
+      "location": "Agbègbè nínú orísun náà",
+      "supportsFact": "Ṣe àtìlẹ́yìn fún gbólóhùn kan",
+      "supportsUpdate": "Ṣe àtìlẹ́yìn fún ìmúdójúìwọ̀n kan",
+      "seeUse": "Wo ibi tí a ti lò ó",
+      "showFull": "Fi ọ̀rọ̀ náà hàn lẹ́kùn-ún rẹ́rẹ́",
+      "empty": "Kò sí àwọn ọ̀rọ̀ látinú orísun yìí tí a tẹ̀jáde fún àkọsílẹ̀ yìí."
     },
     "original": {
-      "link": null,
-      "note": null,
-      "newTab": null
+      "link": "Ṣí orísun àkọ́kọ́ náà",
+      "note": "Ó ń ṣí ojú ìwé olùtẹ̀jáde nínú taabu tuntun. ShaidaGo kì í sọ fún ojú ìwé náà ibi tí o ti wá, kò sì lè darí àkóónú rẹ̀.",
+      "newTab": "yóò ṣí nínú taabu tuntun"
     },
     "notFound": {
-      "title": null,
-      "body": null,
-      "back": null
+      "title": "Orísun yìí kò sí",
+      "body": "Ṣàyẹ̀wò àdírẹ́sì náà tàbí padà sí àkọsílẹ̀ náà.",
+      "back": "Padà sí àkọsílẹ̀ náà"
     },
     "unavailable": {
-      "title": null,
-      "body": null,
-      "retry": null
+      "title": "A kò lè gbé orísun yìí jáde",
+      "body": "Iṣẹ́ náà kò dáhùn lọ́wọ́lọ́wọ́. Gbìyànjú lẹ́ẹ̀kan sí i láìpẹ́.",
+      "retry": "Gbìyànjú lẹ́ẹ̀kan sí i"
     }
   },
   "trust": {
-    "title": null,
-    "lead": null,
-    "toc": null,
+    "title": "Bí àwọn àkọsílẹ̀ ṣe ń ṣiṣẹ́",
+    "lead": "ShaidaGo ń fi àwọn àkọsílẹ̀ gbogbogbò nípa àwọn iṣẹ́ àkànṣe hàn, kọ̀ọ̀kan pẹ̀lú àwọn orísun tó ti wá. Ojú ìwé yìí ń ṣàlàyé bí a ṣe ń kà wọ́n àti ohun tí wọn kò sọ fún ọ.",
+    "toc": "Lórí ojú ìwé yìí",
     "classes": {
-      "heading": null,
-      "intro": null,
-      "official_source": null,
-      "independent_source": null,
-      "community_evidence_reviewed": null,
-      "community_report_unverified": null,
-      "ai_generated_explanation": null
+      "heading": "Oríṣiríṣi irúfẹ́ àlàyé",
+      "intro": "A fi àmì sí gbólóhùn kọ̀ọ̀kan láti fi irúfẹ́ àlàyé tí ó ti wá hàn.",
+      "official_source": "Tí ilé iṣẹ́ ìjọba tẹ̀jáde, bíi ìtẹ̀jáde ìjọba, ìṣúnná owó, tàbí àkọsílẹ̀ ríra ọjà.",
+      "independent_source": "Tí ẹni tí kò sí lábẹ́ ìdarí iṣẹ́ àkànṣe náà tẹ̀jáde, bíi ìwé ìròyìn tàbí àwùjọ aṣèwádìí.",
+      "community_evidence_reviewed": "Tí ọmọ àwùjọ kan fi ránṣẹ́, tí ẹnì kan sì ṣàyẹ̀wò rẹ̀ kí a tó fi kún un.",
+      "community_report_unverified": "Tí ọmọ àwùjọ kan fi ránṣẹ́ tí a kò sì ṣàyẹ̀wò. Kì í ṣe apá kan àkọsílẹ̀ gbogbogbò rárá títí tí ẹnì kan yóò fi ṣàyẹ̀wò rẹ̀.",
+      "ai_generated_explanation": "Tí ẹ̀rọ aládàáṣiṣẹ́ kọ láti ṣàlàyé nǹkan. Kì í ṣe orísun, a sì máa ń fi àmì sí i nígbà gbogbo."
     },
     "states": {
-      "heading": null,
-      "intro": null,
-      "awaiting_verification": null,
-      "verified_official": null,
-      "corroborated": null,
-      "community_reviewed": null,
-      "disputed": null,
-      "outdated": null
+      "heading": "Bí a ṣe ṣàtìlẹ́yìn fún gbólóhùn kan tó",
+      "intro": "Àmì kan ń ṣàlàyé àtìlẹ́yìn, kì í ṣe ìdájọ́ nípa ènìyàn tàbí àjọ èyíkéyìí.",
+      "awaiting_verification": "Gbólóhùn náà ní orísun kan ṣùgbọ́n a kò tíì ṣàyẹ̀wò rẹ̀ lòdì sí èkejì.",
+      "verified_official": "Orísun aláṣẹ kan sọ ọ́ ní tààràtà.",
+      "corroborated": "Orísun tó ju ẹyọ kan lọ ni ó ṣàtìlẹ́yìn fún un.",
+      "community_reviewed": "Ẹnì kan ṣàyẹ̀wò ẹ̀rí àwùjọ fún un.",
+      "disputed": "Àwọn orísun kò fara mọ́ra. A fi ẹ̀gbẹ́ méjèèjì hàn.",
+      "outdated": "Ó lè má jẹ́ òtítọ́ mọ́. A fi ọjọ́ tí a ṣàyẹ̀wò rẹ̀ gbẹ̀yìn hàn."
     },
     "citations": {
-      "heading": null,
-      "body": null
+      "heading": "Àwọn ìtọ́kasí àti ọjọ́",
+      "body": "Gbólóhùn kọ̀ọ̀kan ní ìsopọ̀ pẹ̀lú orísun rẹ̀, pẹ̀lú gbólóhùn gangan, ibi tí ó wà nínú orísun náà, àti ọjọ́ tí a ṣàyẹ̀wò rẹ̀ gbẹ̀yìn. Bí a kò bá lè ṣí orísun kan mọ́, gbólóhùn tí a gba pamọ́ yóò dúró kí o lè rí ohun tí a gbójú lé."
     },
     "ai": {
-      "heading": null,
-      "body": null
+      "heading": "Ohun tí àwọn ẹ̀rọ aládàáṣiṣẹ́ ń ṣe àti ohun tí wọn kì í ṣe",
+      "body": "Àwọn ẹ̀rọ aládàáṣiṣẹ́ lè ṣàwárí fún àwọn orísun, kí wọ́n sì dáhùn àwọn ìbéèrè nípa lílo àwọn ọ̀rọ̀ tí a fọwọ́sí nìkan. Wọn kò lè fìdí ẹ̀sùn kan múlẹ̀, pinnu ẹni tí ó jẹ̀bi, yí ipò kan padà, tàbí tẹ ohunkóhun jáde. Àwọn ìdáhùn wọn jẹ́ àlàyé, kì í ṣe orísun, wọ́n sì máa ń fi àwọn orísun tí wọ́n lò hàn nígbà gbogbo. Bí àwọn orísun kò bá dáhùn ìbéèrè kan, ìdáhùn náà yóò sọ bẹ́ẹ̀."
     },
     "scout": {
-      "heading": null,
-      "body": null
+      "heading": "Àwọn orísun tuntun tí a rí",
+      "body": "Àwọn orísun tí a rí nípa àwárí ni a sàmì sí \"a ṣàwárí rẹ̀ — a kò tíì ṣàyẹ̀wò\". Wọn kì í ṣe apá kan àkọsílẹ̀ náà. Ẹnì kan ni yóò pinnu bóyá a fi èyíkéyìí kún un, títí fi orísun kan kún un kò fi bẹ́ẹ̀ sọ gbólóhùn di òtítọ́ nínú ara rẹ̀."
     },
     "review": {
-      "heading": null,
-      "body": null
+      "heading": "Àyẹ̀wò ènìyàn",
+      "body": "Ènìyàn ń ṣàyẹ̀wò ẹ̀rí kí ó tó yí àkọsílẹ̀ gbogbogbò padà, títẹ̀jáde sì jẹ́ ìgbésẹ̀ tó yàtọ̀ sí ṣíṣàyẹ̀wò ìròyìn. Àwọn ẹ̀rọ aládàáṣiṣẹ́ kì í tẹ̀jáde rárá."
     },
     "reporting": {
-      "heading": null,
-      "body": null,
-      "limit": null
+      "heading": "Jábọ̀ nípa ìṣòro kan",
+      "body": "O lè fi ìròyìn ránṣẹ́ láìní àkọ́ọ́ǹtì, àdírẹ́sì ímeèlì, tàbí nọ́ńbà fóònù. Àwọn ìròyìn jẹ́ àṣírí tẹ́lẹ̀, a kì í sì tẹ̀ wọ́n jáde láìfọwọ́yí. Olùṣàyẹ̀wò nìkan ló lè kà wọ́n. A ń sọ àwọn fọ́tò àti fáìlì di mímọ́ kúrò nínú àwọn àlàyé tí a fi pamọ́ bíi agbègbè kí a tó gba wọ́n pamọ́, o sì lè yàn bóyá o fẹ́ fi àwọn àlàyé ìbánisọ̀rọ̀ sílẹ̀.",
+      "limit": "Àwòṣe ìdánwò ni èyí. Kì í ṣe iṣẹ́ pàjáwìrì, kò lè ṣèlérí ìdáhùn tàbí ààbò, kò sì yẹ kí a lò ó láti jábọ̀ nípa ewu. Bí ẹnì kan bá wà nínú ewu, kọ́kọ́ kàn sí àwọn iṣẹ́ pàjáwìrì agbègbè."
     },
     "correct": {
-      "heading": null,
-      "body": null,
-      "report": null
+      "heading": "Bí ohun kan bá dà bí àṣìṣe",
+      "body": "Bí o bá rò pé àkọsílẹ̀ kan jẹ́ àṣìṣe, ó ti kọjá àkókò, tàbí kò ní orísun, o lè jábọ̀ rẹ̀ ní ìkọ̀kọ̀ látinú àkọsílẹ̀ yẹn. Olùṣàyẹ̀wò kan yóò pinnu ohun tí yóò yí padà, bí ó bá wà. ShaidaGo kò lè ṣèlérí àbájáde kan pàtó tàbí àkókò kankan.",
+      "report": "Jábọ̀ nípa ìṣòro kan ní ìkọ̀kọ̀"
     },
-    "back": null
+    "back": "Padà sí àwọn àkọsílẹ̀ iṣẹ́ àkànṣe"
   },
   "qa": {
-    "heading": null,
-    "intro": null,
-    "privacy": null,
-    "reportLink": null,
-    "label": null,
-    "hint": null,
-    "counter": null,
-    "submit": null,
-    "cancel": null,
-    "retry": null,
-    "loading": null,
-    "cancelled": null,
-    "empty": null,
-    "tooLong": null,
+    "heading": "Béèrè nípa àkọsílẹ̀ yìí",
+    "intro": "Àwọn ìdáhùn ń lo àwọn orísun tí a fọwọ́sí fún àkọsílẹ̀ yìí nìkan. AI kan ló ṣe àkọsílẹ̀ ọ̀rọ̀ náà. Àlàyé ni, kì í ṣe orísun, kò sì lè fìdí ẹ̀sùn kan múlẹ̀ tàbí pinnu ipò kan.",
+    "privacy": "Má ṣe tẹ orúkọ rẹ, àwọn àlàyé ìbánisọ̀rọ̀, tàbí àwọn àlàyé àṣírí rẹ síhìn-ín. Láti sọ nǹkan fún wa ní ìkọ̀kọ̀, lo fọọmu ìròyìn náà.",
+    "reportLink": "Jábọ̀ nípa ìṣòro kan ní ìkọ̀kọ̀",
+    "label": "Ìbéèrè rẹ",
+    "hint": "Béèrè nípa ohun tí àwọn orísun sọ. Títí dé lẹ́tà {max}.",
+    "counter": "Lẹ́tà {count} nínú {max}",
+    "submit": "Béèrè lọ́wọ́ àwọn orísun",
+    "cancel": "Fagilé",
+    "retry": "Gbìyànjú lẹ́ẹ̀kan sí i",
+    "loading": "Ń wá nínú àwọn orísun tí a fọwọ́sí fún àkọsílẹ̀ yìí.",
+    "cancelled": "A ti fagilé ìbéèrè náà. Ó ṣì wà nínú àpótí bí o bá fẹ́ béèrè lẹ́ẹ̀kan sí i.",
+    "empty": "Kọ́kọ́ tẹ ìbéèrè kan wọlé.",
+    "tooLong": "Ìbéèrè náà gùn jù. Dín in kù sí lẹ́tà {max} tàbí dín díẹ̀.",
     "result": {
-      "heading": null,
-      "ready": null,
-      "aiLabel": null,
-      "generated": null,
-      "retrievalKeyword": null,
-      "retrievalHybrid": null,
-      "considered": null,
-      "keywordCaution": null,
-      "noteLabel": null,
-      "statementsHeading": null,
-      "sourcesHeading": null,
-      "sourceLabel": null,
-      "cites": null,
-      "openSourcePage": null,
-      "openOriginal": null,
-      "newTab": null,
-      "location": null,
-      "retrieved": null,
-      "showFull": null,
-      "backToStatement": null
+      "heading": "Ìdáhùn",
+      "ready": "Ìdáhùn kan ti ṣetán nísàlẹ̀ yìí.",
+      "aiLabel": "AI kan ni o kọ ọ́ látinú àwọn orísun tí a fọwọ́sí. Àlàyé ni, kì í ṣe orísun. Ṣàyẹ̀wò gbólóhùn kọ̀ọ̀kan lòdì sí àwọn orísun rẹ̀.",
+      "generated": "A mú jáde ní {time}",
+      "retrievalKeyword": "Ọ̀nà àwárí: àwọn kókó ọ̀rọ̀",
+      "retrievalHybrid": "Ọ̀nà àwárí: àwọn kókó ọ̀rọ̀ àti ìtumọ̀",
+      "considered": "Àwọn ọ̀rọ̀ tí a ṣàyẹ̀wò: {count}",
+      "keywordCaution": "Àwárí kókó ọ̀rọ̀ lè pàdánù àwọn ọ̀rọ̀ tí ó lo àwọn ọ̀rọ̀ ọ̀tọ̀ọ̀tọ̀.",
+      "noteLabel": "Àkíyèsí ẹ̀rọ",
+      "statementsHeading": "Àwọn gbólóhùn",
+      "sourcesHeading": "Àwọn orísun fún ìdáhùn yìí",
+      "sourceLabel": "Orísun {number}",
+      "cites": "Àwọn orísun fún gbólóhùn yìí",
+      "openSourcePage": "Ṣí ojú ìwé orísun",
+      "openOriginal": "Ṣí orísun àkọ́kọ́ náà",
+      "newTab": "yóò ṣí nínú taabu tuntun",
+      "location": "Agbègbè nínú orísun náà",
+      "retrieved": "A gba wọlé ní {date}",
+      "showFull": "Fi ọ̀rọ̀ náà hàn lẹ́kùn-ún rẹ́rẹ́",
+      "backToStatement": "Padà sí ìdáhùn náà"
     },
     "insufficient": {
-      "title": null,
-      "body": null,
-      "read": null
+      "title": "Àwọn orísun tí a fọwọ́sí kò dáhùn èyí",
+      "body": "ShaidaGo kì í sọ àròsọ. Ó lè dáhùn nìkan látinú àwọn orísun tí a fọwọ́sí fún àkọsílẹ̀ yìí.",
+      "read": "Ka ohun tí àwọn orísun sọ"
     },
     "rejected": {
-      "title": null,
-      "body": null
+      "title": "A kò lè ṣàyẹ̀wò ìdáhùn yìí",
+      "body": "Àwọn ìtọ́kasí rẹ̀ kò bá àwọn orísun tí a mú padà pẹ̀lú rẹ̀ mu, nítorí náà a kò fi hàn. Gbìyànjú lẹ́ẹ̀kan sí i, tàbí ka àwọn orísun lórí àkọsílẹ̀ yìí."
     },
     "failure": {
-      "title": null,
-      "still": null,
-      "wait": null
+      "title": "A kò lè dáhùn ìbéèrè náà",
+      "still": "Àkọsílẹ̀ náà àti àwọn orísun rẹ̀ ṣì wà lórí ojú ìwé yìí.",
+      "wait": "Gbìyànjú lẹ́ẹ̀kan sí i ní nǹkan bí ìṣẹ́jú ààyá {seconds}."
     },
-    "needsScript": null
+    "needsScript": "Bíbéèrè ìbéèrè kan nílò JavaScript. O ṣì lè ka gbogbo orísun lórí ojú ìwé yìí."
   },
   "report": {
-    "title": null,
-    "needsScript": null,
-    "context": null,
+    "title": "Jábọ̀ nípa ìṣòro kan ní ìkọ̀kọ̀",
+    "needsScript": "Fífi ìròyìn ránṣẹ́ nílò JavaScript. Kò sí ohun tí o tẹ̀ wọlé tí a óò fi ránṣẹ́ tàbí gba pamọ́ títí tí o óò fi yàn láti fi ránṣẹ́.",
+    "context": "Ń jábọ̀ nípa: {title}",
     "chooser": {
-      "title": null,
-      "lead": null,
-      "listHeading": null,
-      "browse": null,
-      "unavailable": null
+      "title": "Yàn iṣẹ́ àkànṣe tí ìròyìn rẹ dá lé lórí",
+      "lead": "Ìròyìn kan dá lórí àkọsílẹ̀ iṣẹ́ àkànṣe kan. Yàn àkọsílẹ̀ náà, lẹ́yìn náà jábọ̀ látinú ojú ìwé rẹ̀.",
+      "listHeading": "Àwọn àkọsílẹ̀ iṣẹ́ àkànṣe",
+      "browse": "Ṣàwárí gbogbo àwọn àkọsílẹ̀ iṣẹ́ àkànṣe",
+      "unavailable": "A kò lè gbé àtòjọ àwọn àkọsílẹ̀ jáde. Gbìyànjú lẹ́ẹ̀kan sí i láìpẹ́, tàbí ṣàwárí àwọn àkọsílẹ̀ náà."
     },
     "unknownProject": {
-      "title": null,
-      "body": null,
-      "choose": null
+      "title": "A kò lè ṣí àkọsílẹ̀ yẹn",
+      "body": "Ṣàyẹ̀wò àdírẹ́sì náà, tàbí yàn àkọsílẹ̀ kan látinú àtòjọ náà.",
+      "choose": "Yàn àkọsílẹ̀ kan"
     },
     "steps": {
-      "label": null,
-      "progress": null,
-      "notice": null,
-      "observation": null,
-      "evidence": null,
-      "anonymity": null,
-      "review": null
+      "label": "Àwọn ìgbésẹ̀ ìròyìn",
+      "progress": "Ìgbésẹ̀ {number} nínú {total}",
+      "notice": "Kí o tó bẹ̀rẹ̀",
+      "observation": "Ohun tí o rí",
+      "evidence": "Ẹ̀rí",
+      "anonymity": "Bí a ṣe mọ̀ ọ́",
+      "review": "Ṣàyẹ̀wò kí o sì fi ránṣẹ́"
     },
     "notice": {
-      "heading": null,
-      "fictional": null,
-      "private": null,
-      "anonymous": null,
-      "limitTitle": null,
-      "limit": null,
-      "trust": null,
-      "start": null
+      "heading": "Kí o tó bẹ̀rẹ̀",
+      "fictional": "Àwòṣe ìdánwò yìí gba àwọn ìròyìn àròsọ nìkan láàyè. Má ṣe tẹ orúkọ gidi wọlé, àwọn àlàyé ìbánisọ̀rọ̀, tàbí àwọn ìṣẹ̀lẹ̀ gidi.",
+      "private": "Ìròyìn rẹ jẹ́ àṣírí. A kì í tẹ̀ ẹ́ jáde láìfọwọ́yí rárá. Ẹnì kan yóò ṣàyẹ̀wò rẹ̀ kí ohunkóhun tó dé inú àkọsílẹ̀ gbogbogbò.",
+      "anonymous": "O kò nílò àkọ́ọ́ǹtì, àdírẹ́sì ímeèlì, tàbí nọ́ńbà fóònù.",
+      "limitTitle": "Kì í ṣe iṣẹ́ pàjáwìrì ni èyí",
+      "limit": "ShaidaGo kì í ṣe iṣẹ́ pàjáwìrì. Kò lè ṣèlérí ààbò, ìwádìí, tàbí ìdáhùn. Bí ẹnì kan bá wà nínú ewu lẹ́sẹ̀kẹsẹ̀, má ṣe lo fọọmu yìí. Kàn sí àwọn iṣẹ́ pàjáwìrì agbègbè.",
+      "trust": "Bí a ṣe ń ṣe ìtọ́jú àwọn àkọsílẹ̀ àti ìròyìn",
+      "start": "Mo ti gbọ́. Tẹ̀síwájú"
     },
     "observation": {
-      "heading": null,
-      "categoryLabel": null,
-      "categoryPlaceholder": null,
+      "heading": "Ohun tí o rí",
+      "categoryLabel": "Irúfẹ́ ìṣòro wo ni?",
+      "categoryPlaceholder": "Yàn irúfẹ́ ìṣòro kan",
       "categories": {
-        "no_visible_work": null,
-        "incomplete_work": null,
-        "unsafe_construction": null,
-        "suspected_incorrect_status": null,
-        "access_barrier": null,
-        "other_concern": null
+        "no_visible_work": "Kò sí iṣẹ́ kankan tí a rí ní ibi iṣẹ́ náà",
+        "incomplete_work": "Iṣẹ́ tí ó dà bí ẹni pé kò pé",
+        "unsafe_construction": "Ilé kíkọ́ tí kò léwu",
+        "suspected_incorrect_status": "Ipò tí a ṣe àkọsílẹ̀ rẹ̀ dà bíi pé kò tọ̀nà",
+        "access_barrier": "Ohun ìdènà fún lílo iṣẹ́ àkànṣe náà",
+        "other_concern": "Ohun mìíràn"
       },
-      "descriptionLabel": null,
-      "descriptionHint": null,
-      "counter": null
+      "descriptionLabel": "Kí ni o rí?",
+      "descriptionHint": "Sọ ohun tí o rí, ibi tí o ti rí i, àti nǹkan bí ìgbà tí o rí i, nínú ọ̀rọ̀ ara rẹ. Kọ ó kéré tán lẹ́tà {min} àti jù bẹ́ẹ̀ lọ lẹ́tà {max}. Má ṣe fi orúkọ tàbí àwọn àlàyé ìbánisọ̀rọ̀ kún un.",
+      "counter": "Lẹ́tà {count} nínú {max}"
     },
     "evidence": {
-      "heading": null,
-      "lead": null,
-      "hint": null,
-      "pick": null,
-      "none": null,
-      "remove": null,
-      "preview": null,
-      "previewNone": null,
-      "prepared": null,
-      "pdfNotPrepared": null,
-      "role": null,
-      "preparing": null,
+      "heading": "Ẹ̀rí",
+      "lead": "Àwọn fọ́tò tàbí PDF kan lè ran olùṣàyẹ̀wò lọ́wọ́. Ìgbésẹ̀ yìí kò pọn dandan.",
+      "hint": "Títí dé fáìlì {max}, {size} MB kọ̀ọ̀kan. JPEG, PNG, WebP, tàbí PDF.",
+      "pick": "Fi fáìlì kún un",
+      "none": "A kò fi fáìlì kankan kún un.",
+      "remove": "Yọ fáìlì {number} kúrò",
+      "preview": "Àkọ́wò fáìlì {number}",
+      "previewNone": "PDF: kò sí àkọ́wò",
+      "prepared": "A ti yọ agbègbè àti àwọn àlàyé kámẹ́rà kúrò nínú ẹ̀rọ-ìṣàwárí rẹ.",
+      "pdfNotPrepared": "PDF kò yí padà nínú ẹ̀rọ-ìṣàwárí rẹ. Sáfà náà yóò ṣàyẹ̀wò rẹ̀ ó sì lè kọ̀ ọ́.",
+      "role": "Ẹ̀rọ-ìṣàwárí rẹ ń yọ àwọn àlàyé fọ́tò tí a fi pamọ́ kúrò kí o tó fi ránṣẹ́. Sáfà náà yóò tún ṣàyẹ̀wò ààbò ti rẹ̀ ṣe, àyẹ̀wò sáfà nìkan ló sì kà. Fáìlì tí sáfà bá kọ̀ kò ní jẹ́ kí a má gba ìròyìn náà.",
+      "preparing": "Ń múra fáìlì {number} sílẹ̀",
       "errors": {
-        "unsupported": null,
-        "tooLarge": null,
-        "tooMany": null,
-        "mismatch": null,
-        "tooManyPixels": null,
-        "failed": null,
-        "empty": null
+        "unsupported": "Fáìlì {number} kì í ṣe JPEG, PNG, WebP, tàbí PDF, nítorí náà a kò fi kún un.",
+        "tooLarge": "Fáìlì {number} tóbí ju {size} MB lọ, nítorí náà a kò fi kún un.",
+        "tooMany": "O lè fi fáìlì {max} kún un púpọ̀ jùlọ.",
+        "mismatch": "Fáìlì {number} kì í ṣe irúfẹ́ fáìlì tí orúkọ rẹ̀ sọ, nítorí náà a kò fi kún un.",
+        "tooManyPixels": "Fáìlì {number} tóbí jù nínú ẹyọ-àwòrán (pixels) láti múra rẹ̀ sílẹ̀ láìséwu, nítorí náà a kò fi kún un.",
+        "failed": "A kò lè múra fáìlì {number} sílẹ̀ nínú ẹ̀rọ-ìṣàwárí rẹ, nítorí náà a kò fi kún un. A kò fi ránṣẹ́.",
+        "empty": "Fáìlì {number} ṣófo, nítorí náà a kò fi kún un."
       }
     },
     "anonymity": {
-      "heading": null,
-      "lead": null,
+      "heading": "Bí a ṣe mọ̀ ọ́",
+      "lead": "Yàn bí o ṣe fẹ́ kí a mọ̀ ọ́. O lè wà ní ìkọ̀kọ̀ pátápátá.",
       "modes": {
         "anonymous": {
-          "label": null,
-          "body": null
+          "label": "Dúró ní ìkọ̀kọ̀ pátápátá (A dábàá rẹ̀)",
+          "body": "Kò sí orúkọ, ìbánisọ̀rọ̀, tàbí orúkọ-ìnagijẹ. O lè ṣàyẹ̀wò ipò náà nígbà mìíràn pẹ̀lú kódù ìtọpinpin tí o gba."
         },
         "contact": {
-          "label": null,
-          "body": null
+          "label": "Fún wa ní ọ̀nà láti kàn sí mi",
+          "body": "Olùṣàyẹ̀wò kan lè lò ó láti béèrè ìbéèrè kan. Kò pọn dandan a sì gba pamọ́ lọ́tọ̀ kúrò nínú ọ̀rọ̀ ìròyìn rẹ."
         },
         "handle": {
-          "label": null,
-          "body": null,
-          "warning": null
+          "label": "Lo orúkọ-ìnagijẹ olùròyìn",
+          "body": "Orúkọ-ìnagijẹ kan ń so àwọn ìròyìn rẹ pọ̀ láìjẹ́ kí ẹnikẹ́ni mọ ẹni tí o jẹ́.",
+          "warning": "Àwọn olùṣàyẹ̀wò lè mọ̀ pé àwọn ìròyìn lábẹ́ orúkọ-ìnagijẹ kan ṣoṣo ní í ṣe pẹ̀lú ara wọn. Orúkọ-ìnagijẹ kan lè má bára mu fún ìròyìn tó jẹ́ àṣírí gidigidi."
         }
       },
-      "channelLabel": null,
+      "channelLabel": "Báwo ni a ṣe yẹ kí a kàn sí ọ?",
       "channels": {
-        "email": null,
-        "phone": null,
-        "messaging_app": null
+        "email": "Ímeèlì",
+        "phone": "Fóònù",
+        "messaging_app": "Ohun èlò fífíṣẹ́ránṣẹ́"
       },
-      "contactLabel": null,
-      "contactHint": null,
-      "handleLabel": null,
-      "passphraseLabel": null,
-      "reveal": null,
-      "hide": null,
-      "handleNote": null,
-      "createHandle": null
+      "contactLabel": "Àwọn àlàyé ìbánisọ̀rọ̀",
+      "contactHint": "Fi ọ̀nà tí ó bá ọ lára mu láti kàn sí ọ nìkan fún wa. Àwọn olùṣàyẹ̀wò nìkan ni a ń fi hàn.",
+      "handleLabel": "Orúkọ-ìnagijẹ",
+      "passphraseLabel": "Ọ̀rọ̀-ìwọlé",
+      "reveal": "Fi ọ̀rọ̀-ìwọlé hàn",
+      "hide": "Fi ọ̀rọ̀-ìwọlé pamọ́",
+      "handleNote": "Orúkọ-ìnagijẹ àti ọ̀rọ̀-ìwọlé rẹ nìkan ni a ń ṣàyẹ̀wò nígbà tí o bá fi ìròyìn náà ránṣẹ́. A kì í gba wọ́n pamọ́ nínú ẹ̀rọ-ìṣàwárí yìí.",
+      "createHandle": "Mú orúkọ-ìnagijẹ jáde kọ́kọ́"
     },
     "review": {
-      "heading": null,
-      "lead": null,
+      "heading": "Ṣàyẹ̀wò kí o sì fi ránṣẹ́",
+      "lead": "Ṣàyẹ̀wò ohun gbogbo. A kò lè yí ìròyìn padà lẹ́yìn tí a bá ti fi ránṣẹ́.",
       "rows": {
-        "concern": null,
-        "description": null,
-        "files": null,
-        "identity": null
+        "concern": "Irúfẹ́ ìṣòro",
+        "description": "Ohun tí o rí",
+        "files": "Àwọn fáìlì",
+        "identity": "Bí a ṣe mọ̀ ọ́"
       },
-      "noFiles": null,
-      "files": null,
+      "noFiles": "Kò sí fáìlì kankan",
+      "files": "Àwọn fáìlì {count}",
       "identity": {
-        "anonymous": null,
-        "contact": null,
-        "handle": null
+        "anonymous": "Ní ìkọ̀kọ̀ pátápátá",
+        "contact": "A ti fún wa ní ìbánisọ̀rọ̀: {channel}",
+        "handle": "Orúkọ-ìnagijẹ: {handle}. A ti fi ọ̀rọ̀-ìwọlé pamọ́."
       },
-      "change": null,
-      "sendNote": null,
-      "submit": null
+      "change": "Yí padà",
+      "sendNote": "Fífi ránṣẹ́ ń dá ìròyìn àṣírí kan. Kò sí ohun tí a tẹ̀jáde.",
+      "submit": "Fi ìròyìn ránṣẹ́"
     },
     "draft": {
-      "heading": null,
-      "consent": null,
-      "warning": null,
-      "remove": null,
-      "removed": null,
-      "found": null,
-      "restore": null,
-      "discard": null,
-      "restored": null,
-      "unavailable": null
+      "heading": "Gba àkọsílẹ̀ kékeré pamọ́ sínú ẹ̀rọ yìí",
+      "consent": "Gba ohun tí mo ti kọ pamọ́ sínú ẹ̀rọ yìí",
+      "warning": "Ẹnikẹ́ni tó bá lo ẹ̀rọ-ìṣàwárí yìí lè ka àkọsílẹ̀ kékeré tí a gba pamọ́. Má ṣe gba àkọsílẹ̀ kékeré pamọ́ sínú ẹ̀rọ tí a ń jọ lò tàbí ẹ̀rọ gbogbo ènìyàn. Irúfẹ́ ìṣòro àti àlàyé rẹ nìkan ni a ń gba pamọ́. A kì í gba àwọn fáìlì, àwọn àlàyé ìbánisọ̀rọ̀, àti àwọn orúkọ-ìnagijẹ pamọ́ rárá. A ń pa àkọsílẹ̀ kékeré rẹ́ lẹ́yìn wákàtí 24.",
+      "remove": "Pa àkọsílẹ̀ kékeré tí a gba pamọ́ rẹ́",
+      "removed": "A ti pa àkọsílẹ̀ kékeré tí a gba pamọ́ rẹ́.",
+      "found": "O ní àkọsílẹ̀ kékeré tí a gba pamọ́ láti {when}.",
+      "restore": "Mú àkọsílẹ̀ kékeré náà padà",
+      "discard": "Pa á rẹ́",
+      "restored": "A ti mú àkọsílẹ̀ kékeré náà padà.",
+      "unavailable": "Ẹ̀rọ-ìṣàwárí yìí kò lè gba àkọsílẹ̀ kékeré pamọ́, nítorí náà a kò gba ohunkóhun pamọ́."
     },
     "send": {
-      "sending": null,
-      "progress": null,
-      "cancel": null,
-      "cancelled": null,
-      "retry": null,
-      "offline": null,
-      "unknown": null,
-      "fixFields": null,
-      "failedTitle": null,
-      "wait": null
+      "sending": "Ń fi ìròyìn rẹ ránṣẹ́",
+      "progress": "A ti fi ìdá {percent} nínú ọgọ́rùn-ún ránṣẹ́",
+      "cancel": "Fagilé fífi ránṣẹ́",
+      "cancelled": "A ti fagilé fífi ránṣẹ́. Ìròyìn rẹ ṣì wà níhìn-ín.",
+      "retry": "Tún fi ránṣẹ́",
+      "offline": "Ó dà bíi pé o kò sí lórí Íńtánẹ́ẹ̀tì. Tún so pọ̀, lẹ́yìn náà tún fi ránṣẹ́. Ìròyìn rẹ ṣì wà níhìn-ín.",
+      "unknown": "A kò lè fìdí rẹ̀ múlẹ̀ bóyá a ti gba ìròyìn rẹ. Tún fi ránṣẹ́. A kò ní dá ìròyìn kan náà lẹ́ẹ̀mejì.",
+      "fixFields": "Àwọn àlàyé kan nílò àtúnṣe kí a tó lè fi ìròyìn náà ránṣẹ́.",
+      "failedTitle": "A kò fi ìròyìn náà ránṣẹ́",
+      "wait": "Gbìyànjú lẹ́ẹ̀kan sí i ní nǹkan bí ìṣẹ́jú ààyá {seconds}."
     },
     "nav": {
-      "back": null,
-      "next": null,
-      "stepErrors": null,
-      "jump": null,
-      "loading": null
+      "back": "Padà",
+      "next": "Tẹ̀síwájú",
+      "stepErrors": "Ṣàtúnṣe àwọn wọ̀nyí kí o tó tẹ̀síwájú",
+      "jump": "Lọ sí ààyè náà",
+      "loading": "Ń gbé ìgbésẹ̀ yìí jáde"
     },
     "errors": {
-      "category": null,
-      "descriptionRequired": null,
-      "descriptionShort": null,
-      "descriptionLong": null,
-      "contact": null,
-      "channel": null,
-      "handle": null,
-      "passphrase": null
+      "category": "Yàn irúfẹ́ ìṣòro kan.",
+      "descriptionRequired": "Ṣàlàyé ohun tí o rí.",
+      "descriptionShort": "Kọ ó kéré tán lẹ́tà {min}.",
+      "descriptionLong": "Kọ jù bẹ́ẹ̀ lọ lẹ́tà {max}.",
+      "contact": "Tẹ àlàyé ìbánisọ̀rọ̀ kan wọlé.",
+      "channel": "Yàn bí a ṣe yẹ kí a kàn sí ọ.",
+      "handle": "Tẹ orúkọ-ìnagijẹ rẹ wọlé.",
+      "passphrase": "Tẹ ọ̀rọ̀-ìwọlé rẹ wọlé."
     },
     "complete": {
-      "title": null,
-      "lead": null,
-      "codeLabel": null,
-      "codeWarning": null,
-      "copy": null,
-      "copied": null,
-      "copyFailed": null,
-      "print": null,
-      "download": null,
-      "fileText": null,
+      "title": "A ti gba ìròyìn rẹ",
+      "lead": "Ó jẹ́ àṣírí. Kò sí ohun tí a tẹ̀jáde.",
+      "codeLabel": "Kódù ìtọpinpin rẹ",
+      "codeWarning": "A ń fi kódù yìí hàn ẹ̀ẹ̀kan ṣoṣo. ShaidaGo kò lè tún fi hàn tàbí mú un padà. Ẹnikẹ́ni tó bá ní kódù náà lè rí ipò ìròyìn náà.",
+      "copy": "Ṣe ẹ̀dà kódù náà",
+      "copied": "A ti ṣe ẹ̀dà rẹ̀",
+      "copyFailed": "Kò ṣeé ṣe láti ṣe ẹ̀dà rẹ̀ níhìn-ín. Yàn kódù náà kí o sì ṣe ẹ̀dà rẹ̀ fúnra rẹ.",
+      "print": "Tẹ̀ Ẹ́",
+      "download": "Gba wọlé gẹ́gẹ́ bí fáìlì ọ̀rọ̀",
+      "fileText": "Kódù ìtọpinpin ShaidaGo: {code}\nA ń fi kódù yìí hàn ẹ̀ẹ̀kan ṣoṣo. Gba á pamọ́ ní ìkọ̀kọ̀.\nÀwòṣe ìdánwò àròsọ ni èyí.",
       "next": {
-        "heading": null,
-        "save_tracking_code": null,
-        "check_status_later": null,
-        "see_escalation_guidance": null
+        "heading": "Ohun tí yóò ṣẹlẹ̀ lẹ́yìn èyí",
+        "save_tracking_code": "Gba kódù ìtọpinpin náà pamọ́ báyìí.",
+        "check_status_later": "Ṣàyẹ̀wò ipò náà nígbà mìíràn lórí ojú ìwé ipò. Àyẹ̀wò kan lè gba àkókò.",
+        "see_escalation_guidance": "Ka ibi mìíràn tí a lè gbé ìṣòro kan lọ."
       },
-      "filesHeading": null,
-      "fileKept": null,
-      "fileRejected": null,
+      "filesHeading": "Àwọn fáìlì rẹ",
+      "fileKept": "Fáìlì {number}: a pa á mọ́ lẹ́yìn àwọn àyẹ̀wò sáfà.",
+      "fileRejected": "Fáìlì {number}: a kò pa á mọ́ ({reason}). A gba ìròyìn náà fúnra rẹ̀.",
       "reasons": {
-        "unsupported_type": null,
-        "spoofed_type": null,
-        "active_content": null,
-        "encrypted_pdf": null,
-        "too_large": null,
-        "too_many_pixels": null,
-        "too_many_pages": null,
-        "malformed": null,
-        "malware_detected": null,
-        "scan_failed": null,
-        "storage_failed": null,
-        "timeout": null
+        "unsupported_type": "irúfẹ́ tí a kò ṣe àtìlẹ́yìn fún",
+        "spoofed_type": "irúfẹ́ náà kò bá a mu",
+        "active_content": "ó ní àkóónú tó ń ṣiṣẹ́",
+        "encrypted_pdf": "a ti fi kódù bo PDF náà",
+        "too_large": "ó tóbí jù",
+        "too_many_pixels": "ẹyọ-àwòrán (pixels) ti pọ̀ jù",
+        "too_many_pages": "ojú ìwé ti pọ̀ jù",
+        "malformed": "a kò lè kà á",
+        "malware_detected": "àyẹ̀wò ààbò kùnà",
+        "scan_failed": "a kò lè ṣe àyẹ̀wò ààbò náà",
+        "storage_failed": "a kò lè gba á pamọ́",
+        "timeout": "àyẹ̀wò náà gba àkókò gùn jù"
       },
-      "contactSaved": null,
-      "contactNotSaved": null,
-      "track": null,
-      "leave": null,
+      "contactSaved": "A gba àwọn àlàyé ìbánisọ̀rọ̀ rẹ pamọ́ lọ́tọ̀.",
+      "contactNotSaved": "A kò gba àlàyé ìbánisọ̀rọ̀ kankan pamọ́.",
+      "track": "Lọ sí ojú ìwé ipò",
+      "leave": "Mo ti gba kódù mi pamọ́. Kúrò",
       "lost": {
-        "title": null,
-        "body": null,
-        "newReport": null
+        "title": "Kódù ìtọpinpin náà kò sí mọ́",
+        "body": "Fún ààbò rẹ a ń fi kódù náà hàn ẹ̀ẹ̀kan ṣoṣo, a kò sì gba á pamọ́ sínú ẹ̀rọ-ìṣàwárí yìí. Bí o kò bá gba á pamọ́, a kò lè mú un padà. O lè fi ìròyìn tuntun ránṣẹ́.",
+        "newReport": "Fi ìròyìn tuntun ránṣẹ́"
       }
     }
   },
   "track": {
-    "title": null,
-    "lead": null,
-    "privacy": null,
-    "needsScript": null,
-    "loading": null,
+    "title": "Ṣàyẹ̀wò ipò ìròyìn kan",
+    "lead": "Lo kódù ìtọpinpin tí a fún ọ nígbà tí o fi ìròyìn kan ránṣẹ́, tàbí orúkọ-ìnagijẹ olùròyìn. Ipò tí kò léwu fún gbogbo ènìyàn nìkan ni o ń rí. ShaidaGo kì í fi ohun tí o kọ, àwọn fáìlì rẹ, tàbí àwọn àkọsílẹ̀ olùṣàyẹ̀wò hàn.",
+    "privacy": "A ń fi kódù rẹ àti ọ̀rọ̀-ìwọlé rẹ ránṣẹ́ nìkan nígbà tí o bá tẹ bọ́tìnì kan. A kì í fi wọ́n sínú àdírẹ́sì, a kì í gba wọ́n pamọ́, bẹ́ẹ̀ ni ẹ̀rọ-ìṣàwárí yìí kì í rántí wọn.",
+    "needsScript": "Ṣíṣàyẹ̀wò ipò kan nílò JavaScript. Kò sí ohun tí o tẹ̀ wọlé tí a ń fi ránṣẹ́ títí tí o óò fi yàn láti ṣàyẹ̀wò rẹ̀.",
+    "loading": "Ń ṣàyẹ̀wò ipò ìròyìn rẹ.",
     "code": {
-      "heading": null,
-      "label": null,
-      "hint": null,
-      "submit": null,
-      "again": null,
-      "forget": null,
-      "empty": null
+      "heading": "Ṣàyẹ̀wò pẹ̀lú kódù ìtọpinpin kan",
+      "label": "Kódù ìtọpinpin",
+      "hint": "Àwọn àlàfo àti ìlà gbà. Iṣẹ́ náà yóò pinnu bóyá kódù náà wúlò.",
+      "submit": "Ṣàyẹ̀wò ipò",
+      "again": "Tún ṣàyẹ̀wò",
+      "forget": "Pa á rẹ́ kí o sì bẹ̀rẹ̀ lẹ́ẹ̀kan sí i",
+      "empty": "Tẹ kódù ìtọpinpin rẹ wọlé."
     },
     "handle": {
-      "heading": null,
-      "handleLabel": null,
-      "passphraseLabel": null,
-      "reveal": null,
-      "hide": null,
-      "note": null,
-      "submit": null,
-      "forget": null,
-      "emptyHandle": null,
-      "emptyPassphrase": null,
-      "listHeading": null,
-      "none": null,
-      "create": null
+      "heading": "Ṣàyẹ̀wò pẹ̀lú orúkọ-ìnagijẹ olùròyìn kan",
+      "handleLabel": "Orúkọ-ìnagijẹ",
+      "passphraseLabel": "Ọ̀rọ̀-ìwọlé",
+      "reveal": "Fi ọ̀rọ̀-ìwọlé hàn",
+      "hide": "Fi ọ̀rọ̀-ìwọlé pamọ́",
+      "note": "Orúkọ-ìnagijẹ kì í ṣe àkọ́ọ́ǹtì tàbí ẹ̀rí ẹni tí o jẹ́. Ó kàn ń so àwọn ìròyìn tí o fi ránṣẹ́ pẹ̀lú rẹ̀ pọ̀ ni.",
+      "submit": "Ṣe àtòjọ àwọn ìròyìn mi",
+      "forget": "Pa á rẹ́ kí o sì bẹ̀rẹ̀ lẹ́ẹ̀kan sí i",
+      "emptyHandle": "Tẹ orúkọ-ìnagijẹ rẹ wọlé.",
+      "emptyPassphrase": "Tẹ ọ̀rọ̀-ìwọlé rẹ wọlé.",
+      "listHeading": "Àwọn ìròyìn tí ó so mọ́ orúkọ-ìnagijẹ yìí",
+      "none": "Kò sí àwọn ìròyìn kankan tí ó so mọ́ orúkọ-ìnagijẹ yìí lọ́wọ́lọ́wọ́.",
+      "create": "Mú orúkọ-ìnagijẹ jáde"
     },
     "result": {
-      "heading": null,
-      "updated": null,
-      "nextHeading": null,
-      "message": null
+      "heading": "Ipò",
+      "updated": "A Ṣe Ìmúdójúìwọ̀n Kẹ́yìn Ní {date}",
+      "nextHeading": "Ohun tí o yẹ kí o ṣe kàn",
+      "message": "Iṣẹ́"
     },
     "statuses": {
       "received": {
-        "label": null,
-        "meaning": null
+        "label": "A ti gbà á",
+        "meaning": "A ti gba ìròyìn rẹ. Ẹnì kankan kò tíì bẹ̀rẹ̀ sí í ṣàyẹ̀wò rẹ̀."
       },
       "needs_information": {
-        "label": null,
-        "meaning": null
+        "label": "A nílò àlàyé púpọ̀ sí i",
+        "meaning": "Olùṣàyẹ̀wò kan nílò ìdáhùn pàtó kan látọ̀dọ̀ rẹ láti tẹ̀síwájú."
       },
       "under_review": {
-        "label": null,
-        "meaning": null
+        "label": "Ó wà lábẹ́ àyẹ̀wò",
+        "meaning": "Olùṣàyẹ̀wò kan ń wo ìròyìn rẹ àti àwọn fáìlì èyíkéyìí."
       },
       "verified_for_public_update": {
-        "label": null,
-        "meaning": null
+        "label": "A ti ṣàyẹ̀wò fún ìmúdójúìwọ̀n gbogbogbò kan tó ṣeé ṣe",
+        "meaning": "Olùṣàyẹ̀wò kan rí àtìlẹ́yìn tó pọ̀ tó láti kọ ìmúdójúìwọ̀n gbogbogbò ọ̀tọ̀. Kò sí ohun tí a tẹ̀jáde láìfọwọ́yí."
       },
       "referred": {
-        "label": null,
-        "meaning": null
+        "label": "A ti fi ránṣẹ́ sí ibòmíràn",
+        "meaning": "Olùṣàyẹ̀wò kan ṣàkíyèsí ìtọ́kasí kan nípasẹ̀ ọ̀nà tí a fọwọ́sí. Èyí kò ṣèlérí ìdáhùn látọ̀dọ̀ ẹlòmíràn."
       },
       "closed": {
-        "label": null,
-        "meaning": null
+        "label": "A ti pa á dé",
+        "meaning": "A kò wéwèé àyẹ̀wò mìíràn mọ́ àyàfi tí olùṣàyẹ̀wò kan bá tún un ṣí."
       }
     },
     "next": {
-      "wait_for_review": null,
-      "answer_follow_up": null,
-      "watch_public_updates": null,
-      "see_escalation_guidance": null,
-      "none": null
+      "wait_for_review": "Dúró de àyẹ̀wò náà. Àyẹ̀wò kan lè gba àkókò.",
+      "answer_follow_up": "Dáhùn ìbéèrè tó wà nísàlẹ̀ yìí.",
+      "watch_public_updates": "Maa wo àwọn ìmúdójúìwọ̀n gbogbogbò iṣẹ́ àkànṣe náà. Kò sí ohun tí a tẹ̀jáde láìfọwọ́yí.",
+      "see_escalation_guidance": "Ka ibi mìíràn tí a lè gbé ìṣòro kan lọ.",
+      "none": "Kò sí ohun mìíràn tí a nílò látọ̀dọ̀ rẹ lọ́wọ́lọ́wọ́."
     },
     "followUp": {
-      "heading": null,
-      "intro": null,
+      "heading": "Àwọn ìbéèrè látọ̀dọ̀ olùṣàyẹ̀wò kan",
+      "intro": "O lè dáhùn, fò ó ru, tàbí sọ pé kò léwu láti dáhùn ìbéèrè kan. Má ṣe fi orúkọ tàbí àwọn àlàyé ìbánisọ̀rọ̀ kún un.",
       "states": {
-        "open": null,
-        "answered": null,
-        "skipped": null,
-        "unsafe": null
+        "open": "Ń dúró de ìdáhùn rẹ",
+        "answered": "O ti dáhùn",
+        "skipped": "O ti fò ó ru",
+        "unsafe": "O sọ pé kò léwu láti dáhùn"
       },
-      "answerLabel": null,
-      "counter": null,
-      "answer": null,
-      "skip": null,
-      "unsafe": null,
-      "sent": null,
-      "answerEmpty": null
+      "answerLabel": "Ìdáhùn rẹ",
+      "counter": "Lẹ́tà {count} nínú {max}",
+      "answer": "Fi ìdáhùn ránṣẹ́",
+      "skip": "Fò ìbéèrè yìí ru",
+      "unsafe": "Èyí kò léwu fún mi láti dáhùn",
+      "sent": "A ti fi ìdáhùn rẹ ránṣẹ́.",
+      "answerEmpty": "Tẹ ìdáhùn kan wọlé, tàbí yàn láti fò ó ru."
     },
     "failure": {
-      "title": null,
-      "still": null,
-      "wait": null
+      "title": "A kò lè ṣàyẹ̀wò ipò náà",
+      "still": "Kò sí ohun tí ó yí padà.",
+      "wait": "Gbìyànjú lẹ́ẹ̀kan sí i ní nǹkan bí ìṣẹ́jú ààyá {seconds}."
     },
-    "newReport": null
+    "newReport": "Fi ìròyìn tuntun ránṣẹ́"
   },
   "handle": {
-    "title": null,
-    "lead": null,
-    "needsScript": null,
+    "title": "Àwọn orúkọ-ìnagijẹ olùròyìn",
+    "lead": "Orúkọ-ìnagijẹ jẹ́ àlẹ́mọ́ àṣàyàn tí ń so àwọn ìròyìn rẹ pọ̀ láìsí orúkọ rẹ, ìbánisọ̀rọ̀ rẹ, tàbí àlàyé ìdánimọ̀ èyíkéyìí. Kì í ṣe àkọ́ọ́ǹtì, ìwọlé, tàbí ẹ̀rí ẹni tí o jẹ́.",
+    "needsScript": "Mímú jáde tàbí pípa orúkọ-ìnagijẹ kan rẹ́ nílò JavaScript. Kò sí ohun tí a ń fi ránṣẹ́ títí tí o óò fi yàn láti ṣe bẹ́ẹ̀.",
     "facts": {
-      "heading": null,
-      "benefit": null,
-      "risk": null,
-      "recovery": null
+      "heading": "Kí o tó mú ẹyọ kan jáde",
+      "benefit": "Àǹfààní: o lè rí ipò àwọn ìròyìn mélòó kan ní ibì kan.",
+      "risk": "Ewu: àwọn olùṣàyẹ̀wò lè mọ̀ pé àwọn ìròyìn lábẹ́ orúkọ-ìnagijẹ kan ṣoṣo ní í ṣe pẹ̀lú ara wọn. Orúkọ-ìnagijẹ kan lè má bára mu fún ìròyìn tó jẹ́ àṣírí gidigidi.",
+      "recovery": "Kò sí ìmúpadàbọ̀sípò: bí o bá pàdánù orúkọ-ìnagijẹ náà tàbí ọ̀rọ̀-ìwọlé náà, kò sí ẹni tí ó lè mú wọn padà bọ̀ sípò."
     },
     "create": {
-      "heading": null,
-      "button": null,
-      "creating": null,
-      "again": null
+      "heading": "Mú orúkọ-ìnagijẹ jáde",
+      "button": "Mú orúkọ-ìnagijẹ jáde",
+      "creating": "Ń mú orúkọ-ìnagijẹ rẹ jáde.",
+      "again": "Bí o bá tún ojú ìwé yìí rù tàbí kúrò lórí rẹ̀, a kò lè tún orúkọ-ìnagijẹ tí o ṣe níhìn-ín hàn. O lè mú tuntun jáde, tí kò ní í ṣe pẹ̀lú ti àkọ́kọ́."
     },
     "created": {
-      "heading": null,
-      "handle": null,
-      "passphrase": null,
-      "warning": null,
-      "use": null,
-      "copy": null,
-      "copied": null,
-      "copyFailed": null,
-      "print": null,
-      "download": null,
-      "fileText": null,
-      "done": null
+      "heading": "Orúkọ-ìnagijẹ àti ọ̀rọ̀-ìwọlé rẹ",
+      "handle": "Orúkọ-ìnagijẹ",
+      "passphrase": "Ọ̀rọ̀-ìwọlé",
+      "warning": "A ń fi àwọn wọ̀nyí hàn ẹ̀ẹ̀kan ṣoṣo. ShaidaGo kò lè tún wọn hàn tàbí mú wọn padà. Gba wọ́n pamọ́ báyìí.",
+      "use": "Lò wọ́n nígbà tí o bá fi ìròyìn kan ránṣẹ́, tàbí lórí ojú ìwé ipò.",
+      "copy": "Ṣe ẹ̀dà orúkọ-ìnagijẹ àti ọ̀rọ̀-ìwọlé náà",
+      "copied": "A ti ṣe ẹ̀dà rẹ̀",
+      "copyFailed": "Kò ṣeé ṣe láti ṣe ẹ̀dà rẹ̀ níhìn-ín. Yàn ọ̀rọ̀ náà kí o sì ṣe ẹ̀dà rẹ̀ fúnra rẹ.",
+      "print": "Tẹ̀ Ẹ́",
+      "download": "Gba wọlé gẹ́gẹ́ bí fáìlì ọ̀rọ̀",
+      "fileText": "Orúkọ-ìnagijẹ olùròyìn ShaidaGo: {handle}\nỌ̀rọ̀-ìwọlé: {passphrase}\nA fihàn ẹ̀ẹ̀kan ṣoṣo. Gba èyí pamọ́ ní ìkọ̀kọ̀.\nÀwòṣe ìdánwò àròsọ ni èyí.",
+      "done": "Mo ti gba wọ́n pamọ́. Mú kúrò lórí ojú ìwé yìí"
     },
     "delete": {
-      "heading": null,
-      "explain": null,
-      "handleLabel": null,
-      "passphraseLabel": null,
-      "confirm": null,
-      "needConfirm": null,
-      "submit": null,
-      "done": null,
-      "failedTitle": null
+      "heading": "Pa orúkọ-ìnagijẹ kan rẹ́",
+      "explain": "Pípa orúkọ-ìnagijẹ kan rẹ́ ń já ìsopọ̀ rẹ̀ kúrò lára àwọn ìròyìn rẹ. Kì í pa àwọn ìròyìn náà rẹ́, kò sì yọ ohunkóhun tí a ti tẹ̀jáde tẹ́lẹ̀ kúrò. Lẹ́yìn tí a bá pa á rẹ́, a kò lè lo orúkọ-ìnagijẹ náà mọ́.",
+      "handleLabel": "Orúkọ-ìnagijẹ",
+      "passphraseLabel": "Ọ̀rọ̀-ìwọlé",
+      "confirm": "Mo lóye pé àwọn ìròyìn náà yóò dúró ìsopọ̀ nìkan ni a óò yọ kúrò",
+      "needConfirm": "Fi àmì sínú àpótí láti fìdí rẹ̀ múlẹ̀.",
+      "submit": "Pa orúkọ-ìnagijẹ yìí rẹ́",
+      "done": "A ti pa orúkọ-ìnagijẹ náà rẹ́. A kò pa àwọn ìròyìn rẹ rẹ́.",
+      "failedTitle": "A kò pa orúkọ-ìnagijẹ náà rẹ́"
     },
-    "statusLink": null
+    "statusLink": "Ṣàyẹ̀wò ipò ìròyìn kan"
   },
   "reviewer": {
     "common": {
-      "private": null,
-      "noindex": null,
-      "backToQueue": null,
-      "signedOut": null,
-      "language": null,
-      "signOut": null,
-      "signingOut": null
+      "private": "Agbègbè olùṣàyẹ̀wò ti ìkọ̀kọ̀. Ohun gbogbo níhìn-ín jẹ́ àlàyé ìdánwò àròsọ kò sì ṣe fún gbogbo ènìyàn rárá.",
+      "noindex": "Kì í ṣe fún pípín",
+      "backToQueue": "Padà sí àtòjọ àwọn ìròyìn fún àyẹ̀wò",
+      "signedOut": "A ti yọ ọ́ kúrò.",
+      "language": "A kọ agbègbè olùṣàyẹ̀wò yìí ní èdè Gẹ̀ẹ́sì; a kò tíì ṣàyẹ̀wò àwọn èdè mìíràn.",
+      "signOut": "Jáde",
+      "signingOut": "Ń jáde"
     },
     "signIn": {
-      "title": null,
-      "lead": null,
-      "needsScript": null,
-      "identifier": null,
-      "password": null,
-      "submit": null,
-      "pending": null,
-      "required": null,
-      "identifierRequired": null,
-      "passwordRequired": null,
-      "wait": null,
-      "waitDone": null,
-      "failureTitle": null,
+      "title": "Ìwọlé olùṣàyẹ̀wò",
+      "lead": "Fún àwọn olùṣàyẹ̀wò ShaidaGo tí a fún ní àṣẹ nìkan. Àwọn olùròyìn kò nílò àkọ́ọ́ǹtì.",
+      "needsScript": "Ìwọlé nílò JavaScript. Tàn án fún ìkànnì yìí kí o sì tún un rù.",
+      "identifier": "Ìdánimọ̀ olùṣàyẹ̀wò",
+      "password": "Ọ̀rọ̀-aṣínà",
+      "submit": "Wọlé",
+      "pending": "Ń wọlé",
+      "required": "A nílò rẹ̀",
+      "identifierRequired": "Tẹ ìdánimọ̀ olùṣàyẹ̀wò rẹ wọlé.",
+      "passwordRequired": "Tẹ ọ̀rọ̀-aṣínà rẹ wọlé.",
+      "wait": "Ìgbìyànjú ti pọ̀ jù. O lè tún gbìyànjú ní ìṣẹ́jú ààyá {seconds}.",
+      "waitDone": "O lè tún gbìyànjú báyìí.",
+      "failureTitle": "Ìwọlé kò ṣiṣẹ́",
       "reasons": {
-        "expired": null,
-        "signed_out": null
+        "expired": "Àkókò rẹ ti parí. Tún wọlé láti tẹ̀síwájú.",
+        "signed_out": "A ti yọ ọ́ kúrò."
       },
-      "note": null
+      "note": "Ìwọlé yìí kì í sọ apá tí ó jẹ́ àṣìṣe rárá. Kò sí ohun tí o tẹ̀ wọlé tí a gba pamọ́ nínú ẹ̀rọ-ìṣàwárí yìí."
     },
     "queue": {
-      "title": null,
-      "lead": null,
+      "title": "Àtòjọ àwọn ìròyìn fún àyẹ̀wò",
+      "lead": "Èyí tí ó pẹ́ jùlọ ni àkọ́kọ́. Àtòjọ yìí ń fi àwọn àlàyé ìpínṣẹ́ nìkan hàn. Ṣí ìròyìn kan láti kà á.",
       "filters": {
-        "label": null,
-        "status": null,
-        "risk": null,
-        "category": null,
-        "project": null,
-        "projectHelp": null,
-        "any": null,
-        "apply": null,
-        "clear": null
+        "label": "Sẹ́ àtòjọ náà",
+        "status": "Ipò",
+        "risk": "Ìwọ̀n ewu",
+        "category": "Ìṣòro",
+        "project": "Orúkọ àkọsílẹ̀ (bí ó ṣe wà nínú àdírẹ́sì rẹ̀)",
+        "projectHelp": "Àwọn lẹ́tà kéékèèké, nọ́ńbà àti igi-ìdènà.",
+        "any": "Èyíkéyìí",
+        "apply": "Fi àwọn àlẹ́mọ́ sí i",
+        "clear": "Mú gbogbo àlẹ́mọ́ kúrò"
       },
       "statuses": {
-        "received": null,
-        "needs_information": null,
-        "under_review": null,
-        "verified_for_public_update": null,
-        "referred": null,
-        "closed": null
+        "received": "A ti gbà á",
+        "needs_information": "Ń dúró de olùròyìn",
+        "under_review": "Ó wà lábẹ́ àyẹ̀wò",
+        "verified_for_public_update": "A ti ṣàyẹ̀wò fún ìmúdójúìwọ̀n gbogbogbò",
+        "referred": "A ti fi ránṣẹ́ sí ibòmíràn",
+        "closed": "A ti pa á dé"
       },
       "risks": {
-        "standard": null,
-        "elevated": null,
-        "high": null
+        "standard": "Déédéé",
+        "elevated": "Ó ga díẹ̀",
+        "high": "Ó ga"
       },
       "categories": {
-        "no_visible_work": null,
-        "incomplete_work": null,
-        "unsafe_construction": null,
-        "suspected_incorrect_status": null,
-        "access_barrier": null,
-        "other_concern": null
+        "no_visible_work": "Kò sí iṣẹ́ kankan tí a rí",
+        "incomplete_work": "Iṣẹ́ tí kò pé",
+        "unsafe_construction": "Ilé kíkọ́ tí kò léwu",
+        "suspected_incorrect_status": "Ipò lè jẹ́ àṣìṣe",
+        "access_barrier": "Ohun ìdènà",
+        "other_concern": "Ìṣòro mìíràn"
       },
       "item": {
-        "riskLabel": null,
-        "statusLabel": null,
-        "received": null,
-        "updated": null,
-        "files": null,
-        "noFiles": null,
-        "questions": null,
-        "noQuestions": null,
-        "contact": null,
-        "noContact": null,
-        "open": null,
-        "openLabel": null
+        "riskLabel": "Ewu",
+        "statusLabel": "Ipò",
+        "received": "A ti gbà á ní {date}",
+        "updated": "Ipò yí padà ní {date}",
+        "files": "{count, plural, one {fáìlì #} other {fáìlì #}}",
+        "noFiles": "Kò sí fáìlì kankan",
+        "questions": "{count, plural, one {ìbéèrè ṣíṣí #} other {ìbéèrè ṣíṣí #}}",
+        "noQuestions": "Kò sí ìbéèrè ṣíṣí kankan",
+        "contact": "A ti pèsè àwọn àlàyé ìbánisọ̀rọ̀",
+        "noContact": "Kò sí àwọn àlàyé ìbánisọ̀rọ̀",
+        "open": "Ṣí ìròyìn",
+        "openLabel": "Ṣí ìròyìn fún {project}, a gbà á ní {date}"
       },
       "results": {
-        "heading": null,
-        "count": null,
-        "paginationLabel": null,
-        "next": null,
-        "first": null
+        "heading": "Àwọn ìròyìn",
+        "count": "{count, plural, one {ìròyìn # lórí ojú ìwé yìí} other {ìròyìn # lórí ojú ìwé yìí}}",
+        "paginationLabel": "Àwọn ojú ìwé àtòjọ",
+        "next": "Àwọn ìròyìn tó kàn",
+        "first": "Padà sí ojú ìwé àkọ́kọ́"
       },
       "states": {
         "empty": {
-          "title": null,
-          "body": null
+          "title": "Kò sí ohun tó ń dúró",
+          "body": "Kò sí ìròyìn kankan tó nílò àkíyèsí lọ́wọ́lọ́wọ́."
         },
         "noMatches": {
-          "title": null,
-          "body": null
+          "title": "Kò sí ìròyìn kankan tó bá àwọn àlẹ́mọ́ yìí mu",
+          "body": "Mú àlẹ́mọ́ kan kúrò láti rí púpọ̀ sí i."
         },
         "invalidCursor": {
-          "title": null,
-          "body": null
+          "title": "Ojú ìwé yẹn kò wúlò mọ́",
+          "body": "Àtòjọ náà ti yí padà. Padà sí ojú ìwé àkọ́kọ́."
         },
         "forbidden": {
-          "title": null,
-          "body": null
+          "title": "Àkọ́ọ́ǹtì yìí kò lè ṣí àtòjọ náà",
+          "body": "Béèrè lọ́wọ́ alámòójútó kan láti ṣàyẹ̀wò ipò rẹ. Kò sí ohun tí a gbé jáde."
         },
         "rateLimited": {
-          "title": null,
-          "body": null
+          "title": "Àwọn ìbéèrè ti pọ̀ jù",
+          "body": "Dúró díẹ̀, lẹ́yìn náà tún ojú ìwé náà rù."
         },
         "unavailable": {
-          "title": null,
-          "body": null,
-          "retry": null
+          "title": "A kò lè gbé àtòjọ náà jáde",
+          "body": "Iṣẹ́ náà kò dáhùn. Kò sí ohun tó yí padà. Gbìyànjú lẹ́ẹ̀kan sí i.",
+          "retry": "Gbìyànjú lẹ́ẹ̀kan sí i"
         }
       }
     },
     "detail": {
-      "title": null,
-      "back": null,
-      "jump": null,
+      "title": "Ìròyìn",
+      "back": "Padà sí àtòjọ àwọn ìròyìn fún àyẹ̀wò",
+      "jump": "Lórí ojú ìwé yìí",
       "demo": {
-        "title": null,
-        "body": null
+        "title": "Àlàyé ìdánwò àròsọ",
+        "body": "Gbogbo ìròyìn nínú ìfihàn yìí jẹ́ àròsọ. Àwọn ìròyìn gidi, orúkọ gidi, àti àwọn àlàyé ìbánisọ̀rọ̀ ni kò yẹ kí a tẹ̀ wọlé tàbí ṣí níhìn-ín rárá."
       },
       "header": {
-        "status": null,
-        "risk": null,
-        "received": null,
-        "updated": null,
-        "version": null,
-        "project": null,
-        "publicRecord": null
+        "status": "Ipò",
+        "risk": "Ewu",
+        "received": "A gbà á ní {date}",
+        "updated": "Ipò yí padà ní {date}",
+        "version": "Ẹ̀yà {version}",
+        "project": "Àkọsílẹ̀ iṣẹ́ àkànṣe",
+        "publicRecord": "Ṣí àkọsílẹ̀ gbogbogbò"
       },
       "sections": {
-        "status": null,
-        "observation": null,
-        "evidence": null,
-        "contact": null,
-        "history": null,
-        "questions": null,
-        "handle": null,
-        "scout": null,
-        "publication": null,
-        "notes": null
+        "status": "Ipò àti àwọn ìgbésẹ̀",
+        "observation": "Ohun tí a jábọ̀ rẹ̀",
+        "evidence": "Àwọn fáìlì ẹ̀rí",
+        "contact": "Àwọn àlàyé ìbánisọ̀rọ̀",
+        "history": "Ìtàn ipò",
+        "questions": "Àwọn ìbéèrè fún olùròyìn",
+        "handle": "Orúkọ-ìnagijẹ olùròyìn",
+        "scout": "Source Scout",
+        "publication": "Ìmúdójúìwọ̀n gbogbogbò",
+        "notes": "Àwọn àkọsílẹ̀ inú"
       },
       "observation": {
-        "category": null,
-        "project": null,
-        "description": null,
-        "descriptionNote": null,
-        "received": null
+        "category": "Ìṣòro",
+        "project": "Àkọsílẹ̀ iṣẹ́ àkànṣe",
+        "description": "Àlàyé látọ̀dọ̀ olùròyìn",
+        "descriptionNote": "A fihàn gẹ́gẹ́ bí ọ̀rọ̀ lásán gẹ́gẹ́ bí a ṣe fi ránṣẹ́ gangan. Ó jẹ́ àṣírí a kì í sì tẹ̀ ẹ́ jáde láìfọwọ́yí rárá.",
+        "received": "A ti gbà á"
       },
       "evidence": {
-        "empty": null,
-        "name": null,
-        "type": null,
-        "size": null,
-        "sanitation": null,
-        "scan": null,
-        "added": null,
-        "note": null,
+        "empty": "A kò fi fáìlì kankan kún un.",
+        "name": "Fáìlì",
+        "type": "Irúfẹ́",
+        "size": "Ìwọ̀n",
+        "sanitation": "Mímú mọ́",
+        "scan": "Àyẹ̀wò fáìlì tó léwu",
+        "added": "A fi kún un ní {date}",
+        "note": "A ń mú àwọn fáìlì mọ́ kí a tó gba wọ́n pamọ́. Kò sí ohun tí a fi hàn lórí ìlà: fáìlì kan a máa gba wọlé nìkan nígbà tí o bá béèrè fún un.",
         "sanitationStates": {
-          "pending": null,
-          "processing": null,
-          "sanitised": null,
-          "rejected": null,
-          "failed": null
+          "pending": "Mímú mọ́ kò tíì bẹ̀rẹ̀",
+          "processing": "Ń mú un mọ́",
+          "sanitised": "A ti mú un mọ́",
+          "rejected": "A kọ̀ ọ́",
+          "failed": "Mímú mọ́ kùnà"
         },
         "scanStates": {
-          "pending": null,
-          "scanning": null,
-          "clean": null,
-          "malware_detected": null,
-          "scan_failed": null,
-          "not_scanned_demo": null
+          "pending": "Àyẹ̀wò kò tíì bẹ̀rẹ̀",
+          "scanning": "Ń ṣàyẹ̀wò",
+          "clean": "Kò sí fáìlì tó léwu tí a rí",
+          "malware_detected": "A rí fáìlì tó léwu",
+          "scan_failed": "Àyẹ̀wò kùnà",
+          "not_scanned_demo": "A kò ṣàyẹ̀wò rẹ̀ (fún ìdánwò nìkan)"
         },
-        "demoLimit": null,
-        "bytes": null,
-        "kilobytes": null,
-        "megabytes": null
+        "demoLimit": "Ìdánwò yìí kò ní ẹ̀rọ àyẹ̀wò fáìlì tó léwu, nítorí náà a kò ṣàyẹ̀wò fáìlì yìí. Má ṣe ṣí i níta àyíká tó wà láìséwu.",
+        "bytes": "{count, plural, one {báìtì #} other {báìtì #}}",
+        "kilobytes": "{count} KB",
+        "megabytes": "{count} MB"
       },
       "contact": {
-        "none": null,
-        "hidden": null,
-        "reveal": null,
-        "revealNote": null,
-        "shown": null,
-        "hide": null,
-        "denied": null,
-        "unavailable": null,
-        "auditNote": null
+        "none": "Olùròyìn kò fún wa ní àwọn àlàyé ìbánisọ̀rọ̀ kankan.",
+        "hidden": "Àwọn àlàyé ìbánisọ̀rọ̀ wà ṣùgbọ́n a ti fi wọ́n pamọ́.",
+        "reveal": "Fi àwọn àlàyé ìbánisọ̀rọ̀ hàn",
+        "revealNote": "Fífi wọ́n hàn yóò jẹ́ kíkọ sílẹ̀ nínú àkọsílẹ̀ àyẹ̀wò.",
+        "shown": "{channel}: {value}",
+        "hide": "Fi àwọn àlàyé ìbánisọ̀rọ̀ pamọ́",
+        "denied": "Àkọ́ọ́ǹtì yìí kò láṣẹ láti rí àwọn àlàyé ìbánisọ̀rọ̀.",
+        "unavailable": "A kò lè fi àwọn àlàyé ìbánisọ̀rọ̀ hàn lọ́wọ́lọ́wọ́.",
+        "auditNote": "Àwò yìí jẹ́ kíkọ sílẹ̀ nínú àkọsílẹ̀ àyẹ̀wò."
       },
       "history": {
-        "empty": null,
-        "from": null,
-        "first": null,
-        "actor": null,
+        "empty": "Kò tíì sí àwọn ìyípadà ipò kankan.",
+        "from": "Láti {from} sí {to}",
+        "first": "A ti ṣètò rẹ̀ sí {to}",
+        "actor": "Nípasẹ̀ {actor}",
         "actors": {
-          "reporter": null,
-          "reviewer": null,
-          "admin": null,
-          "system": null
+          "reporter": "olùròyìn",
+          "reviewer": "olùṣàyẹ̀wò",
+          "admin": "alámòójútó",
+          "system": "ẹ̀rọ"
         },
-        "shownToReporter": null,
-        "internal": null,
-        "noMessage": null
+        "shownToReporter": "A fihàn sí olùròyìn",
+        "internal": "Ìdí abẹ́nú (àṣírí)",
+        "noMessage": "Kò sí iṣẹ́ tí a fihàn sí olùròyìn."
       },
       "questions": {
-        "empty": null,
-        "asked": null,
-        "answered": null,
-        "private": null,
-        "noAnswer": null,
-        "withdrawn": null,
+        "empty": "A kò tíì béèrè àwọn ìbéèrè kankan.",
+        "asked": "A béèrè ní {date}",
+        "answered": "Ìdáhùn ({kind})",
+        "private": "Ìdáhùn náà jẹ́ àṣírí.",
+        "noAnswer": "A kò tíì dáhùn rẹ̀.",
+        "withdrawn": "A ti fà á sẹ́yìn",
         "kinds": {
-          "answered": null,
-          "skipped": null,
-          "unsafe": null
+          "answered": "a ti dáhùn",
+          "skipped": "a ti fò ó ru",
+          "unsafe": "a sàmì sí i pé kò léwu"
         }
       },
       "handle": {
-        "none": null,
-        "note": null,
-        "name": null,
-        "total": null,
-        "verified": null,
-        "closed": null
+        "none": "Ìròyìn yìí kò so mọ́ orúkọ-ìnagijẹ olùròyìn kankan.",
+        "note": "Orúkọ-ìnagijẹ jẹ́ orúkọ ẹ̀gẹ́, kì í ṣe ẹ̀rí ìdánimọ̀ tàbí pé ó tọ̀nà. Ṣe èyí gẹ́gẹ́ bí àlàyé nìkan.",
+        "name": "Orúkọ-ìnagijẹ",
+        "total": "Àwọn ìròyìn tí ó so pọ̀",
+        "verified": "A ti ṣàyẹ̀wò fún ìmúdójúìwọ̀n gbogbogbò",
+        "closed": "A ti pa á dé"
       },
       "scout": {
-        "body": null,
-        "private": null,
-        "concepts": null,
-        "conceptsHint": null,
-        "prepare": null,
-        "preparing": null,
-        "planTitle": null,
-        "query": null,
-        "queryHint": null,
-        "policy": null,
-        "included": null,
-        "excluded": null,
-        "noneExcluded": null,
-        "approve": null,
-        "discard": null,
-        "cancel": null,
-        "confirm": null,
-        "confirmTitle": null,
-        "confirmBody": null,
-        "started": null
+        "body": "Múra ìbéèrè àṣírí-léwu sílẹ̀, ṣàyẹ̀wò rẹ̀ gẹ́gẹ́ bí a ó ṣe fi ránṣẹ́ gan-an, lẹ́yìn náà fọwọ́sí i kí àwárí orísun kankan tó bẹ̀rẹ̀.",
+        "private": "Ìpín yìí kì í gba ọ̀rọ̀ ìròyìn, àwọn ìbánisọ̀rọ̀, àwọn fáìlì, àwọn àlàyé ìtọpinpin, tàbí agbègbè gangan. Má ṣe tẹ èyíkéyìí nínú wọn wọlé nísàlẹ̀.",
+        "concepts": "Àwọn ọ̀rọ̀ àwárí gbogbogbò àṣàyàn",
+        "conceptsHint": "Lo àwọn kọ́mà fún títí dé àwọn ọ̀rọ̀ gbogbogbò 20. Yíyí àwọn ọ̀rọ̀ padà ń sọ ètò lọ́wọ́lọ́wọ́ nù, ó sì ń béèrè fún àyẹ̀wò tuntun.",
+        "prepare": "Múra ìbéèrè sílẹ̀ fún àyẹ̀wò",
+        "preparing": "Ń múra ìbéèrè sílẹ̀…",
+        "planTitle": "Ṣàyẹ̀wò ìbéèrè tí ń jáde gangan",
+        "query": "Ìbéèrè tí ń jáde",
+        "queryHint": "Èyí nìkan ni ìbéèrè tí a ó fi ránṣẹ́ bí o bá fọwọ́sí i.",
+        "policy": "Ìlànà ìbéèrè",
+        "included": "Àwọn ọ̀rọ̀ tí a fi kún un",
+        "excluded": "Àwọn tí a yọ kúrò nínú ìbéèrè yìí",
+        "noneExcluded": "Kò sí àwọn ọ̀rọ̀ tí a yọ kúrò.",
+        "approve": "Fọwọ́sí i kí o sì bẹ̀rẹ̀ àwárí",
+        "discard": "Sọ ètò yìí nù",
+        "cancel": "Maa ṣàyẹ̀wò lọ",
+        "confirm": "Fọwọ́sí i kí o sì bẹ̀rẹ̀",
+        "confirmTitle": "Bẹ̀rẹ̀ àwárí orísun yìí?",
+        "confirmBody": "Ìbéèrè gangan tí a fihàn lókè ni a ó fi ránṣẹ́ sí olùpèsè àwárí. Ìṣiṣẹ́ náà yóò wà ní ìkọ̀kọ̀ àti pé gbogbo àbájáde ń béèrè fún àyẹ̀wò ènìyàn.",
+        "started": "Àwárí orísun ti bẹ̀rẹ̀. Àwọn àbájáde yóò wà ní ìkọ̀kọ̀ a kò sì ní ṣàyẹ̀wò wọn títí tí o óò fi pinnu lórí orísun kọ̀ọ̀kan."
       },
       "states": {
         "notFound": {
-          "title": null,
-          "body": null
+          "title": "Ìròyìn yìí kò sí",
+          "body": "Ṣàyẹ̀wò àdírẹ́sì náà tàbí padà sí àtòjọ náà. Ojú ìwé yìí kò sọ bóyá ìròyìn kan wà."
         },
         "forbidden": {
-          "title": null,
-          "body": null
+          "title": "Àkọ́ọ́ǹtì yìí kò lè ṣí ìròyìn yìí",
+          "body": "Béèrè lọ́wọ́ alámòójútó kan láti ṣàyẹ̀wò ipò rẹ. Kò sí ohun tí a gbé jáde."
         },
         "rateLimited": {
-          "title": null,
-          "body": null
+          "title": "Àwọn ìbéèrè ti pọ̀ jù",
+          "body": "Dúró díẹ̀, lẹ́yìn náà tún ojú ìwé náà rù."
         },
         "unavailable": {
-          "title": null,
-          "body": null,
-          "retry": null
+          "title": "A kò lè gbé ìròyìn náà jáde",
+          "body": "Iṣẹ́ náà kò dáhùn. Kò sí ohun tó yí padà. Gbìyànjú lẹ́ẹ̀kan sí i.",
+          "retry": "Gbìyànjú lẹ́ẹ̀kan sí i"
         }
       }
     },
     "actions": {
-      "sessionEnded": null,
-      "signIn": null,
-      "pending": null,
-      "tryAgain": null
+      "sessionEnded": "Àkókò rẹ ti parí. Tún wọlé láti tẹ̀síwájú. Ohunkóhun tí o tẹ̀ wọlé níhìn-ín kò ní jẹ́ gbígba pamọ́.",
+      "signIn": "Tún wọlé",
+      "pending": "Ń ṣiṣẹ́",
+      "tryAgain": "Kò sí ohun tí ó yí padà nípasẹ̀ ìbéèrè tí ó kùnà àyàfi tí ó bá sọ bẹ́ẹ̀. O lè tún gbìyànjú lẹ́ẹ̀kan sí i."
     },
     "download": {
-      "button": null,
-      "buttonLabel": null,
-      "pending": null,
-      "done": null,
-      "failed": null,
-      "note": null
+      "button": "Gba wọlé",
+      "buttonLabel": "Gba {name} wọlé",
+      "pending": "Ń múra gbígba wọlé sílẹ̀",
+      "done": "Gbígba {name} wọlé ti bẹ̀rẹ̀.",
+      "failed": "A kò lè gba fáìlì náà wọlé.",
+      "note": "A ń ṣe ìbéèrè tuntun nígbà gbogbo. Kò sí ohun tí a gba pamọ́ nínú ẹ̀rọ-ìṣàwárí yìí."
     },
     "notes": {
-      "empty": null,
-      "intro": null,
-      "label": null,
-      "hint": null,
-      "counter": null,
-      "submit": null,
-      "required": null,
-      "tooLong": null,
-      "confirmTitle": null,
-      "confirmBody": null,
-      "confirm": null,
-      "cancel": null,
-      "added": null,
-      "by": null,
-      "gone": null,
-      "more": null,
-      "first": null,
-      "navLabel": null,
-      "unavailable": null,
-      "retry": null
+      "empty": "Kò tíì sí àwọn àkọsílẹ̀ kankan.",
+      "intro": "Àwọn àkọsílẹ̀ jẹ́ àṣírí àti ọ̀rọ̀ lásán. A kò lè ṣàtúnṣe wọn tàbí pa wọ́n rẹ́; àtúnṣe kan jẹ́ àkọsílẹ̀ tuntun.",
+      "label": "Àkọsílẹ̀ tuntun",
+      "hint": "Ọ̀rọ̀ lásán nìkan, títí dé lẹ́tà {max}. Má ṣe lẹ̀ mọ́ àwọn àlàyé ìbánisọ̀rọ̀ tàbí ohunkóhun tí ó ń fi olùròyìn hàn.",
+      "counter": "{count} nínú {max}",
+      "submit": "Fi àkọsílẹ̀ kún un",
+      "required": "Kọ àkọsílẹ̀ kan kọ́kọ́.",
+      "tooLong": "Àkọsílẹ̀ yìí gùn jù.",
+      "confirmTitle": "Fi àkọsílẹ̀ yìí kún un?",
+      "confirmBody": "Ó jẹ́ àṣírí àti pípẹ́. A kò lè ṣàtúnṣe rẹ̀ tàbí pa á rẹ́ lẹ́yìn-ọ̀-rẹyìn.",
+      "confirm": "Fi àkọsílẹ̀ kún un",
+      "cancel": "Maa ṣàtúnṣe lọ",
+      "added": "A ti fi àkọsílẹ̀ kún un.",
+      "by": "Nípasẹ̀ {author}",
+      "gone": "Ọ̀rọ̀ àkọsílẹ̀ yìí kò sí mọ́.",
+      "more": "Fi àwọn àkọsílẹ̀ ẹ̀yìn hàn",
+      "first": "Padà sí àwọn àkọsílẹ̀ àkọ́kọ́",
+      "navLabel": "Àwọn ojú ìwé àkọsílẹ̀",
+      "unavailable": "A kò lè gbé àwọn àkọsílẹ̀ náà jáde. Àwọn apá yòókù nínú ìròyìn náà kò ní ìṣòro.",
+      "retry": "Gbìyànjú láti gbé àwọn àkọsílẹ̀ náà jáde lẹ́ẹ̀kan sí i"
     },
     "questionActions": {
-      "label": null,
-      "hint": null,
-      "counter": null,
-      "submit": null,
-      "tooShort": null,
-      "tooLong": null,
-      "confirmTitle": null,
-      "confirmBody": null,
-      "confirm": null,
-      "cancel": null,
-      "added": null,
-      "withdraw": null,
-      "withdrawLabel": null,
-      "withdrawTitle": null,
-      "withdrawBody": null,
-      "withdrawConfirm": null,
-      "withdrawn": null
+      "label": "Ìbéèrè tuntun fún olùròyìn",
+      "hint": "Olùròyìn yóò rí èyí lórí ojú ìwé ipò. Lẹ́tà 5 sí 500. Má ṣe béèrè fún àwọn àlàyé ìdánimọ̀.",
+      "counter": "{count} nínú {max}",
+      "submit": "Béèrè ìbéèrè",
+      "tooShort": "Kọ ó kéré tán lẹ́tà 5.",
+      "tooLong": "Ìbéèrè yìí gùn jù.",
+      "confirmTitle": "Fi ìbéèrè yìí ránṣẹ́?",
+      "confirmBody": "Olùròyìn yóò rí i nígbà tí wọ́n bá ṣàyẹ̀wò ipò wọn. Kò ní yí ipò ìròyìn náà padà.",
+      "confirm": "Fi ìbéèrè ránṣẹ́",
+      "cancel": "Maa ṣàtúnṣe lọ",
+      "added": "A ti fi ìbéèrè kún un.",
+      "withdraw": "Fà á sẹ́yìn",
+      "withdrawLabel": "Fà ìbéèrè náà sẹ́yìn: {question}",
+      "withdrawTitle": "Fà ìbéèrè yìí sẹ́yìn?",
+      "withdrawBody": "Olùròyìn kò ní rí i mọ́. Ìdáhùn tí a ti fúnni tẹ́lẹ̀ yóò dúró nínú àkọsílẹ̀ náà.",
+      "withdrawConfirm": "Fà ìbéèrè sẹ́yìn",
+      "withdrawn": "A ti fà ìbéèrè náà sẹ́yìn."
     },
     "transition": {
-      "legend": null,
-      "command": null,
-      "commandHelp": null,
+      "legend": "Yí ipò náà padà",
+      "command": "Ìgbésẹ̀",
+      "commandHelp": "Yóò gbé ìròyìn náà kúrò láti {from} sí {to}.",
       "commands": {
-        "start_review": null,
-        "request_information": null,
-        "resume_review": null,
-        "verify_for_public_update": null,
-        "refer": null,
-        "close": null,
-        "reopen": null
+        "start_review": "Bẹ̀rẹ̀ àyẹ̀wò",
+        "request_information": "Béèrè lọ́wọ́ olùròyìn fún àlàyé púpọ̀ sí i",
+        "resume_review": "Bẹ̀rẹ̀ àyẹ̀wò padà",
+        "verify_for_public_update": "Sàmì sí pé a ti ṣàyẹ̀wò rẹ̀ fún ìmúdójúìwọ̀n gbogbogbò",
+        "refer": "Ṣe àkọsílẹ̀ ìfiranṣẹ́",
+        "close": "Pa ìròyìn náà dé",
+        "reopen": "Tún ìròyìn náà ṣí"
       },
-      "message": null,
-      "messageHint": null,
-      "messageRequired": null,
-      "messageTooLong": null,
-      "reason": null,
-      "reasonHint": null,
-      "reasonRequired": null,
-      "reasonTooLong": null,
-      "counter": null,
-      "submit": null,
-      "pending": null,
-      "confirmTitle": null,
-      "confirmBody": null,
-      "confirmCareful": null,
-      "confirm": null,
-      "cancel": null,
-      "done": null,
-      "conflict": null,
-      "reload": null,
-      "none": null,
-      "publishNote": null,
-      "reloading": null
+      "message": "Iṣẹ́ tí olùròyìn yóò rí",
+      "messageHint": "A fihàn lórí ojú ìwé ipò olùròyìn, a kì í fi hàn lórí àkọsílẹ̀ gbogbogbò rárá. Títí dé lẹ́tà {max}. Fi sílẹ̀ ṣófo láti lo iṣẹ́ tí a sábà máa ń lò. Má ṣe fi orúkọ tàbí àwọn àlàyé ìbánisọ̀rọ̀ kún un.",
+      "messageRequired": "Sọ ohun tí o nílò látọ̀dọ̀ olùròyìn.",
+      "messageTooLong": "Iṣẹ́ yìí gùn jù.",
+      "reason": "Ìdí abẹ́nú (àṣírí)",
+      "reasonHint": "A kì í fi hàn fún olùròyìn rárá. Títí dé lẹ́tà {max}.",
+      "reasonRequired": "Sọ ìdí tí o fi ń tún un ṣí.",
+      "reasonTooLong": "Ìdí yìí gùn jù.",
+      "counter": "{count} nínú {max}",
+      "submit": "Ṣàfikún ìyípadà",
+      "pending": "Ń ṣàfikún rẹ̀",
+      "confirmTitle": "Yí ipò náà padà sí {to}?",
+      "confirmBody": "Olùròyìn yóò rí ipò tuntun náà àti iṣẹ́ tó wà lókè. Èyí kò ní tẹ ohunkóhun jáde lórí àkọsílẹ̀ gbogbogbò.",
+      "confirmCareful": "Èyí ń yí ohun tí a sọ fún olùròyìn padà àti bí a ṣe ń ṣe ìtọ́jú ẹjọ́ náà. Ṣàyẹ̀wò iṣẹ́ náà kí o tó fìdí rẹ̀ múlẹ̀.",
+      "confirm": "Ṣàfikún ìyípadà",
+      "cancel": "Maa ṣàtúnṣe lọ",
+      "done": "Ipò ti yí padà láti {from} sí {to}. Kò sí ohun tí a tẹ̀jáde.",
+      "conflict": "Ìròyìn yìí yí padà nígbà tí o ń ṣiṣẹ́, tàbí ìgbésẹ̀ yẹn kò sí mọ́. Tún un rù láti rí ipò tuntun àti ìtàn, lẹ́yìn náà yàn lẹ́ẹ̀kan sí i. Ohun tí o tẹ̀ wọlé ni a gba pamọ́.",
+      "reload": "Tún ìròyìn náà rù",
+      "none": "Kò sí ìyípadà ipò kankan tó wà láti ipò yìí.",
+      "publishNote": "Ìyípadà ipò kò ní tẹ ọ̀rọ̀ jáde rárá. Ìmúdójúìwọ̀n gbogbogbò jẹ́ ìgbésẹ̀ ọ̀tọ̀ títẹ̀síwájú lórí ojú ìwé yìí.",
+      "reloading": "Ń tún un rù"
     },
     "publication": {
-      "intro": null,
-      "guidance": null,
-      "needsVerified": null,
-      "noCitations": null,
-      "citationsUnavailable": null,
-      "statement": null,
-      "statementHint": null,
-      "counter": null,
-      "effectiveOn": null,
-      "effectiveHelp": null,
-      "lastChecked": null,
-      "lastCheckedHelp": null,
-      "verification": null,
-      "citations": null,
-      "citationsHint": null,
-      "citationLine": null,
-      "submit": null,
-      "creating": null,
+      "intro": "Ìwọ ni o kọ ìmúdójúìwọ̀n gbogbogbò, lọ́tọ̀ kúrò nínú ìyípadà ipò èyíkéyìí tàbí àkọsílẹ̀ àṣírí. A fihàn lórí àtòkọ àkókò gbogbogbò ti iṣẹ́ àkànṣe náà nìkan lẹ́yìn tí o bá ṣàkọ́wò rẹ̀ tí o sì fìdí ọ̀rọ̀ gangan yẹn múlẹ̀.",
+      "guidance": "Sọ ohun tí àwọn ọ̀rọ̀ tí a yọ jáde sọ nìkan. Má ṣe ṣe ẹ̀dà ọ̀rọ̀ látinú ìròyìn àṣírí, bẹ́ẹ̀ ni kí o má ṣe pe ẹnikẹ́ni tàbí ohunkóhun ní oníwà-ìbàjẹ́, ẹlẹ́tàn, ẹlẹ́bi, ẹni tí a ti kọ̀ sílẹ̀, tàbí ẹni tí ó ti pé àyàfi tí ọ̀rọ̀ tí a yọ jáde bá sọ bẹ́ẹ̀ nínú àwọn ọ̀rọ̀ yẹn.",
+      "needsVerified": "A lè kọ ìmúdójúìwọ̀n gbogbogbò nìkan nígbà tí a bá sàmì sí ìròyìn náà gẹ́gẹ́ bí A ti ṣàyẹ̀wò rẹ̀ fún ìmúdójúìwọ̀n gbogbogbò. Yí ipò náà padà kọ́kọ́.",
+      "noCitations": "Kò sí àwọn ìtọ́kasí tí a fọwọ́sí tí ó wà fún iṣẹ́ àkànṣe yìí, nítorí náà a kò lè kọ ìmúdójúìwọ̀n gbogbogbò.",
+      "citationsUnavailable": "A kò lè gbé àwọn ìtọ́kasí tí a fọwọ́sí fún iṣẹ́ àkànṣe yìí jáde, nítorí náà a kò lè kọ ìmúdójúìwọ̀n gbogbogbò báyìí. Tún ojú ìwé náà rù láti gbìyànjú lẹ́ẹ̀kan sí i.",
+      "statement": "Gbólóhùn gbogbogbò",
+      "statementHint": "Ọ̀rọ̀ lásán, lẹ́tà 10 sí {max}. Àwọn ọ̀rọ̀ tí kò gbé sẹ́yìn ẹnikẹ́ni nìkan. A fihàn fún gbogbo ènìyàn.",
+      "counter": "{count} nínú {max}",
+      "effectiveOn": "Ọjọ́ tí èyí bẹ̀rẹ̀ sí í ṣiṣẹ́",
+      "effectiveHelp": "Ọjọ́ tí orísun tí a yọ jáde sọ pé èyí bẹ̀rẹ̀ sí í ṣiṣẹ́.",
+      "lastChecked": "A ṣàyẹ̀wò kẹ́yìn ní (kò pọn dandan)",
+      "lastCheckedHelp": "Fi sílẹ̀ ṣófo bí o kò bá tún orísun náà ṣàyẹ̀wò mọ́.",
+      "verification": "Ipò ìjẹ́rìísí",
+      "citations": "Àwọn ìtọ́kasí tí a fọwọ́sí",
+      "citationsHint": "Yàn 1 sí 5. A ṣe ẹ̀dà ọ̀rọ̀ náà gangan látinú orísun tí a fọwọ́sí a kò sì lè ṣàtúnṣe rẹ̀.",
+      "citationLine": "{title}, {publisher}, {location}",
+      "submit": "Mú àkọ́wò kan jáde",
+      "creating": "Ń mú àkọ́wò náà jáde",
       "errors": {
-        "statementRequired": null,
-        "statementShort": null,
-        "statementLong": null,
-        "dateRequired": null,
-        "citationsRequired": null,
-        "citationsTooMany": null
+        "statementRequired": "Kọ gbólóhùn gbogbogbò náà.",
+        "statementShort": "Kọ ó kéré tán lẹ́tà 10.",
+        "statementLong": "Gbólóhùn yìí gùn jù.",
+        "dateRequired": "Yàn ọjọ́ tí èyí bẹ̀rẹ̀ sí í ṣiṣẹ́.",
+        "citationsRequired": "Yàn ó kéré tán ìtọ́kasí kan tí a fọwọ́sí.",
+        "citationsTooMany": "Má ṣe yàn ju ìtọ́kasí 5 lọ."
       },
       "preview": {
-        "heading": null,
-        "lead": null,
-        "status": null,
-        "issuesHeading": null,
-        "noIssues": null,
-        "citationsHeading": null,
-        "edit": null,
-        "discard": null,
-        "publish": null,
-        "publishing": null,
-        "cannot": null,
-        "stale": null,
-        "newPreview": null,
-        "viewPublic": null,
-        "publishedAt": null,
-        "publishedHeading": null,
-        "publishedBody": null,
-        "discarded": null,
-        "confirmTitle": null,
-        "confirmBody": null,
-        "confirm": null,
-        "cancel": null,
-        "discardTitle": null,
-        "discardBody": null,
-        "discardConfirm": null
+        "heading": "Àkọ́wò gangan",
+        "lead": "Èyí gangan ni ohun tí àtòkọ àkókò gbogbogbò yóò fihàn, tí a yà pẹ̀lú ohun èlò kan náà. Kò sí ohun tí ó jẹ́ ti gbogbo ènìyàn báyìí.",
+        "status": "Ipò ìròyìn nígbà tí a ṣe àkọ́wò yìí: {status} (ẹ̀yà {version}).",
+        "issuesHeading": "A kò lè tẹ èyí jáde báyìí",
+        "noIssues": "A kò rí àwọn ìṣòro dídènà kankan.",
+        "citationsHeading": "Àwọn ọ̀rọ̀ tí a yọ jáde",
+        "edit": "Ṣàtúnṣe ọ̀rọ̀ náà",
+        "discard": "Sọ àkọsílẹ̀ yìí nù",
+        "publish": "Tẹ ìmúdójúìwọ̀n yìí jáde",
+        "publishing": "Ń tẹ̀ ẹ́ jáde",
+        "cannot": "Títẹ̀jáde kò sí fún àkọ́wò yìí.",
+        "stale": "Ìròyìn tàbí àkọ́wò náà yí padà lẹ́yìn tí a ṣe é, nítorí náà a kò tẹ̀ ẹ́ jáde. Mú àkọ́wò tuntun jáde kí o sì tún un ṣàyẹ̀wò lẹ́ẹ̀kan sí i.",
+        "newPreview": "Padà sí ṣíṣàtúnṣe",
+        "viewPublic": "Rí i lórí àkọsílẹ̀ gbogbogbò",
+        "publishedAt": "A tẹ̀ ẹ́ jáde ní {date}.",
+        "publishedHeading": "A Tẹ̀ Ẹ́ Jáde",
+        "publishedBody": "Ìmúdójúìwọ̀n yìí wà báyìí lórí àtòkọ àkókò gbogbogbò ti iṣẹ́ àkànṣe náà gẹ́gẹ́ bí a ṣe ṣàkọ́wò rẹ̀ gangan.",
+        "discarded": "A ti sọ àkọsílẹ̀ náà nù. Kò sí ohun tí a tẹ̀jáde.",
+        "confirmTitle": "Tẹ ìmúdójúìwọ̀n yìí jáde sí gbogbo ènìyàn?",
+        "confirmBody": "Gbólóhùn náà, ọjọ́ rẹ̀, àmì ìjẹ́rìísí rẹ̀, àti àwọn ọ̀rọ̀ tí a yọ jáde yóò farahàn lórí àtòkọ àkókò gbogbogbò ti iṣẹ́ àkànṣe náà gẹ́gẹ́ bí a ṣe fihàn nínú àkọ́wò náà gangan. A fihàn sí gbogbo ènìyàn a kò sì lè yí i padà ní ìkọ̀kọ̀.",
+        "confirm": "Tẹ̀ Ẹ́ Jáde",
+        "cancel": "Pa àkọ́wò náà mọ́",
+        "discardTitle": "Sọ àkọsílẹ̀ yìí nù?",
+        "discardBody": "A ti fà á sẹ́yìn. Kò sí ohun tí a tẹ̀jáde.",
+        "discardConfirm": "Sọ àkọsílẹ̀ nù"
       },
       "issues": {
-        "statement": null,
+        "statement": "Gbólóhùn",
         "known": {
-          "report_text": null,
-          "citations": null,
-          "effective_on": null,
-          "verification_state": null,
-          "statement": null,
-          "contact_detail": null,
-          "tracking_code": null
+          "report_text": "Gbólóhùn náà ń tún ọ̀rọ̀ sọ látinú ìròyìn àṣírí, ìdáhùn, tàbí àkọsílẹ̀. Tún un kọ látinú orísun tí a yọ jáde.",
+          "citations": "Ìtọ́kasí kan kù tàbí kò ṣàtìlẹ́yìn fún ìmúdójúìwọ̀n yìí.",
+          "effective_on": "Ọjọ́ náà kù tàbí a kò gbà á láàyè.",
+          "verification_state": "Ipò ìjẹ́rìísí náà kò bá àwọn orísun tí a yọ jáde mu.",
+          "statement": "Gbólóhùn náà nílò àkíyèsí.",
+          "contact_detail": "Gbólóhùn náà ní ohun tí ó dà bí àlàyé ìbánisọ̀rọ̀. Yọ ọ́ kúrò.",
+          "tracking_code": "Gbólóhùn náà ní ohun tí ó dà bí kódù ìtọpinpin. Yọ ọ́ kúrò."
         },
-        "term": null,
-        "other": null,
-        "field": null
+        "term": "A lo ọ̀rọ̀ náà \"{term}\", ṣùgbọ́n kò sí ọ̀rọ̀ tí a yọ jáde tí ó ní in. Yọ ọ́ kúrò tàbí kọ ìtọ́kasí ọ̀rọ̀ kan tí ó ní in.",
+        "other": "Ìṣòro tí a kò mọ̀ ({code}) kan ń dènà títẹ̀jáde.",
+        "field": "Agbègbè: {field}"
       },
       "drafts": {
-        "heading": null,
-        "empty": null,
-        "state": null,
+        "heading": "Àwọn àkọsílẹ̀ ti ìṣáájú",
+        "empty": "Kò tíì sí àwọn àkọsílẹ̀ kankan.",
+        "state": "Ipò: {state}",
         "states": {
-          "draft": null,
-          "published": null,
-          "withdrawn": null
+          "draft": "Àkọsílẹ̀",
+          "published": "A tẹ̀ ẹ́ jáde",
+          "withdrawn": "A ti fà á sẹ́yìn"
         },
-        "created": null,
-        "open": null,
-        "withdraw": null,
-        "loading": null,
-        "openFailed": null
+        "created": "A mú un jáde ní {date}",
+        "open": "Ṣí àkọ́wò",
+        "withdraw": "Fà á sẹ́yìn",
+        "loading": "Ń gbé àkọ́wò náà jáde",
+        "openFailed": "A kò lè ṣí àkọ́wò náà."
       },
-      "guidanceTitle": null
+      "guidanceTitle": "Kọ ọ́ láìgbé sẹ́yìn ẹnikẹ́ni"
     }
   },
   "discovery": {
-    "label": null,
-    "unreviewedNote": null,
+    "label": "a ṣàwárí rẹ̀ — a kò tíì ṣàyẹ̀wò",
+    "unreviewedNote": "A rí i lórí Íńtánẹ́ẹ̀tì gbogbogbò. Kò sí ohun tí a fìdí rẹ̀ múlẹ̀, fọwọ́sí, tàbí tẹ̀jáde níhìn-ín, àti pé fífarahàn orísun kan níhìn-ín tàbí títún un sọ kò sọ ọ́ di òtítọ́.",
     "results": {
-      "heading": null,
-      "count": null,
-      "none": null,
-      "cap": null
+      "heading": "Àwọn orísun tí a ṣàwárí",
+      "count": "Àwọn orísun tí a fihàn: {count}",
+      "none": "Kò sí àwọn orísun kankan tí a rí fún ìṣiṣẹ́ yìí.",
+      "cap": "Àwọn orísun 10 púpọ̀ jùlọ ni a fihàn."
     },
     "card": {
-      "untitled": null,
-      "publisher": null,
-      "type": null,
-      "published": null,
-      "publishedUnknown": null,
-      "dateConflict": null,
-      "discovered": null,
-      "retrieved": null,
-      "availability": null,
-      "open": null,
-      "noLink": null,
-      "injection": null,
-      "excerpt": null,
-      "repeatsHeading": null,
-      "repeats": null,
-      "decision": null
+      "untitled": "Ojú ìwé tí kò ní àkọlé",
+      "publisher": "Olùtẹ̀jáde",
+      "type": "Irúfẹ́",
+      "published": "A Tẹ̀ Ẹ́ Jáde ní {date} ({provenance})",
+      "publishedUnknown": "Ọjọ́ tí a tẹ̀ ẹ́ jáde ni a kò mọ̀",
+      "dateConflict": "Àwọn ojú ìwé náà kò fara mọ́ ọjọ́ yìí.",
+      "discovered": "A rí i kọ́kọ́ ní {date}",
+      "retrieved": "A ṣàyẹ̀wò rẹ̀ kẹ́yìn ní {date}",
+      "availability": "Wíwà nílẹ̀",
+      "open": "Ṣí ojú ìwé àkọ́kọ́ náà (taabu tuntun)",
+      "noLink": "A kò lè fi àdírẹ́sì náà hàn láìséwu, nítorí náà kò sí ìsopọ̀ kankan.",
+      "injection": "Ojú ìwé yìí ní ọ̀rọ̀ tí ó ń gbìyànjú láti fúnni ní ìtọ́ni. A ṣe é gẹ́gẹ́ bí ọ̀rọ̀ lásán a sì kọ̀ ọ́ sí.",
+      "excerpt": "Ọ̀rọ̀ tí a yọ jáde tí a gbà láàyè",
+      "repeatsHeading": "Àwọn àtúnsọ ojú ìwé yìí",
+      "repeats": "Àwọn àtúnsọ: {title}",
+      "decision": "Ìpinnu"
     },
     "availabilityStates": {
-      "unchecked": null,
-      "available": null,
-      "temporarily_unavailable": null,
-      "access_restricted": null,
-      "permanently_unavailable": null,
-      "stale": null
+      "unchecked": "A kò ṣàyẹ̀wò",
+      "available": "Ó wà",
+      "temporarily_unavailable": "Kò sí fún ìgbà díẹ̀",
+      "access_restricted": "A ti dín ààyè ìwọlé kù",
+      "permanently_unavailable": "Kò sí mọ́",
+      "stale": "Ó lè jẹ́ àlàyé àtijọ́"
     },
     "analysis": {
-      "heading": null,
-      "unavailable": null,
-      "facts": null,
-      "claims": null,
-      "claimBy": null,
-      "contradictions": null,
-      "sides": null,
-      "gaps": null,
-      "none": null,
-      "safety": null,
-      "sourceRef": null,
-      "noScore": null
+      "heading": "Àyẹ̀wò (àlàyé ni, kì í ṣe orísun)",
+      "unavailable": "Kò sí àyẹ̀wò kankan tí a fihàn: ó kù tàbí a kò lè ṣàyẹ̀wò rẹ̀ lòdì sí àwọn orísun náà. Ka àwọn orísun náà ní tààràtà.",
+      "facts": "Àwọn òtítọ́ tí a ṣàtìlẹ́yìn fún",
+      "claims": "Àwọn ẹ̀sùn tí a jábọ̀ (gẹ́gẹ́ bí orísun náà ṣe sọ wọ́n)",
+      "claimBy": "{publisher} sọ pé: {claim}",
+      "contradictions": "Àwọn ìyàtọ̀",
+      "sides": "Àwọn orísun ní ẹ̀gbẹ́ kọ̀ọ̀kan",
+      "gaps": "Àwọn àlàfo àlàyé",
+      "none": "Kò sí èyí tí a jábọ̀.",
+      "safety": "Àkíyèsí ààbò àti ibi tí ó dé",
+      "sourceRef": "Orísun {number}",
+      "noScore": "Kò sí ìtòlẹ́sẹẹsẹ tàbí máàkì ìfọkàntán tí a fihàn. Ìtòlẹ́sẹẹsẹ àwárí àti ìfọkàntán àwòṣe kì í ṣe ẹ̀rí."
     },
     "status": {
-      "label": null,
+      "label": "Ipò ìṣiṣẹ́",
       "states": {
-        "queued": null,
-        "searching": null,
-        "analysing": null,
-        "needs_review": null,
-        "complete": null,
-        "failed": null,
-        "cancelled": null
+        "queued": "Ń dúró",
+        "searching": "Ń ṣàwárí",
+        "analysing": "Ń ṣàyẹ̀wò",
+        "needs_review": "Nílò ìpinnu olùṣàyẹ̀wò",
+        "complete": "Ó ti parí",
+        "failed": "Ó kùnà",
+        "cancelled": "A ti fagilé"
       },
-      "counts": null,
-      "replay": null,
-      "live": null,
-      "started": null,
-      "finished": null,
+      "counts": "A rí {found}, a kà {fetched}, a ṣàyẹ̀wò {analysed}.",
+      "replay": "Àtúnyẹ̀wò tí a gba sílẹ̀ fún àwòṣe (demo), kì í ṣe àwárí gidi.",
+      "live": "Àwárí gidi.",
+      "started": "Ó bẹ̀rẹ̀ ní {date}",
+      "finished": "Ó parí ní {date}",
       "scope": {
-        "public": null,
-        "reviewer": null
+        "public": "Ìṣiṣẹ́ gbogbogbò tí a pín fún iṣẹ́ àkànṣe yìí",
+        "reviewer": "Ìṣiṣẹ́ àṣírí fún ìròyìn yìí"
       }
     },
     "failure": {
-      "title": null,
+      "title": "Ìṣiṣẹ́ yìí kò parí",
       "codes": {
-        "provider_unavailable": null,
-        "fetch_blocked": null,
-        "unsafe_text": null,
-        "extraction_failed": null,
-        "analysis_invalid": null,
-        "budget_exhausted": null,
-        "rate_limited": null,
-        "dead_letter": null
+        "provider_unavailable": "Olùpèsè àwárí kò sí.",
+        "fetch_blocked": "A kò lè gba ojú ìwé kan wọlé láìséwu nítorí náà a fò ó ru.",
+        "unsafe_text": "Ojú ìwé kan ní ọ̀rọ̀ tí kò léwu a kò sì lò ó.",
+        "extraction_failed": "A kò lè ka ọ̀rọ̀ látinú ojú ìwé kan.",
+        "analysis_invalid": "A kò lè ṣàyẹ̀wò àyẹ̀wò náà lòdì sí àwọn orísun náà, nítorí náà a kò fihàn.",
+        "budget_exhausted": "Owó àwárí ojoojúmọ́ ti tán. Ìṣiṣẹ́ tó kẹ́yìn tí a parí ni a fihàn dípò rẹ̀ nígbà tí ó bá wà.",
+        "rate_limited": "Àwọn ìbéèrè ti pọ̀ jù. Gbìyànjú lẹ́ẹ̀kan sí i nígbà mìíràn.",
+        "dead_letter": "Iṣẹ́ náà kùnà léraléra a sì ti dá a dúró. Olùṣàyẹ̀wò kan lè bẹ̀rẹ̀ ìṣiṣẹ́ tuntun."
       },
-      "generic": null,
-      "partial": null,
-      "empty": null
+      "generic": "Ìṣiṣẹ́ náà parí láìsí àbájáde tí a lè lò.",
+      "partial": "Àwọn orísun tí a rí kí ó tó dúró ni a fihàn nísàlẹ̀ wọ́n sì lè má pé.",
+      "empty": "Kò sí ohun tí a rí kí ó tó dúró."
     },
     "states": {
-      "cancelledPartial": null,
-      "cancelledEmpty": null,
-      "needsReview": null,
-      "offline": null,
-      "stale": null,
-      "checking": null,
-      "paused": null
+      "cancelledPartial": "A ti fagilé rẹ̀. Ohunkóhun tí a rí kí a tó fagilé rẹ̀ ni a fihàn nísàlẹ̀ kò sì pé.",
+      "cancelledEmpty": "A ti fagilé rẹ̀ kí a tó rí ohunkóhun.",
+      "needsReview": "Ìṣiṣẹ́ yìí nílò ìpinnu olùṣàyẹ̀wò kan kí a tó lè gbára lé àyẹ̀wò rẹ̀.",
+      "offline": "O kò sí lórí Íńtánẹ́ẹ̀tì. Ohun tí ó ti wà lórí ojú ìwé yìí yóò máa hàn, ṣíṣàyẹ̀wò yóò sì tẹ̀síwájú nígbà tí o bá padà sí orí Íńtánẹ́ẹ̀tì.",
+      "stale": "Àwọn àbájáde wọ̀nyí lè jẹ́ ti àtijọ́. Ìṣiṣẹ́ náà parí ní {date}.",
+      "checking": "Ń ṣàyẹ̀wò fún àwọn ìmúdójúìwọ̀n.",
+      "paused": "A ti dá ṣíṣàyẹ̀wò dúró."
     },
     "controls": {
-      "cancel": null,
-      "cancelTitle": null,
-      "cancelBody": null,
-      "cancelConfirm": null,
-      "keep": null,
-      "cancelRequested": null,
-      "approve": null,
-      "reject": null,
-      "reviewTitle": null,
-      "approveBody": null,
-      "rejectBody": null,
-      "reviewConfirm": null,
-      "reviewed": null,
-      "retry": null,
-      "stopChecking": null,
-      "resumeChecking": null
+      "cancel": "Fagilé ìṣiṣẹ́ yìí",
+      "cancelTitle": "Fagilé àwárí orísun yìí?",
+      "cancelBody": "A ti dá iṣẹ́ tí ó kù láti ṣe dúró. Ohunkóhun tí a ti rí ni a gba pamọ́.",
+      "cancelConfirm": "Fagilé ìṣiṣẹ́ náà",
+      "keep": "Maa jẹ́ kí ó ṣiṣẹ́ lọ",
+      "cancelRequested": "A ti béèrè fún ìfagilé. Iṣẹ́ tí a ti ṣe ni a gba pamọ́.",
+      "approve": "Fọwọ́sí ìparí rẹ̀",
+      "reject": "Kọ ìṣiṣẹ́ yìí",
+      "reviewTitle": "Ṣe àkọsílẹ̀ ìpinnu yìí lórí ìṣiṣẹ́ náà?",
+      "approveBody": "Èyí ń fìdí rẹ̀ múlẹ̀ pé ìṣiṣẹ́ náà parí dáadáa. Kò fìdí orísun kankan múlẹ̀ tàbí tẹ ohunkóhun jáde.",
+      "rejectBody": "Èyí ń kọ ìṣiṣẹ́ náà. Àwọn orísun rẹ̀ yóò wà ní àtòjọ gẹ́gẹ́ bí èyí tí a kò ṣàyẹ̀wò.",
+      "reviewConfirm": "Ṣe àkọsílẹ̀ ìpinnu",
+      "reviewed": "A ti ṣe àkọsílẹ̀ ìpinnu ìṣiṣẹ́.",
+      "retry": "Tún ṣàyẹ̀wò",
+      "stopChecking": "Dáwọ́ ṣíṣàyẹ̀wò dúró",
+      "resumeChecking": "Bẹ̀rẹ̀ ṣíṣàyẹ̀wò padà"
     },
     "followUps": {
-      "heading": null,
-      "cap": null,
-      "why": null,
-      "sensitivity": null,
-      "answerLabel": null,
-      "answerHint": null,
-      "send": null,
-      "skip": null,
-      "unsafe": null,
-      "sent": null,
-      "skipped": null,
-      "flagged": null,
-      "required": null,
-      "tooLong": null,
-      "none": null,
-      "stale": null
+      "heading": "Àwọn ìbéèrè àtẹ̀lé",
+      "cap": "Àwọn ìbéèrè 5 púpọ̀ jùlọ ni a fihàn.",
+      "why": "Ìdí tí a fi béèrè rẹ̀: {reason}",
+      "sensitivity": "Bí ó ṣe jẹ́ àṣírí tó: {level}",
+      "answerLabel": "Ìdáhùn rẹ (àṣírí)",
+      "answerHint": "A gba pamọ́ nínú ẹ̀rọ títí tí o óò fi fi ránṣẹ́. A kì í fi sínú àdírẹ́sì tàbí gba pamọ́ nínú ẹ̀rọ-ìṣàwárí yìí rárá.",
+      "send": "Fi ìdáhùn ránṣẹ́",
+      "skip": "Fò ó ru",
+      "unsafe": "Sàmì sí i pé kò léwu láti béèrè",
+      "sent": "A ti ṣe àkọsílẹ̀ rẹ̀. Ohun tí o tẹ̀ wọlé a kò ní tún un fihàn mọ́.",
+      "skipped": "A ti fò ó ru.",
+      "flagged": "A ti sàmì sí i pé kò léwu.",
+      "required": "Kọ ìdáhùn kan tàbí yàn láti Fò ó ru.",
+      "tooLong": "Ìdáhùn yìí gùn jù.",
+      "none": "Kò sí àwọn ìbéèrè àtẹ̀lé kankan.",
+      "stale": "Ìbéèrè yìí jẹ́ ti ìṣiṣẹ́ ọ̀tọ̀, nítorí náà a kò fi ránṣẹ́."
     },
     "decisions": {
-      "attach": null,
-      "reject": null,
-      "defer": null,
-      "reconsider": null,
-      "reason": null,
-      "reasonHint": null,
-      "reasonRequired": null,
-      "reasonTooLong": null,
-      "confirmTitle": null,
-      "attachBody": null,
-      "rejectBody": null,
-      "deferBody": null,
-      "reconsiderBody": null,
-      "confirm": null,
-      "cancel": null,
-      "recorded": null,
-      "conflict": null,
+      "attach": "Lẹ̀ ẹ́ mọ́ gẹ́gẹ́ bí orísun tí ń dúró",
+      "reject": "Kọ̀ Ọ́",
+      "defer": "Dádúró",
+      "reconsider": "Tún rò ó",
+      "reason": "Ìdí",
+      "reasonHint": "Sọ ìdí rẹ̀. Títí dé lẹ́tà 400. A gba pamọ́ ní ìkọ̀kọ̀.",
+      "reasonRequired": "Fún wa ní ìdí rẹ̀.",
+      "reasonTooLong": "Ìdí yìí gùn jù.",
+      "confirmTitle": "Ṣe àkọsílẹ̀ ìpinnu yìí lórí orísun náà?",
+      "attachBody": "Èyí ń dá orísun tí ń dúró kan fún ìlànà iṣẹ́ orísun tí a fọwọ́sí. Kò fọwọ́sí òtítọ́ kankan tàbí tẹ ohunkóhun jáde.",
+      "rejectBody": "Èyí ń kọ orísun náà fún ìròyìn yìí. Yóò wà nínú àtòjọ a sì lè tún rò ó.",
+      "deferBody": "Èyí ń fi orísun náà sí apá kan láìsí ìpinnu ìkẹyìn.",
+      "reconsiderBody": "Èyí ń mú orísun náà padà sí ipò dídádúró.",
+      "confirm": "Ṣe àkọsílẹ̀ ìpinnu",
+      "cancel": "Maa ṣàtúnṣe lọ",
+      "recorded": "Ìpinnu tí a ṣe àkọsílẹ̀ rẹ̀: {disposition}.",
+      "conflict": "Orísun yìí yí padà látìgbà tí o ti gbé e jáde, tàbí ìpinnu yẹn kò sí mọ́. Tún àwọn àbájáde náà rù kí o sì gbìyànjú lẹ́ẹ̀kan sí i.",
       "dispositions": {
-        "not_reviewed": null,
-        "attached": null,
-        "rejected": null,
-        "deferred": null
+        "not_reviewed": "A kò ṣàyẹ̀wò",
+        "attached": "A ti lẹ̀ ẹ́ mọ́ gẹ́gẹ́ bí orísun tí ń dúró (a kò fìdí rẹ̀ múlẹ̀)",
+        "rejected": "A kọ̀ ọ́",
+        "deferred": "A dádúró"
       }
     }
   },
   "offline": {
-    "title": null,
-    "lead": null,
-    "retry": null,
-    "savedHeading": null,
-    "savedNone": null,
-    "savedOn": null,
-    "savedNote": null,
-    "clear": null,
-    "cleared": null,
-    "privateNote": null,
-    "banner": null,
-    "bannerNoDate": null,
-    "backOnline": null,
-    "update": null,
-    "updateApply": null,
-    "updateLater": null,
+    "title": "O kò sí lórí Íńtánẹ́ẹ̀tì",
+    "lead": "ShaidaGo kò lè rí Íńtánẹ́ẹ̀tì. Àwọn ojú ìwé tí o ṣí láìpẹ́ yìí lè wà nínú ẹ̀rọ yìí.",
+    "retry": "Gbìyànjú lẹ́ẹ̀kan sí i",
+    "savedHeading": "Àwọn ojú ìwé tí a gba pamọ́",
+    "savedNone": "Kò tíì sí ojú ìwé kankan tí a gba pamọ́. Ṣí àkọsílẹ̀ iṣẹ́ àkànṣe kan nígbà tí o bá wà lórí Íńtánẹ́ẹ̀tì a óò sì gba á pamọ́ síhìn-ín fún ọ̀sẹ̀ kan.",
+    "savedOn": "A Gba Pamọ́ ní {date}",
+    "savedNote": "Ojú ìwé tí a gba pamọ́ kan ń fihàn ọjọ́ tí a ṣàyẹ̀wò rẹ̀ kẹ́yìn tí ó ní nígbà tí a gba á pamọ́. Ó lè jẹ́ àlàyé àtijọ́.",
+    "clear": "Gbagbé àwọn ojú ìwé tí a gba pamọ́",
+    "cleared": "A ti yọ àwọn ojú ìwé tí a gba pamọ́ kúrò nínú ẹ̀rọ yìí.",
+    "privateNote": "Àwọn ìròyìn, ìtọpinpin, àti àwọn ìgbésẹ̀ olùṣàyẹ̀wò nílò Íńtánẹ́ẹ̀tì. Kò sí ohun tí o tẹ̀ wọlé tí a ń fi ránṣẹ́, gba pamọ́, tàbí fi sínú àtòjọ nígbà tí o kò bá sí lórí Íńtánẹ́ẹ̀tì.",
+    "banner": "O kò sí lórí Íńtánẹ́ẹ̀tì. Ojú ìwé yìí jẹ́ ẹ̀dà tí a gba pamọ́ láti {date} ó sì lè jẹ́ àlàyé àtijọ́.",
+    "bannerNoDate": "O kò sí lórí Íńtánẹ́ẹ̀tì. O ń rí ẹ̀dà tí a gba pamọ́ kan tí ó lè jẹ́ àlàyé àtijọ́.",
+    "backOnline": "O ti padà sí orí Íńtánẹ́ẹ̀tì.",
+    "update": "Ìmúdójúìwọ̀n kan sí ShaidaGo ti ṣetán.",
+    "updateApply": "Tún un rù láti lò ó",
+    "updateLater": "Yóò bẹ̀rẹ̀ sí í ṣiṣẹ́ nígbà mìíràn tí o bá ṣí ShaidaGo. Kò kan ìròyìn rẹ.",
     "lowData": {
-      "suggest": null,
-      "on": null,
-      "off": null,
-      "turnOn": null,
-      "turnOff": null,
-      "label": null,
-      "note": null,
-      "dismiss": null
+      "suggest": "Ẹ̀rọ-ìṣàwárí rẹ ń béèrè láti dín lílo data kù. Tàn ipò data-kékeré?",
+      "on": "Ipò data-kékeré wà ní títàn",
+      "off": "Ipò data-kékeré wà ní pípa",
+      "turnOn": "Tàn ipò data-kékeré",
+      "turnOff": "Pa ipò data-kékeré",
+      "label": "Ipò data-kékeré",
+      "note": "Àwọn àwòrán tó ń gbé kékeré, kò sí títún nǹkan rù lẹ́yìn tàbí gígbé e wọlé tẹ́lẹ̀, ṣíṣàyẹ̀wò Source Scout díẹ̀díẹ̀. Gbogbo àwọn òtítọ́ àti ìgbésẹ̀ ṣì wà.",
+      "dismiss": "Kì í ṣe báyìí"
     }
   }
 }

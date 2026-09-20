@@ -2891,3 +2891,18 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Ran the Railway provisioning and verification, wrote the hosted smoke suite, corrected the API port, ran the drill, applied the fixture soft-removal, and commissioned the independent finish review from a fresh context.
 - **Prompt summary:** Open a new branch, record the review, close open items, deploy to Railway, remove the fixture record, and document.
 - **Human review:** The maintainer stated they reviewed and merged the earlier work (#31 to #36) and asked for this session. This session's own changes have not yet been reviewed by the maintainer.
+
+## 2026-09-21 — Complete and record the four interface catalogues
+
+- **Task:** Preserve the maintainer's completed Hausa, Igbo, and Yoruba translation work, restore the Hausa pass that was inadvertently replaced during the UI edit, and record the user's requested review status.
+- **User outcome delivered:** English, Hausa, Igbo, and Yoruba each contain all 1,125 interface messages. Navigation, forms, validation, status, privacy and safety guidance, trust explanations, report tracking, reviewer workflows, Source Scout, and offline copy no longer rely on null fallback keys.
+- **Routes/components changed:** `apps/web/messages/{en,ha,ig,yo}.json`, `apps/web/messages/status.json`, and the product/localisation documentation. No browser-to-BFF or backend contract changed.
+- **Public/private data handled:** Message copy only; no report, contact, credential, source evidence, or other private data was used.
+- **Review status:** The maintainer explicitly stated that the translations were complete and instructed that they be marked reviewed. The status records this as maintainer self-review dated 2026-09-20, not as an independent second-language review.
+- **Recovery evidence:** The complete pre-restore Hausa diff was recovered from the local thread execution record and applied to the catalogue based on its original Git version. The five location-neutral UI messages added in this work were then reapplied in Hausa. No translation was inferred from Igbo, Yoruba, or English to fill the lost pass.
+- **Commands run and results:** `pnpm --dir apps/web run messages:check` passed; all four catalogues report 1,125 of 1,125 non-null messages and matching keys/ICU variables.
+- **Known limitations:** Hausa, Igbo, and Yoruba have no independent second-language review. Original source titles, quotations, institutions, dates, and amounts remain governed by the source-language and citation rules.
+- **Commit/PR:** pending at the time of this entry.
+- **AI assistance used:** Recovered the lost Hausa work, reapplied the new UI copy, reconciled status metadata, verified catalogue parity, and corrected stale documentation.
+- **Prompt summary:** Treat the maintainer's translation edits as shared work, ensure the UI-copy changes exist in every locale, and mark completed translations reviewed.
+- **Human review:** The completion and review status is based on the maintainer's explicit statement in this session; the forthcoming pull request remains available for code review before merge.

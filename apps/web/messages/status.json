@@ -1,5 +1,5 @@
 {
-  "$comment": "Translation status per locale and domain. A locale is served as its own language only when every critical domain is reviewed; otherwise pages serve the English original and say so. While `pendingKeysAllowed` is true (the build phase), a reviewed domain may still hold `null` keys that the maintainer will translate in one pass at the end of the build; the checker lists them. Set it to false at the end and the checker fails on any remaining null. Never mark a domain reviewed or machine_assisted without a named reviewer and date. The `problems` domain is non-critical and pending in ha, ig, and yo until the maintainer's full translation pass; it must be translated, reviewed, and marked critical before the first form ships.",
+  "$comment": "Translation status per locale and domain. English is the source locale. Every product domain is critical, and all English, Hausa, Igbo, and Yoruba catalogue entries were completed and maintainer-reviewed on 2026-09-20. The maintainer review is self-reported and is not an independent second-language review. Key parity, ICU variables, and the absence of null values are enforced by the catalogue checker.",
   "domains": {
     "shell": {
       "critical": true
@@ -11,49 +11,49 @@
       "critical": true
     },
     "landing": {
-      "critical": false
+      "critical": true
     },
     "problems": {
-      "critical": false
+      "critical": true
     },
     "language": {
-      "critical": false
+      "critical": true
     },
     "directory": {
-      "critical": false
+      "critical": true
     },
     "home": {
-      "critical": false
+      "critical": true
     },
     "project": {
-      "critical": false
+      "critical": true
     },
     "source": {
-      "critical": false
+      "critical": true
     },
     "trust": {
-      "critical": false
+      "critical": true
     },
     "qa": {
-      "critical": false
+      "critical": true
     },
     "report": {
-      "critical": false
+      "critical": true
     },
     "track": {
-      "critical": false
+      "critical": true
     },
     "handle": {
-      "critical": false
+      "critical": true
     },
     "reviewer": {
-      "critical": false
+      "critical": true
     },
     "discovery": {
-      "critical": false
+      "critical": true
     },
     "offline": {
-      "critical": false
+      "critical": true
     }
   },
   "locales": {
@@ -171,176 +171,260 @@
         "reviewedOn": "2026-09-20"
       },
       "problems": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "language": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "directory": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "home": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "project": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "source": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "trust": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "qa": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "report": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "track": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "handle": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "reviewer": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "discovery": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "offline": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       }
     },
     "ig": {
       "shell": {
         "status": "reviewed",
-        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
         "reviewedOn": "2026-09-20"
       },
       "evidence": {
         "status": "reviewed",
-        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
         "reviewedOn": "2026-09-20"
       },
       "recovery": {
         "status": "reviewed",
-        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
         "reviewedOn": "2026-09-20"
       },
       "landing": {
         "status": "reviewed",
-        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
         "reviewedOn": "2026-09-20"
       },
       "problems": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "language": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "directory": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "home": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "project": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "source": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "trust": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "qa": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "report": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "track": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "handle": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "reviewer": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "discovery": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "offline": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       }
     },
     "yo": {
       "shell": {
         "status": "reviewed",
-        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
         "reviewedOn": "2026-09-20"
       },
       "evidence": {
         "status": "reviewed",
-        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
         "reviewedOn": "2026-09-20"
       },
       "recovery": {
         "status": "reviewed",
-        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
         "reviewedOn": "2026-09-20"
       },
       "landing": {
         "status": "reviewed",
-        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
         "reviewedOn": "2026-09-20"
       },
       "problems": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "language": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "directory": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "home": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "project": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "source": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "trust": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "qa": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "report": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "track": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "handle": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "reviewer": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "discovery": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "offline": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: completed and reviewed the full translation pass; no independent second reviewer)",
+        "reviewedOn": "2026-09-20"
       }
     }
   },
-  "pendingKeysAllowed": true
+  "pendingKeysAllowed": false
 }
