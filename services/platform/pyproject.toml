@@ -23,6 +23,8 @@ dependencies = [
     "boto3>=1.43.98",
     "python-multipart>=0.0.32",
     "pgvector>=0.4.1", # SQLAlchemy vector type for the PostgreSQL retrieval corpus
+    "fastembed>=0.8,<0.9", # local ONNX text embeddings (Apache-2.0); no provider key or egress (ADR-0010)
+    "huggingface-hub", # pinned, checksum-verified download of the embedding model at image build
 ]
 
 [dependency-groups]
@@ -94,6 +96,7 @@ markers = [
     "integration: needs PostgreSQL/Redis/MinIO via Docker",
     "security: adversarial or trust-boundary test",
     "live: opt-in live provider test, never run in CI",
+    "model: needs the embedding model from `make embedding-model`; skipped without it",
 ]
 
 [tool.coverage.run]
