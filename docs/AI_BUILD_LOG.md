@@ -1862,3 +1862,66 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the parity, redaction, and cancellation tests and the bundle markers.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-041 Accessible primitive layer
+
+- **Task:** FE-041 — Accessible primitive layer.
+- **User outcome delivered:** Later surfaces get one accessible, token-driven control set in the Field ledger style, with labels/errors wired automatically and no built-in English.
+- **Files changed:** `apps/web/src/components/primitives/{primitives.tsx,primitives.css}`, `apps/web/tests/component/primitives.test.tsx`, `apps/web/tests/a11y/primitives.a11y.spec.ts`, `apps/web/tests/support/primitives-sheet.tsx`, `apps/web/tests/unit/primitive-sheet.test.ts`, `apps/web/package.json` (`a11y` renders the fixture first), `.gitignore`, `apps/web/.prettierignore`, `apps/web/eslint.config.mjs`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None.
+- **Public/private data handled:** None; fixtures are fictional text.
+- **States implemented:** default, hover, focus-visible, disabled, read-only, invalid, required, checked, open/closed overlays, loading, notice tones, status tones.
+- **Accessibility evidence:** 19 component tests plus 14 browser checks (axe, target size, reflow at 320 px and 200% text, token styling, focus ring, forced colours, reduced motion) in Chromium and mobile WebKit; screenshots inspected at both widths.
+- **Locales reviewed:** All strings are props. The fixture uses one long unbroken Yoruba-diacritic word and a long Yoruba-style label as a worst case; this is a layout probe, not a translation, and no human language review is claimed.
+- **Performance/cache impact:** No new dependency; Base UI was already present. CSS is token-only with one gradient chevron and no external asset.
+- **Failure behaviour verified:** Screenshots caught default-green progress, a checkbox-looking switch, a required marker missing its space, and a WebKit select ignoring min height and widening the page; each was fixed and re-tested. Pagination was changed from page counts to previous/next links because the API's cursors have no page count.
+- **Commands run and results:** `make web-verify` exit 0 (259 unit, 19 component, boundary scan clean), `make web-e2e` 4 passed, `make web-a11y` 14 passed plus the fixture render. Lint 0 errors.
+- **Screenshots/traces/artifacts checked:** Desktop Chromium and iPhone 13 WebKit full-sheet captures and a zoomed switch/progress capture; not committed.
+- **Known limitations/open decisions:** No screen-reader run; no real 200% browser zoom (emulated by font size and 320 px width); datalist combobox popup is browser-drawn; the generated fixture lives in gitignored `tests/.generated/`.
+- **Commit/PR:** `feat: build the accessible primitive layer`
+- **Next task may rely on:** Primitive props and classes for FE-042 and FE-043.
+- **AI assistance used:** Reworked the primitives, wrote tests, and iterated on screenshots.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-042 Evidence-specific components
+
+- **Task:** FE-042 — Evidence-specific components.
+- **User outcome delivered:** Later record, source, and Q&A surfaces can show claims, citations, dates, review state, translation status, AI text, and evidence gaps consistently and without inferring truth.
+- **Files changed:** `apps/web/src/components/evidence/{evidence.tsx,evidence.css}`, `apps/web/app/layout.tsx` (stylesheet import), `apps/web/tests/component/evidence.test.tsx`, `apps/web/tests/support/{evidence-labels.ts,primitives-sheet.tsx}`, `apps/web/tests/a11y/primitives.a11y.spec.ts`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None called; types come from the generated OpenAPI schema and the controlled vocabulary.
+- **Public/private data handled:** Public evidence only; fixtures are fictional. No component accepts private report data.
+- **States implemented:** six verification states, five information classes, five source availabilities, three translation statuses, official versus community timeline origin, three evidence-gap kinds, absent dates.
+- **Accessibility evidence:** Component tests for names, descriptions, time elements, external-link name, and note roles; browser axe clean in Chromium and mobile WebKit; a screenshot was inspected; the stitch works by plain anchor and lands on a focusable target.
+- **Locales reviewed:** No copy is embedded; label records are typed exhaustively. Test labels are fictional English. Date formatting is injected for FE-052.
+- **Performance/cache impact:** Server-renderable, no client JavaScript, one small stylesheet, no dependency.
+- **Failure behaviour verified:** Uncited claim renders nothing; missing last-checked shows "not recorded"; a heading-order violation in the fixture was corrected.
+- **Commands run and results:** `make web-verify` exit 0; `make web-a11y` 16 passed.
+- **Screenshots/traces/artifacts checked:** Evidence-section capture with the stitch target active.
+- **Known limitations/open decisions:** Claim-side stitch highlight deferred to FE-071; `SourceCard` uses a fixed `h3`, so pages must place it under an `h2`; `unknownDate` label in `SourceCardLabels` is currently unused and should be removed or used when FE-070 consumes it.
+- **Commit/PR:** `feat: add evidence-specific components`
+- **Next task may rely on:** the exported components and exhaustive label record types.
+- **AI assistance used:** Designed and implemented the components, tests, and fixture.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-043 Public and reviewer shells, FE-044 First-viewport proof, and maintainer-requested changes
+
+- **Task:** FE-043 — Public and reviewer shells; FE-044 — First-viewport proof; plus the maintainer's instructions to move components and styling to Tailwind CSS and shadcn and to resolve the open decisions myself.
+- **User outcome delivered:** The public site now has a skip-linked, labelled shell and a Field ledger first viewport with a fictional, labelled example record and dated evidence rail; the reviewer shell and sign-out control exist for later routes; components and styling use Tailwind and shadcn structure; rate limiting can distinguish clients.
+- **Files changed:** `apps/web/src/components/{ui,shell,landing,evidence,primitives}/*`, `apps/web/src/content/en/*`, `apps/web/src/lib/{utils,format/date,bff/request-context}.ts`, `apps/web/src/lib/config/server.ts`, BFF handlers (context), `apps/web/app/{page,layout,globals}`, `apps/web/components.json`, `.env.example`, `docs/FRONTEND_BFF_OPERATION_MAP.md`, tests (unit, component, e2e, a11y), `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, `package.json`/`pnpm-lock.yaml`, and this log.
+- **Backend operations/contract version:** None new. OpenAPI 0.0.0 unchanged; the operation map's public-update withdraw row now says empty body, matching the API.
+- **Public/private data handled:** Public page only, with an invented example labelled as such. The client HMAC derives from the trusted edge address, never forwards the address, rotates daily, and is required in deployed stages. The CSRF design is decided: the token stays in an `HttpOnly` cookie and is forwarded server-side, with `SameSite=Lax` and exact Origin as the browser-facing defence.
+- **States implemented:** shell landmarks, skip link, current/unavailable/available language items, empty status region, reviewer area, sign-out idle/pending/failed, first viewport wide and narrow.
+- **Accessibility evidence:** axe clean on the landing and primitive/evidence fixtures in Chromium and mobile WebKit; component tests for landmarks, skip-link order, language states, sign-out failure; keyboard skip-link test in Chromium; no-JS test; screenshots of desktop and phone inspected.
+- **Locales reviewed:** English copy only. `ha`, `ig`, and `yo` are shown as "not yet reviewed" and not machine-translated; fluent review is still required.
+- **Performance/cache impact:** Added `class-variance-authority` 0.7.1, `clsx` 2.1.1, `tailwind-merge` 3.5.0 (all MIT, small, pinned) as the shadcn helper set. Landing is static and cacheable; client bundle scan still clean (13 chunks). Removed four custom stylesheets.
+- **Failure behaviour verified:** `tailwind-merge` initially dropped `text-primary-foreground` beside the custom `text-ledger-lg` size, making button text unreadable (axe caught it); fixed and tested. Unlayered global rules were overriding utilities and were moved to `@layer base`. The first-viewport screenshot showed the primary action below the fold at 1280x720, so the composition was tightened. iOS WebKit does not Tab to links, so that one browser check is scoped to Chromium (skip stated in the test) with Tab order also proven in jsdom.
+- **Commands run and results:** `make web-verify` exit 0 (269 unit, 46 component, contract drift, boundary scan clean); `make web-e2e` 17 passed, 1 skipped as above; `make web-a11y` 16 passed; the frontend validators pass. Live-API run attempted: Postgres, Redis, MinIO, and ClamAV are up, but `make migrate` fails because the local database is at revision `0027_embedding_384`, which this branch does not contain. I did not reset your database, so no handler has run against a live API.
+- **Screenshots/traces/artifacts checked:** Landing at 1280x720 and iPhone 13 width, inspected.
+- **Known limitations/open decisions:** Live-API integration needs the database migrated from the matching backend branch (or a fresh local database). Nav links to unbuilt routes hit the safe not-found page. No screen-reader run; zoom is emulated. The unused `unknownDate` field in `SourceCardLabels` remains.
+- **Commit/PR:** `feat: add shells and the first viewport on Tailwind and shadcn components`
+- **Next task may rely on:** `PublicShell`, `ReviewerShell`, `SignOutButton`, the `ui/*` components, `cn`, the English content modules, and the forwarded client HMAC.
+- **AI assistance used:** Implemented the shells, first viewport, migration to Tailwind/shadcn, client HMAC, and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop; maintainer asked me to finish Circle 4 myself and to use Tailwind and shadcn.
+- **Human review:** none yet; unattended run, pending maintainer review.

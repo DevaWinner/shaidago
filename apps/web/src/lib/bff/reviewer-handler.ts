@@ -22,6 +22,7 @@ import {
   withCookies,
   type CookieNames
 } from "@/lib/bff/reviewer-session";
+import { forwardedContextFor } from "@/lib/bff/request-context";
 
 /**
  * Shared plumbing for reviewer Route Handlers. The BFF only turns cookies into the two headers the
@@ -63,7 +64,7 @@ function reviewerOptions(
   withCsrf: boolean
 ): ReviewerOptions {
   return {
-    context: { requestId: resolved.requestId, locale: request.headers.get("X-Shaidago-Locale") },
+    context: forwardedContextFor(request, resolved.requestId),
     signal: request.signal,
     session,
     csrf: withCsrf ? resolved.csrf : undefined

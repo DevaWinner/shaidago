@@ -33,7 +33,9 @@ function build(fetchImpl: Mock<Fetch>) {
       environment: {
         appEnvironment: "test",
         apiInternalUrl: "http://api.internal-test.invalid",
-        internalWebCredential: credential
+        internalWebCredential: credential,
+        clientHmacKey: undefined,
+        trustedProxyHops: 1
       },
       fetch: fetchImpl as unknown as typeof fetch,
       sleep,

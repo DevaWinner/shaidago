@@ -5,3 +5,4 @@ playwright-report/
 test-results/
 src/lib/api/generated/
 pnpm-lock.yaml
+tests/.generated/

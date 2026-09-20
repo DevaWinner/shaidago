@@ -26,15 +26,18 @@
     "bundle:check": "node scripts/verify-client-boundary.mjs",
     "build:boundary": "API_INTERNAL_URL=http://api.internal-canary.invalid INTERNAL_WEB_CREDENTIAL_CURRENT=shaida-go-client-boundary-canary-credential INTERNAL_WEB_CREDENTIAL_PREVIOUS=shaida-go-client-boundary-previous-credential SEARCH_API_KEY=shaida-go-client-boundary-search-canary GROQ_API_KEY=shaida-go-client-boundary-provider-canary EMBEDDING_API_KEY=shaida-go-client-boundary-embedding-canary OBJECT_STORE_ACCESS_KEY_ID=shaida-go-client-boundary-storage-access-canary OBJECT_STORE_SECRET_ACCESS_KEY=shaida-go-client-boundary-storage-secret-canary sh -c 'pnpm run build && pnpm run bundle:check'",
     "e2e": "pnpm run build && playwright test --config tests/playwright.config.ts",
-    "a11y": "pnpm run build && playwright test --config tests/playwright.a11y.config.ts"
+    "a11y": "pnpm run build && vitest run --project unit tests/unit/primitive-sheet.test.ts && playwright test --config tests/playwright.a11y.config.ts"
   },
   "dependencies": {
     "@base-ui/react": "1.8.0",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
     "next": "16.3.5",
     "openapi-fetch": "0.17.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "server-only": "0.0.1",
+    "tailwind-merge": "3.5.0",
     "zod": "4.6.5"
   },
   "devDependencies": {

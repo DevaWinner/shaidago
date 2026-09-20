@@ -4,6 +4,7 @@ import { serverApi } from "@/lib/api/server";
 import { noStoreHeaders, problemResponse } from "@/lib/bff/problem";
 import { resultResponse } from "@/lib/bff/public-handler";
 import { runIdSchema, sinceVersionSchema } from "@/lib/bff/public-schemas";
+import { forwardedContextFor } from "@/lib/bff/request-context";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -39,7 +40,7 @@ export async function GET(
     }
 
     const result = await serverApi().getPublicDiscoveryRun(run.data, since?.data, {
-      context: { requestId, locale: request.headers.get("X-Shaidago-Locale") },
+      context: forwardedContextFor(request, requestId),
       signal: request.signal
     });
 

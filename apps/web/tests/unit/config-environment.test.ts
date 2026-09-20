@@ -11,6 +11,26 @@ const validServerEnvironment = {
 } as const;
 
 describe("server environment", () => {
+  it("requires a strong client HMAC key in deployed stages and bounds proxy hops", () => {
+    const deployed = { ...validServerEnvironment, APP_ENV: "production" };
+    const key = Buffer.alloc(32, 7).toString("base64");
+
+    expect(() => loadServerEnvironment(deployed)).toThrowError(ServerEnvironmentError);
+    expect(() => loadServerEnvironment({ ...deployed, CLIENT_HMAC_KEY: "change-me" })).toThrowError(
+      ServerEnvironmentError
+    );
+    expect(loadServerEnvironment({ ...deployed, CLIENT_HMAC_KEY: key }).clientHmacKey).toHaveLength(
+      32
+    );
+    expect(() =>
+      loadServerEnvironment({ ...validServerEnvironment, CLIENT_HMAC_KEY: "c2hvcnQ=" })
+    ).toThrowError(ServerEnvironmentError);
+    expect(loadServerEnvironment(validServerEnvironment).trustedProxyHops).toBe(1);
+    expect(() =>
+      loadServerEnvironment({ ...validServerEnvironment, TRUSTED_PROXY_HOPS: "9" })
+    ).toThrowError(ServerEnvironmentError);
+  });
+
   it("reports an empty API URL as a typed configuration error, not a raw parse error", () => {
     expect(() =>
       loadServerEnvironment({ ...validServerEnvironment, API_INTERNAL_URL: "" })
@@ -36,7 +56,9 @@ describe("server environment", () => {
     expect(loadServerEnvironment(validServerEnvironment)).toEqual({
       appEnvironment: "test",
       apiInternalUrl: "http://api.internal-test.invalid",
-      internalWebCredential: "shaida-go-unit-test-credential-not-a-secret"
+      internalWebCredential: "shaida-go-unit-test-credential-not-a-secret",
+      clientHmacKey: undefined,
+      trustedProxyHops: 1
     });
   });
 

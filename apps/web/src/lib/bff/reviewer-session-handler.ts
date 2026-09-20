@@ -21,6 +21,7 @@ import {
   readReviewerCookies,
   withCookies
 } from "@/lib/bff/reviewer-session";
+import { forwardedContextFor } from "@/lib/bff/request-context";
 
 const SIGN_IN_MAX_BYTES = 2 * 1024;
 
@@ -61,7 +62,7 @@ export async function handleSignIn(request: Request): Promise<Response> {
 
     const api = serverApi();
     const result = await api.signIn(input.data, {
-      context: { requestId, locale: request.headers.get("X-Shaidago-Locale") },
+      context: forwardedContextFor(request, requestId),
       signal: request.signal
     });
 
@@ -150,7 +151,7 @@ export async function handleSignOut(request: Request): Promise<Response> {
     }
 
     const result = await serverApi().signOut({
-      context: { requestId, locale: request.headers.get("X-Shaidago-Locale") },
+      context: forwardedContextFor(request, requestId),
       signal: request.signal,
       session: cookies.session,
       csrf: cookies.csrf

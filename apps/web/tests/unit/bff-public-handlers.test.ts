@@ -545,6 +545,34 @@ describe("public discovery poll handler", () => {
   });
 });
 
+describe("client HMAC forwarding", () => {
+  it("forwards a pseudonym from the trusted address and never the address or a spoofed left entry", async () => {
+    vi.stubEnv("CLIENT_HMAC_KEY", Buffer.alloc(32, 5).toString("base64"));
+    backend.mockResolvedValueOnce(okJson({ status: "received" }));
+
+    await lookupStatus(
+      json(
+        "/api/tracking/lookup",
+        { code: secretCode },
+        { "X-Forwarded-For": "6.6.6.6, 203.0.113.9" }
+      )
+    );
+
+    const request = sent();
+    expect(request.headers.get("X-Shaidago-Client-Hmac")).toMatch(/^[0-9a-f]{64}$/);
+    expect(request.headers.get("X-Forwarded-For")).toBeNull();
+    expect([...request.headers].join(" ")).not.toMatch(/203\.0\.113\.9|6\.6\.6\.6/);
+  });
+
+  it("sends no HMAC when no key is configured", async () => {
+    backend.mockResolvedValueOnce(okJson({ status: "received" }));
+    await lookupStatus(
+      json("/api/tracking/lookup", { code: secretCode }, { "X-Forwarded-For": "203.0.113.9" })
+    );
+    expect(sent().headers.get("X-Shaidago-Client-Hmac")).toBeNull();
+  });
+});
+
 describe("handler failure containment", () => {
   it("returns a generic 500 with no detail when configuration is invalid", async () => {
     vi.stubEnv("API_INTERNAL_URL", "");
