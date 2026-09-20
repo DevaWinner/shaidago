@@ -525,6 +525,8 @@ For each primitive test:
 
 ### FE-042 — Evidence-specific components
 
+> **Execution status (2026-09-20): complete.** `apps/web/src/components/evidence/` provides verification label, information-class marker, date group (mandatory last-checked shown as unknown when absent), source card with availability, claim with citation controls, citation entry, official/community timeline item, translation notice, AI-explanation notice, and contradiction/information-gap/insufficient-evidence callouts. Props derive from the generated public types; all text arrives through exhaustive label records so a missing state is a compile error, and a claim with no citation renders nothing. Verification is passed explicitly and never inferred from source count. 17 component tests plus browser axe, reflow, and stitch checks (Chromium and mobile WebKit) pass. Limitation: the stitch marks the cited entry via `:target` and shares the visible "Source N" label with the claim's control, but the claim end has no highlight without per-ID CSS or script; FE-071 owns the full interaction.
+
 Create components that encode product truth without domain authority:
 
 - fact with citation trigger;

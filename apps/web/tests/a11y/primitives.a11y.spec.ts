@@ -162,3 +162,24 @@ test("reduced motion leaves no transition or animation on primitives", async ({ 
 
   expect(new Set(motion)).toEqual(new Set(["none|0s"]));
 });
+
+test("the citation stitch works with plain links, moves focus, and marks both ends", async ({
+  page
+}) => {
+  await loadSheet(page);
+
+  await page.getByRole("link", { name: "Source 1" }).click();
+
+  expect(await page.evaluate(() => location.hash)).toBe("#citation-c1");
+  const target = await page.evaluate(() => {
+    const entry = document.getElementById("citation-c1") as HTMLElement;
+    const style = getComputedStyle(entry);
+
+    return {
+      focused: document.activeElement === entry || entry.matches(":target"),
+      outline: style.outlineStyle,
+      width: style.outlineWidth
+    };
+  });
+  expect(target).toEqual({ focused: true, outline: "solid", width: "3px" });
+});

@@ -1827,3 +1827,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Reworked the primitives, wrote tests, and iterated on screenshots.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-042 Evidence-specific components
+
+- **Task:** FE-042 — Evidence-specific components.
+- **User outcome delivered:** Later record, source, and Q&A surfaces can show claims, citations, dates, review state, translation status, AI text, and evidence gaps consistently and without inferring truth.
+- **Files changed:** `apps/web/src/components/evidence/{evidence.tsx,evidence.css}`, `apps/web/app/layout.tsx` (stylesheet import), `apps/web/tests/component/evidence.test.tsx`, `apps/web/tests/support/{evidence-labels.ts,primitives-sheet.tsx}`, `apps/web/tests/a11y/primitives.a11y.spec.ts`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None called; types come from the generated OpenAPI schema and the controlled vocabulary.
+- **Public/private data handled:** Public evidence only; fixtures are fictional. No component accepts private report data.
+- **States implemented:** six verification states, five information classes, five source availabilities, three translation statuses, official versus community timeline origin, three evidence-gap kinds, absent dates.
+- **Accessibility evidence:** Component tests for names, descriptions, time elements, external-link name, and note roles; browser axe clean in Chromium and mobile WebKit; a screenshot was inspected; the stitch works by plain anchor and lands on a focusable target.
+- **Locales reviewed:** No copy is embedded; label records are typed exhaustively. Test labels are fictional English. Date formatting is injected for FE-052.
+- **Performance/cache impact:** Server-renderable, no client JavaScript, one small stylesheet, no dependency.
+- **Failure behaviour verified:** Uncited claim renders nothing; missing last-checked shows "not recorded"; a heading-order violation in the fixture was corrected.
+- **Commands run and results:** `make web-verify` exit 0; `make web-a11y` 16 passed.
+- **Screenshots/traces/artifacts checked:** Evidence-section capture with the stitch target active.
+- **Known limitations/open decisions:** Claim-side stitch highlight deferred to FE-071; `SourceCard` uses a fixed `h3`, so pages must place it under an `h2`; `unknownDate` label in `SourceCardLabels` is currently unused and should be removed or used when FE-070 consumes it.
+- **Commit/PR:** `feat: add evidence-specific components`
+- **Next task may rely on:** the exported components and exhaustive label record types.
+- **AI assistance used:** Designed and implemented the components, tests, and fixture.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

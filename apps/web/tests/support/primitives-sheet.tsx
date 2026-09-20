@@ -1,6 +1,26 @@
 import { renderToStaticMarkup } from "react-dom/server";
 
 import {
+  AiExplanationNotice,
+  CitationEntry,
+  ClaimWithCitations,
+  DateGroup,
+  EvidenceGap,
+  SourceCard,
+  TimelineItem,
+  TranslationNotice,
+  VerificationLabel
+} from "@/components/evidence/evidence";
+import {
+  dateLabels,
+  formatDate,
+  originLabels,
+  sourceLabels,
+  translationLabels,
+  verificationLabels
+} from "./evidence-labels";
+
+import {
   Button,
   Callout,
   Checkbox,
@@ -111,6 +131,80 @@ function PrimitiveSheet() {
         next={{ href: "?cursor=opaque", label: "Next records" }}
         previous={{ href: "?", label: "Earlier records" }}
       />
+      <section aria-label="Evidence">
+        <h2>Evidence components (fictional)</h2>
+        <ClaimWithCitations
+          citations={[
+            {
+              id: "c1",
+              label: "Source 1",
+              locationLabel: "section 2",
+              passage: `An invented passage. ${LONG_LABEL}`,
+              publisher: "Synthetic Publisher",
+              sourceTitle: UNBROKEN
+            }
+          ]}
+          citedLabel="Sources for this claim"
+          claimId="f1"
+          verification={
+            <VerificationLabel labels={verificationLabels} state="awaiting_verification" />
+          }
+        >
+          {LONG_LABEL}
+        </ClaimWithCitations>
+        <ol>
+          <CitationEntry
+            backHref="#claim-f1"
+            backLabel="Back to claim"
+            citation={{
+              id: "c1",
+              label: "Source 1",
+              locationLabel: "section 2",
+              passage: `An invented passage. ${LONG_LABEL}`,
+              publisher: "Synthetic Publisher",
+              sourceTitle: UNBROKEN
+            }}
+          />
+        </ol>
+        <SourceCard
+          format={formatDate}
+          labels={sourceLabels}
+          source={{
+            availability: "temporarily_unavailable",
+            availabilityCheckedAt: "2026-09-02T10:00:00Z",
+            canonicalUrl: "https://synthetic.example/record",
+            id: "s1",
+            informationClass: "official_source",
+            publisher: UNBROKEN,
+            title: LONG_LABEL
+          }}
+        />
+        <DateGroup
+          dates={{ lastCheckedOn: "2026-09-01", effectiveOn: "2026-08-15" }}
+          format={formatDate}
+          labels={dateLabels}
+        />
+        <ol>
+          <TimelineItem
+            date="2026-09-01"
+            dateLabel="Effective"
+            format={formatDate}
+            origin="community_reviewed"
+            originLabels={originLabels}
+            verification={<VerificationLabel labels={verificationLabels} state="disputed" />}
+          >
+            {LONG_LABEL}
+          </TimelineItem>
+        </ol>
+        <TranslationNotice labels={translationLabels} status="machine_assisted" />
+        <AiExplanationNotice label="AI-generated explanation, not a source">
+          Summary.
+        </AiExplanationNotice>
+        <EvidenceGap kind="contradiction" title={UNBROKEN}>
+          Sources disagree.
+        </EvidenceGap>
+        <EvidenceGap kind="insufficient_evidence" title="Not enough evidence to answer" />
+      </section>
     </main>
   );
 }
