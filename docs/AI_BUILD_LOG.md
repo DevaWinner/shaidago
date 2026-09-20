@@ -2871,3 +2871,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the Dockerfile, entry point, verification script, docs, and found the missing graceful shutdown and the base-image findings.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
+
+## 2026-09-20 — Release session: review recording, staging deploy, hosted smoke, fixture removal
+
+- **Task:** Release session on `release/review-close-and-deploy` (FE-153, FE-160 to FE-164 follow-ups). Status: partial; what remains is listed below.
+- **User outcome delivered:** The web service runs on Railway staging at `https://web-staging-0edf.up.railway.app`, reaches the private API over the private network, and passed a hosted smoke on Chromium and iPhone-13 WebKit; the synthetic `Fixture Scenario Success` record no longer shows publicly; the log and README now record the maintainer's review and merge.
+- **Routes/components changed:** `apps/web/src/components/directory/directory-form.tsx` (two-column filters from 360 px), `apps/web/src/components/pwa/saved-pages.tsx` (offline stand-in page hidden from the saved list), hosted smoke suite `apps/web/tests/hosted/`, `apps/web/tests/playwright.hosted.config.ts`, `scripts/check_links.py`.
+- **Backend operations/contract version:** none changed. One database change on staging only: `app.projects.visibility = 'hidden'` for `fixture-scenario-success` (dependent fictional rows kept).
+- **Public/private data handled:** Fictional data only. Secrets were passed as Railway variable references and never printed. A temporary SSH key was added to the Railway account to run one `psql` update, then removed from the account and deleted locally.
+- **States implemented:** hosted degradation drill (API stopped: liveness and offline page stay up, safe degraded pages shown), recorded in `docs/DEPLOYMENT.md`.
+- **Accessibility evidence:** directory, offline-cache, and project-evidence browser suites passed (55) after the two fixes; no new screen-reader pass was done.
+- **Locales reviewed:** unchanged; the maintainer is completing the Hausa, Igbo, and Yoruba review, so no fluent-review claim is made here.
+- **Performance/cache impact:** none beyond the fixes; public data is cached about 60 seconds.
+- **Commands run and results:** `pnpm typecheck`, `pnpm lint`, `pnpm build` passed; targeted e2e 55 passed; hosted smoke 23 passed and 3 skipped, then 21 passed and 3 skipped after the fixture removal (reviewer steps and WebKit offline skipped); `scripts/check_links.py` 178 relative and external links, 0 broken. The full `make verify` was not re-run.
+- **Screenshots/traces/artifacts checked:** the independent finish reviewer's hosted captures; hosted smoke keeps traces and video off.
+- **Known limitations/open decisions:** Finish review disposition is `fix`: Hausa English strings (maintainer's translation pass), landing first viewport, mobile header, verification-state wording, heading scale, and recapture are not applied. Reviewer hosted steps need a credential. Lighthouse, the screen-reader smoke, the state-matrix audit, CSP `unsafe-inline`, `make verify` twice from a clean clone, CI on this branch, the tag, and the demo video are open. The hidden fixture rows remain in the staging database. The Free plan's five-service limit meant deleting the `migrate` service.
+- **Commit/PR:** `docs: record the release session, hosted smoke, and finish review`
+- **Next task may rely on:** the hosted origin, `docs/DEPLOYMENT.md`, `docs/evidence/FE-162-hosted-smoke.md`, and `scripts/check_links.py`.
+- **AI assistance used:** Ran the Railway provisioning and verification, wrote the hosted smoke suite, corrected the API port, ran the drill, applied the fixture soft-removal, and commissioned the independent finish review from a fresh context.
+- **Prompt summary:** Open a new branch, record the review, close open items, deploy to Railway, remove the fixture record, and document.
+- **Human review:** The maintainer stated they reviewed and merged the earlier work (#31 to #36) and asked for this session. This session's own changes have not yet been reviewed by the maintainer.

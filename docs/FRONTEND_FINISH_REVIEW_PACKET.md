@@ -1,6 +1,6 @@
 # Independent finish review packet (FE-153)
 
-**Status: not reviewed.** The build order requires a fresh reviewer, not the author, to give a disposition of `recapture`, `rebuild`, `fix`, or `ship`. None has been obtained. This packet is what that reviewer needs. Until a disposition exists the visual finish is **not** accepted, and nothing here may be described as approved.
+**Status: reviewed once, disposition `fix` (2026-09-20); see the end of this file.** The build order requires a fresh reviewer, not the author, to give a disposition of `recapture`, `rebuild`, `fix`, or `ship`. None has been obtained. This packet is what that reviewer needs. Until a disposition exists the visual finish is **not** accepted, and nothing here may be described as approved.
 
 ## Inputs
 
@@ -28,3 +28,7 @@ Hierarchy and a product-specific first viewport (the landing is a left-aligned r
 ## Disposition
 
 `recapture` / `rebuild` / `fix` / `ship`: **pending.** A `fix` verdict covers only the named fixes. If a round creates raster assets, keep their provenance and delete abandoned ones.
+
+## Result (2026-09-20)
+
+A fresh reviewer context judged the hosted staging site and returned **`fix`**, covering only the named fixes recorded under FE-153 in `docs/FRONTEND_BUILD_ORDER.md`. Applied: two-column directory filters, and the offline page left out of the saved-pages list. Open: the Hausa landing strings (the maintainer's translation pass), a product-specific landing first viewport, a compact mobile header with a distinct report control, an explicit verification-state label on the record summary, one page-title size, and a recapture. The visual finish is therefore not accepted as `ship`.

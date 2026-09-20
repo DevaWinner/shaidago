@@ -49,7 +49,7 @@ export function DirectoryForm({
           type="search"
         />
       </Field>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid items-start gap-4 min-[360px]:grid-cols-2 lg:grid-cols-4">
         <Field controlId="directory-locality" label={form.locality}>
           <Select defaultValue={filters.locality ?? ""} name="locality">
             <option value="">{form.any}</option>

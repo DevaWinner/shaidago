@@ -10,7 +10,7 @@ The hackathon pilot covers Abuja's AMAC and Bwari Area Councils. The public expe
 
 The backend (`services/platform`) and the frontend (`apps/web`) are both built and verified locally against fictional data and recorded replay providers. `apps/web` is a Next.js app and thin BFF with public records, cited Q&A, a private anonymous report flow, tracking and optional reporter handles, a reviewer workspace with publication, Source Scout, an offline-capable public shell, and English, Hausa, Igbo, and Yoruba routes. Hausa, Igbo, and Yoruba copy is largely pending fluent review (see the limitations). The complete gate is `make verify`; the last full run of the frontend gate from a clean checkout is recorded in [`docs/AI_BUILD_LOG.md`](docs/AI_BUILD_LOG.md) and [`docs/FRONTEND_BUILD_ORDER.md`](docs/FRONTEND_BUILD_ORDER.md).
 
-Not yet done, and stated plainly: nothing has been deployed or run against a hosted origin, the first hosted CI run has not happened, the independent visual finish review has not been done, and human source, language, screen-reader, legal, privacy, and security reviews are outstanding. Public seed facts remain limited to the exact evidence and caveats recorded in the source register.
+Not yet done, and stated plainly: production is not deployed (staging is), there is no demo video, the independent visual finish review returned `fix` with open design fixes, and human source, fluent-language, screen-reader, legal, privacy, and security reviews are outstanding. Public seed facts remain limited to the exact evidence and caveats recorded in the source register.
 
 ## Run it
 
@@ -116,7 +116,7 @@ AI assisted the design, code, tests, and documentation of this repository, and i
 
 ## Demo and links
 
-The demo path is in [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md). **No hosted demo URL and no video exist yet**; this section will link them once they do, and only after every link has been checked signed out.
+The demo path is in [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md). A hosted staging demo is at **https://web-staging-0edf.up.railway.app** (fictional data and recorded replays; the reviewer area needs a credential that is not published). Its headers and a signed-out smoke run are recorded in [`docs/evidence/FE-162-hosted-smoke.md`](docs/evidence/FE-162-hosted-smoke.md). **No demo video exists yet.**
 
 ## Unattended build loops
 
@@ -138,7 +138,7 @@ This remains a fictional-data prototype, not an emergency service.
 
 - **Sources.** Three of the six source-register projects have no verified fact, because their sources block automated access.
 - **Languages.** The Hausa, Igbo and Yoruba copy for the shell, evidence labels, recovery, and landing was reviewed by the maintainer alone, with no independent second review; every other domain (forms, tracking, reviewer, Source Scout, offline) is still pending and shows the English original with a visible notice.
-- **Frontend.** Nothing is deployed; the visual finish has had no independent review; the screen-reader smoke has not been run; the CSP keeps `unsafe-inline` for scripts and styles (a recorded trade-off); and Playwright cannot test offline navigation with a service worker on WebKit, so that proof is Chromium-only.
+- **Frontend.** Only staging is deployed (Railway Free plan, generated domain); an independent finish review returned `fix` and its larger design fixes are open; the screen-reader smoke has not been run; the CSP keeps `unsafe-inline` for scripts and styles (a recorded trade-off); and Playwright cannot test offline navigation with a service worker on WebKit, so that proof is Chromium-only.
 - **Language model.** Live Groq and Brave runs were made once, and the model's answers were weak against the golden corpus (see [BE-085](docs/evidence/BE-085-live-evaluation.md)), so the demo defaults to replay and labels it.
 - **Retrieval.** Local embeddings let a Hausa, Igbo or Yoruba question find English passages that keyword search misses, measured on a small sample only (see [BE-081](docs/evidence/BE-081-local-embeddings.md)).
 - **Hosting.** The hosted demo has no malware scanner, and the API service uses about 65% of its 1 GB memory limit at rest and 83% at peak.

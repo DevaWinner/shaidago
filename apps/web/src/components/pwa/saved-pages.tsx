@@ -34,6 +34,8 @@ export function SavedPages({
           const keys = (await cache.keys()).slice(-MAX_LISTED).reverse();
 
           for (const key of keys) {
+            // The offline page is a stand-in, not something the reader saved.
+            if (new URL(key.url).pathname.endsWith("/offline")) continue;
             const response = await cache.match(key);
             const url = new URL(key.url);
             const text = response === undefined ? "" : (await response.text()).slice(0, 4000);
