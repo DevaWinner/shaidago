@@ -112,7 +112,7 @@ WCAG 2.2 AA is the bar. Every public and reviewer route is checked in four langu
 
 ## How AI was used
 
-AI assisted the design, code, tests, and documentation of this repository, and it is used inside the product only to explain source-grounded answers, never as a source. The full record, including what a human still has to review, is [`docs/AI_BUILD_LOG.md`](docs/AI_BUILD_LOG.md). Human review of the unattended frontend work is **pending** and is not claimed anywhere.
+AI assisted the design, code, tests, and documentation of this repository, and it is used inside the product only to explain source-grounded answers, never as a source. The full record is [`docs/AI_BUILD_LOG.md`](docs/AI_BUILD_LOG.md). The maintainer reviewed and merged the work (pull requests #17 to #36); each entry lists what that review does not cover, such as fluent-language review, a screen-reader pass, and hosted checks.
 
 ## Demo and links
 
