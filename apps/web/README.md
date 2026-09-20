@@ -172,3 +172,18 @@ dropped, because it is valid only for the same filters and locale. A page that h
 private draft calls `setUnsavedDraft(true)` (`src/lib/draft-guard.ts`, memory only); the language link
 then asks before leaving. After a switch the next page announces the new language in the shell's
 polite status region.
+
+## Public pages and caching
+
+`/{locale}` and `/{locale}/projects` are rendered per request and read the API only from the server.
+Public reads are cached by `src/lib/api/public-data.ts` (`unstable_cache`, 60 seconds, key = language and
+filters, tag `public-catalogue`), never at the fetch level: Next will not cache a fetch that carries an
+`Authorization` header on a dynamic route, and `dynamic = "force-dynamic"` turns caching off entirely, so
+do not add it to these pages (use `connection()` when a page needs request-time rendering). Only the
+public catalogue reads are wrapped; publishing an update expires the tag. Do not add a `loading.tsx` to a
+public route: Next streams its placeholder and swaps the content in with inline script, which leaves a
+no-JavaScript visitor on the placeholder.
+
+Browser tests run against `tests/support/mock-api.mjs`, a fictional stand-in for the two public
+endpoints, on port 3200 (e2e) or 3201 (accessibility). It has stateless switches: `q=__unavailable`
+returns a 503.

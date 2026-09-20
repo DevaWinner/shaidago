@@ -1,9 +1,15 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
-
-import { ConfirmDialog } from "@/components/ui/overlay";
+import { lazy, Suspense, useRef, useState, type ReactNode } from "react";
 import { hasUnsavedDraft } from "@/lib/draft-guard";
+
+// The dialog (a whole headless-UI dialog implementation) is only needed when a draft is unsaved, so it
+// is fetched at that moment instead of weighing on every page's first load.
+const DraftDialog = lazy(async () => {
+  const { ConfirmDialog } = await import("@/components/ui/overlay");
+
+  return { default: ConfirmDialog };
+});
 
 export const LANGUAGE_SWITCH_FLAG = "sg-language-switched";
 
@@ -45,10 +51,12 @@ export function LanguageLink({
   lang: string;
 }>): ReactNode {
   const [asking, setAsking] = useState(false);
+  const anchor = useRef<HTMLAnchorElement>(null);
 
   return (
     <>
       <a
+        ref={anchor}
         className={className}
         href={href}
         hrefLang={language}
@@ -66,19 +74,30 @@ export function LanguageLink({
       >
         {children}
       </a>
-      <ConfirmDialog
-        cancelLabel={guard.stay}
-        confirmLabel={guard.leave}
-        description={guard.body}
-        destructive
-        onConfirm={() => {
-          markSwitch(language);
-          window.location.assign(href);
-        }}
-        onOpenChange={setAsking}
-        open={asking}
-        title={guard.title}
-      />
+      {asking ? (
+        <Suspense fallback={null}>
+          <DraftDialog
+            cancelLabel={guard.stay}
+            confirmLabel={guard.leave}
+            description={guard.body}
+            destructive
+            onConfirm={() => {
+              markSwitch(language);
+              window.location.assign(href);
+            }}
+            onOpenChange={(open) => {
+              setAsking(open);
+
+              if (!open) {
+                // The dialog is unmounted on close, so focus is returned explicitly.
+                window.setTimeout(() => anchor.current?.focus(), 0);
+              }
+            }}
+            open
+            title={guard.title}
+          />
+        </Suspense>
+      ) : null}
     </>
   );
 }

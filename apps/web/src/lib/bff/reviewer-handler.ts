@@ -101,6 +101,8 @@ export async function parseIds<TKeys extends string>(
 export type ReviewerJsonSpec<TIds extends string, TInput, TData> = {
   readonly schema: z.ZodType<TInput>;
   readonly maxBodyBytes: number;
+  /** Runs only after the API accepted the command, e.g. to drop a cache the command made stale. */
+  readonly afterSuccess?: () => void;
   readonly call: (
     api: ServerApi,
     ids: Readonly<Record<TIds, string>>,
@@ -152,15 +154,18 @@ export async function handleReviewerJson<TIds extends string, TInput, TData>(
       });
     }
 
-    return reviewerResultResponse(
-      await spec.call(
-        serverApi(),
-        ids,
-        input.data,
-        reviewerOptions(request, current, current.session, true)
-      ),
-      current.names
+    const result = await spec.call(
+      serverApi(),
+      ids,
+      input.data,
+      reviewerOptions(request, current, current.session, true)
     );
+
+    if (result.kind === "ok") {
+      spec.afterSuccess?.();
+    }
+
+    return reviewerResultResponse(result, current.names);
   } catch (error) {
     if (error instanceof BodyRejectedError && resolved !== undefined) {
       return bodyRejectedResponse(error, resolved.requestId);

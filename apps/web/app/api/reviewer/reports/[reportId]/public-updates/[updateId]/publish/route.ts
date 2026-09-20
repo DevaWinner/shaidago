@@ -1,3 +1,4 @@
+import { revalidatePublicCatalogue } from "@/lib/bff/public-cache";
 import { handleReviewerJson } from "@/lib/bff/reviewer-handler";
 import { publishInput } from "@/lib/bff/reviewer-schemas";
 
@@ -12,6 +13,8 @@ export function POST(
   return handleReviewerJson(request, params, {
     schema: publishInput,
     maxBodyBytes: 2 * 1024,
+    // A published update changes public pages, so cached public reads are dropped immediately.
+    afterSuccess: revalidatePublicCatalogue,
     call: (api, ids, input, options) =>
       api.publishUpdate(ids.reportId, ids.updateId, input, options)
   });
