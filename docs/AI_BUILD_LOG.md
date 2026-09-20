@@ -2483,7 +2483,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Accessibility evidence:** not applicable to the worker itself
 - **Locales reviewed:** English only; the `offline` domain is `null` in ha/ig/yo (pending), so those pages show the English original with a notice.
 - **Performance/cache impact:** One small client island on public pages (registration and banner); the worker file is `no-cache`; public pages are revalidated on every request.
-- **Commands run and results:** `make web-verify` exit 0 (551 unit tests in total); `make web-e2e` 373 passed and 7 skipped; targeted a11y `offline` 8 passed.
+- **Commands run and results:** `make web-verify` exit 0 (551 unit tests in total); `make web-e2e` 373 passed and 7 skipped; targeted a11y `offline` 8 passed. (Test count in the FE-131 note: 39 policy unit tests.)
 - **Screenshots/traces/artifacts checked:** none captured.
 - **Known limitations/open decisions:** Production CDN behaviour not tested; caching relies on Next honouring the `headers()` override for the public routes.
 - **Commit/PR:** `feat: add the explicit-allowlist service worker, offline page, and update notice`
@@ -2503,11 +2503,31 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Accessibility evidence:** 8 axe runs (four languages) at 320 px and 200% text for the offline page
 - **Locales reviewed:** English only; the `offline` domain is `null` in ha/ig/yo (pending), so those pages show the English original with a notice.
 - **Performance/cache impact:** One small client island on public pages (registration and banner); the worker file is `no-cache`; public pages are revalidated on every request.
-- **Commands run and results:** `make web-verify` exit 0 (551 unit tests in total); `make web-e2e` 373 passed and 7 skipped; targeted a11y `offline` 8 passed.
+- **Commands run and results:** `make web-verify` exit 0 (551 unit tests in total); `make web-e2e` 373 passed and 7 skipped; targeted a11y `offline` 8 passed. (Test count in the FE-131 note: 39 policy unit tests.)
 - **Screenshots/traces/artifacts checked:** none captured.
 - **Known limitations/open decisions:** WebKit offline with a service worker is not testable in Playwright; the update prompt is not driven end to end; ha/ig/yo copy pending.
 - **Commit/PR:** `feat: add the explicit-allowlist service worker, offline page, and update notice`
 - **Next task may rely on:** `SG_POLICY`, the `sg-*-v1` caches, `PwaSupport`, and the `offline` copy domain.
 - **AI assistance used:** Wrote the worker, policy, components, and the cache-inspection tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-133 Low-data mode
+
+- **Task:** FE-133 — Low-data mode (Circle 13).
+- **User outcome delivered:** A reader on a costly connection can turn on a low-data mode that removes motion and slows background refreshing and polling, keeping every fact and action, and the browser's saved-data hint is only a suggestion.
+- **Routes/components changed:** `src/lib/low-data.ts`, `src/components/pwa/low-data-control.tsx`, the locale layout head script, `app/globals.css`, polling in the two Source Scout panels, `messages/*` (`offline.lowData`), unit, component and e2e tests.
+- **Backend operations/contract version:** none.
+- **Public/private data handled:** One functional preference cookie holding `1` or `0`; no identifier, never sent to an API.
+- **States implemented:** off, on, suggested by the browser, dismissed, explicit off respected.
+- **Accessibility evidence:** the switch is a button with `aria-pressed` and a polite status; motion is fully off. Covered by the public-page axe suites.
+- **Locales reviewed:** English only; `offline.lowData` is `null` in ha/ig/yo (pending).
+- **Performance/cache impact:** A four-line inline head script and one small client island; the mode saves little today because the app ships no images or web fonts.
+- **Commands run and results:** `make web-verify` exit 0; targeted e2e `low-data` 12 passed (Chromium and mobile WebKit).
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** Nothing to remove yet (no images or web fonts). The cookie is set from JavaScript, so it does not exist for visitors who never turn the mode on. A hydration mismatch it caused was fixed with a server-safe external-store read.
+- **Commit/PR:** `feat: add low-data mode with a plain preference cookie`
+- **Next task may rely on:** `applyLowData`, `scaleDelay`, and `data-low-data` on `<html>`.
+- **AI assistance used:** Designed and implemented the mode, and diagnosed the hydration mismatch.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.

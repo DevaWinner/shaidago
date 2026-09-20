@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { TranslationNotice } from "@/components/evidence/evidence";
+import { LowDataControl } from "@/components/pwa/low-data-control";
 import { PwaSupport } from "@/components/pwa/pwa-support";
 import { PublicShell } from "@/components/shell/shell";
 import { resolveDomain } from "@/i18n/catalogue";
@@ -49,6 +50,7 @@ export function SiteShell({
     >
       <div className="mb-4">
         <PwaSupport copy={offline.messages} language={offline.language} />
+        <LowDataControl copy={offline.messages.lowData} />
       </div>
       {shell.isOriginal || evidence.isOriginal ? (
         <div className="mb-6">

@@ -238,3 +238,18 @@
     --state-read-only-text: CanvasText;
   }
 }
+
+/* Low-data mode (see src/lib/low-data.ts): no motion, and no decorative or thumbnail media. There is
+   none to remove today, so this also guards anything added later. Facts and actions are untouched. */
+html[data-low-data="true"] *,
+html[data-low-data="true"] *::before,
+html[data-low-data="true"] *::after {
+  scroll-behavior: auto !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+html[data-low-data="true"] [data-decorative],
+html[data-low-data="true"] [data-thumbnail] {
+  display: none !important;
+}

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import "../globals.css";
 
+import { LOW_DATA_HEAD_SCRIPT } from "@/lib/low-data";
 import { LOCALES, contentLocale, isSupportedLocale } from "@/i18n/routing";
 
 export const metadata: Metadata = {
@@ -61,7 +62,10 @@ export default async function LocaleLayout({
   }
 
   return (
-    <html lang={supported ? contentLocale(locale) : "en"}>
+    <html lang={supported ? contentLocale(locale) : "en"} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: LOW_DATA_HEAD_SCRIPT }} />
+      </head>
       <body>{children}</body>
     </html>
   );

@@ -16,6 +16,7 @@ import { formatMessageLite } from "@/lib/directory/format-lite";
 import { networkProblem, readBrowserProblem } from "@/lib/problems/browser-problem";
 import { describeProblem, type SafeProblem } from "@/lib/problems/problem-messages";
 import { parseRun as parseSharedRun, type RunView } from "@/lib/discovery/parse";
+import { scaleDelay } from "@/lib/low-data";
 import { nextPollDelayMs, shouldPoll } from "@/lib/discovery/run-state";
 import { createFormatters } from "@/lib/format/formatters";
 
@@ -260,7 +261,7 @@ export function ProjectDiscovery({
         void load(runId);
       }
     };
-    const timer = window.setTimeout(poll, nextPollDelayMs(attempts.current));
+    const timer = window.setTimeout(poll, scaleDelay(nextPollDelayMs(attempts.current)));
     return () => window.clearTimeout(timer);
   }, [load, phase]);
 

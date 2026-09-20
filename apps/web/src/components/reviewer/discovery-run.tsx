@@ -26,6 +26,7 @@ import {
   shouldPoll
 } from "@/lib/discovery/run-state";
 import { createFormatters } from "@/lib/format/formatters";
+import { scaleDelay } from "@/lib/low-data";
 import { networkProblem, readBrowserProblem } from "@/lib/problems/browser-problem";
 import type { SafeProblem } from "@/lib/problems/problem-messages";
 import { postJson } from "@/lib/tracking/client";
@@ -426,7 +427,7 @@ export function DiscoveryRun({
         attempts.current += 1;
         void load(false);
       },
-      nextPollDelayMs(attempts.current, retry)
+      scaleDelay(nextPollDelayMs(attempts.current, retry))
     );
 
     return () => {
