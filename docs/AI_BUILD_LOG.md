@@ -1350,7 +1350,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** a working live language path and honest evidence of its quality.
 - **AI assistance used:** Wrote the adapter, migrated its callers and tests, ran the live evaluation and pipeline runs, diagnosed the two live defects, and recorded the evidence without overstating it.
 - **Prompt summary:** Use the Groq key instead of OpenAI; a Brave key was supplied; the maintainer stated they reviewed the Hausa, Igbo and Yoruba copy themselves.
-- **Human review:** Pending maintainer review of this branch. The locale review itself is the maintainer's own, self-reported; no independent reviewer exists.
+- **Human review:** The maintainer reviewed this branch and merged it on 2026-09-20 (pull request #16), as they stated when asking for this record. The locale review itself is the maintainer's own, self-reported; no independent reviewer exists.
 
 ## 2026-09-19 — Public evidence path fixes found while staging (BE-041, BE-043 follow-up)
 
@@ -1386,7 +1386,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** hybrid retrieval in the live path, a complete and honest staging record, and the frontend contract unchanged.
 - **AI assistance used:** Discovered that query embedding never existed, measured the candidate models rather than assuming, deployed to staging, diagnosed the memory kill from platform metrics, downgraded the two databases before rewriting an applied migration, and recorded what went wrong. Its own informal Hausa, Igbo and Yoruba test sentences are unreviewed and are labelled as such.
 - **Prompt summary:** Use FastEmbed for embeddings instead of a paid provider; clear the backend's open items on a new branch and use Railway.
-- **Human review:** Pending maintainer review of this branch.
+- **Human review:** The maintainer reviewed this branch and merged it on 2026-09-20 (pull request #16), as they stated when asking for this record.
 
 ## 2026-09-20 — FE-000 frontend scope and authority reconciliation
 
@@ -1448,7 +1448,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** The frontend loop's task-selection, safety-boundary, validation, documentation, commit, blocked-task, and hard-stop rules.
 - **AI assistance used:** Mirrored the proven backend loop structure, then adapted it to the frontend's Server Component/BFF boundary, state-matrix proof, four-locale requirements, and mandatory human visual-direction gate.
 - **Prompt summary:** Create a frontend loop equivalent to the backend loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — Frontend circle branch and commit naming rule
 
@@ -1468,7 +1468,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Outcome-named, circle-isolated frontend branches and concise outcome-based commit subjects.
 - **AI assistance used:** Added the requested branch/commit convention and moved the active Circle 0 checkout to its compliant branch without rewriting or deleting history.
 - **Prompt summary:** Require a frontend branch per circle and exclude roadmap names from branch names and commits.
-- **Human review:** none yet; pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-003 content and range inventory
 
@@ -1488,7 +1488,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Stable `content.<surface>.<tier>` names, explicit safe data classifications, contract-absence markers, and three layout-density targets for every requested content family.
 - **AI assistance used:** Derived a contract-safe fixture taxonomy from the frontend handoff and task requirements; added an adversarial validator rather than using source-register data as plausible-looking UI content.
 - **Prompt summary:** Use the frontend loop and work the next frontend task.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-004 BFF operation map
 
@@ -1508,7 +1508,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Exact BFF path ownership, profile-based guard/caching/redaction rules, and complete operation coverage without a generic proxy.
 - **AI assistance used:** Reconciled OpenAPI, route ownership, state rules, and backend handoff into one validator-backed BFF ledger; explicitly excluded unsafe generic forwarding and frontend policy decisions.
 - **Prompt summary:** Use the frontend loop and continue the next eligible frontend task.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 
 
@@ -1551,7 +1551,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Node 24.20.0, pnpm 12.4.2, the committed lockfile, `apps/web` package scripts, strict compiler settings, standalone output, and proof that the base build does not require the private API.
 - **AI assistance used:** Selected/pinned the accepted stack versions, created the minimal non-visual foundation, diagnosed the supply-chain age-policy failure, and refused to retain the tool-added policy exemption.
 - **Prompt summary:** Use the frontend loop and continue with the eligible web foundation task.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-021 quality toolchain and commands
 
@@ -1572,7 +1572,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** FE-022 can add base error/metadata behaviour with component, browser, and axe tests using these exact commands.
 - **AI assistance used:** Selected and configured development-only quality tools, identified the ESLint compatibility failure, inspected the two allowed install hooks, and recorded their bounded purpose.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
-- **Human review:** none yet; unattended loop, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-022 safe app recovery and metadata boundary
 
@@ -1593,7 +1593,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Root metadata/viewport/robots behavior; safe generic unavailable/retry semantics; `toSafeRequestReference`; standalone browser-test configuration; and a real passing test layer.
 - **AI assistance used:** Implemented the minimal safety boundary, corrected resolver/standalone test-harness defects revealed by actual tests, and kept locale/design-system scope with their designated tasks.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
-- **Human review:** none yet; unattended loop, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-023 server/client environment boundary
 
@@ -1614,7 +1614,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Validated runtime/private configuration, the explicit public environment allowlist, `web-boundary`, canary scanning, and stable standalone test-process environment setup.
 - **AI assistance used:** Implemented separate runtime/public schemas, added a production-artifact canary scan, and fixed test-runner-only handling of Next's server-only import without altering the production barrier.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
-- **Human review:** none yet; unattended loop, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-024 least-privilege frontend CI
 
@@ -1635,7 +1635,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A SHA-pinned, read-only workflow and local workflow-invariant validator; not on a claimed hosted green result.
 - **AI assistance used:** Implemented the workflow and its negative-path validator, resolved the setup action revision, and kept browser data artifacts out of pull-request visibility.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
-- **Human review:** none yet; unattended loop, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 ## 2026-09-20 — FE-010 visual-direction discovery (resolved)
 
 - **Task:** FE-010 — One-round design discovery.
@@ -1735,7 +1735,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Semantic CSS/Tailwind aliases, static standalone asset preparation, and contrast/preference/browser proof. It must not infer product truth or authorisation from a token.
 - **AI assistance used:** Implemented the approved semantic system, selected Tailwind's documented v4 PostCSS integration, added deterministic contrast/preference tests, and corrected the standalone browser-serving defect found by visual inspection.
 - **Prompt summary:** Continue frontend work through the established task loop after selecting the Field Ledger direction.
-- **Human review:** none yet; unattended loop, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-030 Deterministic OpenAPI generation
 
@@ -1756,7 +1756,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `createGeneratedClient(baseUrl)` and the `paths`/`operations`/`components` types.
 - **AI assistance used:** Wrote the deterministic generator with drift check and compile-time contract assertions.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-031 Server-only private API client
 
@@ -1777,7 +1777,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `serverApi()` public reads, `buildForwardedHeaders`, and the typed `ApiResult` for FE-032/FE-033.
 - **AI assistance used:** Designed and implemented the transport, its tests, and the boundary test; found and fixed the environment parse defect.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-032 BFF request guard library
 
@@ -1798,7 +1798,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `guardMutation`, `readBoundedJson`, `buildBackendHeaders`, `backendSignal`, and the problem builders.
 - **AI assistance used:** Designed and implemented the guards and adversarial tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-033 Purpose-built public mutation handlers
 
@@ -1819,7 +1819,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the handler paths above, `handlePublicJson`/`handlePublicEmpty`/`handleReportSubmission`, and the `MutationOptions` transport methods for FE-034's reviewer handlers.
 - **AI assistance used:** Designed and implemented the handlers, schemas, transport extension, and table-driven adversarial tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-034 Reviewer session and mutation handlers
 
@@ -1840,7 +1840,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `handleReviewerJson`/`handleReviewerEmpty`/`handleReviewerGet`, the reviewer cookie helpers, and the server-only reviewer read methods.
 - **AI assistance used:** Designed and implemented the session cookie handling, handlers, schemas, and adversarial tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-035 BFF contract/security tests
 
@@ -1861,7 +1861,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** The operation-map parity test and the runtime no-output test as guard rails for later route or logging changes.
 - **AI assistance used:** Wrote the parity, redaction, and cancellation tests and the bundle markers.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-041 Accessible primitive layer
 
@@ -1882,7 +1882,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Primitive props and classes for FE-042 and FE-043.
 - **AI assistance used:** Reworked the primitives, wrote tests, and iterated on screenshots.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-042 Evidence-specific components
 
@@ -1903,7 +1903,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the exported components and exhaustive label record types.
 - **AI assistance used:** Designed and implemented the components, tests, and fixture.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-043 Public and reviewer shells, FE-044 First-viewport proof, and maintainer-requested changes
 
@@ -1924,4 +1924,26 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `PublicShell`, `ReviewerShell`, `SignOutButton`, the `ui/*` components, `cn`, the English content modules, and the forwarded client HMAC.
 - **AI assistance used:** Implemented the shells, first viewport, migration to Tailwind/shadcn, client HMAC, and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop; maintainer asked me to finish Circle 4 myself and to use Tailwind and shadcn.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
+
+## 2026-09-20 — Maintainer review of the merged frontend and backend work
+
+- **What happened:** The maintainer merged pull requests #16 to #22 into `main` and stated that they had reviewed the open items in them. This entry records that statement; the reviewer is the maintainer alone, and no independent review is claimed.
+- **Reviewed and accepted by the maintainer (per their statement):**
+  - the backend open-item closure in #16;
+  - the frontend contracts, BFF operation map, and branch convention (#17, #18);
+  - the web foundation and CI (#19), including moving `corepack enable` before `setup-node`;
+  - the Field ledger direction, tokens, and first primitives (#20);
+  - the typed API client and the 26 BFF handlers (#21), including the decision to hold the reviewer CSRF token in an `HttpOnly` cookie and forward it server-side;
+  - the primitives, evidence components, shells, and first viewport, the move to Tailwind CSS and shadcn structure, the client HMAC design (`CLIENT_HMAC_KEY`, `TRUSTED_PROXY_HOPS`), and the operation-map correction for public-update withdraw (#22);
+  - the secret-scan allowlist changes in `.gitleaks.toml` for the pinned model digests and the synthetic test UUIDs.
+- **Still open (reviewing them did not close them):**
+  - no handler has run against a live FastAPI: the local database was at migration `0027_embedding_384`, which was not on the branch at the time, so `make migrate` failed and nothing was reset;
+  - `ha`, `ig`, and `yo` critical copy has no fluent human review for the frontend, and the language control marks those languages "not yet reviewed";
+  - no screen-reader run, and 200% browser zoom was emulated rather than tested;
+  - navigation links to routes later work builds (localities, trust, report, projects) resolve to the safe not-found page;
+  - the landing page shows a fictional, labelled example record until the directory work uses API data;
+  - `SourceCardLabels.unknownDate` is unused and should be used or removed;
+  - the keyboard skip-link browser test is scoped to Chromium because iOS WebKit does not Tab to links by default.
+- **Commit/PR:** `docs: record the maintainer review of the merged work`
+- **Human review:** Stated by the maintainer on 2026-09-20; this entry itself has not been reviewed by anyone else.
