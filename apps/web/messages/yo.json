@@ -1489,5 +1489,33 @@
         "deferred": null
       }
     }
+  },
+  "offline": {
+    "title": null,
+    "lead": null,
+    "retry": null,
+    "savedHeading": null,
+    "savedNone": null,
+    "savedOn": null,
+    "savedNote": null,
+    "clear": null,
+    "cleared": null,
+    "privateNote": null,
+    "banner": null,
+    "bannerNoDate": null,
+    "backOnline": null,
+    "update": null,
+    "updateApply": null,
+    "updateLater": null,
+    "lowData": {
+      "suggest": null,
+      "on": null,
+      "off": null,
+      "turnOn": null,
+      "turnOff": null,
+      "label": null,
+      "note": null,
+      "dismiss": null
+    }
   }
 }

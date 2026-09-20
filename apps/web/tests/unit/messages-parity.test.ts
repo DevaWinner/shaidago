@@ -26,6 +26,7 @@ const PENDING_DOMAINS = [
   "track",
   "handle",
   "reviewer",
+  "offline",
   "discovery"
 ];
 const root = join(import.meta.dirname, "..", "..", "messages");
@@ -115,7 +116,8 @@ describe("real catalogues", () => {
           key.startsWith("track.") ||
           key.startsWith("handle.") ||
           key.startsWith("reviewer.") ||
-          key.startsWith("discovery.")
+          key.startsWith("discovery.") ||
+          key.startsWith("offline.")
       )
     ).toBe(true);
     expect((read("status") as { pendingKeysAllowed?: boolean }).pendingKeysAllowed).toBe(true);

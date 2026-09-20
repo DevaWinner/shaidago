@@ -2471,3 +2471,43 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the manifest and tests; declined to invent an icon.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-131 Explicit service-worker allowlist
+
+- **Task:** FE-131 — Explicit service-worker allowlist (Circle 13). Delivered in one commit with the other service-worker task because they share the worker and the offline page.
+- **User outcome delivered:** Recently viewed public pages and framework files are saved for weak connections, and nothing private is ever stored.
+- **Routes/components changed:** `public/sw.js`, `public/sw-policy.js`, `next.config.ts` headers, `src/components/pwa/pwa-support.tsx`, unit and e2e tests.
+- **Backend operations/contract version:** none (public pages and static files only).
+- **Public/private data handled:** Only public catalogue HTML and framework files are stored; cache inspection proves no private URL, body, header, or canary.
+- **States implemented:** stored, refused (no-store/private/cookie/redirect/opaque/oversize), stale-while-revalidate, network-first with timeout, error fallback
+- **Accessibility evidence:** not applicable to the worker itself
+- **Locales reviewed:** English only; the `offline` domain is `null` in ha/ig/yo (pending), so those pages show the English original with a notice.
+- **Performance/cache impact:** One small client island on public pages (registration and banner); the worker file is `no-cache`; public pages are revalidated on every request.
+- **Commands run and results:** `make web-verify` exit 0 (551 unit tests in total); `make web-e2e` 373 passed and 7 skipped; targeted a11y `offline` 8 passed.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** Production CDN behaviour not tested; caching relies on Next honouring the `headers()` override for the public routes.
+- **Commit/PR:** `feat: add the explicit-allowlist service worker, offline page, and update notice`
+- **Next task may rely on:** `SG_POLICY`, the `sg-*-v1` caches, `PwaSupport`, and the `offline` copy domain.
+- **AI assistance used:** Wrote the worker, policy, components, and the cache-inspection tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-132 Offline and update UX
+
+- **Task:** FE-132 — Offline and update UX (Circle 13). Delivered in one commit with the other service-worker task because they share the worker and the offline page.
+- **User outcome delivered:** A reader can revisit a saved public record offline with its saved time, gets a useful offline page otherwise, and is never told a private action succeeded offline.
+- **Routes/components changed:** `app/[locale]/(site)/offline/page.tsx`, `src/components/pwa/*`, `messages/*` (`offline`), unit, e2e and a11y tests.
+- **Backend operations/contract version:** none.
+- **Public/private data handled:** Saved public pages only, in this browser's Cache Storage; no private data.
+- **States implemented:** saved copy with date, unsaved offline page, private routes unavailable, update waiting, back online, cleared saved pages
+- **Accessibility evidence:** 8 axe runs (four languages) at 320 px and 200% text for the offline page
+- **Locales reviewed:** English only; the `offline` domain is `null` in ha/ig/yo (pending), so those pages show the English original with a notice.
+- **Performance/cache impact:** One small client island on public pages (registration and banner); the worker file is `no-cache`; public pages are revalidated on every request.
+- **Commands run and results:** `make web-verify` exit 0 (551 unit tests in total); `make web-e2e` 373 passed and 7 skipped; targeted a11y `offline` 8 passed.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** WebKit offline with a service worker is not testable in Playwright; the update prompt is not driven end to end; ha/ig/yo copy pending.
+- **Commit/PR:** `feat: add the explicit-allowlist service worker, offline page, and update notice`
+- **Next task may rely on:** `SG_POLICY`, the `sg-*-v1` caches, `PwaSupport`, and the `offline` copy domain.
+- **AI assistance used:** Wrote the worker, policy, components, and the cache-inspection tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
