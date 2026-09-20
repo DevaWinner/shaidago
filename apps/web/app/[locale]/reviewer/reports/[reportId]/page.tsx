@@ -73,6 +73,7 @@ export default async function ReviewerReportPage({
   const queue = queuePath(locale);
   const missing = (
     <ReviewerFrame locale={locale} signedIn>
+      <h1 className="m-0 text-ledger-display leading-[1.1]">{copy.title}</h1>
       <QueueNotice
         action={
           <div>
@@ -135,6 +136,7 @@ export default async function ReviewerReportPage({
 
     return (
       <ReviewerFrame locale={locale} signedIn>
+        <h1 className="m-0 text-ledger-display leading-[1.1]">{copy.title}</h1>
         <QueueNotice
           action={
             <div className="flex flex-wrap gap-3">

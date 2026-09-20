@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { StatusActions } from "@/components/reviewer/status-actions";
+import { REVIEWER_TRANSITIONS } from "@/lib/reviewer/transitions";
 import en from "../../messages/en.json";
 
 const refresh = vi.fn();
@@ -206,4 +207,54 @@ describe("StatusActions", () => {
     );
     expect((await screen.findByRole("alert")).textContent).toContain(en.problems.mayHaveCompleted);
   });
+});
+
+describe("every allowed transition", () => {
+  const cases = Object.entries(REVIEWER_TRANSITIONS).flatMap(([from, list]) =>
+    list.map((item) => [from, item.command, item.to] as const)
+  );
+
+  it.each(cases)(
+    "from %s, %s is sent with the shown status and version and reports %s",
+    async (from, command, to) => {
+      const fetcher = vi.fn().mockResolvedValue(ok());
+
+      vi.stubGlobal("fetch", fetcher);
+      mount(from, 7);
+      const user = userEvent.setup();
+
+      await user.selectOptions(screen.getByLabelText("Action"), command);
+      if (command === "request_information") {
+        await user.type(
+          screen.getByLabelText(/^Message the reporter will see/),
+          "Please add a photo."
+        );
+      }
+      if (command === "reopen") {
+        await user.type(
+          screen.getByLabelText(/^Internal reason \(private\)/),
+          "New fictional evidence."
+        );
+      }
+      await user.click(screen.getByRole("button", { name: "Apply change" }));
+      await user.click(
+        within(await screen.findByRole("alertdialog")).getByRole("button", { name: "Apply change" })
+      );
+
+      await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(1));
+      const [, init] = fetcher.mock.calls[0] as [string, RequestInit];
+      const body = JSON.parse(String(init.body)) as Record<string, unknown>;
+
+      expect(body).toMatchObject({ command, expected_status: from, expected_version: 7 });
+      expect(
+        en.reviewer.queue.statuses[to as keyof typeof en.reviewer.queue.statuses]
+      ).toBeTruthy();
+      expect(Object.keys(body).sort()).toEqual(
+        ["command", "expected_status", "expected_version"]
+          .concat(command === "request_information" ? ["reporter_message"] : [])
+          .concat(command === "reopen" ? ["internal_reason"] : [])
+          .sort()
+      );
+    }
+  );
 });

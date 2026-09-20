@@ -2293,3 +2293,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the composer, shared entry extraction, parser, mock endpoints and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-116 Reviewer security, accessibility, and E2E
+
+- **Task:** FE-116 — Reviewer security/accessibility/E2E (Circle 11).
+- **User outcome delivered:** The reviewer workspace is proven safe and usable end to end: unauthorised, cross-origin, and CSRF-less requests are refused, sign-out leaves nothing behind, and the pages pass axe, phone-width, 200% text, and keyboard checks in four languages.
+- **Routes/components changed:** `tests/e2e/reviewer-security.spec.ts`, `tests/a11y/reviewer.a11y.spec.ts`, the every-transition component test, and one fix: the report-detail failure and not-found states now have a page heading.
+- **Backend operations/contract version:** No operation added; OpenAPI 0.0.0 unchanged.
+- **Public/private data handled:** Fictional data only. Tests assert that no report text, contact, note, internal reason, or password reaches the console, storage, a URL, a public page, or a public cache.
+- **States implemented:** covered by earlier tasks; this task adds the session-without-CSRF, cross-origin, sign-out, back-navigation, and direct-URL states.
+- **Accessibility evidence:** `make web-a11y` 312 passed (Chromium and mobile WebKit): axe, 320 px reflow, and 200% text for the reviewer sign-in states, queue states, and detail states in en, ha, ig, and yo, and for the actions, note and status confirmations, composer, preview, and publish confirmation in English; a 44 px control check. One real violation fixed (no page heading on failure states). A narrow, documented exclusion of Base UI focus-guard spans on WebKit in dialog checks.
+- **Locales reviewed:** en, ha, ig, yo routes and shell audited. Reviewer body copy in ha/ig/yo is `null` (pending), so those pages show the English original with a notice; no translation was written or claimed.
+- **Performance/cache impact:** Reviewer routes are dynamic, no-store, and outside public caches; client JavaScript is only on reviewer pages; `bundle:check` clean (33 chunks).
+- **Commands run and results:** `make web-verify` exit 0 (492 unit and 179 component tests in total, message parity, contract drift, client-boundary scan); `make web-e2e` 320 passed and 6 skipped (iOS WebKit Tab-focus, three existing and three new; 110 of the runs are the reviewer's, 55 tests on two browsers); `make web-a11y` 312 passed (30 runs are the reviewer's); the five Circle 0 frontend validators and the workflow validator pass.
+- **Screenshots/traces/artifacts checked:** none captured (assertions only); traces are retained only on failure and contain fictional data.
+- **Known limitations/open decisions:** Real API not run against these flows; screen-reader output not tested; a contact reveal is a GET (history entry re-audits); the API contract has no re-authentication step for publishing; hidden Tab-focus behaviour on iOS WebKit is skipped; Source Scout for a report is a stated placeholder until Circle 12.
+- **Commit/PR:** `test: prove reviewer security, accessibility, and keyboard behaviour end to end`
+- **Next task may rely on:** the reviewer detail page's section slots (`scout`), `ReviewerFrame`, the mock reviewer API, `auditDialog`, and `signInAs`.
+- **AI assistance used:** Wrote the security, keyboard, and accessibility suites; diagnosed and fixed the missing-heading defect and test races.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
