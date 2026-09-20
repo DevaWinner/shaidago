@@ -49,9 +49,17 @@ private/reserved networks and unsafe ports, revalidates DNS and every redirect, 
 time, compression, and content type. Retrieved text is inert untrusted data. Search results stay
 `discovered — not yet reviewed`; AI and ranking cannot attach, verify, publish, or change status.
 
-Replay providers and synthetic fixtures are the deterministic default. Live Groq and Brave
-evidence is still pending an explicitly authorised credentialed run. No live provider was called
-during the backend build loop.
+Embeddings are computed locally (ADR-0010). When `EMBEDDING_BACKEND=fastembed`, the screened,
+bounded question is turned into a vector inside the API process by an ONNX model read from disk, and
+the approved public chunks were embedded the same way ahead of time. No provider, key or network
+call is involved, so embedding adds nothing to what any third party sees. The vector is used to
+rank approved public passages and is neither stored nor logged; only the retrieval mode is recorded.
+When the backend is off, or a call fails, retrieval falls back to keyword search and says so.
+
+Replay providers and synthetic fixtures are the deterministic default. Live Groq and Brave were
+exercised once, on 2026-09-19, with the maintainer's authorisation; the safe evidence is in
+`docs/evidence/BE-097-live-evidence.md`. That record includes two live runs whose analysis our own
+validator rejected and withheld, which is the intended behaviour.
 
 ## Caches, logs, and operational data
 
@@ -86,7 +94,7 @@ Exact commands and current results are recorded in [`AI_BUILD_LOG.md`](AI_BUILD_
   access-restricted. A fresh manual audit of all six project records and reuse terms is pending.
 - The hosted demo uses `SCANNER_MODE=not_deployed`; sanitised attachments are visibly marked
   `not_scanned_demo`. Production refuses this mode and needs a deployed malware scanner.
-- Live Groq/Brave interoperability and provider-side retention/terms have not been verified.
+- Live Groq/Brave interoperability was exercised once (see BE-097). Provider-side retention and terms have not been reviewed.
 - The complete fictional staging smoke journey is pending private-network access through a
   maintainer-registered Railway SSH key.
 - Production has not been created. Legal basis, privacy notice, real retention periods, backup and

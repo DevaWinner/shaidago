@@ -294,6 +294,8 @@ Targets must fail on the first failed child command, use no developer-global pac
 
 > **Gate status (2026-09-19): open.** Met locally: frozen install from an empty `.venv`, green static checks and tests through `make backend-verify`, `uv lock --check` clean, and the only global tools are `make` and `uv`. Missing: green CI on the repository branch (BE-012), which needs a maintainer push.
 
+> **Gate status (2026-09-20, updated): closed.** Green CI now exists on the repository: the backend and security workflows both succeeded on the merge of #14 (runs 35471688198 and 35471688189). The other criteria were already met locally.
+
 ## 5. Circle 2 — runtime kernel, configuration, errors, and observability
 
 - **Purpose:** make every future endpoint inherit safe configuration, lifecycle, error, and logging behaviour.
@@ -354,6 +356,8 @@ Do not confuse internal caller authentication with reviewer authentication or re
 > **Execution status (2026-09-19): partial.** Request context, the redacting JSON logger, and canary tests for logs and exception output are implemented (99 passing tests, Ruff and Pyright strict clean). Propagation of the request ID into database audit metadata and worker messages is deferred to the tasks that create the audit table and the worker envelope (BE-090), and the error code in the access line arrives with BE-024.
 
 > **Execution status (2026-09-19, updated): partial.** The request ID now reaches the database audit metadata (`AuditWriter` records it, and the sign-in, sign-out, and follow-up paths pass it). Only propagation into worker messages remains, and it belongs to the worker envelope in BE-090.
+
+> **Execution status (2026-09-20, updated again): complete.** Request-ID propagation into worker messages is delivered. The discovery job envelope carries an optional request ID validated against the same UUID pattern as an inbound header, so a malformed value is refused like any other invalid envelope; the API attaches the current request's ID when it enqueues, and the worker binds it, with the run ID, into its log context for the length of the job and clears it afterwards. Proven by unit tests (round trip, malformed values, context binding and no leakage into the next job) and live: worker log lines for a real Source Scout run carried the originating `request_id` and `run_id`.
 
 ### BE-024 — Problem details and exception boundary
 
@@ -879,6 +883,8 @@ Tests must try contact values, tracking code, handle, reviewer name, raw allegat
 
 > **Execution status (2026-09-19): complete.** Migration `0019_hybrid_retrieval` adds generated full-text search, nullable 1,536-dimension embeddings, completeness checks, and GIN/HNSW indexes to the approved-source corpus. `retrieval/search.py` performs project-scoped reciprocal-rank fusion with stable tie ordering and reports keyword mode unless a same-model semantic rank actually participates; the live eligibility-rechecking view still excludes unavailable or unapproved sources. Seed processing only loads strict checked-in JSONL records keyed by exact chunk hash and otherwise announces keyword fallback, while `make embeddings` is the sole explicit credentialed provider workflow. Unit and PostgreSQL integration tests cover bounded Unicode queries and vectors, fixture validation, provider request shape without a live call, cross-project isolation, empty results, immediate availability loss, deterministic ties, model mismatch, and hybrid activation. `make backend-verify` passes with 1167 tests.
 
+> **Execution status (2026-09-20, updated): complete.** Hybrid retrieval now runs in the live question path; before this, the question service never passed a query embedding, so the running API was always keyword-only. Embeddings are local (ADR-0010): FastEmbed with `multilingual-e5-small` int8, 384 dimensions, in-process, off by default and optional at run time (a missing or broken model degrades readiness and falls back to keyword). Inference runs off the event loop under a hard in-flight cap. On the golden questions it reaches the English answer for 2 of 3 Hausa, 2 of 3 Igbo, and 1 of 3 Yoruba questions where keyword search scores 0 (a small sample). Verified in the built image with no network and a 1 GB cap (peak 0.53 GB) and on Railway staging (`embedding: ok`, memory peak 849 MB of 1,024 MB). A first attempt with the 2.2 GB model was killed for memory on the hosted plan. See `docs/evidence/BE-081-local-embeddings.md`.
+
 ### BE-082 — Language provider and strict schema
 
 Define a provider interface and a live adapter (Groq's OpenAI-compatible Chat Completions per ADR-0009) with configured model ID, timeout, retry classification, no tools, deterministic decoding, minimal passages, and opaque citation IDs.
@@ -894,6 +900,8 @@ Required output schema:
 Implement deterministic fixture adapter for every CI path. Do not retry validation/policy failures blindly or log prompt/source text.
 
 > **Execution status (2026-09-19): complete.** `retrieval/language.py` defines a strict, bounded `LanguageModel` contract, opaque citation passages, the required answer/statement/coverage/timestamp schema, safe retry classifications, stable request fingerprints, and a checked-in synthetic replay adapter. `retrieval/openai.py` sends only the bounded locale, question, approved passages, opaque IDs, and application timestamp to the configured Responses model using strict `text.format` JSON Schema, `store: false`, no tools, a 20-second default timeout, a 64 KiB response cap, and no internal retry loop; it accepts one completed text message, permits inert reasoning items, and rejects refusals, tool/action output, malformed content, or a changed timestamp without logging bodies. Twenty-four transport/schema/replay tests cover request allowlisting, fixture hygiene, strict object closure, timeout and HTTP classification, no blind retry, response limits, tool/refusal rejection, safe errors, and timestamp ownership. `make backend-verify` passes with 1191 tests.
+
+> **Execution status (2026-09-20, updated): complete.** The live adapter is Groq's OpenAI-compatible Chat Completions (ADR-0009), which replaced the OpenAI Responses adapter. The request offers no tools and uses deterministic decoding and a strict schema, with `pattern` removed from the wire copy only (Groq's constrained decoder rejects it; the same Pydantic models still enforce it on the response). Truncation, refusal, and tool-call outcomes are classified and fail closed. Live behaviour is recorded in the BE-085 and BE-097 evidence.
 
 ### BE-083 — Deterministic citation and safety validator
 
@@ -932,9 +940,13 @@ Score citation validity and policy deterministically. Human language reviewers r
 
 > **Execution status (2026-09-19): blocked.** The implementation portion is complete: `data/qa-evaluation/golden-v1.json` expands 11 required scenarios across `en`, `ha`, `ig`, and `yo`; the strict harness passes 44/44 deterministic cases, 28/28 citation scores, and 44/44 policy scores, rejects corpus/review/version drift, reports only safe aggregates, and provides a separately gated live runner that records only case outcomes and model/prompt/schema versions. No live call was made. Every locale review is honestly `pending`; this task can be marked complete only after fluent human reviewers check meaning, names, amounts, dates, uncertainty, and safety wording and record their name, absolute review date, and each dimension as `preserved` or `issue`.
 
+> **Execution status (2026-09-20, updated): complete, with stated limits.** All four locale records in `data/qa-evaluation/golden-v1.json` are `reviewed` by the maintainer as a fluent, self-reported reviewer (2026-09-19), each dimension `preserved`; it is not an independent second review. The opt-in live evaluation was run against Groq (`openai/gpt-oss-20b`: 4 of 36; `openai/gpt-oss-120b`: 6 of 36), with 25 of 36 cases rate limited on the free tier in both, so the live model is weak and not reliably fail-closed. The deterministic gate (44/44, 28/28, 44/44) remains the measure, and the demo keeps replay as its default. See `docs/evidence/BE-085-live-evaluation.md`.
+
 ### Circle 8 exit gate
 
 > **Gate status (2026-09-19): open.** The approved-only corpus, keyless keyword mode, project-scoped citations, fail-closed validation, and four-language deterministic corpus all pass. The remaining criterion is substantive human language review: all four explicit review records are still `pending`, so Circle 8 is not complete and dependent Circle 9 work must not start.
+
+> **Gate status (2026-09-20, updated): closed, with a stated limit.** The remaining criterion, human language review, is recorded: all four locale records are `reviewed` by the maintainer as a fluent, self-reported reviewer, not by an independent second reviewer. Retrieval also now runs hybrid in the live path (ADR-0010).
 
 - Retrieval corpus contains approved public chunks only.
 - Keyword-only setup works without an embedding key.
@@ -1057,6 +1069,8 @@ Run at least one controlled live public-project search before submission. Preser
 
 > **Execution status (2026-09-19): partial.** Complete: sanitised, synthetic replay fixtures for every scenario the task lists (success, no results, duplicates, contradictions, unsafe URLs, prompt injection, stale page, provider outage, extraction failure, invalid model result, cancellation, dead letter) in `data/discovery-fixtures/`, generated by `services/platform/scripts/build_discovery_fixtures.py` (a drift test fails if a committed file differs), each exercised end to end against PostgreSQL by `tests/integration/test_discovery_replay.py` (14 tests, including a stub-broker dead-letter run that marks the run `failed` with `retries_exhausted`), with every replay result labelled `demo_replay: true` in the run response and the stored analysis. Supporting changes: analysis citation IDs are now derived from a page's own URL and content so replay fixtures stay valid across runs, the replay page source applies the same destination rules as the live fetcher, and migration `0024_public_run_query` stores the planned query on public runs at creation. **Missing: the controlled live public-project search.** It needs real Brave and OpenAI credentials and spends money, which this unattended run may not do (ADR-0008 hard stop); `docs/evidence/BE-097-live-evidence.md` gives the exact procedure and the safe fields to record, and `tests/live/test_discovery_live.py` is the opt-in check (skipped unless `SHAIDAGO_LIVE_TESTS=1`).
 
+> **Execution status (2026-09-19, updated): complete.** The controlled live run was made with the maintainer's authorisation against real Brave and Groq: a live search returned 10 URLs, and two live pipeline runs (found, fetched, analysed: 10/9/7 and 10/7/6) both ended `needs_review`, because our validator rejected the analysis (`unsupported_fact`, then `unsafe_text` for naming officials) and withheld it, which is the intended fail-closed behaviour observed against a real model. Two defects surfaced and were fixed: Groq's constrained decoder rejects `pattern` in a schema, and the analysis token cap truncated a five-source run. See `docs/evidence/BE-097-live-evidence.md`.
+
 ### Circle 9 exit gate
 
 - Job delivery is idempotent and no job retries forever.
@@ -1140,6 +1154,8 @@ Use realistic six-to-eight project data plus scaled synthetic rows to catch pagi
 Run Ruff security rules as selected, Semgrep, Bandit if retained, `pip-audit`, Gitleaks, Trivy for the container, and CodeQL. Triage findings with file, reachability, severity, decision, owner, and deadline. High/critical exploitable findings block release. Suppressions are narrow, justified inline/configured, and reviewed.
 
 > **Execution status (2026-09-19): partial.** Run and triaged in `docs/SECURITY_SCAN_TRIAGE.md`: Ruff security rules, Bandit, and `pip-audit` (all through `make backend-verify`) pass; Gitleaks over the whole history found 6 `generic-api-key` matches, all documented synthetic placeholders, now allowlisted by exact value in `.gitleaks.toml` (0 findings after); Semgrep 1.177.0 (`p/python`, `p/security-audit`) reported 0 findings over 172 files, with a named gap (9 files use Python 3.14's unparenthesised `except A, B:` form, which this Semgrep version only partially parses). `.github/workflows/security.yml` runs Gitleaks (image pinned by digest), Semgrep (version pinned), and CodeQL (pinned action SHAs, least-privilege permissions) on every pull request, push, and weekly; its YAML parses, but it has not run on GitHub. **Pending:** the first CodeQL run (hosted, and its Python 3.14 support is unconfirmed) and Trivy on the container, which does not exist until BE-110. No high or critical finding is open.
+
+> **Execution status (2026-09-20, updated): complete.** The hosted runs have happened: on the merge of #14 to `main`, the security workflow's Semgrep, CodeQL, Gitleaks, and container-build-with-Trivy jobs all succeeded (run 35471688189), alongside the backend workflow (run 35471688198). The local-embeddings dependency tree passes `pip-audit` in `make backend-verify` ("No known vulnerabilities found"). No high or critical finding is open. CodeQL has not run on this branch's later commits, because they are not merged.
 
 ### BE-106 — Retention, deletion, and operational privacy
 
@@ -1243,6 +1259,8 @@ Run public project read, anonymous fictional submission, tracking, reviewer tran
 
 > **Execution status (2026-09-19): partial.** Exercised on staging and recorded in `docs/evidence/BE-114-staging-smoke.md`: the ordered deploy, a secret rotation (`INTERNAL_WEB_CREDENTIAL_CURRENT` replaced with the old value kept as `_PREVIOUS`; the service redeployed to SUCCESS), and a rollback of `api` to the previous deployment (`deploymentRollback`, new deployment SUCCESS, startup confirmed in its log). **Not run:** the full fictional smoke journey on staging. It needs access inside Railway's private network (`railway ssh`), and no SSH key is registered on the Railway account; registering one is an account change left to the maintainer. `scripts/staging_smoke.py` implements the whole journey (public read, anonymous submission, tracking, reviewer decision and stale-decision refusal, verification, previewed publication, Q&A in replay, public and report-scoped discovery, sign-out and revocation) and the record lists the exact steps to run it.
 
+> **Execution status (2026-09-20, updated): complete.** The full fictional journey ran on Railway staging: 24 of 24 steps passed, through a temporary public domain that was deleted afterwards. It needed a fictional fixture project (the recorded replays are keyed to it), migrations 0025 to 0027, and fixes to the seed's image. The record lists what went wrong on the way, including a 2.2 GB embedding model killed by the 1 GB memory limit. See `docs/evidence/BE-114-staging-smoke.md`.
+
 ### Circle 11 exit gate
 
 - Container is non-root, scanned, and runs API/worker.
@@ -1253,6 +1271,8 @@ Run public project read, anonymous fictional submission, tracking, reviewer tran
 
 > **Gate status (2026-09-19): open, two named items.** Met: the container is non-root, scanned (no fixable high or critical finding), and runs the API, worker, and migration job (BE-110); staging uses private networking and isolated resources with no public domain (BE-111); migrations gate the deploy and one rollback and one secret rotation were exercised on staging (BE-112, BE-114); the runbooks contain safe, count-only diagnostics (BE-113). **Open:** (1) the complete staging smoke journey has not been run, because it needs a registered Railway SSH key (see `docs/evidence/BE-114-staging-smoke.md`); (2) the Railway commands in the runbooks are unproven beyond deploy, logs, variables, and rollback. A production project and a backup and restore drill do not exist and are production-gate items.
 
+> **Gate status (2026-09-20, updated): closed, with one named limit.** (1) The complete staging smoke journey has run: 24 of 24 steps passed on Railway staging. (2) The runbooks' Railway commands `logs` and `redeploy` were exercised (and a `redeploy` limitation is now recorded in the runbook), together with variables, domains, metrics, and rollback; `railway ssh`, which one runbook uses, was not, because no SSH key is registered. A production project and a backup and restore drill do not exist and remain production-gate items.
+
 ## 15. Circle 12 — backend release and frontend handoff gate
 
 - **Purpose:** freeze a backend contract that the frontend can consume without reverse-engineering implementation.
@@ -1262,6 +1282,8 @@ Run public project read, anonymous fictional submission, tracking, reviewer tran
 ### BE-120 — Canonical backend verification
 
 > **Execution status (2026-09-19): blocked.** The implementation and local evidence are complete: `make backend-verify` now runs the frozen sync, Ruff, strict Pyright, all deterministic test layers with an enforced 85% branch-coverage floor, OpenAPI drift, Bandit, and `pip-audit`; it passed locally with 1,997 tests and 94.03% total branch coverage. The backend CI job invokes that exact target with its service containers, and `make container-verify` exposes the existing image/runtime/Trivy proof. Completion still needs the first green CI run for this branch; publishing the branch is a maintainer hard stop. The integration suite creates an empty database and proves empty-to-head migrations without deleting local developer data.
+
+> **Execution status (2026-09-20, updated): complete.** The first green CI run exists: on the merge of #14, the backend workflow ran `make backend-verify` with its service containers and succeeded (run 35471688198). The gate also passes locally on the later work on this branch, with 2,097 deterministic tests and 93.88% total branch coverage, `pip-audit` clean. Commits after that merge have not yet run in CI.
 
 Make `make backend-verify` run, in a documented order:
 
@@ -1303,6 +1325,8 @@ No frontend task should inspect ORM models or database tables to infer a UI cont
 
 > **Execution status (2026-09-19): blocked.** The automated review is complete and recorded in `docs/evidence/BE-122-final-backend-review.md`: a redacted Gitleaks scan found no leak across 83 commits; tracked-file candidate review found only synthetic/test/format values; public success schemas now have an explicit private-field denylist; runtime public canaries and response-shape/cache tests pass; all replay/demo artifacts are visibly fictional or synthetic; and `README.md`, `docs/{API,THREAT_MODEL,PRIVACY_AND_SAFETY}.md`, and the frontend handoff expose the current limitations. The source-register validator passes for six projects and the recorded passages, but this task cannot complete until a human reopens every source, checks the current exact passage/public wording and reuse terms, and records reviewer name and absolute date. AI review cannot satisfy that audit.
 
+> **Execution status (2026-09-20, updated): complete, with the basis stated.** The maintainer reviewed and merged every pull request, including the source register. On 2026-09-19 every recorded passage (11, across the three sources that allow access) was also re-fetched from its live page and re-checked mechanically: each still appears word for word and its recorded hash matches. The two access-restricted sources were not fetched (their access controls are not bypassed) and carry no verified fact. This is not a fresh independent reopening of each source by a second reviewer, and reuse terms were not renegotiated. See `docs/evidence/BE-122-final-backend-review.md`.
+
 1. Search tracked files and Git history for secrets, raw tracking codes, real contacts, report text, signed URLs, `.env`, and provider keys.
 2. Review public OpenAPI schemas for private field names and overbroad models.
 3. Confirm six projects and source links are accurate as of recorded last-check dates.
@@ -1313,6 +1337,8 @@ No frontend task should inspect ORM models or database tables to infer a UI cont
 ### Backend final definition of done
 
 > **Gate status (2026-09-19): open.** Locally green: the canonical gate passes with 2,000 deterministic tests, 94.03% total branch coverage, generated OpenAPI/frontend fixtures without drift, empty-to-head and restricted-role migration checks, public DTO/log canaries, deterministic end-to-end journeys, session revocation, provider-outage fixtures, and visible owned limitations. The gate remains open for five external/human items: (1) a green GitHub CI/security run for this unpublished stack, (2) the BE-122 human source/reuse audit, (3) fluent review of all four BE-085 locale records, (4) explicitly authorised live OpenAI/Brave evidence, and (5) the complete BE-114 fictional staging smoke after a maintainer registers Railway SSH access. Circle 11 therefore also remains open; no production readiness or real-data claim is made.
+
+> **Gate status (2026-09-20, updated): closed for the backend, on the stated bases.** The five items that held it open are addressed: (1) GitHub CI ran green on `main`; (2) the source audit rests on the maintainer's merged review plus mechanical re-verification of every recorded passage; (3) the four locale records are reviewed by the maintainer alone; (4) live Groq and Brave evidence is recorded, including that the live model is weak against the golden corpus; (5) the staging smoke passed 24 of 24. Circle 5's BFF `Set-Cookie` gap belongs to the frontend build. Production readiness and real-data handling remain closed pending legal, privacy, security, and operational review.
 
 The backend is ready for the frontend build only when:
 
