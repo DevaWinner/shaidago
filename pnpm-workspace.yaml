@@ -1,2 +1,9 @@
 packages:
   - apps/*
+
+# Reviewed install hooks: MSW copies a worker only when explicitly configured (not configured
+# here), while unrs-resolver prepares its platform-specific resolver binary for ESLint import
+# resolution. All other transitive install hooks remain denied by pnpm's default policy.
+allowBuilds:
+  msw: true
+  unrs-resolver: true

@@ -337,6 +337,8 @@ Plan for this contract to survive as the first emitted body comment in the root 
 
 ### FE-021 — Quality toolchain and commands
 
+> **Execution status (2026-09-20): complete.** `apps/web` now has pinned ESLint, Prettier, Vitest, Testing Library, MSW, Playwright, and axe-core foundations, with named package scripts and root `make web-*` targets. Empty unit/component/browser layers fail explicitly; their first meaningful tests arrive with their owning feature tasks. The frozen install, format, lint, type, and frontend-contract checks pass.
+
 Configure:
 
 - ESLint with Next/React/accessibility/security/import rules that add value beyond TypeScript;

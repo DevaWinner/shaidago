@@ -4,15 +4,42 @@ This is the independently tooled Next.js presentation/BFF stack. It is intention
 non-visual, API-free foundation until the approved frontend build order enables each route and
 surface.
 
-## Commands
+## Quality commands
 
 Run from the repository root with pnpm 12.4.2 and Node 24.20.0:
 
 ```text
 pnpm --dir apps/web dev
+make web-format
+make web-format-check
+make web-lint
 pnpm --dir apps/web typecheck
+make web-unit
+make web-component
+make web-contract
+make web-e2e
+make web-a11y
 pnpm --dir apps/web build
+make web-verify
 ```
+
+`web-unit`, `web-component`, `web-e2e`, and `web-a11y` fail when their respective test layer has
+no test files. They do not pass silently. Browser checks use Chromium and a mobile WebKit project;
+before running them in a new local or CI environment, install the pinned browsers explicitly:
+
+```text
+pnpm --dir apps/web exec playwright install chromium webkit
+```
+
+The automated tooling is development-only: ESLint checks Next.js, TypeScript, import,
+accessibility, and security rules; Prettier owns formatting; Vitest provides deterministic
+unit/component/coverage execution; MSW provides fixture-backed request interception; and
+Playwright plus axe-core owns browser and accessibility smoke tests. The pnpm install policy
+allows only reviewed `msw` and `unrs-resolver` install hooks. MSW's hook has no effect until a
+future task configures a worker directory; `unrs-resolver` prepares the platform resolver used by
+the ESLint import path.
+
+## Runtime boundary
 
 `next build` must work when `API_INTERNAL_URL` is unreachable. Server Components later call the
 private API through a server-only generated client; browsers call only purpose-built same-origin

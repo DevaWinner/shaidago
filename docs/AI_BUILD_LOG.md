@@ -1496,3 +1496,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Selected/pinned the accepted stack versions, created the minimal non-visual foundation, diagnosed the supply-chain age-policy failure, and refused to retain the tool-added policy exemption.
 - **Prompt summary:** Use the frontend loop and continue with the eligible web foundation task.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-021 quality toolchain and commands
+
+- **Task:** FE-021 — Quality toolchain and commands.
+- **User outcome delivered:** The web stack has deterministic, named quality gates before product routes or BFF handlers begin: formatting, linting, strict types, unit/component tests, contract drift, production build, browser smoke, and axe accessibility smoke.
+- **Routes/components changed:** No product route or visible component changed. Tooling configuration, root `make web-*` targets, and an empty-by-default MSW server were added.
+- **Backend operations/contract version:** No operation changed. `web-contract` delegates to the existing generated frontend-contract drift check.
+- **Public/private data handled:** No runtime data flow changed. MSW starts with no handlers so later tests must declare safe fixtures explicitly; unhandled requests are not silently accepted.
+- **States implemented:** No product state changed. Empty unit/component/browser test layers exit non-zero rather than claiming coverage they do not have.
+- **Accessibility evidence:** axe-core and browser configuration are installed, but no product accessibility result is claimed before FE-022 supplies an accessible rendered surface and tests.
+- **Locales reviewed:** No message copy or translation changed.
+- **Performance/cache impact:** All additions are development dependencies; they add no production client bundle, browser API, cache, analytics, or provider call.
+- **Dependencies:** ESLint/Prettier/Vitest/Testing Library/MSW/Playwright and their adapters are maintained upstream testing or linting tools; all selected direct packages are MIT or Apache-2.0 except `axe-core` and `@axe-core/playwright` (MPL-2.0). They are used unmodified and are licence-compatible with the MIT repository. `pnpm audit` found no known production or full-dependency vulnerabilities. Only `msw` (copies a worker only if a later task explicitly configures one) and `unrs-resolver` (prepares ESLint's platform resolver) may run reviewed install hooks; all other transitive hooks remain denied.
+- **Commands run and results:** `pnpm install --lockfile-only` and `pnpm install --frozen-lockfile` passed after explicitly approving two reviewed install hooks. `pnpm --dir apps/web format:check`, `lint`, `typecheck`, and `contract` passed. Empty `unit`, `component`, `e2e`, and `a11y` layers each failed non-zero as designed; `make web-verify` correctly stopped at the empty unit layer. No browser installation or browser test was run. The initial ESLint 10 attempt was incompatible with Next's pinned React lint plugin, so the toolchain uses compatible ESLint 9.39.5 rather than disabling rules.
+- **Screenshots/traces/artifacts checked:** No product screenshot, trace, or browser artifact exists. Build output remains ignored.
+- **Known limitations/open decisions:** ESLint 9.39.5 is the newest compatible line but is upstream-deprecated in favour of ESLint 10; upgrading requires a compatible Next/React lint-plugin stack and a separate review. The first unit/component/browser/axe tests, browser-install evidence, CI, and coverage proof belong to later tasks.
+- **Commit/PR:** `build: add the frontend quality toolchain`
+- **Next task may rely on:** FE-022 can add base error/metadata behaviour with component, browser, and axe tests using these exact commands.
+- **AI assistance used:** Selected and configured development-only quality tools, identified the ESLint compatibility failure, inspected the two allowed install hooks, and recorded their bounded purpose.
+- **Prompt summary:** Use the frontend loop and keep working without stopping.
+- **Human review:** none yet; unattended loop, pending maintainer review.

@@ -2,8 +2,10 @@
 # Every backend target has one implementation and runs through `uv` with the frozen lockfile.
 
 PLATFORM_DIR := services/platform
+WEB_DIR := apps/web
 UV := uv --directory $(PLATFORM_DIR)
 RUN := $(UV) run --frozen
+WEB_PNPM := pnpm --dir $(WEB_DIR)
 
 # Integration tests need the Compose services (`make infra-up-core`) and read their connection
 # settings from the infrastructure env file. Unit and contract tests stay hermetic.
@@ -26,7 +28,9 @@ COMPOSE := docker compose --project-name shaidago --env-file $(INFRA_ENV) -f inf
 .DEFAULT_GOAL := help
 .PHONY: help backend-sync backend-format backend-format-check backend-lint backend-typecheck \
 	backend-unit backend-integration backend-contract backend-security backend-test backend-verify \
-	openapi-generate openapi-check frontend-contract-generate frontend-contract-check migrate db-roles seed-demo embeddings reviewer-bootstrap kek-rotate retention-purge worker container-verify infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
+	openapi-generate openapi-check frontend-contract-generate frontend-contract-check \
+	web-format web-format-check web-lint web-typecheck web-unit web-component web-contract web-e2e web-a11y web-build web-verify \
+	migrate db-roles seed-demo embeddings reviewer-bootstrap kek-rotate retention-purge worker container-verify infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
 
 help:
 	@echo "Backend targets: backend-sync backend-format backend-format-check backend-lint"
@@ -35,6 +39,8 @@ help:
 	@echo "Database targets: migrate db-roles reviewer-bootstrap (need make infra-up-core first)"
 	@echo "Infrastructure targets: infra-up infra-up-core infra-down infra-logs infra-clean"
 	@echo "  (need $(INFRA_ENV); copy .env.example first)"
+	@echo "Frontend targets: web-format web-format-check web-lint web-typecheck web-unit"
+	@echo "  web-component web-contract web-e2e web-a11y web-build web-verify"
 
 backend-sync:
 	$(UV) sync --all-groups --frozen
@@ -81,6 +87,42 @@ frontend-contract-generate:
 
 frontend-contract-check:
 	python3 scripts/render_frontend_contract.py --check
+
+# Frontend quality targets stay separate from backend targets. Browser commands do not install
+# browsers implicitly; install Chromium and WebKit explicitly before running web-e2e or web-a11y.
+web-format:
+	$(WEB_PNPM) format
+
+web-format-check:
+	$(WEB_PNPM) format:check
+
+web-lint:
+	$(WEB_PNPM) lint
+
+web-typecheck:
+	$(WEB_PNPM) typecheck
+
+web-unit:
+	$(WEB_PNPM) unit
+
+web-component:
+	$(WEB_PNPM) component
+
+web-contract:
+	$(WEB_PNPM) contract
+
+web-e2e:
+	$(WEB_PNPM) e2e
+
+web-a11y:
+	$(WEB_PNPM) a11y
+
+web-build:
+	$(WEB_PNPM) build
+
+# E2E and axe are explicit gates now and join this composite gate when their first meaningful
+# browser tests arrive. Until then, an empty test directory fails rather than passing.
+web-verify: web-format-check web-lint web-typecheck web-unit web-component web-contract web-build
 
 # The canonical backend gate, in this order (BE-120):
 #   1 frozen dependency sync   2 Ruff format check and lint   3 Pyright strict
