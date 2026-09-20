@@ -2213,3 +2213,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the queue page, filters, components, mock data and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-112 Report detail information architecture
+
+- **Task:** FE-112 — Report detail information architecture (Circle 11).
+- **User outcome delivered:** A reviewer can read one private report in a fixed, scannable order, see file safety states honestly, and reveal contact details only by choice.
+- **Routes/components changed:** `app/[locale]/reviewer/reports/[reportId]/page.tsx`, `src/components/reviewer/report-detail.tsx`, `src/lib/reviewer/file-size.ts`, `messages/*` (`reviewer.detail`), mock detail endpoint in `tests/support/mock-reviewer.mjs`, component and e2e tests.
+- **Backend operations/contract version:** `reviewer_reports_get` via `serverApi().getReviewerReport`, with and without `include_contact` (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Private report text, evidence metadata, private internal reasons, follow-up answers, reviewer-only handle record, and (on request) contact. All server-rendered, no-store, never in a URL beyond the opaque report ID and the word `reveal=contact`. Fictional data only.
+- **States implemented:** loaded, not found (same for malformed and unknown), forbidden, rate limited, unavailable with retry, contact hidden/shown/denied/unavailable, no evidence, no questions, no history, no handle, ended session, signed out, loading boundary.
+- **Accessibility evidence:** landmarked sections with headings, an in-page jump list, definition lists, text plus shapes for status and risk, 320 px no sideways scroll on Chromium and mobile WebKit. No axe or screen-reader run yet (FE-116).
+- **Locales reviewed:** English only; `ha`/`ig`/`yo` `reviewer` keys are `null` and pending.
+- **Performance/cache impact:** No client JavaScript added; server-rendered and no-store.
+- **Commands run and results:** `make web-verify` exit 0 (473 unit, 134 component, bundle scan clean); targeted e2e `reviewer` 54 passed (sign-in, queue, detail on Chromium and mobile WebKit).
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** A contact reveal is a GET, so the browser history keeps a `reveal=contact` entry that re-requests (and re-audits) the reveal if revisited; a POST-only reveal would need a new BFF handler and is not in the operation map. Source Scout is a stated placeholder until Circle 12. Real API not run.
+- **Commit/PR:** `feat: add the reviewer report detail page with progressive contact reveal`
+- **Next task may rely on:** `Section`, `detailContext`, `EvidenceSection`'s `renderDownload` slot, the mock detail data (`REPORT_IDS[0]`), and the page's section order and anchors.
+- **AI assistance used:** Designed and implemented the detail page, section components, mock data and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

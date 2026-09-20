@@ -973,6 +973,141 @@
           "retry": null
         }
       }
+    },
+    "detail": {
+      "title": null,
+      "back": null,
+      "jump": null,
+      "demo": {
+        "title": null,
+        "body": null
+      },
+      "header": {
+        "status": null,
+        "risk": null,
+        "received": null,
+        "updated": null,
+        "version": null,
+        "project": null,
+        "publicRecord": null
+      },
+      "sections": {
+        "status": null,
+        "observation": null,
+        "evidence": null,
+        "contact": null,
+        "history": null,
+        "questions": null,
+        "handle": null,
+        "scout": null,
+        "publication": null
+      },
+      "observation": {
+        "category": null,
+        "project": null,
+        "description": null,
+        "descriptionNote": null,
+        "received": null
+      },
+      "evidence": {
+        "empty": null,
+        "name": null,
+        "type": null,
+        "size": null,
+        "sanitation": null,
+        "scan": null,
+        "added": null,
+        "note": null,
+        "sanitationStates": {
+          "pending": null,
+          "processing": null,
+          "sanitised": null,
+          "rejected": null,
+          "failed": null
+        },
+        "scanStates": {
+          "pending": null,
+          "scanning": null,
+          "clean": null,
+          "malware_detected": null,
+          "scan_failed": null,
+          "not_scanned_demo": null
+        },
+        "demoLimit": null,
+        "bytes": null,
+        "kilobytes": null,
+        "megabytes": null
+      },
+      "contact": {
+        "none": null,
+        "hidden": null,
+        "reveal": null,
+        "revealNote": null,
+        "shown": null,
+        "hide": null,
+        "denied": null,
+        "unavailable": null,
+        "auditNote": null
+      },
+      "history": {
+        "empty": null,
+        "from": null,
+        "first": null,
+        "actor": null,
+        "actors": {
+          "reporter": null,
+          "reviewer": null,
+          "admin": null,
+          "system": null
+        },
+        "shownToReporter": null,
+        "internal": null,
+        "noMessage": null
+      },
+      "questions": {
+        "empty": null,
+        "asked": null,
+        "answered": null,
+        "private": null,
+        "noAnswer": null,
+        "withdrawn": null,
+        "kinds": {
+          "answered": null,
+          "skipped": null,
+          "unsafe": null
+        }
+      },
+      "handle": {
+        "none": null,
+        "note": null,
+        "name": null,
+        "total": null,
+        "verified": null,
+        "closed": null
+      },
+      "scout": {
+        "body": null,
+        "private": null
+      },
+      "states": {
+        "notFound": {
+          "title": null,
+          "body": null
+        },
+        "forbidden": {
+          "title": null,
+          "body": null
+        },
+        "rateLimited": {
+          "title": null,
+          "body": null
+        },
+        "unavailable": {
+          "title": null,
+          "body": null,
+          "retry": null
+        }
+      }
     }
   }
 }

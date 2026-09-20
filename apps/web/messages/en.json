@@ -973,6 +973,141 @@
           "retry": "Try again"
         }
       }
+    },
+    "detail": {
+      "title": "Report",
+      "back": "Back to the report queue",
+      "jump": "On this page",
+      "demo": {
+        "title": "Fictional demo data",
+        "body": "Every report in this demonstration is invented. Real reports, names, and contact details must never be entered or opened here."
+      },
+      "header": {
+        "status": "Status",
+        "risk": "Risk",
+        "received": "Received {date}",
+        "updated": "Status changed {date}",
+        "version": "Version {version}",
+        "project": "Project record",
+        "publicRecord": "Open the public record"
+      },
+      "sections": {
+        "status": "Status and actions",
+        "observation": "What was reported",
+        "evidence": "Evidence files",
+        "contact": "Contact details",
+        "history": "Status history",
+        "questions": "Questions to the reporter",
+        "handle": "Reporter handle",
+        "scout": "Source Scout",
+        "publication": "Public update"
+      },
+      "observation": {
+        "category": "Concern",
+        "project": "Project record",
+        "description": "Description from the reporter",
+        "descriptionNote": "Shown as plain text exactly as it was sent. It is private and is never published automatically.",
+        "received": "Received"
+      },
+      "evidence": {
+        "empty": "No files were attached.",
+        "name": "File",
+        "type": "Type",
+        "size": "Size",
+        "sanitation": "Cleaning",
+        "scan": "Malware scan",
+        "added": "Added {date}",
+        "note": "Files are cleaned before storage. Nothing is shown inline: a file is only downloaded when you ask for it.",
+        "sanitationStates": {
+          "pending": "Cleaning not started",
+          "processing": "Being cleaned",
+          "sanitised": "Cleaned",
+          "rejected": "Rejected",
+          "failed": "Cleaning failed"
+        },
+        "scanStates": {
+          "pending": "Scan not started",
+          "scanning": "Being scanned",
+          "clean": "No malware found",
+          "malware_detected": "Malware detected",
+          "scan_failed": "Scan failed",
+          "not_scanned_demo": "Not scanned (demo only)"
+        },
+        "demoLimit": "This demo has no malware scanner, so this file was not scanned. Do not open it outside a safe environment.",
+        "bytes": "{count, plural, one {# byte} other {# bytes}}",
+        "kilobytes": "{count} KB",
+        "megabytes": "{count} MB"
+      },
+      "contact": {
+        "none": "The reporter gave no contact details.",
+        "hidden": "Contact details exist but are hidden.",
+        "reveal": "Show contact details",
+        "revealNote": "Showing them is recorded in the audit log.",
+        "shown": "{channel}: {value}",
+        "hide": "Hide contact details",
+        "denied": "This account is not allowed to see contact details.",
+        "unavailable": "The contact details could not be shown right now.",
+        "auditNote": "This view was recorded in the audit log."
+      },
+      "history": {
+        "empty": "No status changes yet.",
+        "from": "From {from} to {to}",
+        "first": "Set to {to}",
+        "actor": "By {actor}",
+        "actors": {
+          "reporter": "the reporter",
+          "reviewer": "a reviewer",
+          "admin": "an administrator",
+          "system": "the system"
+        },
+        "shownToReporter": "Shown to the reporter",
+        "internal": "Internal reason (private)",
+        "noMessage": "No message shown to the reporter."
+      },
+      "questions": {
+        "empty": "No questions have been asked.",
+        "asked": "Asked {date}",
+        "answered": "Answer ({kind})",
+        "private": "The answer is private.",
+        "noAnswer": "Not answered yet.",
+        "withdrawn": "Withdrawn",
+        "kinds": {
+          "answered": "answered",
+          "skipped": "skipped",
+          "unsafe": "marked unsafe"
+        }
+      },
+      "handle": {
+        "none": "This report is not linked to a reporter handle.",
+        "note": "A handle is a pseudonym, not proof of identity or of accuracy. Treat this as context only.",
+        "name": "Handle",
+        "total": "Reports linked",
+        "verified": "Verified for a public update",
+        "closed": "Closed"
+      },
+      "scout": {
+        "body": "Report-scoped source discovery is not available in this workspace yet. Nothing is searched for this report.",
+        "private": "When it is available it will use only a privacy-safe query that you approve first."
+      },
+      "states": {
+        "notFound": {
+          "title": "This report is not available",
+          "body": "Check the address or return to the queue. This page does not say whether a report exists."
+        },
+        "forbidden": {
+          "title": "This account cannot open this report",
+          "body": "Ask an administrator to check your role. Nothing was loaded."
+        },
+        "rateLimited": {
+          "title": "Too many requests",
+          "body": "Wait a moment, then reload the page."
+        },
+        "unavailable": {
+          "title": "The report could not be loaded",
+          "body": "The service did not answer. Nothing has changed. Try again.",
+          "retry": "Try again"
+        }
+      }
     }
   }
 }

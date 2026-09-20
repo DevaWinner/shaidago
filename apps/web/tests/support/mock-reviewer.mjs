@@ -53,6 +53,97 @@ const queue = Array.from({ length: 45 }, (_, index) => {
   };
 });
 
+export const DESCRIPTION =
+  "Fictional description line one.\nLine two with <script>alert(1)</script> and <b>bold</b> that must stay text.";
+export const CONTACT_VALUE = "fictional-contact@example.invalid";
+const NO_CONTACT_CAPABILITY = REPORT_IDS[4];
+const UNAVAILABLE_REPORT = REPORT_IDS[43];
+const FORBIDDEN_REPORT = REPORT_IDS[44];
+
+function detailFor(item, includeContact) {
+  const first = item.report_id === REPORT_IDS[0];
+
+  return {
+    ...item,
+    description: first ? DESCRIPTION : "A fictional observation for this demo report.",
+    events: [
+      {
+        event_id: `0198f1a2-7b3c-4d4e-8f5a-e${item.report_id.slice(-11)}`,
+        previous_status: null,
+        new_status: "received",
+        public_message: "Your fictional report was received.",
+        actor_type: "system",
+        occurred_at: item.created_at,
+        internal_reason: null
+      },
+      ...(first
+        ? [
+            {
+              event_id: "0198f1a2-7b3c-4d4e-8f5a-e00000000099",
+              previous_status: "received",
+              new_status: item.status,
+              public_message: "",
+              actor_type: "reviewer",
+              occurred_at: item.status_updated_at,
+              internal_reason: "Fictional internal reason for the change."
+            }
+          ]
+        : [])
+    ],
+    follow_ups: first
+      ? [
+          {
+            question_id: "0198f1a2-7b3c-4d4e-8f5a-f00000000001",
+            question: "Which side of the building is the fictional crack on?",
+            asked_at: "2026-09-05T09:00:00Z",
+            withdrawn: false,
+            answer_kind: "answered",
+            answer: "The north side, fictionally."
+          },
+          {
+            question_id: "0198f1a2-7b3c-4d4e-8f5a-f00000000002",
+            question: "Is there a fictional sign at the gate?",
+            asked_at: "2026-09-05T10:00:00Z",
+            withdrawn: false,
+            answer_kind: null,
+            answer: null
+          }
+        ]
+      : [],
+    evidence: first
+      ? [
+          {
+            evidence_id: "0198f1a2-7b3c-4d4e-8f5a-a00000000001",
+            display_name: "evidence-1.jpg",
+            mime_type: "image/jpeg",
+            size_bytes: 2048,
+            sanitation_state: "sanitised",
+            scan_state: "not_scanned_demo",
+            created_at: "2026-09-01T09:05:00Z"
+          },
+          {
+            evidence_id: "0198f1a2-7b3c-4d4e-8f5a-a00000000002",
+            display_name: "evidence-2.png",
+            mime_type: "image/png",
+            size_bytes: 3 * 1024 * 1024,
+            sanitation_state: "sanitised",
+            scan_state: "clean",
+            created_at: "2026-09-01T09:06:00Z"
+          }
+        ]
+      : [],
+    track_record: first
+      ? {
+          handle: "fictional-handle-one",
+          reports_total: 3,
+          verified_for_public_update: 1,
+          closed: 1
+        }
+      : null,
+    contact: includeContact && item.has_contact ? { channel: "email", value: CONTACT_VALUE } : null
+  };
+}
+
 function cursorFor(offset, key) {
   return Buffer.from(JSON.stringify({ offset, key })).toString("base64url");
 }
@@ -192,6 +283,28 @@ export function handleReviewer({ request, response, url, problem, readBody }) {
       items: matching.slice(offset, offset + limit),
       next_cursor: offset + limit < matching.length ? cursorFor(offset + limit, key) : null
     });
+    return true;
+  }
+
+  const detail = /^\/v1\/reviewer\/reports\/([^/]+)$/.exec(path);
+
+  if (detail !== null && method === "GET") {
+    const item = queue.find((entry) => entry.report_id === detail[1]);
+    const contact = url.searchParams.get("include_contact") === "true";
+
+    if (item === undefined) {
+      problem(response, 404, "not_found");
+    } else if (item.report_id === UNAVAILABLE_REPORT) {
+      problem(response, 503, "dependency_unavailable");
+    } else if (item.report_id === FORBIDDEN_REPORT) {
+      problem(response, 403, "forbidden");
+    } else if (contact && item.report_id === NO_CONTACT_CAPABILITY) {
+      log.push({ op: "detail", contact: true, denied: true });
+      problem(response, 403, "forbidden");
+    } else {
+      log.push({ op: "detail", contact });
+      json(response, 200, detailFor(item, contact));
+    }
     return true;
   }
 
