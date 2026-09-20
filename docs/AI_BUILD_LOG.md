@@ -2313,3 +2313,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the security, keyboard, and accessibility suites; diagnosed and fixed the missing-heading defect and test races.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-120 Shared discovery state model
+
+- **Task:** FE-120 — Shared discovery state model (Circle 12).
+- **User outcome delivered:** Residents and reviewers now have one contract-bound client model for discovery progress that never manufactures a percentage, prolongs an unknown run, enables an unavailable public cancellation, or lets a late/private response replace the active panel.
+- **Routes/components changed:** Added `apps/web/src/lib/discovery/run-state.ts` and `tests/unit/discovery-run-state.test.ts`; no route or visible surface changes in this model-only task.
+- **Backend operations/contract version:** The existing `discovery_get_public_run` and `reviewer_discovery_get` handoff is modelled without changing OpenAPI 0.0.0, generated types, BFF handlers, or FastAPI policy.
+- **Public/private data handled:** The model retains only a run ID, scope, and version in current component memory. Both scopes are explicitly no-store and non-persistent; no run ID is made URL state, and a public/reviewer scope or run-ID mismatch rejects a response.
+- **States implemented:** Exact `queued`, `searching`, `analysing`, `needs_review`, `complete`, `failed`, and `cancelled` recognition; 2/3/5/8/10-second polling; valid `Retry-After` precedence; public polling through `needs_review`; reviewer stop at `needs_review`; cancellation-request polling until an API terminal result; reviewer-only cancel/review availability; unknown status fail-closed; and stale-version rejection.
+- **Accessibility evidence:** No visible control exists yet. The later panels must expose the returned stage/counts through calm status announcements; this model deliberately provides no invented percentage or motion state.
+- **Locales reviewed:** No user-facing copy, translation, or route changed. The next visible tasks must supply all four locale keys and retain the existing human-review status.
+- **Performance/cache impact:** A small dependency-free TypeScript module only; no network request, timer, browser storage, cache, image, font, or client dependency is added.
+- **Commands run and results:** `pnpm --dir apps/web exec vitest run --project unit tests/unit/discovery-run-state.test.ts` passed (6 tests); `pnpm --dir apps/web typecheck`, `lint`, and `format:check` passed; `git diff --check` passed.
+- **Screenshots/traces/artifacts checked:** None applicable: there is no rendered surface in this task.
+- **Known limitations/open decisions:** The API's loosely typed `analysis` and result payloads require explicit fail-closed presentation parsers in FE-123. Public cancellation is not exposed because no public cancellation operation exists. Real API polling is not exercised yet.
+- **Commit/PR:** `feat: model Source Scout run state safely`
+- **Next task may rely on:** `DISCOVERY_STATUSES`, `shouldPoll`, `allowedDiscoveryActions`, `nextPollDelayMs`, `isNewerRunSnapshot`, and `RUN_MEMORY_POLICY`; it must still use the generated DTOs and purpose-built BFF routes.
+- **AI assistance used:** Implemented the scope-aware state model and adversarial unit tests from the accepted contract and privacy rules.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

@@ -1007,6 +1007,8 @@ Test expired/revoked/wrong-role, direct URL access, CSRF/origin failure, back/fo
 
 Model backend states exactly: queued, searching, analysing, needs review, complete, failed, cancelled. Define allowed UI actions, polling cadence/backoff, visibility, terminal behaviour, resume after navigation where safe, and stale run handling. Do not invent progress percentages; use stage and counts supplied by backend.
 
+> **Execution status (2026-09-20): complete.** `apps/web/src/lib/discovery/run-state.ts` imports no domain data and fixes the seven contract statuses, scope-specific terminal rules, the documented 2/3/5/8/10-second polling cadence, `Retry-After` precedence, reviewer-only cancellation/review controls, no-store/current-surface-only memory policy, and version/scope/run-ID stale-response rejection. Six focused unit tests prove the model; strict typecheck, lint, formatting, and whitespace checks pass.
+
 ### FE-121 — Public project discovery panel
 
 Integrate into project detail as a task panel. Explain scope and unverified status. Starting a run may return a fresh shared 24-hour run; display its date and replay/live status. Handle global budget exhaustion by showing latest completed run. Poll through BFF, allow cancellation of future work, and stop polling on terminal/offline/navigation.
