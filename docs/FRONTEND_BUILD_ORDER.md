@@ -1153,13 +1153,19 @@ For every core route/flow:
 
 Run automated axe plus manual scripts. Automated zero violations does not replace manual proof.
 
+> **Execution status (2026-09-20): partial.** Automated proof is complete and manual proof is not. `tests/a11y/structure.a11y.spec.ts` checks, for 12 public and reviewer routes in each of `en`, `ha`, `ig`, and `yo` on Chromium and mobile WebKit: exactly one non-empty title, one `h1`, one `main`, a banner, no skipped heading level, a valid `lang`, and the skip link as the first focusable element; forced colours (every control keeps an edge and axe passes), reduced motion (no transition or animation), 44 px touch targets with no hover-only reveal, and no sideways scroll at seven device sizes in four languages, including the dense reviewer queue and detail. Not done: the manual desktop and mobile screen-reader smoke, which needs a person; the script is in `docs/FRONTEND_HARDENING_AUDIT.md`. Nothing above replaces it.
+
 ### FE-141 — Four-language and content stress pass
 
 Run every critical journey in `en`, `ha`, `ig`, and `yo`; use longest production/synthetic strings, plural branches, interpolation, names, NGN, dates, source excerpts, validation, offline, and errors. Human reviewers inspect critical safety/trust/status copy. Record untranslated/machine-assisted status visibly. Fix overflow by layout, not ellipsis that removes meaning.
 
+> **Execution status (2026-09-20): partial.** Four languages are audited for structure, axe, reflow, and overflow, and long unbroken strings (480 characters), a 100-character search, a 960-character note, and a 360-character reason are typed at 320 px in every language with no horizontal scroll (wrapping, never ellipsis). The translation status of every domain is recorded in `messages/status.json` and shown to the reader with a notice and the correct `lang`: English is complete; Hausa, Igbo, and Yoruba have their four critical domains recorded as maintainer self-review and every other domain pending. No fluent reviewer has signed off, and none is claimed. Maintainer action: a fluent review of safety, trust, status, and escalation copy in all three languages.
+
 ### FE-142 — Responsive/device matrix
 
 Test at minimum narrow low-end mobile, modern mobile, tablet/narrow desktop, and desktop. Include browser text enlargement, virtual keyboard, safe areas, orientation, pointer/hover absence, slow CPU/network, and reviewer dense data. Avoid breakpoint-only thinking; test content-driven widths and prevent horizontal page scroll.
+
+> **Execution status (2026-09-20): partial.** Seven device sizes (320x568, 360x640, 390x844, 844x390 landscape, 768x1024, 1024x768, 1440x900) across seven routes in four languages, including dense reviewer data, show no horizontal scroll, and mobile WebKit runs as an iPhone 13 (touch, no hover). Not covered: a physical low-end device, the on-screen keyboard, safe-area insets, and real CPU or network throttling beyond Chromium's emulation.
 
 ### FE-143 — Client privacy and security audit
 
@@ -1168,6 +1174,8 @@ Test at minimum narrow low-end mobile, modern mobile, tablet/narrow desktop, and
 3. Test XSS with report/source/note/discovery payloads; render text by default and sanitise any explicitly allowed markup.
 4. Test CSRF/origin, open redirect, clickjacking, cache poisoning/vary, signed-link leakage, service-worker scope, and client bundle secrets.
 5. Ensure third-party scripts/fonts/assets are absent or documented with data/consent/performance review.
+
+> **Execution status (2026-09-20): complete.** Every response now carries a Content-Security-Policy that allows only this origin (no third-party script, style, font, image, frame, or connection), `frame-ancestors 'none'` with `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy: same-origin`, a `Permissions-Policy` denying device APIs, and `Cross-Origin-Opener-Policy`; HSTS is sent only in staging and production (`proxy.ts` and BFF responses) and is asserted absent on local HTTP. `tests/e2e/client-security.spec.ts` (8 tests, both engines) proves: the headers on public, private, API, static, and manifest responses; no CSP violation and no request to another origin across 14 routes; every external link is `noopener noreferrer` and no page loads a third-party script, font, style, image, or frame; hostile text in a report, note, source excerpt, and discovered page renders as text and never runs; the site cannot be framed; a spoofed host, language, or cookie neither changes the body nor adds `Vary: Cookie` (a shared cache cannot be poisoned by one); no page or evidence response holds a signed link, credential, or session name; and storage, IndexedDB, cookies, and the address hold nothing private after tracking and reviewer flows. The earlier suites cover CSRF and origin refusal, open redirects, service-worker scope, and bundle secrets. Recorded trade-off: scripts and styles keep `'unsafe-inline'` because the framework emits inline bootstrap data and the head script; nonces would make every page dynamic. Not proven: the HSTS contract on a deployed origin.
 
 ### FE-144 — Performance budgets
 
@@ -1184,9 +1192,13 @@ Measure and enforce:
 
 Record environment, route, locale, fixture size, result, and variance. Optimise measured causes, not scores in isolation.
 
+> **Execution status (2026-09-20): complete.** Measured first-load JavaScript (gzip, Chromium, local build) is 149 to 160 KB on every public route against the plan's 170 KB, and route budgets are now enforced for the reviewer tools (sign-in 171.3 KB and queue 169.0 KB against 180 KB, report detail 198.7 KB against 210 KB). One regression was optimised on a measured cause: the reviewer report page was 225.5 KB because the public-update preview imported the message formatter from the module that bundles every language's copy; it now uses a catalogue-free formatter (-26.8 KB, and `formatMessage` is unchanged for everyone else). Also enforced: no API request on page load, at most 12 directory results and 20 queue items per page, spaced and bounded polling, and under 4x CPU and 1.6 Mbps emulation LCP below 4 s and CLS below 0.1 (measured 0.45 to 0.49 s and 0.000 to 0.009 for landing, record, and report form). Caveats: emulation against a local server under-reports real latency; no Lighthouse or field data; the app ships no images or web fonts, so those budgets are trivially met.
+
 ### FE-145 — Error and recovery consistency
 
 Audit every named fixture from FE-002. Errors state what happened safely, whether the user's work is preserved, and the next action. Retry buttons are idempotent, focusable, and disabled while pending. Unknown errors include safe request ID. Expired auth, offline, provider unavailable, source unavailable, conflict, and validation are not collapsed into one generic state.
+
+> **Execution status (2026-09-20): partial.** `tests/unit/error-consistency.test.ts` proves that expired sign-in, forbidden, not found, wrong credentials, rate limit, conflict, not-allowed-now, validation, markup, unverifiable request, dependency down, timeout, offline, and internal failures each have their own sentence; every code the contract or boundary can return has reviewed copy; an unknown code shows the generic sentence with a safe support reference and never the code; the "check before sending again" hint appears only where a mutation may have completed; and a wait time appears only when the API gave one. Recovery on each surface is proven by the suite that owns the flow. Not done: a line-by-line audit of all 304 named fixtures in `docs/FRONTEND_STATE_MATRIX.md` against tests.
 
 ### Circle 14 exit gate
 
@@ -1196,6 +1208,8 @@ Audit every named fixture from FE-002. Errors state what happened safely, whethe
 - Browser/privacy audit finds no private data outside permitted in-memory/request channels.
 - JavaScript/Core Web Vitals/polling/media budgets pass or have explicit blocking findings.
 - Every material failure offers a safe, accurate recovery path.
+
+> **Gate status (2026-09-20): open.** Evidence is in `docs/FRONTEND_HARDENING_AUDIT.md`. Met by automation: structure, axe, reflow, and overflow across four languages; forced colours, reduced motion, and touch targets; the device-size matrix; the security-header, CSP, XSS, framing, cache-poisoning, third-party, signed-link, and storage checks; the JavaScript, request-count, list-size, polling, and emulated vital budgets; and error-class distinctness. Open, and each needs a person or a deployed environment: (1) the manual desktop and mobile screen-reader smoke (`FE-140`), (2) a fluent Hausa, Igbo, and Yoruba review of critical safety, trust, status, and escalation copy, whose review status is recorded but not obtained (`FE-141`), (3) a physical device, on-screen-keyboard, and safe-area pass (`FE-142`), (4) real-network Core Web Vitals or Lighthouse on the deployed origin and the HSTS contract there (`FE-143`, `FE-144`), and (5) the fixture-by-fixture audit of the state matrix (`FE-145`). Suites: `make web-verify`, `make web-e2e` 422 passed and 10 skipped, `make web-a11y` 356 passed.
 
 ## 18. Circle 15 — end-to-end proof, visual finish, and durable design documentation
 

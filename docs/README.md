@@ -24,6 +24,7 @@ If implementation reveals a conflict, do not silently choose one version. Correc
 | [`BACKEND_BUILD_ORDER.md`](BACKEND_BUILD_ORDER.md) | Execution specification | In what exact order should the API, worker, persistence, security, and operations be implemented and proven? |
 | [`FRONTEND_BUILD_ORDER.md`](FRONTEND_BUILD_ORDER.md) | Execution specification | In what exact order should the UI/BFF, visual system, four-language experience, PWA, and reviewer surfaces be implemented and proven? |
 | [`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md) | Active control | Which backend task and proof owns every accepted capability, acceptance criterion, journey, and non-goal? |
+| [`FRONTEND_HARDENING_AUDIT.md`](FRONTEND_HARDENING_AUDIT.md) | Audit record | What accessibility, language, device, privacy, performance, and recovery evidence exists for the frontend, and what still needs a person? |
 | [`FRONTEND_REQUIREMENTS_TRACEABILITY.md`](FRONTEND_REQUIREMENTS_TRACEABILITY.md) | Active control | Which frontend task, route, operation, data class, cache rule, and proof owns every user-facing requirement? |
 | [`FRONTEND_ROUTE_MATRIX.md`](FRONTEND_ROUTE_MATRIX.md) | Active control | What does each route do, how is it rendered/cached/localised, which operations does it call, and where does it hand off? |
 | [`FRONTEND_STATE_MATRIX.md`](FRONTEND_STATE_MATRIX.md) | Active control | Which stable fixtures and recovery behavior must every async public, report, tracking, reviewer, and discovery surface implement? |

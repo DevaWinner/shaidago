@@ -48,7 +48,14 @@ export type BrowserProblemInit = {
 
 /** Headers every private or error response carries: never stored by a browser, proxy, or CDN. */
 export function noStoreHeaders(requestId: string): Headers {
-  return new Headers({ "Cache-Control": "no-store", "X-Request-Id": requestId });
+  const headers = new Headers({ "Cache-Control": "no-store", "X-Request-Id": requestId });
+
+  // Only the deployed stages are HTTPS-only; on local HTTP this header would pin `localhost`.
+  if (process.env["APP_ENV"] === "staging" || process.env["APP_ENV"] === "production") {
+    headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  }
+
+  return headers;
 }
 
 /**

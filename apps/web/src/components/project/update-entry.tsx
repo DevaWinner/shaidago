@@ -7,7 +7,8 @@ import {
   VerificationLabel,
   type CitationView
 } from "@/components/evidence/evidence";
-import { formatMessage, type Messages } from "@/i18n/catalogue";
+import type { Messages } from "@/i18n/catalogue";
+import { formatMessage } from "@/i18n/format-message";
 import type { ApiLocale } from "@/lib/api/forwarded-context";
 import type { Citation, Fact, ProjectUpdate } from "@/lib/api/public-data";
 import { isFutureDate } from "@/lib/directory/freshness";

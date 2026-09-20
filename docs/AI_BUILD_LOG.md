@@ -2551,3 +2551,123 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Found the stopped-polling defect while writing the resilience tests and fixed it.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-140 Full accessibility audit
+
+- **Task:** FE-140 — Full accessibility audit (Circle 14). Status: partial. Delivered in one commit with the other Circle 14 tasks; the evidence document is `docs/FRONTEND_HARDENING_AUDIT.md`.
+- **User outcome delivered:** Structure, forced-colours, reduced-motion, and touch-target checks pass on all routes in four languages; the manual screen-reader smoke is scripted but not run.
+- **Routes/components changed:** `tests/a11y/structure.a11y.spec.ts`.
+- **Backend operations/contract version:** none.
+- **Public/private data handled:** No new data; the checks assert nothing private reaches a URL, storage, log, cache, or another origin.
+- **States implemented:** as audited in the evidence document.
+- **Accessibility evidence:** `make web-a11y` 356 passed (Chromium and mobile WebKit).
+- **Locales reviewed:** Chromium and mobile WebKit; `make web-a11y` 356 passed.. Fluent review of Hausa, Igbo, and Yoruba has not been obtained.
+- **Performance/cache impact:** see the budgets in `docs/FRONTEND_HARDENING_AUDIT.md`.
+- **Commands run and results:** `make web-verify` exit 0 (563 unit and 201 component tests in total); `make web-e2e` 422 passed and 10 skipped; `make web-a11y` 356 passed. A first combined run failed only because two suites were started at once on the same ports; the suites were rerun one at a time.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** Manual desktop and mobile screen-reader smoke needs a person; iOS WebKit Tab focus skipped.
+- **Commit/PR:** `feat: harden security headers, budgets, and the composed accessibility and device checks`
+- **Next task may rely on:** the evidence document, `SECURITY_HEADERS`, the route budgets, and the structure suite.
+- **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-141 Four-language and content stress pass
+
+- **Task:** FE-141 — Four-language and content stress pass (Circle 14). Status: partial. Delivered in one commit with the other Circle 14 tasks; the evidence document is `docs/FRONTEND_HARDENING_AUDIT.md`.
+- **User outcome delivered:** Long unbroken strings and maximum-length inputs wrap at 320 px in every language; translation status is recorded and visible; no fluent review obtained.
+- **Routes/components changed:** `tests/a11y/structure.a11y.spec.ts`, `messages/status.json` (read).
+- **Backend operations/contract version:** none.
+- **Public/private data handled:** No new data; the checks assert nothing private reaches a URL, storage, log, cache, or another origin.
+- **States implemented:** as audited in the evidence document.
+- **Accessibility evidence:** `make web-a11y` 356 passed (Chromium and mobile WebKit).
+- **Locales reviewed:** four languages. Fluent review of Hausa, Igbo, and Yoruba has not been obtained.
+- **Performance/cache impact:** see the budgets in `docs/FRONTEND_HARDENING_AUDIT.md`.
+- **Commands run and results:** `make web-verify` exit 0 (563 unit and 201 component tests in total); `make web-e2e` 422 passed and 10 skipped; `make web-a11y` 356 passed. A first combined run failed only because two suites were started at once on the same ports; the suites were rerun one at a time.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** Fluent Hausa, Igbo, and Yoruba review of critical copy is a maintainer action.
+- **Commit/PR:** `feat: harden security headers, budgets, and the composed accessibility and device checks`
+- **Next task may rely on:** the evidence document, `SECURITY_HEADERS`, the route budgets, and the structure suite.
+- **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-142 Responsive and device matrix
+
+- **Task:** FE-142 — Responsive and device matrix (Circle 14). Status: partial. Delivered in one commit with the other Circle 14 tasks; the evidence document is `docs/FRONTEND_HARDENING_AUDIT.md`.
+- **User outcome delivered:** No page scrolls sideways at seven device sizes in four languages, including dense reviewer data.
+- **Routes/components changed:** `tests/a11y/structure.a11y.spec.ts`.
+- **Backend operations/contract version:** none.
+- **Public/private data handled:** No new data; the checks assert nothing private reaches a URL, storage, log, cache, or another origin.
+- **States implemented:** as audited in the evidence document.
+- **Accessibility evidence:** `make web-a11y` 356 passed (Chromium and mobile WebKit).
+- **Locales reviewed:** seven sizes. Fluent review of Hausa, Igbo, and Yoruba has not been obtained.
+- **Performance/cache impact:** see the budgets in `docs/FRONTEND_HARDENING_AUDIT.md`.
+- **Commands run and results:** `make web-verify` exit 0 (563 unit and 201 component tests in total); `make web-e2e` 422 passed and 10 skipped; `make web-a11y` 356 passed. A first combined run failed only because two suites were started at once on the same ports; the suites were rerun one at a time.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** No physical low-end device, on-screen keyboard, or safe-area test.
+- **Commit/PR:** `feat: harden security headers, budgets, and the composed accessibility and device checks`
+- **Next task may rely on:** the evidence document, `SECURITY_HEADERS`, the route budgets, and the structure suite.
+- **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-143 Client privacy and security audit
+
+- **Task:** FE-143 — Client privacy and security audit (Circle 14). Status: complete. Delivered in one commit with the other Circle 14 tasks; the evidence document is `docs/FRONTEND_HARDENING_AUDIT.md`.
+- **User outcome delivered:** Every response carries a strict same-origin CSP and the frame, referrer, sniffing, permissions, and opener headers; hostile content never runs; nothing third-party loads; nothing private is left in the browser.
+- **Routes/components changed:** `next.config.ts`, `proxy.ts`, `src/lib/bff/problem.ts`, `tests/e2e/client-security.spec.ts`.
+- **Backend operations/contract version:** none.
+- **Public/private data handled:** No new data; the checks assert nothing private reaches a URL, storage, log, cache, or another origin.
+- **States implemented:** as audited in the evidence document.
+- **Accessibility evidence:** `make web-a11y` 356 passed (Chromium and mobile WebKit).
+- **Locales reviewed:** Chromium and mobile WebKit. Fluent review of Hausa, Igbo, and Yoruba has not been obtained.
+- **Performance/cache impact:** see the budgets in `docs/FRONTEND_HARDENING_AUDIT.md`.
+- **Commands run and results:** `make web-verify` exit 0 (563 unit and 201 component tests in total); `make web-e2e` 422 passed and 10 skipped; `make web-a11y` 356 passed. A first combined run failed only because two suites were started at once on the same ports; the suites were rerun one at a time.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** `'unsafe-inline'` remains for scripts and styles (recorded trade-off); HSTS is unproven on a deployed origin.
+- **Commit/PR:** `feat: harden security headers, budgets, and the composed accessibility and device checks`
+- **Next task may rely on:** the evidence document, `SECURITY_HEADERS`, the route budgets, and the structure suite.
+- **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-144 Performance budgets
+
+- **Task:** FE-144 — Performance budgets (Circle 14). Status: complete. Delivered in one commit with the other Circle 14 tasks; the evidence document is `docs/FRONTEND_HARDENING_AUDIT.md`.
+- **User outcome delivered:** Public routes stay under the 170 KB plan budget and the reviewer tools have explicit route budgets; a measured 27 KB regression on the reviewer report page was removed.
+- **Routes/components changed:** `src/i18n/format-message.ts`, `tests/e2e/performance.spec.ts`.
+- **Backend operations/contract version:** none.
+- **Public/private data handled:** No new data; the checks assert nothing private reaches a URL, storage, log, cache, or another origin.
+- **States implemented:** as audited in the evidence document.
+- **Accessibility evidence:** `make web-a11y` 356 passed (Chromium and mobile WebKit).
+- **Locales reviewed:** Chromium; emulated 4x CPU and 1.6 Mbps. Fluent review of Hausa, Igbo, and Yoruba has not been obtained.
+- **Performance/cache impact:** see the budgets in `docs/FRONTEND_HARDENING_AUDIT.md`.
+- **Commands run and results:** `make web-verify` exit 0 (563 unit and 201 component tests in total); `make web-e2e` 422 passed and 10 skipped; `make web-a11y` 356 passed. A first combined run failed only because two suites were started at once on the same ports; the suites were rerun one at a time.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** Emulation against a local server under-reports real latency; no Lighthouse or field data.
+- **Commit/PR:** `feat: harden security headers, budgets, and the composed accessibility and device checks`
+- **Next task may rely on:** the evidence document, `SECURITY_HEADERS`, the route budgets, and the structure suite.
+- **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-145 Error and recovery consistency
+
+- **Task:** FE-145 — Error and recovery consistency (Circle 14). Status: partial. Delivered in one commit with the other Circle 14 tasks; the evidence document is `docs/FRONTEND_HARDENING_AUDIT.md`.
+- **User outcome delivered:** Each named failure class has its own sentence, unknown codes get a safe reference, and the completion-unknown hint appears only where it applies.
+- **Routes/components changed:** `tests/unit/error-consistency.test.ts`.
+- **Backend operations/contract version:** none.
+- **Public/private data handled:** No new data; the checks assert nothing private reaches a URL, storage, log, cache, or another origin.
+- **States implemented:** as audited in the evidence document.
+- **Accessibility evidence:** `make web-a11y` 356 passed (Chromium and mobile WebKit).
+- **Locales reviewed:** English copy; parity check for the rest. Fluent review of Hausa, Igbo, and Yoruba has not been obtained.
+- **Performance/cache impact:** see the budgets in `docs/FRONTEND_HARDENING_AUDIT.md`.
+- **Commands run and results:** `make web-verify` exit 0 (563 unit and 201 component tests in total); `make web-e2e` 422 passed and 10 skipped; `make web-a11y` 356 passed. A first combined run failed only because two suites were started at once on the same ports; the suites were rerun one at a time.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** The 304 fixtures in the state matrix were not audited one by one.
+- **Commit/PR:** `feat: harden security headers, budgets, and the composed accessibility and device checks`
+- **Next task may rely on:** the evidence document, `SECURITY_HEADERS`, the route budgets, and the structure suite.
+- **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

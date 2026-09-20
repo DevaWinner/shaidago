@@ -1,5 +1,3 @@
-import { createTranslator } from "next-intl";
-
 import en from "../../messages/en.json";
 import ha from "../../messages/ha.json";
 import ig from "../../messages/ig.json";
@@ -48,13 +46,4 @@ export function resolveDomain<D extends Domain>(locale: ApiLocale, domain: D): D
   return { messages: en[domain], language: DEFAULT_LOCALE, isOriginal: locale !== DEFAULT_LOCALE };
 }
 
-/** Formats one ICU message from a catalogue with real plural and number rules for its language. */
-export function formatMessage(
-  language: ApiLocale,
-  template: string,
-  values: Readonly<Record<string, string | number>>
-): string {
-  const translator = createTranslator({ locale: language, messages: { message: template } });
-
-  return translator("message", { ...values });
-}
+export { formatMessage } from "@/i18n/format-message";
