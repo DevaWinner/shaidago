@@ -1,4 +1,4 @@
-# Gitleaks configuration. The default rules apply; the allowlists below cover two synthetic values and one file of pinned public digests, all
+# Gitleaks configuration. The default rules apply; the allowlists below cover three synthetic patterns and one file of pinned public digests, all
 # looking like keys. Adding a value here needs a reason in the same change.
 title = "ShaidaGo gitleaks"
 
@@ -13,6 +13,8 @@ regexes = [
   '''Y2hhbmdlLW1lLWNoYW5nZS1tZS1jaGFuZ2UtbWUtMzI=''',
   # Two fixed UUIDs used as example Idempotency-Key values in tests.
   '''3f2b8c1e-9d4a-4b6e-8a1c-2d5e7f9a0b3[cd]''',
+  # Fixed fake UUIDs used as Idempotency-Key, report, and run IDs in the BFF unit tests.
+  '''0198f1a2-7b3c-[47]d4e-8f5a-123456789a[0-9a-f]{2}''',
 ]
 
 # The embedding-model fetcher pins the SHA-256 digest of each public model file and a public Hugging
