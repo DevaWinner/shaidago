@@ -396,6 +396,8 @@ Create least-privilege, SHA-pinned workflow jobs for frozen install, format/lint
 
 ### FE-030 — Deterministic OpenAPI generation
 
+> **Execution status (2026-09-20): complete.** Pinned OpenAPI generation now writes warning-header `schema.ts` and `client.ts` under `apps/web/src/lib/api/generated/`; `web-contract` fails when either no longer matches `contracts/openapi.json`. Compile-time assertions cover the project list, report submission, and problem-details contract.
+
 1. Generate TypeScript types/client into `src/lib/api/generated/` using pinned tooling.
 2. Add a generated-file warning and prohibit manual edits in review/CI.
 3. Normalize schema ordering/output so identical OpenAPI yields identical files.
@@ -403,6 +405,8 @@ Create least-privilege, SHA-pinned workflow jobs for frozen install, format/lint
 5. Add compile-time assertions for critical operations and problem details.
 
 ### FE-031 — Server-only private API client
+
+> **Execution status (2026-09-20): complete.** `apps/web/src/lib/api/server.ts` is a `server-only` transport built on the generated client: runtime-loaded URL and `web.<credential>` bearer, validated request-ID/locale/client-HMAC/`If-None-Match` forwarding, 5 s timeout, one bounded retry only for a transient 503 or network failure on reads, and a typed `ok`/`not_modified`/`problem`/`unavailable` result that never carries backend title or detail. It contains no logging and no mutation path. Unit tests cover headers, injection, 304, problems, retry bounds, timeout, malformed bodies, and a source-scan boundary test that fails on a client component importing a server module. Public reads (`getLocalities`, `listProjects`, `getProject`, `getProjectSource`) exist; reviewer reads wait for FE-034's session extraction. Public revalidation is set to the API's 60 s policy and is verified end to end by FE-063.
 
 Build a server-only wrapper that:
 
@@ -417,6 +421,8 @@ Build a server-only wrapper that:
 Do not add automatic mutation retries. Reads retry only on explicitly safe transient failures with a small bound.
 
 ### FE-032 — BFF request guard library
+
+> **Execution status (2026-09-20): complete.** `apps/web/src/lib/bff/` provides exact-Origin policy (configured public origin in deployed stages, local request origin in development/test, forwarded headers never trusted, unconfigured deployed stage fails closed), constant-time CSRF verification, header-only body preflight plus streaming byte caps and bounded JSON parsing, lower-case-UUID idempotency keys, an allowlist-only backend header builder, client-abort/timeout signal propagation, and browser-safe `application/problem+json` shaping with stable codes and no-store. `guardMutation` orders Origin, CSRF, body preflight, and key validation before any body is read. 84 unit tests cover spoofed forwarded headers, repeated/null/cross-site Origin, missing/malformed CSRF, oversized declared and streamed bodies, aborts, and problem shaping. Open for FE-034: how the reviewer's CSRF token reaches the browser is not fixed by the contract, so the verifier takes already-resolved presented/expected values.
 
 Create shared helpers for:
 
@@ -433,6 +439,8 @@ Create shared helpers for:
 Unit-test spoofed forwarded headers, multiple Origin values, missing/malformed CSRF, oversized declared and streamed bodies, aborted requests, and backend problem responses.
 
 ### FE-033 — Purpose-built public mutation handlers
+
+> **Execution status (2026-09-20): complete.** Nine explicit `runtime = "nodejs"`, `force-dynamic` Route Handlers under `apps/web/app/api/` (question, discovery start/poll, report multipart, tracking lookup, follow-up answer, handle create/list/delete) each name exactly one typed backend operation through `src/lib/bff/public-handler.ts`, with strict Zod input schemas, per-route body caps, Origin-before-body ordering, mandatory idempotency keys where the operation map requires them, no mutation retry, safe problem mapping, and `no-store`. Reports stream under a 30 MiB + 64 KiB cap without buffering. Unit tests cover every handler for success, validation, unknown fields, backend problem, timeout, network loss, cancellation (499), wrong content type, oversized body, foreign/missing/repeated Origin, cookie and forwarded-header exclusion, and secret-free URLs. Cancel-a-public-run and public follow-up are correctly absent because the API forbids public callers those actions. Not yet done: forwarding `X-Shaidago-Client-Hmac` (see the AI build log's open decision), and real-API integration.
 
 Create explicit Route Handlers for project question, public discovery start/poll/cancel/follow-up, report submission, status lookup, reporter handle create/list/delete, and report follow-up answers.
 
@@ -452,6 +460,8 @@ No handler accepts an arbitrary backend path, method, query, or header from the 
 
 ### FE-034 — Reviewer session and mutation handlers
 
+> **Execution status (2026-09-20): complete.** Seventeen explicit reviewer Route Handlers under `apps/web/app/api/reviewer/` (sign-in and sign-out on one route; notes, follow-up ask/withdraw, status transition, publication draft/preview/publish/withdraw, discovery plan/create/get/cancel/review/answer, source decision, and the evidence download broker) plus reviewer read methods in the server-only client for Server Components. Sign-in turns the API's one-time tokens into two `HttpOnly` `SameSite=Lax` cookies (`__Host-sg_session`/`__Host-sg_csrf` with `Secure` in staging/production; `sg_session`/`sg_csrf` in development/test), refuses an API cookie policy that would weaken them (and revokes that session), and returns only role and expiry. Every mutation checks Origin, then the session (401 clears cookies), then CSRF, then the body; a backend 401 clears cookies, while 403/404/409 stay generic or verbatim by code. Evidence is streamed through an explicit header allowlist (attachment, `nosniff`, sandbox CSP, no-store) with no signed URL. 246 unit/component tests cover these paths. Decisions recorded for review: the CSRF token is held only in an `HttpOnly` cookie and forwarded server-side (SameSite=Lax plus exact Origin is the BFF defence; the API re-verifies the token), and public-update withdraw takes no body because the API defines none. No handler has been exercised against a running API.
+
 Implement explicit sign-in, sign-out, queue/detail fetch where client polling is needed, notes, status events, public-update preview/confirm, evidence download broker, reviewer discovery, source decisions, and follow-up handlers.
 
 - Convert the backend's internal one-time session response into the exact environment-specific same-origin `Set-Cookie`/clear-cookie header; the token exists only in server execution and never reaches browser JavaScript, logs, traces, or response bodies.
@@ -461,9 +471,13 @@ Implement explicit sign-in, sign-out, queue/detail fetch where client polling is
 
 ### FE-035 — BFF contract/security tests
 
+> **Execution status (2026-09-20): complete.** `bff-contract.test.ts` parses `docs/FRONTEND_BFF_OPERATION_MAP.md` and proves the 26 implemented browser routes match its method and path list exactly, with no unlisted route and no generic proxy; asserts no `console`/logger/stdout use in handlers or BFF libraries and, at runtime, that failures carrying canary tracking codes, credentials, cookies, and an internal host emit no output and echo none of them. The handler suites gained cancellation (499) coverage for every reviewer mutation and the public poll. `bundle:check` now also fails on BFF wire markers (session/CSRF/client-HMAC headers, `Bearer web.`, session cookie names, `/v1/reviewer`, `/v1/reports`, BFF/API-server module paths) in client JavaScript. 258 unit tests pass.
+
 For every handler, test success, validation, backend problem, timeout, cancellation, wrong content type, oversized body, forbidden origin, CSRF failure where applicable, cookie forwarding, no-store headers, and sensitive-value log redaction. Add a build-time/client-bundle search for internal host and credentials.
 
 ### Circle 3 exit gate
+
+> **Gate status (2026-09-20): closed with caveats.** Met: the generated client is reproducible and drift-checked; the client bundle scan finds no internal URL, credential, BFF header, or server module; all 26 browser routes are purpose-built, guarded, and covered by success/validation/problem/timeout/cancellation/content-type/size/Origin/CSRF/cookie/no-store/log-redaction tests; reviewer tokens exist only in server memory and `HttpOnly` cookies; the BFF maps errors by stable code and makes no domain decision. Open, not claimed: no handler has run against a live FastAPI (the local API and Docker were not started), the pseudonymous client HMAC is not forwarded because its key and IP source are undefined, and the HttpOnly-cookie CSRF design and the operation-map correction for public-update withdraw need maintainer confirmation.
 
 - Generated client is reproducible and drift-checked.
 - Browser has no import/path to the private API client or internal URL.

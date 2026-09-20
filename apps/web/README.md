@@ -73,3 +73,49 @@ The root document uses English source copy temporarily. FE-050 owns `en`, `ha`, 
 locale routing, message parity, and human review status; do not add a second locale layout or a
 silent fallback before then. Recovery views accept only a canonical UUID request ID, never raw
 error text or backend detail, and unknown routes disclose nothing about a private record.
+
+## Generated API client
+
+`pnpm run api:generate` regenerates `src/lib/api/generated/schema.ts` and `client.ts` from
+`contracts/openapi.json` with pinned `openapi-typescript` 7.13.0 and `openapi-fetch` 0.17.0 (both
+MIT). Never edit those files; `pnpm run contract` (`make web-contract`) fails on drift. The
+generated client is a transport factory only: FE-031 wraps it in a server-only module.
+
+## Server-only API client
+
+`src/lib/api/server.ts` (`serverApi()`) is the only Server Component path to the private API. It
+reads runtime configuration on first call, sends `Authorization: Bearer web.<credential>`, forwards
+only validated `X-Request-Id`, `X-Shaidago-Locale`, `X-Shaidago-Client-Hmac`, and `If-None-Match`, and
+returns `ok`, `not_modified`, `problem` (stable `code`, never backend text), or `unavailable`.
+Reads retry once for a transient 503 or network error; there is no mutation retry and no logging. A
+unit test fails if a client component imports it.
+
+## BFF request guards
+
+`src/lib/bff/` holds the shared, domain-free guards every Route Handler composes: `resolveOriginPolicy`
+and `checkOrigin` (exact Origin; deployed stages need `NEXT_PUBLIC_APP_ORIGIN` or every browser
+mutation is refused; `X-Forwarded-*` is never trusted), `verifyCsrfToken`, `guardMutation` (Origin,
+CSRF, header-only body preflight, idempotency key, in that order), `readBoundedJson`/`limitBodyStream`
+(streamed byte caps), `buildBackendHeaders` (allowlist only), `backendSignal` (abort and timeout), and
+`problemResponse` (stable code, no backend text, `no-store`). Idempotency keys are lower-case
+canonical UUIDs, matching the API.
+
+## Public mutation handlers
+
+The nine handlers under `app/api/` (`public/questions`, `public/discovery`, `public/discovery/[runId]`,
+`reports`, `tracking/lookup`, `tracking/follow-up`, `reporter-handle`, `reporter-handle/reports`,
+`reporter-handle/delete`) each call one typed operation through `src/lib/bff/public-handler.ts`. Browsers
+send an optional `X-Shaidago-Locale` and, for idempotent operations, a lower-case UUID
+`Idempotency-Key` that is generated once per user intent and reused only for retries of that intent.
+Responses are always `no-store`; failures are `application/problem+json` with a stable `code`.
+
+## Reviewer session and handlers
+
+Reviewer cookies are created and read only in server code (`src/lib/bff/reviewer-session.ts`). The
+session token and the CSRF token are both `HttpOnly`; neither reaches JavaScript, a response body,
+or a log. Development/test use `sg_session`/`sg_csrf` on `http://localhost`; staging and production
+use `__Host-sg_session`/`__Host-sg_csrf` with `Secure`, and `NEXT_PUBLIC_APP_ORIGIN` must be set or
+every browser mutation is refused. The 17 handlers under `app/api/reviewer/` call one typed operation
+each, apply Origin then session then CSRF then body limits, and never decide roles, transitions, or
+publication. Evidence downloads are streamed with re-asserted `attachment`, `nosniff`, sandbox CSP,
+and `no-store` headers.

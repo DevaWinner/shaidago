@@ -1736,3 +1736,129 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Implemented the approved semantic system, selected Tailwind's documented v4 PostCSS integration, added deterministic contrast/preference tests, and corrected the standalone browser-serving defect found by visual inspection.
 - **Prompt summary:** Continue frontend work through the established task loop after selecting the Field Ledger direction.
 - **Human review:** none yet; unattended loop, pending maintainer review.
+
+## 2026-09-20 — FE-030 Deterministic OpenAPI generation
+
+- **Task:** FE-030 — Deterministic OpenAPI generation.
+- **User outcome delivered:** Server code now has one typed, reproducible path to the FastAPI contract, so later BFF and Server Component work cannot drift from `contracts/openapi.json` or hand-mirror backend models.
+- **Files changed:** `apps/web/scripts/generate-api-types.mjs`, `apps/web/src/lib/api/generated/{schema,client}.ts`, `apps/web/tests/unit/generated-contract.test.ts`, `apps/web/package.json`, `apps/web/.prettierignore`, `apps/web/README.md`, `pnpm-lock.yaml`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** Reads the committed `contracts/openapi.json`; no operation or contract changed.
+- **Public/private data handled:** None at runtime. The client is a transport factory taking a base URL argument; it holds no URL, credential, or data.
+- **States implemented:** None (non-visual). Problem-details shape is asserted at compile time.
+- **Accessibility evidence:** Not applicable; no visible surface.
+- **Locales reviewed:** Not applicable.
+- **Performance/cache impact:** Build-time tooling only: `openapi-typescript` 7.13.0 (MIT, dev) and `openapi-fetch` 0.17.0 (MIT, tiny fetch wrapper, same maintainer). Both pinned exactly. The generated client is not imported by any client component; FE-031 owns the `server-only` wrapper.
+- **Failure behaviour verified:** `api:check` regenerates into a temporary directory and fails on any difference from the committed files; `make web-contract` runs it.
+- **Commands run and results:** Frozen install, `api:check`, `format:check`, strict typecheck, unit (33 tests), and `pnpm run contract` passed. Lint has 0 errors and 1 pre-existing unused-import warning in `tests/component/primitives.test.tsx`, which is outside this task. Build, E2E, and browser checks were not rerun because no runtime code changed.
+- **Screenshots/traces/artifacts checked:** None; non-visual.
+- **Known limitations/open decisions:** Lockfile diff includes peer-suffix churn from resolution with no package version changes. Import restriction to server code is enforced by FE-031.
+- **Commit/PR:** `build: generate the typed API client from the OpenAPI contract`
+- **Next task may rely on:** `createGeneratedClient(baseUrl)` and the `paths`/`operations`/`components` types.
+- **AI assistance used:** Wrote the deterministic generator with drift check and compile-time contract assertions.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-031 Server-only private API client
+
+- **Task:** FE-031 — Server-only private API client.
+- **User outcome delivered:** Server Components can read public localities, projects, project detail, and approved sources through one typed, bounded, non-logging path that cannot leak the private URL or credential to the browser.
+- **Files changed:** `apps/web/src/lib/api/{server,forwarded-context}.ts`, `apps/web/src/lib/config/server.ts`, `apps/web/tests/unit/{server-api,config-environment}.test.ts`, `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** `projects_list_localities`, `projects_list`, `projects_get`, `projects_get_source` (SR-PUBLIC profile); OpenAPI 0.0.0 unchanged.
+- **Public/private data handled:** Public catalogue reads only. The bearer credential, internal URL, and client HMAC stay in server execution; nothing is logged. Problem results expose only stable code, status, field paths and codes, request ID, and Retry-After.
+- **States implemented:** ok, not_modified (distinct from empty), problem, unavailable (timeout, network, malformed_response) as typed results for later surfaces.
+- **Accessibility evidence:** Not applicable; no visible surface.
+- **Locales reviewed:** Only `en`, `ha`, `ig`, `yo` are forwarded; anything else is dropped rather than mapped.
+- **Performance/cache impact:** No new dependency. Reads pass `next.revalidate: 60` to match the API's public policy; FE-063 must verify this against the Vary/Authorization behaviour of the Next data cache. No client bundle change (boundary scan: 13 chunks clean).
+- **Failure behaviour verified:** Header injection attempts, invalid locale/HMAC/ETag, 304, 429 with Retry-After, 404, 422 field errors, 503 retry once, 503 with long Retry-After not retried, network and timeout, HTML gateway errors, invalid JSON, and invalid runtime environment. A test caught a latent FE-023 defect: an empty `API_INTERNAL_URL` raised a raw `Invalid URL` instead of `ServerEnvironmentError`; fixed with a regression test.
+- **Commands run and results:** `make web-verify` exit 0 (format, lint, typecheck, unit, component, coverage, contract drift, boundary build). Coverage 94.18% statements, 89.9% branches, 88.4% functions. Lint has 0 errors and one pre-existing unused-import warning in `tests/component/primitives.test.tsx`. Browser E2E/a11y were not separately re-inspected.
+- **Screenshots/traces/artifacts checked:** None; non-visual.
+- **Known limitations/open decisions:** Reviewer reads are deferred to FE-034 (session extraction). The 60 s Next data-cache behaviour with an Authorization header is unproven until FE-063. The backend `request_id` is ignored in favour of the one we sent.
+- **Commit/PR:** `feat: add the server-only private API client`
+- **Next task may rely on:** `serverApi()` public reads, `buildForwardedHeaders`, and the typed `ApiResult` for FE-032/FE-033.
+- **AI assistance used:** Designed and implemented the transport, its tests, and the boundary test; found and fixed the environment parse defect.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-032 BFF request guard library
+
+- **Task:** FE-032 — BFF request guard library.
+- **User outcome delivered:** Every later browser mutation handler can compose the same tested Origin, CSRF, body-limit, idempotency, header, abort, and error-shaping guards, so a forged, oversized, or malformed request is refused before it reaches the private API.
+- **Files changed:** `apps/web/src/lib/bff/{origin,csrf,body,idempotency,backend-request,guard,problem}.ts`, `apps/web/tests/unit/bff-guard.test.ts`, `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None called. Idempotency-key format (lower-case canonical UUID) follows the API's behaviour described in `docs/FRONTEND_BACKEND_CONTRACT.md`; OpenAPI 0.0.0 unchanged.
+- **Public/private data handled:** Handles CSRF and session values and idempotency keys as opaque secrets: never logged, never echoed, and absent from problem bodies. Browser `Cookie`, `Authorization`, `Host`, `Content-Length`, and `X-Forwarded-*` cannot reach the backend by construction.
+- **States implemented:** 400 `invalid_json`/`idempotency_key_invalid`, 403 `origin_forbidden`/`csrf_invalid`, 413, 415, 499 `request_aborted`, 503/504 upstream, and API problems mapped by stable code, all `no-store`.
+- **Accessibility evidence:** Not applicable; no visible surface.
+- **Locales reviewed:** Problems expose a stable `code` plus an English fallback title; localised text belongs to FE-053. No translation is claimed.
+- **Performance/cache impact:** No dependency. Byte caps are enforced on the stream and multipart bodies are not buffered by `limitBodyStream`. Every error response is no-store.
+- **Failure behaviour verified:** Spoofed forwarded headers, repeated/null/path/cross-site Origin, unconfigured deployed origin, missing/malformed/mismatched CSRF, wrong content types, oversized declared and chunked bodies, invalid and non-UTF-8 JSON, client abort versus timeout, unsafe problem codes, and out-of-range Retry-After. A test showed that the `Headers` API trims whitespace, so an unreachable padding check was removed.
+- **Commands run and results:** Typecheck, lint (0 errors; one pre-existing warning), and coverage passed: 84 tests, 96.11% statements, 93.42% branches, 91.75% functions; `src/lib/bff` 98.5% statements. Prettier applied. `make web-verify` exit 0 (77 unit, 7 component; client-boundary scan clean across 13 chunks).
+- **Screenshots/traces/artifacts checked:** None; non-visual.
+- **Known limitations/open decisions:** The maintainer must decide how the reviewer's CSRF token reaches the browser (server-rendered token versus an HttpOnly-cookie-only design) before FE-034; `docs/THREAT_MODEL.md` A-15 says it must not be readable by client JavaScript, so `verifyCsrfToken` takes already-resolved values and does not choose. The branch coverage rule of 100% for public-response allowlists and similar security modules is not yet required here since none of those exist. `NEXT_PUBLIC_APP_ORIGIN` must be set in staging and production.
+- **Commit/PR:** `feat: add BFF request guards for browser mutations`
+- **Next task may rely on:** `guardMutation`, `readBoundedJson`, `buildBackendHeaders`, `backendSignal`, and the problem builders.
+- **AI assistance used:** Designed and implemented the guards and adversarial tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-033 Purpose-built public mutation handlers
+
+- **Task:** FE-033 — Purpose-built public mutation handlers.
+- **User outcome delivered:** Browser code has one same-origin, guarded endpoint per public write or poll (question, discovery, report, tracking, follow-up, handles) with no path to the private API and no generic proxy.
+- **Files changed:** nine `apps/web/app/api/**/route.ts` handlers; `apps/web/src/lib/bff/{public-handler,public-schemas,guard,body,problem}.ts`; `apps/web/src/lib/api/server.ts` (shared `execute`, no-retry mutation methods, 204 and replay handling, `aborted` reason); `apps/web/tests/unit/{bff-public-handlers,server-api}.test.ts`; `apps/web/README.md`; `docs/FRONTEND_BUILD_ORDER.md`; this log.
+- **Backend operations/contract version:** `projects_ask_question`, `discovery_start_public_run`, `discovery_get_public_run`, `reports_submit`, `report_status_lookup`, `report_status_answer_follow_up`, `reporter_handles_create`, `reporter_handles_list_reports`, `reporter_handles_delete`; OpenAPI 0.0.0 unchanged.
+- **Public/private data handled:** Tracking codes, passphrases, follow-up answers, and report multipart bodies exist only in the request body/stream and are never placed in a URL or log; tests assert the URLs and problem bodies never contain them. One-time receipt/handle values are returned once, `no-store`. Browser `Cookie`, `Authorization`, and `X-Forwarded-*` are never forwarded.
+- **States implemented:** success (200/201/204, replay flag), 304 poll, 400/403/413/415/422 BFF rejections, mapped API problems (including rate limit Retry-After), 499 cancellation, 503/504 upstream failure, generic 500.
+- **Accessibility evidence:** Not applicable; no visible surface.
+- **Locales reviewed:** Only a validated `X-Shaidago-Locale` is forwarded; localised copy belongs to FE-053. No translation claimed.
+- **Performance/cache impact:** No dependency added. Reports are streamed, not buffered. All nine routes are dynamic and no-store; `next build` still performs no API fetch and the client boundary scan is clean (13 chunks).
+- **Failure behaviour verified:** As listed in the build-order note; additionally an empty-body operation rejects a body even when the runtime omits Content-Length, and a streamed report over the cap stops reading (chunks consumed < total) and returns 413.
+- **Commands run and results:** `make web-verify` exit 0 (139 unit, 7 component, contract drift, build with nine dynamic API routes, boundary scan); `make web-e2e` 4 passed and `make web-a11y` 2 passed (Chromium and mobile WebKit) on the unchanged foundation page; coverage 96.08% statements, 93.42% branches, 94.59% functions (`src/lib/bff` 96.65%). Lint has 0 errors and the same pre-existing warning.
+- **Screenshots/traces/artifacts checked:** None; non-visual. No handler has been exercised against a running FastAPI, so real-integration behaviour (including multipart streaming to uvicorn and the 65 s budget) is unverified.
+- **Known limitations/open decisions:** (1) `X-Shaidago-Client-Hmac` is not forwarded: the contract says the BFF supplies a pseudonymous HMAC of the client IP, but no key, rotation scheme, or trusted-proxy IP source is defined in `.env.example` or the ADRs. Until the maintainer decides, backend rate limits cannot distinguish clients. (2) Success bodies are passed through as the typed API response rather than re-picked field by field; the API's Pydantic allowlists remain the only filter. (3) Per-file 10 MiB and file-type checks are enforced by the API (and later client preparation), not by the BFF, because the BFF does not buffer or parse multipart. (4) The locale header is provisional until FE-050/FE-054 define the locale source. (5) Idempotency keys are lower-case UUIDs, matching the API.
+- **Commit/PR:** `feat: add same-origin public mutation handlers`
+- **Next task may rely on:** the handler paths above, `handlePublicJson`/`handlePublicEmpty`/`handleReportSubmission`, and the `MutationOptions` transport methods for FE-034's reviewer handlers.
+- **AI assistance used:** Designed and implemented the handlers, schemas, transport extension, and table-driven adversarial tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-034 Reviewer session and mutation handlers
+
+- **Task:** FE-034 — Reviewer session and mutation handlers.
+- **User outcome delivered:** A reviewer can (once a UI exists) sign in, act on reports, publish or withdraw a separately authored public update, run report-scoped discovery, and download sanitised evidence through same-origin handlers, with session secrets confined to server memory and `HttpOnly` cookies.
+- **Files changed:** 17 `apps/web/app/api/reviewer/**/route.ts` files; `apps/web/src/lib/bff/{reviewer-session,reviewer-session-handler,reviewer-handler,reviewer-schemas,guard}.ts`; `apps/web/src/lib/api/{server,forwarded-context}.ts` (reviewer reads and mutations, sign-in/out, evidence stream, opaque-secret validator); `apps/web/src/lib/bff/backend-request.ts`; `apps/web/tests/unit/bff-reviewer-handlers.test.ts`; `apps/web/README.md`; `docs/FRONTEND_BUILD_ORDER.md`; this log.
+- **Backend operations/contract version:** `auth_sign_in`, `auth_sign_out`, `reviewer_notes_create`, `reviewer_evidence_download`, `reviewer_decisions_{ask_follow_up,withdraw_follow_up,transition}`, `reviewer_publication_{create_draft,preview,publish,withdraw}`, `reviewer_discovery_{plan,create,get,cancel,review,answer_follow_up,decide_source}`, plus the reviewer read operations for Server Components (`reviewer_reports_queue`, `reviewer_reports_get`, `reviewer_notes_list`, `reviewer_publication_list`). OpenAPI 0.0.0 unchanged.
+- **Public/private data handled:** Private report data, notes, reviewer reasons, evidence bytes, session and CSRF tokens. None is logged, cached, placed in a URL, or returned in a sign-in body; tests assert absence of tokens in bodies and URLs, no `Cookie` forwarded to the API, and no `Set-Cookie` on ordinary responses. Malformed IDs are answered as `not_found` without contacting the API.
+- **States implemented:** 201 sign-in with cookies, 204 sign-out (always clearing cookies), 401 with cookie clearing, 403 origin/csrf/forbidden, 404, 409 passed through by stable code, 413/415/422 pre-API rejections, 499/503/504, evidence stream.
+- **Accessibility evidence:** Not applicable; no visible surface.
+- **Locales reviewed:** Only a validated locale header is forwarded. No translation claimed.
+- **Performance/cache impact:** No dependency added. Evidence is streamed, not buffered. All handlers dynamic and `no-store`; boundary scan still clean over 13 client chunks.
+- **Failure behaviour verified:** Origin-before-session-before-CSRF ordering; duplicate cookie names discarded; API cookie policy mismatches (name, Secure, HttpOnly, SameSite, path, lifetime, unsafe token characters) refused with best-effort revocation; timeout/network never retried for mutations; reviewer reads retried once on a transient 503; an unexpected evidence content type or disposition is downgraded rather than forwarded.
+- **Commands run and results:** `make web-verify` exit 0 (239 unit and 7 component tests at that point; contract, build listing 26 dynamic API routes, boundary scan). Final coverage run: 246 tests passing, 95.55% statements, 91.66% branches, 93.41% functions. Lint 0 errors and the same pre-existing warning. E2E/a11y were run for FE-033 on the unchanged page and not rerun. No handler was run against a live API.
+- **Screenshots/traces/artifacts checked:** None; non-visual.
+- **Known limitations/open decisions:** (1) CSRF design needs maintainer confirmation: the CSRF token lives in an `HttpOnly` cookie and is forwarded server-side, which satisfies THREAT_MODEL A-15 and the contract's "BFF removes csrf_token from the browser response", and relies on SameSite=Lax plus exact Origin for the browser-facing defence. A synchroniser token rendered into pages would be stronger against subdomain cookie tossing but exposes the token to page script. (2) The operation map lists public-update withdraw as JSON ≤ 1 KiB, but the API takes no body; the handler accepts none (map should be corrected). (3) Reviewer `since_version` polling from the map is not offered because OpenAPI defines no such parameter for `reviewer_discovery_get`. (4) Client HMAC forwarding is still undecided (see FE-033). (5) The reviewer account/role and sign-in policy remain maintainer decisions; nothing here checks a role.
+- **Commit/PR:** `feat: add reviewer session and mutation handlers`
+- **Next task may rely on:** `handleReviewerJson`/`handleReviewerEmpty`/`handleReviewerGet`, the reviewer cookie helpers, and the server-only reviewer read methods.
+- **AI assistance used:** Designed and implemented the session cookie handling, handlers, schemas, and adversarial tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-035 BFF contract/security tests
+
+- **Task:** FE-035 — BFF contract/security tests.
+- **User outcome delivered:** The BFF boundary is now regression-protected: adding, renaming, or widening a browser route, logging a sensitive value, or leaking a wire detail into client JavaScript fails a check.
+- **Files changed:** `apps/web/tests/unit/bff-contract.test.ts`, `apps/web/tests/unit/bff-reviewer-handlers.test.ts`, `apps/web/tests/unit/bff-public-handlers.test.ts`, `apps/web/scripts/verify-client-boundary.mjs`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None called; OpenAPI 0.0.0 and the operation map are read-only inputs.
+- **Public/private data handled:** Synthetic canaries only (a fake tracking code, credentials, session cookies, and an internal IP); no real data.
+- **States implemented:** Not applicable (tests and a build check).
+- **Accessibility evidence:** Not applicable.
+- **Locales reviewed:** Not applicable.
+- **Performance/cache impact:** No runtime change. The bundle scan adds ten literal markers.
+- **Failure behaviour verified:** Map-versus-filesystem drift in either direction; logging via console, logger, or stdout/stderr; canary and internal-host echo in response bodies and headers; reviewer and public cancellation.
+- **Commands run and results:** `make web-verify` exit 0: 258 unit and 7 component tests, contract drift check, production build with boundary scan clean across 13 client chunks including the new markers. Lint 0 errors plus the same pre-existing warning.
+- **Screenshots/traces/artifacts checked:** None.
+- **Known limitations/open decisions:** Same as the Circle 3 gate note: no live-API run, undefined client HMAC, and two decisions pending maintainer confirmation. Log redaction is proven by absence of output rather than by a redaction function, because the BFF deliberately logs nothing; adding logging later must add a central denylist and a test.
+- **Commit/PR:** `test: guard the BFF boundary against drift and leaks`
+- **Next task may rely on:** The operation-map parity test and the runtime no-output test as guard rails for later route or logging changes.
+- **AI assistance used:** Wrote the parity, redaction, and cancellation tests and the bundle markers.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
