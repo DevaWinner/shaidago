@@ -90,11 +90,16 @@ When implementation starts, the separate stacks remain independently owned:
 
 ## Known limitations
 
-This remains a fictional-data prototype, not an emergency service. Three source-register projects
-have no verified fact, multilingual Q&A copy awaits fluent human review, live Groq/Brave evidence
-has not been run, the hosted demo has no malware scanner, the complete staging smoke is pending,
-and production is closed until legal, privacy, security, and operational review. See the
-[`BE-122 evidence review`](docs/evidence/BE-122-final-backend-review.md) for the exact release items.
+This remains a fictional-data prototype, not an emergency service.
+
+- **Sources.** Three of the six source-register projects have no verified fact, because their sources block automated access.
+- **Languages.** The Hausa, Igbo and Yoruba copy was reviewed by the maintainer alone; it has no independent second review.
+- **Language model.** Live Groq and Brave runs were made once, and the model's answers were weak against the golden corpus (see [BE-085](docs/evidence/BE-085-live-evaluation.md)), so the demo defaults to replay and labels it.
+- **Retrieval.** Local embeddings let a Hausa, Igbo or Yoruba question find English passages that keyword search misses, measured on a small sample only (see [BE-081](docs/evidence/BE-081-local-embeddings.md)).
+- **Hosting.** The hosted demo has no malware scanner, and the API service uses about 65% of its 1 GB memory limit at rest and 83% at peak.
+- **Production** is closed until legal, privacy, security, and operational review.
+
+See the [`BE-122 evidence review`](docs/evidence/BE-122-final-backend-review.md) for the exact release items, and the staging record in [BE-114](docs/evidence/BE-114-staging-smoke.md) (24 of 24 smoke steps passed).
 
 ## Contributing and security
 
