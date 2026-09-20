@@ -656,7 +656,11 @@ createServer((request, response) => {
   }
 
   // Counted per exact URL, so a test can probe its own unique query without interference.
-  stats[path + url.search] = (stats[path + url.search] ?? 0) + 1;
+  // Calls that carry a reviewer session belong to the reviewer tests running in parallel; counting
+  // them would make the public-page assertions depend on which project is running what.
+  if (request.headers["x-shaidago-session"] === undefined && !path.startsWith("/v1/auth/")) {
+    stats[path + url.search] = (stats[path + url.search] ?? 0) + 1;
+  }
   const locale = String(request.headers["x-shaidago-locale"] ?? "en");
 
   if (mode === "down") {
