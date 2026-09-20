@@ -10,6 +10,8 @@ const DIGEST = "a".repeat(64);
 const shared = {
   actions: en.reviewer.actions,
   copy: en.reviewer.detail.scout,
+  discoveryCopy: en.discovery,
+  language: "en" as const,
   locale: "en",
   problems: en.problems,
   reportId: REPORT,
@@ -39,6 +41,29 @@ describe("DiscoveryPreview", () => {
         new Response(JSON.stringify({ run_id: REPORT, status: "searching", version: 1 }), {
           status: 201
         })
+      )
+      .mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            run_id: REPORT,
+            report_id: REPORT,
+            scope: "reviewer",
+            status: "complete",
+            version: 2,
+            created_at: "2026-09-20T09:00:00Z",
+            finished_at: "2026-09-20T09:01:00Z",
+            demo_replay: true,
+            failure_code: null,
+            query_text: plan.query,
+            results_found: 0,
+            fetched_count: 0,
+            analysed_count: 0,
+            cancel_requested: false,
+            sources: [],
+            analysis: null
+          }),
+          { status: 200 }
+        )
       );
     vi.stubGlobal("fetch", fetcher);
     render(<DiscoveryPreview {...shared} />);
@@ -59,7 +84,7 @@ describe("DiscoveryPreview", () => {
         name: "Approve and start"
       })
     );
-    await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(fetcher.mock.calls.length).toBeGreaterThanOrEqual(3));
     const [url, init] = fetcher.mock.calls[1] as [string, RequestInit];
     expect(url).toBe(`/api/reviewer/reports/${REPORT}/discovery`);
     expect(JSON.parse(String(init.body))).toEqual({

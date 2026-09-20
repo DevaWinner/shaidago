@@ -1,5 +1,7 @@
 import { createHash } from "node:crypto";
 
+import { analysisFor, defaultSources, manySources } from "./mock-discovery.mjs";
+
 /**
  * Fictional reviewer endpoints for the browser test servers. Everything returned is synthetic.
  * It enforces the same header contract as the real API (`X-Shaidago-Session`, and
@@ -88,6 +90,7 @@ const changes = new Map();
 const RACE_IDS = new Set([REPORT_IDS[24], REPORT_IDS[30]]);
 const raced = new Set();
 const discoveryRuns = new Map();
+let runCounter = 0;
 const DISCOVERY_DIGEST = "a".repeat(64);
 const MACHINE = {
   received: {
@@ -372,13 +375,192 @@ export function handleReviewer({ request, response, url, problem, readBody }) {
     }
     readBody(request, (body) => {
       if (body?.approved_digest !== DISCOVERY_DIGEST) {
-        problem(response, 409, "stale_plan");
+        problem(response, 409, "query_changed");
         return;
       }
-      const run_id = "0198f1a2-7b3c-4d4e-8f5a-d00000000001";
-      discoveryRuns.set(run_id, { report_id: discoveryCreate[1], status: "searching", version: 1 });
-      log.push({ op: "discovery_create", concepts: body?.concepts ?? [] });
-      json(response, 201, { run_id, status: "searching", version: 1 });
+      const concepts = Array.isArray(body?.concepts) ? body.concepts : [];
+      const scenario = String(concepts[0] ?? "default");
+      const run_id = `0198f1a2-7b3c-4d4e-8f5a-d${String(++runCounter).padStart(11, "0")}`;
+      const prefix = `e${String(runCounter).padStart(3, "0")}`;
+
+      discoveryRuns.set(run_id, {
+        report_id: discoveryCreate[1],
+        scenario,
+        prefix,
+        reads: 0,
+        status: scenario === "zz-queued" ? "queued" : "searching",
+        version: 1,
+        cancel_requested: false,
+        dispositions: new Map()
+      });
+      log.push({ op: "discovery_create", concepts });
+      json(response, 201, { run_id, status: "searching" });
+    });
+    return true;
+  }
+
+  const discoveryRun = /^\/v1\/reviewer\/discovery-runs\/([^/:]+)(?::(cancel|review))?$/.exec(path);
+
+  if (discoveryRun !== null) {
+    const run = discoveryRuns.get(discoveryRun[1]);
+
+    if (run === undefined) {
+      problem(response, 404, "not_found");
+      return true;
+    }
+    if (method === "POST" && !hasCsrf(request)) {
+      problem(response, 403, "csrf_invalid");
+      return true;
+    }
+    if (method === "POST" && discoveryRun[2] === "cancel") {
+      log.push({ op: "discovery_cancel" });
+      if (["queued", "searching", "analysing"].includes(run.status)) {
+        run.cancel_requested = true;
+        run.status = "cancelled";
+        run.version += 1;
+      }
+      json(response, 200, { status: run.status, cancel_requested: run.cancel_requested });
+      return true;
+    }
+    if (method === "POST" && discoveryRun[2] === "review") {
+      readBody(request, (body) => {
+        log.push({ op: "discovery_review", command: body?.command });
+        if (run.status !== "needs_review") {
+          problem(response, 409, "conflict");
+          return;
+        }
+        run.status = body?.command === "approve_completion" ? "complete" : "failed";
+        run.failure_code = body?.command === "approve_completion" ? null : "analysis_invalid";
+        run.version += 1;
+        json(response, 200, { status: run.status });
+      });
+      return true;
+    }
+    if (method === "GET") {
+      run.reads += 1;
+      const scenario = run.scenario;
+
+      if (scenario === "zz-down" && run.reads <= 2) {
+        problem(response, 503, "dependency_unavailable");
+        return true;
+      }
+      if (scenario === "zz-progress") {
+        if (run.reads === 1) [run.status, run.version] = ["searching", 1];
+        else if (run.reads === 2) [run.status, run.version] = ["analysing", 2];
+        else if (run.status !== "cancelled") [run.status, run.version] = ["complete", 3];
+      } else if (!run.settled && !["cancelled", "queued"].includes(run.status)) {
+        run.settled = true;
+        run.status =
+          scenario === "zz-failed"
+            ? "failed"
+            : scenario === "zz-invalid"
+              ? "complete"
+              : "needs_review";
+        run.version = 2;
+      }
+      if (url.searchParams.get("since_version") === String(run.version)) {
+        response.writeHead(304, { "Cache-Control": "no-store" }).end();
+        return true;
+      }
+
+      const failed = run.status === "failed" && scenario === "zz-failed";
+      const sources =
+        failed || (scenario === "zz-progress" && run.status !== "complete")
+          ? []
+          : scenario === "zz-cap"
+            ? manySources(run.prefix, true, 10)
+            : scenario === "zz-partial" || run.status === "cancelled"
+              ? defaultSources(run.prefix, true).slice(0, 1)
+              : defaultSources(run.prefix, true);
+
+      for (const source of sources) {
+        source.disposition = run.dispositions.get(source.source_id) ?? source.disposition;
+      }
+
+      const withAnalysis = ["complete", "needs_review"].includes(run.status) && sources.length > 0;
+
+      json(response, 200, {
+        run_id: discoveryRun[1],
+        report_id: run.report_id,
+        scope: "reviewer",
+        status: run.status,
+        version: run.version,
+        created_at: "2026-09-20T09:00:00Z",
+        finished_at: ["queued", "searching", "analysing"].includes(run.status)
+          ? null
+          : "2026-09-20T09:01:00Z",
+        demo_replay: true,
+        label: "discovered \u2014 not yet reviewed",
+        query_text: "Abuja AMAC public works official source",
+        query_policy_version: "fictional-policy-v1",
+        results_found: sources.length,
+        fetched_count: run.status === "searching" ? 0 : sources.length,
+        analysed_count: withAnalysis ? sources.length : 0,
+        cancel_requested: run.cancel_requested,
+        failure_code: failed ? "provider_unavailable" : (run.failure_code ?? null),
+        sources,
+        analysis: withAnalysis ? analysisFor(sources, { invalid: scenario === "zz-invalid" }) : null
+      });
+      return true;
+    }
+  }
+
+  const answerMatch = /^\/v1\/reviewer\/discovery-runs\/([^/]+)\/follow-up-answers$/.exec(path);
+
+  if (answerMatch !== null && method === "POST") {
+    if (!hasCsrf(request)) {
+      problem(response, 403, "csrf_invalid");
+      return true;
+    }
+    readBody(request, (body) => {
+      // Only the shape is logged: an answer's text is never recorded, even here.
+      log.push({
+        op: "discovery_answer",
+        kind: body?.kind,
+        index: body?.question_index,
+        hasText: typeof body?.answer === "string"
+      });
+      if (!discoveryRuns.has(answerMatch[1])) {
+        problem(response, 404, "not_found");
+      } else {
+        json(response, 200, { acknowledged: true });
+      }
+    });
+    return true;
+  }
+
+  const decisionMatch = /^\/v1\/reviewer\/discovered-sources\/([^/]+)\/decision$/.exec(path);
+
+  if (decisionMatch !== null && method === "POST") {
+    if (!hasCsrf(request)) {
+      problem(response, 403, "csrf_invalid");
+      return true;
+    }
+    readBody(request, (body) => {
+      const owner = [...discoveryRuns.values()].find((run) =>
+        decisionMatch[1].includes(run.prefix)
+      );
+      const current = owner?.dispositions.get(decisionMatch[1]) ?? "not_reviewed";
+      const next = {
+        not_reviewed: { attach: "attached", reject: "rejected", defer: "deferred" },
+        deferred: { attach: "attached", reject: "rejected" },
+        attached: { reconsider: "deferred" },
+        rejected: { reconsider: "deferred" }
+      }[current]?.[body?.command];
+
+      log.push({ op: "source_decision", command: body?.command });
+      if (owner === undefined) {
+        problem(response, 404, "not_found");
+      } else if (next === undefined) {
+        problem(response, 409, "conflict");
+      } else {
+        owner.dispositions.set(decisionMatch[1], next);
+        json(response, 200, {
+          source_id: decisionMatch[1],
+          disposition: next,
+          attached_source_id: null
+        });
+      }
     });
     return true;
   }

@@ -25,6 +25,7 @@ function view() {
       copy={en.project.discovery}
       locale="en"
       problems={en.problems}
+      resultsCopy={en.discovery}
       slug="synthetic-record-full"
     />
   );

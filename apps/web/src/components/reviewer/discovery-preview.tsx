@@ -3,10 +3,12 @@
 import { useId, useState, type ReactNode } from "react";
 
 import { ActionFeedback } from "@/components/reviewer/action-feedback";
+import { DiscoveryRun } from "@/components/reviewer/discovery-run";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Textarea } from "@/components/ui/field";
 import { ConfirmDialog } from "@/components/ui/overlay";
 import type { Messages } from "@/i18n/catalogue";
+import type { ApiLocale } from "@/lib/api/forwarded-context";
 import { networkProblem } from "@/lib/problems/browser-problem";
 import type { SafeProblem } from "@/lib/problems/problem-messages";
 import { postJson } from "@/lib/tracking/client";
@@ -94,6 +96,8 @@ function conceptsFrom(value: string): readonly string[] {
 export function DiscoveryPreview({
   actions,
   copy,
+  discoveryCopy,
+  language,
   locale,
   problems,
   reportId,
@@ -101,6 +105,9 @@ export function DiscoveryPreview({
 }: Readonly<{
   actions: Messages["reviewer"]["actions"];
   copy: Copy;
+  discoveryCopy: Messages["discovery"];
+  /** The language the copy is written in, for dates. */
+  language: ApiLocale;
   locale: string;
   problems: Messages["problems"];
   reportId: string;
@@ -114,6 +121,7 @@ export function DiscoveryPreview({
   const [problem, setProblem] = useState<SafeProblem>();
   const [success, setSuccess] = useState<string>();
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [runId, setRunId] = useState<string | undefined>();
 
   async function prepare(): Promise<void> {
     if (busy !== undefined) return;
@@ -155,6 +163,13 @@ export function DiscoveryPreview({
       setProblem(outcome.kind === "problem" ? outcome.problem : networkProblem());
       return;
     }
+    const created = (outcome.data as { run_id?: unknown } | undefined)?.run_id;
+
+    if (typeof created !== "string" || !/^[0-9a-f-]{36}$/i.test(created)) {
+      setProblem({ ...networkProblem(), code: "internal_error", status: 201 });
+      return;
+    }
+    setRunId(created);
     setSuccess(copy.started);
   }
 
@@ -238,6 +253,17 @@ export function DiscoveryPreview({
         signInHref={signInHref}
         success={success}
       />
+      {runId === undefined ? null : (
+        <DiscoveryRun
+          actions={actions}
+          copy={discoveryCopy}
+          key={runId}
+          locale={language}
+          problems={problems}
+          runId={runId}
+          signInHref={signInHref}
+        />
+      )}
       <ConfirmDialog
         cancelLabel={copy.cancel}
         confirmLabel={copy.confirm}

@@ -2371,3 +2371,83 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Implemented the review flow, narrow parser, fictional boundary fixture, and tests.
 - **Prompt summary:** Complete Circle 12 unattended.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-123 Results, provenance, and analysis
+
+- **Task:** FE-123 — Results, provenance, and analysis (Circle 12). Delivered in one commit with FE-123 to FE-126 because the shared readers, cards, and run view are the same change.
+- **User outcome delivered:** A resident or reviewer sees at most ten discovered sources, each labelled unreviewed with provenance dates and a safe original link, and an analysis kept apart from them that cites only this run's sources.
+- **Routes/components changed:** `src/lib/discovery/parse.ts`, `src/components/discovery/results.tsx`, the public panel and reviewer run view, `messages/*` (`discovery`), mock discovery data, unit, component, e2e and a11y tests.
+- **Backend operations/contract version:** `discovery_get_public_run`, `reviewer_discovery_get` (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Public discovered-source metadata and excerpts (inert text); reviewer runs are private and never cached.
+- **States implemented:** results, no results, cap, flagged page, unsafe link, duplicates, invalid analysis, unavailable analysis
+- **Accessibility evidence:** axe, 320 px, and 200% text across the public and reviewer Source Scout states in en, ha, ig, and yo, plus the confirmation dialogs (with the documented Base UI focus-guard exclusion) and cancelled state; labelled fields, status and alert regions, text (not colour) for every state.
+- **Locales reviewed:** English only; the new `discovery` domain is `null` in ha/ig/yo (pending), so those pages show the English original with a notice. No translation written or claimed.
+- **Performance/cache impact:** Client islands only on the reviewer report page and the project page; every run response is no-store and held in memory only.
+- **Commands run and results:** `make web-verify` exit 0 (509 unit and 197 component tests in total, message parity, bundle scan); `make web-e2e` 358 passed and 6 skipped; `make web-a11y` 330 passed. The `public-cache` browser file is order-sensitive on a warm build (its shared mock counters are reset by the parallel project) and fails when run alone repeatedly, on the previous commit too; it passes in the full suite.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** Real API and provider not run (fictional mock and recorded replay only); `analysis`/`result` are free-form in OpenAPI, so their documented shape from the plan and fixtures is checked strictly and anything else shows no analysis; no screen-reader pass.
+- **AI assistance used:** Took over the in-progress Source Scout work, replaced the partial results rendering with shared strict readers and components, and wrote the mocks and tests.
+- **Commit/PR:** `feat: show discovered sources and analysis, follow-ups, decisions, and failure states for Source Scout`
+- **Next task may rely on:** `parseRun`, `SourceList`, `AnalysisSections`, `RunSummary`, `RunOutcome`.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-124 Follow-up questions
+
+- **Task:** FE-124 — Follow-up questions (Circle 12). Delivered in one commit with FE-123 to FE-126 because the shared readers, cards, and run view are the same change.
+- **User outcome delivered:** A reviewer can answer, skip, or flag each of up to five follow-up questions without the answer ever leaving component memory except in one POST body.
+- **Routes/components changed:** `DiscoveryRun` in `src/components/reviewer/discovery-run.tsx`, tests.
+- **Backend operations/contract version:** `reviewer_discovery_answer_follow_up` (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Private answers in one same-origin POST body; never in an address, storage, log, or page afterwards.
+- **States implemented:** initial, required, too long, sending, acknowledged, skipped, flagged, wrong-run refusal, error
+- **Accessibility evidence:** axe, 320 px, and 200% text across the public and reviewer Source Scout states in en, ha, ig, and yo, plus the confirmation dialogs (with the documented Base UI focus-guard exclusion) and cancelled state; labelled fields, status and alert regions, text (not colour) for every state.
+- **Locales reviewed:** English only; the new `discovery` domain is `null` in ha/ig/yo (pending), so those pages show the English original with a notice. No translation written or claimed.
+- **Performance/cache impact:** Client islands only on the reviewer report page and the project page; every run response is no-store and held in memory only.
+- **Commands run and results:** `make web-verify` exit 0 (509 unit and 197 component tests in total, message parity, bundle scan); `make web-e2e` 358 passed and 6 skipped; `make web-a11y` 330 passed. The `public-cache` browser file is order-sensitive on a warm build (its shared mock counters are reset by the parallel project) and fails when run alone repeatedly, on the previous commit too; it passes in the full suite.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** Real API and provider not run (fictional mock and recorded replay only); `analysis`/`result` are free-form in OpenAPI, so their documented shape from the plan and fixtures is checked strictly and anything else shows no analysis; no screen-reader pass.
+- **AI assistance used:** Took over the in-progress Source Scout work, replaced the partial results rendering with shared strict readers and components, and wrote the mocks and tests.
+- **Commit/PR:** `feat: show discovered sources and analysis, follow-ups, decisions, and failure states for Source Scout`
+- **Next task may rely on:** the run-bound `FollowUp` pattern.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-125 Reviewer source decisions
+
+- **Task:** FE-125 — Reviewer source decisions (Circle 12). Delivered in one commit with FE-123 to FE-126 because the shared readers, cards, and run view are the same change.
+- **User outcome delivered:** A reviewer can attach, reject, defer, or reconsider a discovered source with a reason and a confirmation, with attach clearly creating only a pending source.
+- **Routes/components changed:** `SourceDecision` in `discovery-run.tsx`, tests.
+- **Backend operations/contract version:** `reviewer_discovery_decide_source`, `reviewer_discovery_review` (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Private reasons in same-origin POST bodies only.
+- **States implemented:** allowed decisions per disposition, reason required, confirming, recorded, conflict reload, run approve and reject
+- **Accessibility evidence:** axe, 320 px, and 200% text across the public and reviewer Source Scout states in en, ha, ig, and yo, plus the confirmation dialogs (with the documented Base UI focus-guard exclusion) and cancelled state; labelled fields, status and alert regions, text (not colour) for every state.
+- **Locales reviewed:** English only; the new `discovery` domain is `null` in ha/ig/yo (pending), so those pages show the English original with a notice. No translation written or claimed.
+- **Performance/cache impact:** Client islands only on the reviewer report page and the project page; every run response is no-store and held in memory only.
+- **Commands run and results:** `make web-verify` exit 0 (509 unit and 197 component tests in total, message parity, bundle scan); `make web-e2e` 358 passed and 6 skipped; `make web-a11y` 330 passed. The `public-cache` browser file is order-sensitive on a warm build (its shared mock counters are reset by the parallel project) and fails when run alone repeatedly, on the previous commit too; it passes in the full suite.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** Real API and provider not run (fictional mock and recorded replay only); `analysis`/`result` are free-form in OpenAPI, so their documented shape from the plan and fixtures is checked strictly and anything else shows no analysis; no screen-reader pass.
+- **AI assistance used:** Took over the in-progress Source Scout work, replaced the partial results rendering with shared strict readers and components, and wrote the mocks and tests.
+- **Commit/PR:** `feat: show discovered sources and analysis, follow-ups, decisions, and failure states for Source Scout`
+- **Next task may rely on:** the disposition-driven decision controls.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-126 Discovery failure, offline, and tests
+
+- **Task:** FE-126 — Discovery failure, offline, and tests (Circle 12). Delivered in one commit with FE-123 to FE-126 because the shared readers, cards, and run view are the same change.
+- **User outcome delivered:** Discovery failures, cancellation, budget exhaustion, and going offline are explained and usable, polling stops, and public and report runs never cross.
+- **Routes/components changed:** `DiscoveryRun`, `ProjectDiscovery`, mocks with scenario switches, unit, component, e2e and a11y tests.
+- **Backend operations/contract version:** `discovery_start_public_run`, `discovery_get_public_run`, `reviewer_discovery_get`, `reviewer_discovery_cancel`, `reviewer_discovery_review` (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Nothing stored; run responses no-store; scopes isolated.
+- **States implemented:** failed, cancelled partial, budget exhausted, dead letter, offline, outage with retry, stale, needs review, terminal stop
+- **Accessibility evidence:** axe, 320 px, and 200% text across the public and reviewer Source Scout states in en, ha, ig, and yo, plus the confirmation dialogs (with the documented Base UI focus-guard exclusion) and cancelled state; labelled fields, status and alert regions, text (not colour) for every state.
+- **Locales reviewed:** English only; the new `discovery` domain is `null` in ha/ig/yo (pending), so those pages show the English original with a notice. No translation written or claimed.
+- **Performance/cache impact:** Client islands only on the reviewer report page and the project page; every run response is no-store and held in memory only.
+- **Commands run and results:** `make web-verify` exit 0 (509 unit and 197 component tests in total, message parity, bundle scan); `make web-e2e` 358 passed and 6 skipped; `make web-a11y` 330 passed. The `public-cache` browser file is order-sensitive on a warm build (its shared mock counters are reset by the parallel project) and fails when run alone repeatedly, on the previous commit too; it passes in the full suite.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** Real API and provider not run (fictional mock and recorded replay only); `analysis`/`result` are free-form in OpenAPI, so their documented shape from the plan and fixtures is checked strictly and anything else shows no analysis; no screen-reader pass.
+- **AI assistance used:** Took over the in-progress Source Scout work, replaced the partial results rendering with shared strict readers and components, and wrote the mocks and tests.
+- **Commit/PR:** `feat: show discovered sources and analysis, follow-ups, decisions, and failure states for Source Scout`
+- **Next task may rely on:** the scenario switches in `mock-discovery.mjs`, `mock-reviewer.mjs`, and `mock-api.mjs`.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

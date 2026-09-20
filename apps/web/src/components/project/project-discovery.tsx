@@ -2,13 +2,22 @@
 
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 
+import {
+  AnalysisSections,
+  RunOutcome,
+  SourceList,
+  UnreviewedLabel,
+  type DiscoveryCopy
+} from "@/components/discovery/results";
 import { Button } from "@/components/ui/button";
 import { Callout, LiveRegion, StatusLabel } from "@/components/ui/feedback";
 import type { ApiLocale } from "@/lib/api/forwarded-context";
 import { formatMessageLite } from "@/lib/directory/format-lite";
 import { networkProblem, readBrowserProblem } from "@/lib/problems/browser-problem";
 import { describeProblem, type SafeProblem } from "@/lib/problems/problem-messages";
+import { parseRun as parseSharedRun, type RunView } from "@/lib/discovery/parse";
 import { nextPollDelayMs, shouldPoll } from "@/lib/discovery/run-state";
+import { createFormatters } from "@/lib/format/formatters";
 
 type Copy = Readonly<{
   heading: string;
@@ -35,6 +44,8 @@ type Run = Readonly<{
   runId: string;
   status: string;
   version: number;
+  /** The strictly parsed sources and analysis; `undefined` fields never render. */
+  view: RunView | undefined;
 }>;
 type Phase =
   | Readonly<{ name: "idle" }>
@@ -77,7 +88,30 @@ function parseRun(value: unknown): Run | undefined {
     },
     runId: value["run_id"],
     status: value["status"],
-    version: value["version"]
+    version: value["version"],
+    view: parseSharedRun(value, "public")
+  };
+}
+
+function emptyView(run: Run): RunView {
+  return {
+    runId: run.runId,
+    status: run.status,
+    version: run.version,
+    scope: "public",
+    createdAt: run.createdAt,
+    finishedAt: null,
+    demoReplay: run.demoReplay,
+    failureCode: null,
+    cancelRequested: false,
+    queryText: null,
+    counts: {
+      found: run.progress.resultsFound,
+      fetched: run.progress.fetched,
+      analysed: run.progress.analysed
+    },
+    sources: [],
+    analysis: undefined
   };
 }
 
@@ -104,11 +138,13 @@ const INVALID_RESPONSE: SafeProblem = {
 export function ProjectDiscovery({
   copy,
   locale,
+  resultsCopy,
   problems,
   slug
 }: Readonly<{
   copy: Copy;
   locale: ApiLocale;
+  resultsCopy: DiscoveryCopy;
   problems: Parameters<typeof describeProblem>[1];
   slug: string;
 }>): ReactNode {
@@ -117,7 +153,22 @@ export function ProjectDiscovery({
   const inFlight = useRef<AbortController | undefined>(undefined);
   const attempts = useRef(0);
 
+  const [online, setOnline] = useState(true);
+  const format = createFormatters(locale);
+
   useEffect(() => () => inFlight.current?.abort(), []);
+  useEffect(() => {
+    const update = (): void => setOnline(navigator.onLine);
+
+    update();
+    window.addEventListener("online", update);
+    window.addEventListener("offline", update);
+
+    return () => {
+      window.removeEventListener("online", update);
+      window.removeEventListener("offline", update);
+    };
+  }, []);
 
   const load = useCallback(
     async (runId: string): Promise<void> => {
@@ -218,9 +269,13 @@ export function ProjectDiscovery({
   const active =
     phase.name === "starting" ||
     (phase.name === "viewing" && !phase.paused && shouldPoll("public", phase.run.status));
+  const statusText = (status: string): string =>
+    copy.states[status as keyof Copy["states"]] ??
+    (resultsCopy.status.states as Readonly<Record<string, string | undefined>>)[status] ??
+    copy.invalid;
   const announcement =
     phase.name === "viewing"
-      ? (copy.states[phase.run.status as keyof Copy["states"]] ?? copy.invalid)
+      ? statusText(phase.run.status)
       : active
         ? copy.checking
         : (failure?.message ?? "");
@@ -251,7 +306,7 @@ export function ProjectDiscovery({
                   : "under-review"
             }
           >
-            {copy.states[phase.run.status as keyof Copy["states"]] ?? copy.invalid}
+            {statusText(phase.run.status)}
           </StatusLabel>
           <p className="m-0 text-sm">
             {formatMessageLite(copy.counts, {
@@ -273,6 +328,12 @@ export function ProjectDiscovery({
               }).format(new Date(phase.run.createdAt))}
             </time>
           </p>
+          {online ? null : (
+            <p className="m-0 text-sm font-semibold" role="status">
+              {resultsCopy.states.offline}
+            </p>
+          )}
+          <RunOutcome copy={resultsCopy} run={phase.run.view ?? emptyView(phase.run)} />
           {shouldPoll("public", phase.run.status) ? (
             <div>
               <Button
@@ -299,6 +360,20 @@ export function ProjectDiscovery({
           {copy.start}
         </Button>
       )}
+      {phase.name === "viewing" && phase.run.view !== undefined ? (
+        <div className="grid gap-3" data-slot="public-discovery-results">
+          <UnreviewedLabel copy={resultsCopy} />
+          <p className="m-0 text-sm">{resultsCopy.unreviewedNote}</p>
+          <SourceList copy={resultsCopy} format={format} sources={phase.run.view.sources} />
+          {phase.run.status === "complete" ? (
+            <AnalysisSections
+              analysis={phase.run.view.analysis}
+              copy={resultsCopy}
+              sources={phase.run.view.sources}
+            />
+          ) : null}
+        </div>
+      ) : null}
       <LiveRegion>{announcement}</LiveRegion>
     </section>
   );

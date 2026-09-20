@@ -289,7 +289,12 @@ export default async function ReviewerReportPage({
       />
       <HandleSection context={context} report={report} />
       <ScoutSection context={context}>
-        <DiscoveryPreview {...shared} copy={copy.scout} />
+        <DiscoveryPreview
+          {...shared}
+          copy={copy.scout}
+          discoveryCopy={resolveDomain(locale, "discovery").messages}
+          language={reviewer.language}
+        />
       </ScoutSection>
       <Section id="publication" title={copy.sections.publication}>
         <PublicUpdatePanel

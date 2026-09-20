@@ -125,6 +125,7 @@ export default async function ProjectPage({ params }: Properties): Promise<React
                 copy={project.messages.discovery}
                 locale={locale}
                 problems={problems.messages}
+                resultsCopy={resolveDomain(locale, "discovery").messages}
                 slug={slug}
               />
             </div>

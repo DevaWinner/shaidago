@@ -1,5 +1,6 @@
 import { createServer } from "node:http";
 
+import { analysisFor, defaultSources } from "./mock-discovery.mjs";
 import { handleReviewer, publishedFor, resetReviewer, reviewerLog } from "./mock-reviewer.mjs";
 
 /**
@@ -301,6 +302,15 @@ function detailFor(slug) {
     updates: publishedFor(slug)
   };
 }
+
+// Public Source Scout scenarios by project slug; anything else is the finished shared run.
+const PUBLIC_SCENARIOS = {
+  "synthetic-project-02": { n: 802, status: "failed", failure: "budget_exhausted", partial: true },
+  "synthetic-project-03": { n: 803, status: "cancelled", partial: true },
+  "synthetic-project-04": { n: 804, status: "searching", progress: true, action: "create" },
+  "synthetic-project-05": { n: 805, status: "complete", invalid: true }
+};
+const publicReads = {};
 
 function excerptsFor(detail, sourceId) {
   const excerpts = [];
@@ -969,14 +979,15 @@ createServer((request, response) => {
         locale
       );
     } else {
+      const scenario = PUBLIC_SCENARIOS[slug];
       noStoreJson(
         response,
         {
-          action: "show_latest_completed",
+          action: scenario?.action ?? "show_latest_completed",
           demo_replay: true,
           label: "discovered — not yet reviewed",
-          run_id: uuid(801),
-          status: "complete"
+          run_id: uuid(scenario?.n ?? 801),
+          status: scenario?.status ?? "complete"
         },
         locale
       );
@@ -987,30 +998,59 @@ createServer((request, response) => {
   const publicDiscoveryRun = /^\/v1\/discovery-runs\/([^/]+)$/.exec(path);
 
   if (publicDiscoveryRun !== null && request.method === "GET") {
-    if (publicDiscoveryRun[1] !== uuid(801)) {
+    const entry = Object.entries(PUBLIC_SCENARIOS).find(
+      ([, item]) => uuid(item.n) === publicDiscoveryRun[1]
+    );
+    const slug = publicDiscoveryRun[1] === uuid(801) ? "synthetic-record-full" : entry?.[0];
+    const scenario = entry?.[1] ?? { n: 801, status: "complete" };
+
+    if (slug === undefined) {
       problem(response, 404, "not_found");
-    } else if (url.searchParams.get("since_version") === "2") {
-      response.writeHead(304, { "Cache-Control": "no-store" }).end();
-    } else {
-      noStoreJson(
-        response,
-        {
-          created_at: "2026-09-20T09:00:00Z",
-          demo_replay: true,
-          failure_code: null,
-          finished_at: "2026-09-20T09:01:00Z",
-          label: "discovered — not yet reviewed",
-          progress: { analysed: 2, fetched: 3, results_found: 3 },
-          project_slug: "synthetic-record-full",
-          result: null,
-          run_id: uuid(801),
-          sources: [],
-          status: "complete",
-          version: 2
-        },
-        locale
-      );
+      return;
     }
+
+    publicReads[scenario.n] = (publicReads[scenario.n] ?? 0) + 1;
+    const reads = publicReads[scenario.n];
+    let status = scenario.status;
+    let version = 2;
+
+    if (scenario.progress) {
+      [status, version] =
+        reads === 1 ? ["searching", 1] : reads === 2 ? ["analysing", 2] : ["complete", 3];
+    }
+    if (url.searchParams.get("since_version") === String(version) && !scenario.progress) {
+      response.writeHead(304, { "Cache-Control": "no-store" }).end();
+      return;
+    }
+
+    const all = defaultSources("f" + scenario.n, false);
+    const sources = status === "searching" ? [] : scenario.partial ? all.slice(0, 1) : all;
+
+    noStoreJson(
+      response,
+      {
+        created_at: "2026-09-20T09:00:00Z",
+        demo_replay: true,
+        failure_code: scenario.failure ?? null,
+        finished_at: ["searching", "analysing"].includes(status) ? null : "2026-09-20T09:01:00Z",
+        label: "discovered — not yet reviewed",
+        progress: {
+          analysed: status === "complete" ? 2 : 0,
+          fetched: sources.length,
+          results_found: sources.length
+        },
+        project_slug: slug,
+        result:
+          status === "complete"
+            ? analysisFor(sources, { invalid: scenario.invalid === true })
+            : null,
+        run_id: uuid(scenario.n),
+        sources,
+        status,
+        version
+      },
+      locale
+    );
     return;
   }
 
