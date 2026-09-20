@@ -396,6 +396,8 @@ Create least-privilege, SHA-pinned workflow jobs for frozen install, format/lint
 
 ### FE-030 — Deterministic OpenAPI generation
 
+> **Execution status (2026-09-20): complete.** Pinned OpenAPI generation now writes warning-header `schema.ts` and `client.ts` under `apps/web/src/lib/api/generated/`; `web-contract` fails when either no longer matches `contracts/openapi.json`. Compile-time assertions cover the project list, report submission, and problem-details contract.
+
 1. Generate TypeScript types/client into `src/lib/api/generated/` using pinned tooling.
 2. Add a generated-file warning and prohibit manual edits in review/CI.
 3. Normalize schema ordering/output so identical OpenAPI yields identical files.
