@@ -1680,3 +1680,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Implemented the approved semantic system, selected Tailwind's documented v4 PostCSS integration, added deterministic contrast/preference tests, and corrected the standalone browser-serving defect found by visual inspection.
 - **Prompt summary:** Continue frontend work through the established task loop after selecting the Field Ledger direction.
 - **Human review:** none yet; unattended loop, pending maintainer review.
+
+## 2026-09-20 — FE-030 Deterministic OpenAPI generation
+
+- **Task:** FE-030 — Deterministic OpenAPI generation.
+- **User outcome delivered:** Server code now has one typed, reproducible path to the FastAPI contract, so later BFF and Server Component work cannot drift from `contracts/openapi.json` or hand-mirror backend models.
+- **Files changed:** `apps/web/scripts/generate-api-types.mjs`, `apps/web/src/lib/api/generated/{schema,client}.ts`, `apps/web/tests/unit/generated-contract.test.ts`, `apps/web/package.json`, `apps/web/.prettierignore`, `apps/web/README.md`, `pnpm-lock.yaml`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** Reads the committed `contracts/openapi.json`; no operation or contract changed.
+- **Public/private data handled:** None at runtime. The client is a transport factory taking a base URL argument; it holds no URL, credential, or data.
+- **States implemented:** None (non-visual). Problem-details shape is asserted at compile time.
+- **Accessibility evidence:** Not applicable; no visible surface.
+- **Locales reviewed:** Not applicable.
+- **Performance/cache impact:** Build-time tooling only: `openapi-typescript` 7.13.0 (MIT, dev) and `openapi-fetch` 0.17.0 (MIT, tiny fetch wrapper, same maintainer). Both pinned exactly. The generated client is not imported by any client component; FE-031 owns the `server-only` wrapper.
+- **Failure behaviour verified:** `api:check` regenerates into a temporary directory and fails on any difference from the committed files; `make web-contract` runs it.
+- **Commands run and results:** Frozen install, `api:check`, `format:check`, strict typecheck, unit (33 tests), and `pnpm run contract` passed. Lint has 0 errors and 1 pre-existing unused-import warning in `tests/component/primitives.test.tsx`, which is outside this task. Build, E2E, and browser checks were not rerun because no runtime code changed.
+- **Screenshots/traces/artifacts checked:** None; non-visual.
+- **Known limitations/open decisions:** Lockfile diff includes peer-suffix churn from resolution with no package version changes. Import restriction to server code is enforced by FE-031.
+- **Commit/PR:** `build: generate the typed API client from the OpenAPI contract`
+- **Next task may rely on:** `createGeneratedClient(baseUrl)` and the `paths`/`operations`/`components` types.
+- **AI assistance used:** Wrote the deterministic generator with drift check and compile-time contract assertions.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
