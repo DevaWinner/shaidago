@@ -1722,3 +1722,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the transport, its tests, and the boundary test; found and fixed the environment parse defect.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-032 BFF request guard library
+
+- **Task:** FE-032 — BFF request guard library.
+- **User outcome delivered:** Every later browser mutation handler can compose the same tested Origin, CSRF, body-limit, idempotency, header, abort, and error-shaping guards, so a forged, oversized, or malformed request is refused before it reaches the private API.
+- **Files changed:** `apps/web/src/lib/bff/{origin,csrf,body,idempotency,backend-request,guard,problem}.ts`, `apps/web/tests/unit/bff-guard.test.ts`, `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None called. Idempotency-key format (lower-case canonical UUID) follows the API's behaviour described in `docs/FRONTEND_BACKEND_CONTRACT.md`; OpenAPI 0.0.0 unchanged.
+- **Public/private data handled:** Handles CSRF and session values and idempotency keys as opaque secrets: never logged, never echoed, and absent from problem bodies. Browser `Cookie`, `Authorization`, `Host`, `Content-Length`, and `X-Forwarded-*` cannot reach the backend by construction.
+- **States implemented:** 400 `invalid_json`/`idempotency_key_invalid`, 403 `origin_forbidden`/`csrf_invalid`, 413, 415, 499 `request_aborted`, 503/504 upstream, and API problems mapped by stable code, all `no-store`.
+- **Accessibility evidence:** Not applicable; no visible surface.
+- **Locales reviewed:** Problems expose a stable `code` plus an English fallback title; localised text belongs to FE-053. No translation is claimed.
+- **Performance/cache impact:** No dependency. Byte caps are enforced on the stream and multipart bodies are not buffered by `limitBodyStream`. Every error response is no-store.
+- **Failure behaviour verified:** Spoofed forwarded headers, repeated/null/path/cross-site Origin, unconfigured deployed origin, missing/malformed/mismatched CSRF, wrong content types, oversized declared and chunked bodies, invalid and non-UTF-8 JSON, client abort versus timeout, unsafe problem codes, and out-of-range Retry-After. A test showed that the `Headers` API trims whitespace, so an unreachable padding check was removed.
+- **Commands run and results:** Typecheck, lint (0 errors; one pre-existing warning), and coverage passed: 84 tests, 96.11% statements, 93.42% branches, 91.75% functions; `src/lib/bff` 98.5% statements. Prettier applied. `make web-verify` exit 0 (77 unit, 7 component; client-boundary scan clean across 13 chunks).
+- **Screenshots/traces/artifacts checked:** None; non-visual.
+- **Known limitations/open decisions:** The maintainer must decide how the reviewer's CSRF token reaches the browser (server-rendered token versus an HttpOnly-cookie-only design) before FE-034; `docs/THREAT_MODEL.md` A-15 says it must not be readable by client JavaScript, so `verifyCsrfToken` takes already-resolved values and does not choose. The branch coverage rule of 100% for public-response allowlists and similar security modules is not yet required here since none of those exist. `NEXT_PUBLIC_APP_ORIGIN` must be set in staging and production.
+- **Commit/PR:** `feat: add BFF request guards for browser mutations`
+- **Next task may rely on:** `guardMutation`, `readBoundedJson`, `buildBackendHeaders`, `backendSignal`, and the problem builders.
+- **AI assistance used:** Designed and implemented the guards and adversarial tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

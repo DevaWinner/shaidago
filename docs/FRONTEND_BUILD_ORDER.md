@@ -422,6 +422,8 @@ Do not add automatic mutation retries. Reads retry only on explicitly safe trans
 
 ### FE-032 — BFF request guard library
 
+> **Execution status (2026-09-20): complete.** `apps/web/src/lib/bff/` provides exact-Origin policy (configured public origin in deployed stages, local request origin in development/test, forwarded headers never trusted, unconfigured deployed stage fails closed), constant-time CSRF verification, header-only body preflight plus streaming byte caps and bounded JSON parsing, lower-case-UUID idempotency keys, an allowlist-only backend header builder, client-abort/timeout signal propagation, and browser-safe `application/problem+json` shaping with stable codes and no-store. `guardMutation` orders Origin, CSRF, body preflight, and key validation before any body is read. 84 unit tests cover spoofed forwarded headers, repeated/null/cross-site Origin, missing/malformed CSRF, oversized declared and streamed bodies, aborts, and problem shaping. Open for FE-034: how the reviewer's CSRF token reaches the browser is not fixed by the contract, so the verifier takes already-resolved presented/expected values.
+
 Create shared helpers for:
 
 - allowed Origin/Host validation using trusted proxy configuration;

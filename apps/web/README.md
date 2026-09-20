@@ -89,3 +89,13 @@ only validated `X-Request-Id`, `X-Shaidago-Locale`, `X-Shaidago-Client-Hmac`, an
 returns `ok`, `not_modified`, `problem` (stable `code`, never backend text), or `unavailable`.
 Reads retry once for a transient 503 or network error; there is no mutation retry and no logging. A
 unit test fails if a client component imports it.
+
+## BFF request guards
+
+`src/lib/bff/` holds the shared, domain-free guards every Route Handler composes: `resolveOriginPolicy`
+and `checkOrigin` (exact Origin; deployed stages need `NEXT_PUBLIC_APP_ORIGIN` or every browser
+mutation is refused; `X-Forwarded-*` is never trusted), `verifyCsrfToken`, `guardMutation` (Origin,
+CSRF, header-only body preflight, idempotency key, in that order), `readBoundedJson`/`limitBodyStream`
+(streamed byte caps), `buildBackendHeaders` (allowlist only), `backendSignal` (abort and timeout), and
+`problemResponse` (stable code, no backend text, `no-store`). Idempotency keys are lower-case
+canonical UUIDs, matching the API.
