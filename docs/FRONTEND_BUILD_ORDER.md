@@ -1081,6 +1081,8 @@ E2E proves exact query approval, no canary private term in browser/provider fixt
 
 Create manifest with real product name, short name, approved theme/background colours, scope/start URL, locale-aware start strategy, purpose-made icons, and no unverified marketing screenshots. Validate icons/masks and standalone navigation. Installation is optional and never blocks use.
 
+> **Execution status (2026-09-20): blocked.** Done: `apps/web/app/manifest.ts` serves `/manifest.webmanifest`, linked from every page, with the real name and short name, the approved canvas colour (`#F7F2E8`) as theme and background, `/` as the start address (the locale proxy then picks the visitor's language without storing an identifier), `/` as the scope, and standalone display; it claims no screenshot or shortcut. Two unit tests and two browser flows (Chromium and mobile WebKit) prove it. Blocked: purpose-made icons and therefore installability. `docs/FRONTEND_VISUAL_DIRECTION.md` says no logo, raster, or decorative asset is authorised, and browsers require 192 px and 512 px (and a maskable) icon to offer installation, so an invented mark would be an unapproved visual decision. Unblock: the maintainer approves an icon design (or supplies the files) for a manifest `icons` entry, then the installability and mask checks can run. Installation stays optional and nothing else depends on it.
+
 ### FE-131 — Explicit service-worker allowlist
 
 Use native service-worker/Cache Storage APIs. Precache only versioned shell assets, required icons/fonts, offline page, and static locale messages. Runtime-cache only approved public project list/detail/source GETs under bounded stale-while-revalidate with versioned names and entry/age limits.

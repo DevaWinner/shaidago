@@ -2451,3 +2451,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the scenario switches in `mock-discovery.mjs`, `mock-reviewer.mjs`, and `mock-api.mjs`.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-130 Manifest and installability
+
+- **Task:** FE-130 — Manifest and installability (Circle 13). Marked blocked: the manifest is delivered, installability is not.
+- **User outcome delivered:** The app has a valid web app manifest with the real name and approved colours; installation is not yet offered because no approved icon exists.
+- **Routes/components changed:** `apps/web/app/manifest.ts`, `tests/unit/manifest.test.ts`, `tests/e2e/pwa-manifest.spec.ts`.
+- **Backend operations/contract version:** none.
+- **Public/private data handled:** none; the manifest is static and public.
+- **States implemented:** served, linked, start address resolves to a locale.
+- **Accessibility evidence:** not applicable to a manifest.
+- **Locales reviewed:** English manifest strings; the start address resolves to any of the four locales.
+- **Performance/cache impact:** one small static JSON file.
+- **Commands run and results:** `make web-verify` exit 0 (512 unit tests in total); targeted e2e `pwa-manifest` 4 passed (Chromium and mobile WebKit).
+- **Screenshots/traces/artifacts checked:** none.
+- **Known limitations/open decisions:** No icons, so browsers will not offer installation. Needs a maintainer-approved icon design (192 px, 512 px, maskable) because the visual direction authorises no logo or raster asset.
+- **Commit/PR:** `feat: add the web app manifest without unapproved icons`
+- **Next task may rely on:** `/manifest.webmanifest` and the approved colours.
+- **AI assistance used:** Wrote the manifest and tests; declined to invent an icon.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
