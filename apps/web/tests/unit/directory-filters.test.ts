@@ -90,7 +90,7 @@ describe("parseFilters", () => {
       "'; DROP TABLE projects;--",
       "<script>",
       "../../etc/passwd",
-      "amac&admin=1",
+      "amac&unexpected_filter=1",
       "%00"
     ];
 

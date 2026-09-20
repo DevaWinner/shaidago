@@ -1963,6 +1963,18 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
 - **Human review:** none yet; unattended run, pending maintainer review.
 
+## 2026-09-20 — Directory hostile-filter fixture correction
+
+- **Task:** Correct a GitGuardian false positive in the FE-061 hostile-input test.
+- **User outcome delivered:** The directory filter test still proves query-parameter injection is discarded without resembling a credential to secret scanning.
+- **Files changed:** `apps/web/tests/unit/directory-filters.test.ts` and this log.
+- **Security/privacy impact:** Replaced the non-secret test string `amac&admin=1` with `amac&unexpected_filter=1`; no credential was present, rotated, or exposed.
+- **Verification:** Prettier check, the 11-test directory-filter unit suite, ESLint, strict TypeScript, and whitespace validation passed. TypeScript initially read stale ignored `.next` artifacts from later stack routes; those artifacts were moved to a recoverable temporary directory before the clean check.
+- **Commit/PR:** `test: avoid a secret-like directory filter fixture`
+- **AI assistance used:** Traced the GitGuardian check-run to the exact fixture and preserved its adversarial coverage while avoiding detector-like syntax.
+- **Prompt summary:** Diagnose and repair the GitGuardian failure on PR #25.
+- **Human review:** none yet; pending maintainer review.
+
 ## 2026-09-20 — FE-051 Message structure and parity tooling
 
 - **Task:** FE-051 — Message structure and parity tooling.
