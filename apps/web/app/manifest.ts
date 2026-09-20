@@ -3,14 +3,14 @@ import type { MetadataRoute } from "next";
 /**
  * The web app manifest: real names, the approved canvas colour for the theme and background, and a
  * start address that the locale proxy resolves to the visitor's language. The icons are the simple
- * letter mark the maintainer asked for (`public/icons`, drawn from the approved accent and canvas
- * colours, no external asset). Installing is optional and nothing depends on it.
+ * evidence-search mark used in the application shell (`public/icons`, based on Lucide SearchCheck
+ * and drawn in the approved accent). Installing is optional and nothing depends on it.
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "ShaidaGo",
     short_name: "ShaidaGo",
-    description: "Source-backed project records and safer next actions for Abuja communities.",
+    description: "Source-backed public project records and safer next actions for communities.",
     id: "/",
     start_url: "/",
     scope: "/",

@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
+import { ClipboardList } from "lucide-react";
 
 import { QueueFilterForm, QueueList, QueueNotice } from "@/components/reviewer/queue";
 import { ReviewerFrame } from "@/components/reviewer/frame";
 import { ButtonLink } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
+import { PageHeader } from "@/components/ui/page-header";
 import { formatMessage, resolveDomain } from "@/i18n/catalogue";
 import { isSupportedLocale } from "@/i18n/routing";
 import { serverApi } from "@/lib/api/server";
@@ -76,8 +78,7 @@ export default async function ReviewerQueuePage({
 
   return (
     <ReviewerFrame locale={locale} signedIn>
-      <h1 className="m-0 text-ledger-display leading-[1.1]">{copy.title}</h1>
-      <p className="m-0 max-w-[68ch]">{copy.lead}</p>
+      <PageHeader icon={ClipboardList} intro={<p>{copy.lead}</p>} title={copy.title} />
       <QueueFilterForm action={base} clearHref={base} copy={copy} filters={filters} />
       <section aria-labelledby="queue-results" className="grid gap-4" id="results">
         <h2 className="m-0 text-ledger-lg" id="queue-results">

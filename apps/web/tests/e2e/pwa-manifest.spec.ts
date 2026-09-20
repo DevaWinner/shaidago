@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("the manifest is served, linked from the page, and serves its letter-mark icons", async ({
+test("the manifest is served, linked from the page, and serves its evidence-search icons", async ({
   page,
   request
 }) => {

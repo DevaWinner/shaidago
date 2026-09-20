@@ -1,4 +1,15 @@
 import type { ReactNode } from "react";
+import {
+  BookOpenCheck,
+  Check,
+  ChevronDown,
+  ClipboardList,
+  FileWarning,
+  Languages,
+  LogIn,
+  SearchCheck,
+  ShieldCheck
+} from "lucide-react";
 
 import { LanguageAnnouncer } from "@/components/shell/language-announcer";
 import { LanguageLink, type DraftGuardCopy } from "@/components/shell/language-link";
@@ -24,6 +35,8 @@ export type PublicShellMessages = Readonly<{
   navLabel: string;
   navLocalities: string;
   navReport: string;
+  navReviewer: string;
+  navTrack: string;
   navTrust: string;
   notEmergency: string;
   productName: string;
@@ -35,21 +48,24 @@ export type PublicShellLinks = Readonly<{
   home: string;
   localities: string;
   report: string;
+  reviewer: string;
   sources: string;
+  track: string;
   trust: string;
 }>;
 
-const navList = "m-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0";
+export type PublicDestination = "home" | "localities" | "report" | "reviewer" | "track" | "trust";
+
+const navList = "m-0 flex list-none flex-wrap items-center gap-x-2 gap-y-1 p-0";
 const navLink =
-  "inline-flex min-h-11 items-center font-semibold text-ledger-accent-strong [overflow-wrap:anywhere]";
+  "inline-flex min-h-11 max-w-full min-w-0 items-center gap-2 rounded-ledger-control px-3 py-2 font-semibold text-foreground whitespace-normal no-underline [overflow-wrap:anywhere] hover:bg-[var(--state-selected-background)]";
 const skipLink =
   "absolute start-2 top-2 z-10 -translate-y-[200%] bg-foreground px-4 py-3 font-bold text-background focus:translate-y-0";
-const headerClasses =
-  "flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-border px-[var(--layout-gutter)] py-3";
+const headerClasses = "border-b border-border bg-card";
 const brandClasses =
-  "inline-flex min-h-11 items-center gap-2 text-ledger-lg font-extrabold text-foreground no-underline";
+  "inline-flex min-h-11 max-w-full flex-wrap items-center gap-3 text-ledger-lg font-extrabold text-foreground no-underline";
 const mainClasses =
-  "mx-auto box-border w-full max-w-[var(--layout-content-max)] px-[var(--layout-gutter)] py-8 focus:outline-none";
+  "mx-auto box-border w-full max-w-[var(--layout-content-max)] px-[var(--layout-gutter)] py-8 focus:outline-none sm:py-10 lg:py-12";
 
 const LOCALES: readonly ApiLocale[] = ["en", "ha", "ig", "yo"];
 
@@ -72,7 +88,7 @@ export type LocaleControlProperties = Readonly<{
   languageSwitch?: LanguageSwitch | undefined;
 }>;
 
-/** A list of links, not a script-driven select: it works with no JavaScript and is fully labelled. */
+/** A compact no-script dropdown. Each choice remains a real link and keeps draft protection. */
 export function LocaleControl({
   available,
   current,
@@ -81,60 +97,80 @@ export function LocaleControl({
   languageSwitch
 }: LocaleControlProperties): ReactNode {
   return (
-    <nav aria-label={messages.localeLabel} className="ms-auto" data-slot="locale-control">
-      <ul className={navList}>
-        {LOCALES.map((locale) => {
-          const href = available[locale];
-          const name = messages.localeNames[locale];
-          const note = unreviewed.includes(locale) ? (
-            <span className="ms-1 text-muted-foreground" lang="en">
-              ({messages.localeUnavailable})
-            </span>
-          ) : null;
+    <details className="group relative" data-slot="locale-control">
+      <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-ledger-control border border-input bg-card px-3 py-2 font-semibold marker:hidden hover:bg-[var(--state-selected-background)] [&::-webkit-details-marker]:hidden">
+        <Languages aria-hidden="true" className="size-5" strokeWidth={1.8} />
+        <span>{messages.localeNames[current]}</span>
+        <ChevronDown
+          aria-hidden="true"
+          className="size-4 transition-transform group-open:rotate-180"
+        />
+      </summary>
+      <nav
+        aria-label={messages.localeLabel}
+        className="absolute end-0 top-[calc(100%+0.5rem)] z-30 w-[min(14rem,calc(100vw-2rem))] rounded-ledger-notice border border-input bg-card p-2 shadow-ledger-overlay"
+      >
+        <ul className="m-0 grid list-none gap-1 p-0">
+          {LOCALES.map((locale) => {
+            const href = available[locale];
+            const name = messages.localeNames[locale];
+            const note = unreviewed.includes(locale) ? (
+              <span className="ms-1 text-muted-foreground" lang="en">
+                ({messages.localeUnavailable})
+              </span>
+            ) : null;
 
-          return (
-            <li className="inline-flex items-center" key={locale}>
-              {locale === current ? (
-                <span
-                  aria-current="true"
-                  className={cn(navLink, "border-b-2 border-primary text-foreground")}
-                  lang={locale}
-                >
-                  {name} <span className="sr-only">({messages.localeCurrentSuffix})</span>
-                </span>
-              ) : href === undefined ? (
-                <span
-                  aria-disabled="true"
-                  className={cn(navLink, "font-normal text-muted-foreground")}
-                  lang={locale}
-                >
-                  {name} <span className="ms-1">({messages.localeUnavailable})</span>
-                </span>
-              ) : languageSwitch === undefined ? (
-                <a className={navLink} href={href} hrefLang={locale} lang={locale}>
-                  {name}
-                </a>
-              ) : (
-                <LanguageLink
-                  className={navLink}
-                  guard={languageSwitch.guard}
-                  href={href}
-                  lang={locale}
-                  language={locale}
-                >
-                  {name}
-                </LanguageLink>
-              )}
-              {note}
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+            return (
+              <li className="grid" key={locale}>
+                {locale === current ? (
+                  <span
+                    aria-current="true"
+                    className={cn(
+                      navLink,
+                      "justify-between bg-[var(--state-selected-background)] text-[var(--state-selected-text)]"
+                    )}
+                    lang={locale}
+                  >
+                    <span>
+                      {name} <span className="sr-only">({messages.localeCurrentSuffix})</span>
+                    </span>
+                    <Check aria-hidden="true" className="size-4" />
+                  </span>
+                ) : href === undefined ? (
+                  <span
+                    aria-disabled="true"
+                    className={cn(navLink, "font-normal text-muted-foreground")}
+                    lang={locale}
+                  >
+                    {name} <span className="ms-1">({messages.localeUnavailable})</span>
+                  </span>
+                ) : languageSwitch === undefined ? (
+                  <a className={navLink} href={href} hrefLang={locale} lang={locale}>
+                    {name}
+                  </a>
+                ) : (
+                  <LanguageLink
+                    className={navLink}
+                    guard={languageSwitch.guard}
+                    href={href}
+                    lang={locale}
+                    language={locale}
+                  >
+                    {name}
+                  </LanguageLink>
+                )}
+                {note}
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </details>
   );
 }
 
 export function PublicShell({
+  active,
   children,
   currentLocale,
   lowDataControl,
@@ -144,6 +180,7 @@ export function PublicShell({
   unreviewedLocales = [],
   languageSwitch
 }: Readonly<{
+  active?: PublicDestination;
   children: ReactNode;
   currentLocale: ApiLocale;
   /** Reserved for the low-data control; absent means nothing is rendered rather than a dead control. */
@@ -160,36 +197,120 @@ export function PublicShell({
         {messages.skipToContent}
       </a>
       <header className={headerClasses}>
-        <a className={brandClasses} href={links.home}>
-          {messages.productName}
-        </a>
-        <nav aria-label={messages.navLabel}>
-          <ul className={navList}>
-            <li>
-              <a className={navLink} href={links.localities}>
-                {messages.navLocalities}
+        <div className="mx-auto grid w-full max-w-[var(--layout-content-max)] gap-2 px-[var(--layout-gutter)] py-3">
+          <div className="flex min-w-0 flex-wrap items-center justify-between gap-3">
+            <a
+              aria-current={active === "home" ? "page" : undefined}
+              className={brandClasses}
+              href={links.home}
+            >
+              <span className="grid size-9 place-items-center rounded-ledger-control bg-primary text-primary-foreground">
+                <SearchCheck aria-hidden="true" className="size-5" strokeWidth={1.8} />
+              </span>
+              {messages.productName}
+            </a>
+            <div className="ms-auto flex max-w-full items-center gap-1 sm:gap-2">
+              <a
+                aria-current={active === "track" ? "page" : undefined}
+                className={cn(
+                  navLink,
+                  "hidden sm:inline-flex",
+                  active === "track" && "bg-[var(--state-selected-background)]"
+                )}
+                href={links.track}
+              >
+                <ClipboardList aria-hidden="true" className="size-4" />
+                {messages.navTrack}
               </a>
-            </li>
-            <li>
-              <a className={navLink} href={links.trust}>
-                {messages.navTrust}
+              <a
+                aria-current={active === "reviewer" ? "page" : undefined}
+                className={cn(
+                  navLink,
+                  "hidden lg:inline-flex",
+                  active === "reviewer" && "bg-[var(--state-selected-background)]"
+                )}
+                href={links.reviewer}
+              >
+                <LogIn aria-hidden="true" className="size-4" />
+                {messages.navReviewer}
               </a>
-            </li>
-            <li>
-              <a className={cn(navLink, "text-foreground")} href={links.report}>
-                {messages.navReport}
-              </a>
-            </li>
-          </ul>
-        </nav>
-        <LocaleControl
-          available={localeRoutes}
-          current={currentLocale}
-          messages={messages}
-          languageSwitch={languageSwitch}
-          unreviewed={unreviewedLocales}
-        />
-        {lowDataControl}
+              <LocaleControl
+                available={localeRoutes}
+                current={currentLocale}
+                messages={messages}
+                languageSwitch={languageSwitch}
+                unreviewed={unreviewedLocales}
+              />
+            </div>
+          </div>
+          <nav aria-label={messages.navLabel} className="border-t border-border pt-2">
+            <ul className={navList}>
+              <li>
+                <a
+                  aria-current={active === "localities" ? "page" : undefined}
+                  className={cn(
+                    navLink,
+                    active === "localities" && "bg-[var(--state-selected-background)]"
+                  )}
+                  href={links.localities}
+                >
+                  <BookOpenCheck aria-hidden="true" className="size-4" />
+                  {messages.navLocalities}
+                </a>
+              </li>
+              <li>
+                <a
+                  aria-current={active === "trust" ? "page" : undefined}
+                  className={cn(
+                    navLink,
+                    active === "trust" && "bg-[var(--state-selected-background)]"
+                  )}
+                  href={links.trust}
+                >
+                  <ShieldCheck aria-hidden="true" className="size-4" />
+                  {messages.navTrust}
+                </a>
+              </li>
+              <li>
+                <a
+                  aria-current={active === "report" ? "page" : undefined}
+                  className="inline-flex min-h-11 items-center gap-2 rounded-ledger-control bg-primary px-4 py-2 font-semibold text-primary-foreground no-underline hover:bg-ledger-accent-strong"
+                  href={links.report}
+                >
+                  <FileWarning aria-hidden="true" className="size-4" />
+                  {messages.navReport}
+                </a>
+              </li>
+              <li className="sm:hidden">
+                <a
+                  aria-current={active === "track" ? "page" : undefined}
+                  className={cn(
+                    navLink,
+                    active === "track" && "bg-[var(--state-selected-background)]"
+                  )}
+                  href={links.track}
+                >
+                  <ClipboardList aria-hidden="true" className="size-4" />
+                  {messages.navTrack}
+                </a>
+              </li>
+              <li className="lg:hidden">
+                <a
+                  aria-current={active === "reviewer" ? "page" : undefined}
+                  className={cn(
+                    navLink,
+                    active === "reviewer" && "bg-[var(--state-selected-background)]"
+                  )}
+                  href={links.reviewer}
+                >
+                  <LogIn aria-hidden="true" className="size-4" />
+                  {messages.navReviewer}
+                </a>
+              </li>
+            </ul>
+          </nav>
+          {lowDataControl}
+        </div>
       </header>
       {/* Reserved for offline and stale notices; it announces politely and is empty by default. */}
       <div
@@ -213,22 +334,34 @@ export function PublicShell({
       </main>
       <footer
         aria-label={messages.footerLabel}
-        className="grid gap-2 border-t border-border px-[var(--layout-gutter)] pb-8 pt-4 text-muted-foreground"
+        className="border-t border-border bg-card px-[var(--layout-gutter)] pb-8 pt-6 text-muted-foreground"
         data-slot="shell-footer"
       >
-        <ul className={navList}>
-          <li>
-            <a className={navLink} href={links.trust}>
-              {messages.footerTrust}
-            </a>
-          </li>
-          <li>
-            <a className={navLink} href={links.sources}>
-              {messages.footerSources}
-            </a>
-          </li>
-        </ul>
-        <p className="m-0 max-w-[68ch]">{messages.notEmergency}</p>
+        <div className="mx-auto grid w-full max-w-[var(--layout-content-max)] gap-4 md:grid-cols-[1fr_auto]">
+          <ul className={navList}>
+            <li>
+              <a className={navLink} href={links.trust}>
+                {messages.footerTrust}
+              </a>
+            </li>
+            <li>
+              <a className={navLink} href={links.sources}>
+                {messages.footerSources}
+              </a>
+            </li>
+            <li>
+              <a className={navLink} href={links.track}>
+                {messages.navTrack}
+              </a>
+            </li>
+            <li>
+              <a className={navLink} href={links.reviewer}>
+                {messages.navReviewer}
+              </a>
+            </li>
+          </ul>
+          <p className="m-0 max-w-[68ch]">{messages.notEmergency}</p>
+        </div>
       </footer>
     </div>
   );
@@ -269,22 +402,28 @@ export function ReviewerShell({
         {messages.skipToContent}
       </a>
       <header className={cn(headerClasses, "border-b-[6px] border-double")}>
-        <a className={brandClasses} href={homeHref}>
-          {messages.productName}{" "}
-          <span className="border border-border px-2 text-sm font-bold" data-slot="shell-area">
-            {messages.area}
-          </span>
-        </a>
-        <nav aria-label={messages.navLabel}>
-          <ul className={navList}>
-            <li>
-              <a className={navLink} href={queueHref}>
-                {messages.queue}
-              </a>
-            </li>
-          </ul>
-        </nav>
-        {sessionControl}
+        <div className="mx-auto flex w-full max-w-[var(--layout-content-max)] flex-wrap items-center gap-3 px-[var(--layout-gutter)] py-3">
+          <a className={brandClasses} href={homeHref}>
+            <span className="grid size-9 place-items-center rounded-ledger-control bg-primary text-primary-foreground">
+              <SearchCheck aria-hidden="true" className="size-5" strokeWidth={1.8} />
+            </span>
+            {messages.productName}{" "}
+            <span className="border border-border px-2 text-sm font-bold" data-slot="shell-area">
+              {messages.area}
+            </span>
+          </a>
+          <nav aria-label={messages.navLabel} className="ms-auto">
+            <ul className={navList}>
+              <li>
+                <a className={navLink} href={queueHref}>
+                  <ClipboardList aria-hidden="true" className="size-4" />
+                  {messages.queue}
+                </a>
+              </li>
+            </ul>
+          </nav>
+          {sessionControl}
+        </div>
       </header>
       <main className={mainClasses} id="main-content" tabIndex={-1}>
         {children}

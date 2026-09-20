@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { setRequestLocale } from "next-intl/server";
+import { ArrowRight, FileWarning } from "lucide-react";
 import type { ReactNode } from "react";
 
 import {
@@ -69,43 +70,49 @@ export default async function LandingPage({ params }: LandingProperties): Promis
 
   return (
     <SiteShell locale={locale}>
-      <div className="grid gap-10">
+      <div className="grid gap-12 lg:gap-16">
         <section
           aria-labelledby="landing-title"
-          className="grid gap-4"
+          className="grid overflow-hidden border border-border bg-card lg:grid-cols-[minmax(0,1.1fr)_minmax(20rem,0.9fr)]"
           data-slot="hero"
           lang={landing.language}
         >
-          <p className="m-0 text-sm font-bold tracking-wide text-muted-foreground uppercase">
-            {landing.messages.recordKind}
-          </p>
-          <h1
-            className="m-0 max-w-[24ch] text-[clamp(1.75rem,3.4vw,2.75rem)] leading-[1.1] [overflow-wrap:anywhere]"
-            id="landing-title"
+          <div className="grid content-center gap-5 p-6 sm:p-8 lg:p-12">
+            <h1
+              className="m-0 max-w-[20ch] text-[clamp(2.25rem,5vw,4.25rem)] leading-[1.02] tracking-[-0.04em] [overflow-wrap:anywhere]"
+              id="landing-title"
+            >
+              {landing.messages.heading}
+            </h1>
+            <p className="m-0 max-w-[58ch] text-lg text-muted-foreground">
+              {landing.messages.lead}
+            </p>
+            <div className="flex flex-wrap items-start gap-3">
+              <ButtonLink href={`/${locale}/projects`}>
+                {landing.messages.browse}
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </ButtonLink>
+              <ButtonLink href={`/${locale}/report`} variant="secondary">
+                <FileWarning aria-hidden="true" className="size-4" />
+                {landing.messages.report}
+              </ButtonLink>
+            </div>
+            <p className="m-0 max-w-[52ch] text-sm text-muted-foreground">
+              {landing.messages.reportNote}
+            </p>
+          </div>
+          <div
+            className="grid content-center border-t border-border bg-[var(--state-selected-background)] p-6 forced-colors:bg-[Canvas] sm:p-8 lg:border-s lg:border-t-0 lg:p-10"
+            lang={home.language}
           >
-            {landing.messages.heading}
-          </h1>
-          <p className="m-0 max-w-[60ch]">{landing.messages.lead}</p>
-          <div lang={home.language}>
             <HomeSearch
               copy={home.messages.search}
               locale={locale}
               submitLabel={home.messages.search.apply}
             />
           </div>
-          <div className="flex flex-wrap items-start gap-4">
-            <ButtonLink href={`/${locale}/projects`} lang={landing.language} variant="secondary">
-              {landing.messages.browse}
-            </ButtonLink>
-            <div className="grid max-w-[30ch] gap-1" lang={landing.language}>
-              <ButtonLink href={`/${locale}/report`} variant="secondary">
-                {landing.messages.report}
-              </ButtonLink>
-              <p className="m-0 text-sm text-muted-foreground">{landing.messages.reportNote}</p>
-            </div>
-          </div>
         </section>
-        <div className="grid gap-10" lang={home.language}>
+        <div className="grid gap-12" lang={home.language}>
           <LatestRecord
             copy={home.messages.latest}
             directory={directory.messages}

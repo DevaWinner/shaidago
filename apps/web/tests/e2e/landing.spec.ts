@@ -1,11 +1,11 @@
 import { expect, test } from "@playwright/test";
 
-test("the landing states the purpose, place, trust promise, and next action, using real API data only", async ({
+test("the landing states the purpose, trust promise, and next action, using real API data only", async ({
   page
 }) => {
   await page.goto("/en");
 
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("AMAC and Bwari");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("backed by sources");
   await expect(page.getByRole("search")).toBeVisible();
   await expect(page.getByRole("link", { name: "Browse project records" })).toHaveAttribute(
     "href",

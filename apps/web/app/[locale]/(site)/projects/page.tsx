@@ -2,6 +2,7 @@ import type { Metadata, Route } from "next";
 import { notFound, redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
+import { LibraryBig } from "lucide-react";
 
 import { DirectoryForm } from "@/components/directory/directory-form";
 import { DirectoryResults } from "@/components/directory/directory-results";
@@ -9,6 +10,7 @@ import { FilterPills } from "@/components/directory/filter-pills";
 import { FocusResults } from "@/components/directory/focus-results";
 import { TranslationNotice } from "@/components/evidence/evidence";
 import { SiteShell } from "@/components/shell/site-shell";
+import { PageHeader } from "@/components/ui/page-header";
 import { resolveDomain } from "@/i18n/catalogue";
 import { LOCALES, isSupportedLocale } from "@/i18n/routing";
 import { loadLocalities, loadProjectPage } from "@/lib/api/public-data";
@@ -95,10 +97,11 @@ export default async function ProjectsPage({
         {directory.isOriginal ? (
           <TranslationNotice labels={evidence.messages.translation} status="unavailable" />
         ) : null}
-        <header className="grid gap-2">
-          <h1 className="m-0 text-ledger-display leading-[1.1]">{directory.messages.title}</h1>
-          <p className="m-0 max-w-[68ch]">{directory.messages.intro}</p>
-        </header>
+        <PageHeader
+          icon={LibraryBig}
+          intro={<p>{directory.messages.intro}</p>}
+          title={directory.messages.title}
+        />
         <DirectoryForm
           copy={directory.messages}
           evidence={evidence.messages}

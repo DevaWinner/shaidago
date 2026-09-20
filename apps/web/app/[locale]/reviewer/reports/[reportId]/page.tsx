@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
+import { FileSearch } from "lucide-react";
 
 import { QueueNotice } from "@/components/reviewer/queue";
 import { ReviewerFrame } from "@/components/reviewer/frame";
@@ -28,6 +29,7 @@ import {
   type NotesView
 } from "@/components/reviewer/report-detail";
 import { ButtonLink, Link } from "@/components/ui/button";
+import { PageHeader } from "@/components/ui/page-header";
 import { resolveDomain } from "@/i18n/catalogue";
 import { isSupportedLocale } from "@/i18n/routing";
 import { idParam } from "@/lib/bff/reviewer-schemas";
@@ -74,7 +76,7 @@ export default async function ReviewerReportPage({
   const queue = queuePath(locale);
   const missing = (
     <ReviewerFrame locale={locale} signedIn>
-      <h1 className="m-0 text-ledger-display leading-[1.1]">{copy.title}</h1>
+      <PageHeader icon={FileSearch} title={copy.title} />
       <QueueNotice
         action={
           <div>
@@ -137,7 +139,7 @@ export default async function ReviewerReportPage({
 
     return (
       <ReviewerFrame locale={locale} signedIn>
-        <h1 className="m-0 text-ledger-display leading-[1.1]">{copy.title}</h1>
+        <PageHeader icon={FileSearch} title={copy.title} />
         <QueueNotice
           action={
             <div className="flex flex-wrap gap-3">
@@ -221,7 +223,7 @@ export default async function ReviewerReportPage({
       <p className="m-0">
         <Link href={queue}>{copy.back}</Link>
       </p>
-      <h1 className="m-0 text-ledger-display leading-[1.1]">{copy.title}</h1>
+      <PageHeader icon={FileSearch} title={copy.title} />
       <nav aria-label={copy.jump}>
         <ul className="m-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 text-sm">
           {anchors.map((anchor) => (

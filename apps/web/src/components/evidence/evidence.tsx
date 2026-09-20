@@ -1,4 +1,19 @@
 import type { ReactNode } from "react";
+import {
+  BadgeCheck,
+  Bot,
+  CircleHelp,
+  Clock3,
+  FileQuestion,
+  FileText,
+  Landmark,
+  Languages,
+  Scale,
+  ShieldCheck,
+  TimerOff,
+  Users,
+  type LucideIcon
+} from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Glyph } from "@/components/ui/feedback";
@@ -27,13 +42,13 @@ export type SourceAvailability =
   | "access_restricted"
   | "permanently_unavailable";
 
-const VERIFICATION_GLYPHS: Readonly<Record<VerificationState, string>> = {
-  awaiting_verification: "…",
-  verified_official: "✓",
-  corroborated: "✓✓",
-  community_reviewed: "◇",
-  disputed: "≠",
-  outdated: "⌛"
+const VERIFICATION_GLYPHS: Readonly<Record<VerificationState, LucideIcon>> = {
+  awaiting_verification: Clock3,
+  verified_official: BadgeCheck,
+  corroborated: ShieldCheck,
+  community_reviewed: Users,
+  disputed: Scale,
+  outdated: TimerOff
 };
 
 const VERIFICATION_BORDERS: Readonly<Record<VerificationState, string>> = {
@@ -48,12 +63,12 @@ const VERIFICATION_BORDERS: Readonly<Record<VerificationState, string>> = {
 const datesClasses =
   "m-0 grid grid-cols-[repeat(auto-fit,minmax(min(100%,12rem),1fr))] gap-x-6 gap-y-1 text-sm [&_dt]:text-muted-foreground [&_dd]:m-0 [&_dd]:[overflow-wrap:anywhere]";
 
-const CLASS_GLYPHS: Readonly<Record<InformationClass, string>> = {
-  official_source: "O",
-  independent_source: "I",
-  community_evidence_reviewed: "C",
-  community_report_unverified: "?",
-  ai_generated_explanation: "AI"
+const CLASS_GLYPHS: Readonly<Record<InformationClass, LucideIcon>> = {
+  official_source: Landmark,
+  independent_source: FileText,
+  community_evidence_reviewed: Users,
+  community_report_unverified: FileQuestion,
+  ai_generated_explanation: Bot
 };
 
 /** A localised formatter for an ISO date or timestamp; FE-052 supplies the `Africa/Lagos` one. */
@@ -69,6 +84,8 @@ export function VerificationLabel({
   labels: Readonly<Record<VerificationState, string>>;
   state: VerificationState;
 }>): ReactNode {
+  const VerificationIcon = VERIFICATION_GLYPHS[state];
+
   return (
     <span
       className={cn(
@@ -78,7 +95,9 @@ export function VerificationLabel({
       data-slot="verification-label"
       data-state={state}
     >
-      <Glyph className="px-1">{VERIFICATION_GLYPHS[state]}</Glyph>
+      <Glyph>
+        <VerificationIcon className="size-3.5" strokeWidth={2} />
+      </Glyph>
       {labels[state]}
     </span>
   );
@@ -91,13 +110,17 @@ export function InformationClassMarker({
   labels: Readonly<Record<InformationClass, string>>;
   value: InformationClass;
 }>): ReactNode {
+  const ClassIcon = CLASS_GLYPHS[value];
+
   return (
     <span
       className="inline-flex items-start gap-2 text-sm font-semibold text-muted-foreground [overflow-wrap:anywhere]"
       data-slot="class-marker"
       data-class={value}
     >
-      <Glyph>{CLASS_GLYPHS[value]}</Glyph>
+      <Glyph>
+        <ClassIcon className="size-3.5" strokeWidth={2} />
+      </Glyph>
       {labels[value]}
     </span>
   );
@@ -376,7 +399,13 @@ export function TimelineItem({
       data-slot="timeline-item"
     >
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        <Glyph>{origin === "official" ? "O" : "C"}</Glyph>
+        <Glyph>
+          {origin === "official" ? (
+            <Landmark className="size-3.5" strokeWidth={2} />
+          ) : (
+            <Users className="size-3.5" strokeWidth={2} />
+          )}
+        </Glyph>
         <strong>{originLabels[origin]}</strong>
         {date === null ? null : (
           <span>
@@ -407,7 +436,9 @@ export function TranslationNotice({
       data-status={status}
       role="note"
     >
-      <Glyph>T</Glyph>
+      <Glyph>
+        <Languages className="size-3.5" strokeWidth={2} />
+      </Glyph>
       {labels[status]}
     </p>
   );
@@ -425,7 +456,9 @@ export function AiExplanationNotice({
       role="note"
     >
       <strong className="flex items-start gap-2">
-        <Glyph>AI</Glyph>
+        <Glyph>
+          <Bot className="size-3.5" strokeWidth={2} />
+        </Glyph>
         {label}
       </strong>
       <div>{children}</div>
@@ -441,10 +474,10 @@ const GAP_BORDERS: Readonly<Record<EvidenceGapKind, string>> = {
   insufficient_evidence: "border-s-double border-s-ledger-muted"
 };
 
-const GAP_GLYPHS: Readonly<Record<EvidenceGapKind, string>> = {
-  contradiction: "≠",
-  information_gap: "?",
-  insufficient_evidence: "∅"
+const GAP_GLYPHS: Readonly<Record<EvidenceGapKind, LucideIcon>> = {
+  contradiction: Scale,
+  information_gap: CircleHelp,
+  insufficient_evidence: FileQuestion
 };
 
 /** Contradictions, unknowns, and refusals are distinct states, each with its own shape and title. */
@@ -453,6 +486,8 @@ export function EvidenceGap({
   kind,
   title
 }: Readonly<{ children?: ReactNode; kind: EvidenceGapKind; title: string }>): ReactNode {
+  const GapIcon = GAP_GLYPHS[kind];
+
   return (
     <div
       className={cn(
@@ -464,7 +499,9 @@ export function EvidenceGap({
       role="note"
     >
       <strong className="flex items-start gap-2">
-        <Glyph>{GAP_GLYPHS[kind]}</Glyph>
+        <Glyph>
+          <GapIcon className="size-3.5" strokeWidth={2} />
+        </Glyph>
         {title}
       </strong>
       {children === undefined ? null : <div>{children}</div>}

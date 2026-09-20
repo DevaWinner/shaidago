@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
+import { FileWarning } from "lucide-react";
 
 import { TranslationNotice } from "@/components/evidence/evidence";
 import { PageState } from "@/components/project/page-state";
 import { ReportWizard } from "@/components/report/report-wizard";
 import { SiteShell } from "@/components/shell/site-shell";
+import { PageHeader } from "@/components/ui/page-header";
 import { resolveDomain } from "@/i18n/catalogue";
 import { isSupportedLocale } from "@/i18n/routing";
 import { loadProject } from "@/lib/api/public-data";
@@ -66,7 +68,7 @@ export default async function ReportPage({ params }: Properties): Promise<ReactN
         {report.isOriginal || problems.isOriginal ? (
           <TranslationNotice labels={evidence.messages.translation} status="unavailable" />
         ) : null}
-        <h1 className="m-0 text-ledger-display leading-[1.1]">{report.messages.title}</h1>
+        <PageHeader icon={FileWarning} title={report.messages.title} />
         <ReportWizard
           copy={report.messages}
           handleHref={`/${locale}/handle`}

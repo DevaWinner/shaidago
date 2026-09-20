@@ -1,4 +1,15 @@
 import { cva } from "class-variance-authority";
+import {
+  CircleAlert,
+  CircleCheck,
+  CircleHelp,
+  CircleMinus,
+  CircleX,
+  Clock3,
+  Info,
+  TriangleAlert,
+  type LucideIcon
+} from "lucide-react";
 import { useId, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
@@ -22,7 +33,11 @@ export function Glyph({
   );
 }
 
-const TONE_GLYPHS = { information: "i", warning: "!", danger: "×" } as const;
+const TONE_GLYPHS: Readonly<Record<"information" | "warning" | "danger", LucideIcon>> = {
+  information: Info,
+  warning: TriangleAlert,
+  danger: CircleX
+};
 export type NoticeTone = keyof typeof TONE_GLYPHS;
 
 const calloutVariants = cva(
@@ -43,10 +58,14 @@ export function Callout({
   title,
   tone = "information"
 }: Readonly<{ children: ReactNode; title: string; tone?: NoticeTone }>): ReactNode {
+  const ToneIcon = TONE_GLYPHS[tone];
+
   return (
     <div className={calloutVariants({ tone })} data-slot="callout" data-tone={tone} role="note">
       <strong className="flex items-start gap-2">
-        <Glyph>{TONE_GLYPHS[tone]}</Glyph>
+        <Glyph>
+          <ToneIcon className="size-3.5" strokeWidth={2} />
+        </Glyph>
         {title}
       </strong>
       <div>{children}</div>
@@ -54,14 +73,16 @@ export function Callout({
   );
 }
 
-const STATUS_GLYPHS = {
-  reviewed: "✓",
-  "under-review": "…",
-  "limited-evidence": "△",
-  unavailable: "–",
-  problem: "!"
-} as const;
-export type StatusTone = keyof typeof STATUS_GLYPHS;
+export type StatusTone =
+  "reviewed" | "under-review" | "limited-evidence" | "unavailable" | "problem";
+
+const STATUS_GLYPHS: Readonly<Record<StatusTone, LucideIcon>> = {
+  reviewed: CircleCheck,
+  "under-review": Clock3,
+  "limited-evidence": CircleHelp,
+  unavailable: CircleMinus,
+  problem: CircleAlert
+};
 
 const statusVariants = cva(
   "inline-flex items-start gap-2 rounded-lg border bg-card px-2 py-1 text-sm font-bold [overflow-wrap:anywhere]",
@@ -84,13 +105,17 @@ export function StatusLabel({
   className,
   tone = "reviewed"
 }: Readonly<{ children: ReactNode; className?: string; tone?: StatusTone }>): ReactNode {
+  const StatusIcon = STATUS_GLYPHS[tone];
+
   return (
     <span
       className={cn(statusVariants({ tone }), className)}
       data-slot="status-label"
       data-tone={tone}
     >
-      <Glyph>{STATUS_GLYPHS[tone]}</Glyph>
+      <Glyph>
+        <StatusIcon className="size-3.5" strokeWidth={2} />
+      </Glyph>
       {children}
     </span>
   );

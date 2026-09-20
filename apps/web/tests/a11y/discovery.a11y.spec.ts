@@ -29,10 +29,12 @@ async function startReviewerRun(page: Page, scenario = ""): Promise<void> {
   await page.waitForLoadState("networkidle");
   if (scenario !== "")
     await page.getByLabel(/Optional public search terms|public search terms/i).fill(scenario);
-  await page.getByRole("button", { name: /Prepare query for review/i }).click();
-  await page.getByLabel("Outbound query").waitFor();
-  await page.getByRole("button", { name: /Approve and start search/i }).click();
-  await page.getByRole("alertdialog").getByRole("button", { name: "Approve and start" }).click();
+  const preview = page.locator("[data-slot=discovery-preview]");
+  await preview.getByRole("button").first().click();
+  const plan = preview.locator("[data-slot=discovery-plan]");
+  await plan.getByRole("textbox").waitFor();
+  await plan.getByRole("button").first().click();
+  await page.getByRole("alertdialog").getByRole("button").last().click();
 }
 
 for (const locale of LOCALES) {

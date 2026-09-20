@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
+import { ShieldCheck } from "lucide-react";
 
 import { InformationClassMarker, VerificationLabel } from "@/components/evidence/evidence";
 import { ButtonLink } from "@/components/ui/button";
+import { PageHeader } from "@/components/ui/page-header";
 import type { Messages } from "@/i18n/catalogue";
 
 const section = "grid gap-3 border-t border-border pt-8";
@@ -52,10 +54,7 @@ export function TrustContent({
 
   return (
     <div className="grid max-w-[76ch] gap-8">
-      <header className="grid gap-3">
-        <h1 className="m-0 text-[clamp(1.75rem,3.4vw,2.75rem)] leading-[1.1]">{copy.title}</h1>
-        <p className="m-0 text-ledger-lg">{copy.lead}</p>
-      </header>
+      <PageHeader icon={ShieldCheck} intro={<p>{copy.lead}</p>} title={copy.title} />
 
       <nav aria-label={copy.toc} className="grid gap-1">
         <ul className="m-0 flex list-none flex-wrap gap-x-5 gap-y-1 p-0">

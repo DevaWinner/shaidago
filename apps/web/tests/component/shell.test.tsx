@@ -13,7 +13,9 @@ const links = {
   home: "/",
   localities: "/localities",
   report: "/report",
+  reviewer: "/reviewer/sign-in",
   sources: "/trust#sources",
+  track: "/track",
   trust: "/trust"
 };
 
@@ -53,11 +55,11 @@ describe("public shell", () => {
 
     expect(screen.getByRole("banner")).toBeVisible();
     expect(screen.getByRole("navigation", { name: "Main" })).toBeVisible();
-    expect(screen.getByRole("navigation", { name: "Language" })).toBeVisible();
+    expect(screen.getByRole("navigation", { name: "Language" })).toBeInTheDocument();
     expect(screen.getByRole("contentinfo", { name: "About ShaidaGo" })).toBeVisible();
     expect(
       within(screen.getByRole("navigation", { name: "Main" })).getAllByRole("link")
-    ).toHaveLength(3);
+    ).toHaveLength(5);
     expect(screen.getByText(/not an emergency service/)).toBeVisible();
   });
 
@@ -72,6 +74,27 @@ describe("public shell", () => {
       expect(item).toHaveTextContent("not yet reviewed");
       expect(item).toHaveAttribute("lang");
     }
+  });
+
+  it("opens the top-right language dropdown without replacing its real links", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <PublicShell
+        currentLocale="en"
+        links={links}
+        localeRoutes={{ en: "/", ha: "/ha" }}
+        messages={publicShellMessages}
+      >
+        <p>x</p>
+      </PublicShell>
+    );
+    const summary = container.querySelector("[data-slot=locale-control] > summary");
+
+    expect(summary).not.toBeNull();
+    expect(screen.getByRole("navigation", { name: "Language" })).not.toBeVisible();
+    await user.click(summary as HTMLElement);
+    expect(screen.getByRole("navigation", { name: "Language" })).toBeVisible();
+    expect(screen.getByRole("link", { name: "Hausa" })).toHaveAttribute("href", "/ha");
   });
 
   it("labels a linked language that has no reviewed copy, outside the link and in English", () => {
@@ -123,9 +146,32 @@ describe("public shell", () => {
     expect(screen.queryByText(/low-data/i)).toBeNull();
   });
 
-  it("has no client-only navigation: every item is a plain anchor", () => {
+  it("keeps every navigation destination as a plain anchor", () => {
     renderPublic();
-    expect(screen.queryByRole("button")).toBeNull();
+    const navigation = screen.getByRole("navigation", { name: "Main" });
+    expect(
+      within(navigation).getByRole("link", { name: "Track or access reports" })
+    ).toHaveAttribute("href", "/track");
+    expect(within(navigation).getByRole("link", { name: "Reviewer sign-in" })).toHaveAttribute(
+      "href",
+      "/reviewer/sign-in"
+    );
+  });
+
+  it("marks the active destination in words and with aria-current", () => {
+    render(
+      <PublicShell
+        active="localities"
+        currentLocale="en"
+        links={links}
+        localeRoutes={{ en: "/" }}
+        messages={publicShellMessages}
+      >
+        <h1>Page</h1>
+      </PublicShell>
+    );
+
+    expect(screen.getByRole("link", { name: "Project records", current: "page" })).toBeVisible();
   });
 });
 
