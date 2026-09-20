@@ -510,5 +510,218 @@
       "wait": null
     },
     "needsScript": null
+  },
+  "report": {
+    "title": null,
+    "needsScript": null,
+    "context": null,
+    "chooser": {
+      "title": null,
+      "lead": null,
+      "listHeading": null,
+      "browse": null,
+      "unavailable": null
+    },
+    "unknownProject": {
+      "title": null,
+      "body": null,
+      "choose": null
+    },
+    "steps": {
+      "label": null,
+      "progress": null,
+      "notice": null,
+      "observation": null,
+      "evidence": null,
+      "anonymity": null,
+      "review": null
+    },
+    "notice": {
+      "heading": null,
+      "fictional": null,
+      "private": null,
+      "anonymous": null,
+      "limitTitle": null,
+      "limit": null,
+      "trust": null,
+      "start": null
+    },
+    "observation": {
+      "heading": null,
+      "categoryLabel": null,
+      "categoryPlaceholder": null,
+      "categories": {
+        "no_visible_work": null,
+        "incomplete_work": null,
+        "unsafe_construction": null,
+        "suspected_incorrect_status": null,
+        "access_barrier": null,
+        "other_concern": null
+      },
+      "descriptionLabel": null,
+      "descriptionHint": null,
+      "counter": null
+    },
+    "evidence": {
+      "heading": null,
+      "lead": null,
+      "hint": null,
+      "pick": null,
+      "none": null,
+      "remove": null,
+      "preview": null,
+      "previewNone": null,
+      "prepared": null,
+      "pdfNotPrepared": null,
+      "role": null,
+      "preparing": null,
+      "errors": {
+        "unsupported": null,
+        "tooLarge": null,
+        "tooMany": null,
+        "mismatch": null,
+        "tooManyPixels": null,
+        "failed": null,
+        "empty": null
+      }
+    },
+    "anonymity": {
+      "heading": null,
+      "lead": null,
+      "modes": {
+        "anonymous": {
+          "label": null,
+          "body": null
+        },
+        "contact": {
+          "label": null,
+          "body": null
+        },
+        "handle": {
+          "label": null,
+          "body": null,
+          "warning": null
+        }
+      },
+      "channelLabel": null,
+      "channels": {
+        "email": null,
+        "phone": null,
+        "messaging_app": null
+      },
+      "contactLabel": null,
+      "contactHint": null,
+      "handleLabel": null,
+      "passphraseLabel": null,
+      "reveal": null,
+      "hide": null,
+      "handleNote": null,
+      "createHandle": null
+    },
+    "review": {
+      "heading": null,
+      "lead": null,
+      "rows": {
+        "concern": null,
+        "description": null,
+        "files": null,
+        "identity": null
+      },
+      "noFiles": null,
+      "files": null,
+      "identity": {
+        "anonymous": null,
+        "contact": null,
+        "handle": null
+      },
+      "change": null,
+      "sendNote": null,
+      "submit": null
+    },
+    "draft": {
+      "heading": null,
+      "consent": null,
+      "warning": null,
+      "remove": null,
+      "removed": null,
+      "found": null,
+      "restore": null,
+      "discard": null,
+      "restored": null,
+      "unavailable": null
+    },
+    "send": {
+      "sending": null,
+      "progress": null,
+      "cancel": null,
+      "cancelled": null,
+      "retry": null,
+      "offline": null,
+      "unknown": null,
+      "fixFields": null,
+      "failedTitle": null,
+      "wait": null
+    },
+    "nav": {
+      "back": null,
+      "next": null,
+      "stepErrors": null,
+      "jump": null,
+      "loading": null
+    },
+    "errors": {
+      "category": null,
+      "descriptionRequired": null,
+      "descriptionShort": null,
+      "descriptionLong": null,
+      "contact": null,
+      "channel": null,
+      "handle": null,
+      "passphrase": null
+    },
+    "complete": {
+      "title": null,
+      "lead": null,
+      "codeLabel": null,
+      "codeWarning": null,
+      "copy": null,
+      "copied": null,
+      "copyFailed": null,
+      "print": null,
+      "download": null,
+      "fileText": null,
+      "next": {
+        "heading": null,
+        "save_tracking_code": null,
+        "check_status_later": null,
+        "see_escalation_guidance": null
+      },
+      "filesHeading": null,
+      "fileKept": null,
+      "fileRejected": null,
+      "reasons": {
+        "unsupported_type": null,
+        "spoofed_type": null,
+        "active_content": null,
+        "encrypted_pdf": null,
+        "too_large": null,
+        "too_many_pixels": null,
+        "too_many_pages": null,
+        "malformed": null,
+        "malware_detected": null,
+        "scan_failed": null,
+        "storage_failed": null,
+        "timeout": null
+      },
+      "contactSaved": null,
+      "contactNotSaved": null,
+      "track": null,
+      "leave": null,
+      "lost": {
+        "title": null,
+        "body": null,
+        "newReport": null
+      }
+    }
   }
 }
