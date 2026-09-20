@@ -1,5 +1,7 @@
 import { createServer } from "node:http";
 
+import { handleReviewer, resetReviewer, reviewerLog } from "./mock-reviewer.mjs";
+
 /**
  * A fictional stand-in for the two public catalogue endpoints, used only by the browser test
  * servers. Everything it returns is synthetic and labelled so. It checks the internal bearer
@@ -610,6 +612,17 @@ createServer((request, response) => {
     );
     return;
   }
+  if (path === "/__reviewer") {
+    if (request.method === "POST") {
+      resetReviewer();
+      response.writeHead(204).end();
+      return;
+    }
+    response
+      .writeHead(200, { "Content-Type": "application/json" })
+      .end(JSON.stringify(reviewerLog()));
+    return;
+  }
   if (path === "/health/live") {
     response.writeHead(200, { "Content-Type": "application/json" }).end('{"status":"live"}');
     return;
@@ -630,6 +643,10 @@ createServer((request, response) => {
   }
   if (mode === "slow") {
     setTimeout(() => problem(response, 503, "dependency_unavailable"), 8000);
+    return;
+  }
+
+  if (handleReviewer({ request, response, url, problem, readBody })) {
     return;
   }
 

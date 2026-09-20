@@ -2173,3 +2173,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the pages, request helper, parsers, and mock scenarios; found the bundle regression and fixed it; wrote the tests.
 - **Prompt summary:** Unattended frontend/BFF build loop; maintainer directed the loop to continue through later circles.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-110 Reviewer sign-in and session recovery
+
+- **Task:** FE-110 — Reviewer sign-in and session recovery (Circle 11).
+- **User outcome delivered:** An authorised reviewer can sign in with a password manager, is told generically when a sign-in fails, sees how long to wait after a rate limit, and lands only on their own queue or one report, never an arbitrary address.
+- **Routes/components changed:** `apps/web/app/[locale]/reviewer/sign-in/page.tsx`, `src/components/reviewer/{frame,sign-in-form}.tsx`, `src/lib/reviewer/{safe-return,session}.ts`, `forwardedContextForHeaders` in `src/lib/bff/request-context.ts`, `messages/*` (new `reviewer` domain), `tests/support/mock-reviewer.mjs` and `mock-api.mjs`, unit, component and e2e tests.
+- **Backend operations/contract version:** `auth_sign_in` and `auth_sign_out` through the existing BFF session handler (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Reviewer credentials in one same-origin POST body and component memory only; the API's session and CSRF tokens go straight into HttpOnly cookies. Nothing in a URL, storage, log, or client bundle. Fictional demo credentials in the mock only.
+- **States implemented:** initial, field validation, submitting, generic credential failure, rate limit with countdown, unreachable service, ended session and signed-out reasons, no JavaScript.
+- **Accessibility evidence:** labelled fields with error association, `role="alert"` failure region, text (not colour) for the countdown; unit/component/e2e only. No axe run or screen reader run yet for this page (covered in FE-116).
+- **Locales reviewed:** English only. `ha`/`ig`/`yo` `reviewer` keys are `null` and pending; nothing was translated.
+- **Performance/cache impact:** Dynamic and no-store; one small client island. No public cache involvement.
+- **Commands run and results:** `make web-verify` exit 0; full Chromium and mobile WebKit e2e suite 225 passed, 3 skipped (existing WebKit Tab skips) before the record was written.
+- **Screenshots/traces/artifacts checked:** none captured; assertions only.
+- **Known limitations/open decisions:** Real API not run. A stale cookie is not cleared by a Server Component redirect (sign-in overwrites it). No axe run yet.
+- **Commit/PR:** `feat: add reviewer sign-in with safe return targets and session recovery`
+- **Next task may rely on:** `ReviewerFrame`, `reviewerOptionsFor`, `requireSession`, `signInPath`, `safeReviewerTarget`, and `mock-reviewer.mjs`.
+- **AI assistance used:** Designed and implemented the sign-in surface, allowlist, session helpers, mock endpoints and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

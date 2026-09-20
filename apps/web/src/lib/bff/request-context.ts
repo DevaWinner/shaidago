@@ -43,16 +43,23 @@ export function deriveClientHmac(
 }
 
 /** The validated context every backend call carries: request ID, locale, and client HMAC. */
-export function forwardedContextFor(request: Request, requestId: string): ForwardedContext {
+export function forwardedContextForHeaders(
+  headers: Pick<Headers, "get">,
+  requestId: string
+): ForwardedContext {
   const environment = loadServerEnvironment();
   const address = trustedClientAddress(
-    request.headers.get("X-Forwarded-For"),
+    headers.get("X-Forwarded-For"),
     environment.trustedProxyHops
   );
 
   return {
     requestId,
-    locale: request.headers.get("X-Shaidago-Locale"),
+    locale: headers.get("X-Shaidago-Locale"),
     clientHmac: deriveClientHmac(address, environment.clientHmacKey, Date.now())
   };
+}
+
+export function forwardedContextFor(request: Request, requestId: string): ForwardedContext {
+  return forwardedContextForHeaders(request.headers, requestId);
 }

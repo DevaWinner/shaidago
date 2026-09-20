@@ -859,5 +859,36 @@
       "failedTitle": "The handle was not deleted"
     },
     "statusLink": "Check the status of a report"
+  },
+  "reviewer": {
+    "common": {
+      "private": "Private reviewer area. Everything here is fictional demo data and is never public.",
+      "noindex": "Not for sharing",
+      "backToQueue": "Back to the report queue",
+      "signedOut": "You have been signed out.",
+      "language": "This reviewer area is written in English; the other languages are not reviewed yet.",
+      "signOut": "Sign out",
+      "signingOut": "Signing out"
+    },
+    "signIn": {
+      "title": "Reviewer sign-in",
+      "lead": "For authorised ShaidaGo reviewers only. Reporters do not need an account.",
+      "needsScript": "Sign-in needs JavaScript. Turn it on for this site and reload.",
+      "identifier": "Reviewer identifier",
+      "password": "Password",
+      "submit": "Sign in",
+      "pending": "Signing in",
+      "required": "Required",
+      "identifierRequired": "Enter your reviewer identifier.",
+      "passwordRequired": "Enter your password.",
+      "wait": "Too many attempts. You can try again in {seconds} seconds.",
+      "waitDone": "You can try again now.",
+      "failureTitle": "Sign-in did not work",
+      "reasons": {
+        "expired": "Your session ended. Sign in again to continue.",
+        "signed_out": "You have been signed out."
+      },
+      "note": "This sign-in never says which part was wrong. Nothing you type is stored in this browser."
+    }
   }
 }

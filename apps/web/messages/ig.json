@@ -859,5 +859,36 @@
       "failedTitle": null
     },
     "statusLink": null
+  },
+  "reviewer": {
+    "common": {
+      "private": null,
+      "noindex": null,
+      "backToQueue": null,
+      "signedOut": null,
+      "language": null,
+      "signOut": null,
+      "signingOut": null
+    },
+    "signIn": {
+      "title": null,
+      "lead": null,
+      "needsScript": null,
+      "identifier": null,
+      "password": null,
+      "submit": null,
+      "pending": null,
+      "required": null,
+      "identifierRequired": null,
+      "passwordRequired": null,
+      "wait": null,
+      "waitDone": null,
+      "failureTitle": null,
+      "reasons": {
+        "expired": null,
+        "signed_out": null
+      },
+      "note": null
+    }
   }
 }
