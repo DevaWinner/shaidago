@@ -1575,7 +1575,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commands run and results:** `git ls-remote` verified `actions/setup-node` v7.0.0 SHA `820762786026740c76f36085b0efc47a31fe5020`; the checked-in `actions/checkout` v7.0.1 SHA was reused. `make web-ci-check`, Ruby YAML parsing, Python compilation, `git diff --check`, and Prettier format checking passed. The existing local foundation/browser/axe gates were passing before workflow creation; the final task gate re-runs them before commit.
 - **Screenshots/traces/artifacts checked:** Reviewed the workflow itself and confirmed no artifact action appears. No screenshots/traces are produced or committed by this configuration-only task.
 - **Known limitations/open decisions:** The first hosted run is pending because this local branch has not been pushed, and this task does not authorise a push. Circle 2 remains open until GitHub reports the workflow green. A later CI policy change should update the validator in the same commit.
-- **Commit/PR:** pending.
+- **Commit/PR:** `feat: implement frontend CI workflow with validation and checks`
 - **Next task may rely on:** A SHA-pinned, read-only workflow and local workflow-invariant validator; not on a claimed hosted green result.
 - **AI assistance used:** Implemented the workflow and its negative-path validator, resolved the setup action revision, and kept browser data artifacts out of pull-request visibility.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
