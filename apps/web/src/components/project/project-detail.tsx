@@ -36,6 +36,7 @@ export function ProjectDetailView({
   locale,
   now,
   project,
+  discoveryPanel,
   questionPanel
 }: Readonly<{
   copy: Copy;
@@ -45,6 +46,8 @@ export function ProjectDetailView({
   locale: string;
   now: Date;
   project: ProjectDetail;
+  /** Public discovery island, supplied by the page so the project record stays server-rendered. */
+  discoveryPanel?: ReactNode;
   /** The client-enhanced question island, supplied by the page so this view stays server-rendered. */
   questionPanel?: ReactNode;
 }>): ReactNode {
@@ -218,6 +221,7 @@ export function ProjectDetailView({
             {text.actions.heading}
           </h2>
           {questionPanel}
+          {discoveryPanel}
           <div className="grid max-w-[40ch] gap-2">
             <ButtonLink
               href={`/${locale}/report?project=${encodeURIComponent(project.slug)}`}

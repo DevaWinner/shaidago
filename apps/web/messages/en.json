@@ -343,6 +343,33 @@
       "report": "Report a concern about this project",
       "note": "Reports are private and are never published automatically."
     },
+    "discovery": {
+      "heading": "Find related public information",
+      "intro": "Searches use only this public project record. New material is not verified and cannot change this record automatically.",
+      "notice": "This search does not use reports, contacts, attachments, or tracking details.",
+      "start": "Find public information",
+      "stop": "Stop checking this page",
+      "resume": "Resume checking",
+      "checking": "Checking the discovery run.",
+      "action": {
+        "create": "A new public search has started.",
+        "reuse_fresh": "Showing a recent shared public search.",
+        "show_latest_completed": "Showing the latest completed public search."
+      },
+      "states": {
+        "queued": "Waiting to search",
+        "searching": "Searching public sources",
+        "analysing": "Checking retrieved material",
+        "needs_review": "Waiting for review",
+        "complete": "Search completed"
+      },
+      "counts": "Found {found}; fetched {fetched}; analysed {analysed}.",
+      "replay": "Showing a fictional replay for the demo.",
+      "live": "This run used the configured public-source service.",
+      "started": "Started:",
+      "unavailable": "A public search is not available right now. The project record is unchanged.",
+      "invalid": "This discovery result could not be shown safely."
+    },
     "notFound": {
       "title": "This record is not available",
       "body": "Check the address or return to the project records. ShaidaGo does not confirm whether a private record exists.",

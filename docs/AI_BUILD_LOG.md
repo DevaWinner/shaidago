@@ -2333,3 +2333,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Implemented the scope-aware state model and adversarial unit tests from the accepted contract and privacy rules.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-121 Public project discovery panel
+
+- **Task:** FE-121 — Public project discovery panel (Circle 12).
+- **User outcome delivered:** A resident can request bounded public-source discovery from a project record, understand that it uses the public record only and remains unverified, see the real returned stage/counts and replay label, and stop future checks on their page without being told that the server work was cancelled.
+- **Routes/components changed:** Added `ProjectDiscovery` to `/{locale}/projects/{slug}`, its component and browser tests, public discovery fixtures in the mock API, and the `project.discovery` message domain.
+- **Backend operations/contract version:** Uses existing `discovery_start_public_run` and `discovery_get_public_run` only through `/api/public/discovery` and `/api/public/discovery/{runId}`. OpenAPI 0.0.0, generated code, FastAPI, and BFF policy are unchanged.
+- **Public/private data handled:** The browser sends only `{ slug }` to the same-origin BFF. Run IDs, versions, and results remain component-memory-only, are never put in a URL/storage/cache, and no report/contact/attachment/tracking text is rendered or sent. The panel declares that boundary before the request.
+- **States implemented:** idle, start pending, returned run, unavailable/budget-style no-run, malformed-result fail-closed, network/problem retry, terminal stop, and page-local paused checking. Real backend stage/counts replace percentages; an unknown response is not rendered.
+- **Accessibility evidence:** The panel has a labelled section, semantic status text, a polite announcement region, named native controls, no colour-only state, and retains the existing Field Ledger reflow rules. Targeted axe/reflow tests passed for full/minimal records in Chromium and mobile WebKit at 320 px and 200% text.
+- **Locales reviewed:** English source copy was added. `ha`, `ig`, and `yo` have matching pending keys and therefore show the existing explicit English-original treatment; no translation was written or claimed.
+- **Performance/cache impact:** A small client island is loaded only on project detail. Requests use `no-store`; no polling begins until the resident asks, and there is no image, analytics, provider, persistent cache, or new dependency.
+- **Commands run and results:** targeted component test passed (3); `pnpm --dir apps/web typecheck`, `lint`, `format:check`, and `contract` passed; production E2E exercised both new paths in Chromium and mobile WebKit; targeted axe/reflow passed 4 runs; Impeccable detector returned no findings; `git diff --check` passed.
+- **Screenshots/traces/artifacts checked:** Production browser harness covered desktop/mobile rendering; no committed screenshot or trace contains discovery data. The panel uses clearly fictional replay fixture data only.
+- **Known limitations/open decisions:** Public cancellation is not an API operation, so the control stops only client polling. Results/provenance and analysis are intentionally deferred to FE-123, as is explicit shared-run action wording from the returned DTO. Real API/provider execution is not claimed.
+- **Commit/PR:** `feat: add the public Source Scout panel`
+- **Next task may rely on:** `ProjectDiscovery`, its narrow parser and no-store memory boundary, the mock public discovery endpoints, and the shared run-state model. It must not display results as approved evidence.
+- **AI assistance used:** Implemented the Field Ledger panel, safe response parsing, fixtures, and browser/component coverage from the accepted contract.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

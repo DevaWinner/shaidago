@@ -555,6 +555,15 @@ function json(response, body, locale) {
   response.end(JSON.stringify(body));
 }
 
+function noStoreJson(response, body, locale) {
+  response.writeHead(200, {
+    "Content-Type": "application/json",
+    "Cache-Control": "no-store",
+    "Content-Language": locale
+  });
+  response.end(JSON.stringify(body));
+}
+
 function encodeCursor(offset, filters) {
   return Buffer.from(JSON.stringify({ offset, filters })).toString("base64url");
 }
@@ -938,6 +947,70 @@ createServer((request, response) => {
         json(response, answerFor(detail, question, locale), locale);
       }
     });
+    return;
+  }
+
+  const publicDiscoveryStart = /^\/v1\/projects\/([^/]+)\/discovery-runs$/.exec(path);
+
+  if (publicDiscoveryStart !== null && request.method === "POST") {
+    const slug = publicDiscoveryStart[1];
+    if (detailFor(slug) === undefined) {
+      problem(response, 404, "not_found");
+    } else if (slug === "synthetic-record-minimal") {
+      noStoreJson(
+        response,
+        {
+          action: "unavailable",
+          demo_replay: null,
+          label: "discovered — not yet reviewed",
+          run_id: null,
+          status: null
+        },
+        locale
+      );
+    } else {
+      noStoreJson(
+        response,
+        {
+          action: "show_latest_completed",
+          demo_replay: true,
+          label: "discovered — not yet reviewed",
+          run_id: uuid(801),
+          status: "complete"
+        },
+        locale
+      );
+    }
+    return;
+  }
+
+  const publicDiscoveryRun = /^\/v1\/discovery-runs\/([^/]+)$/.exec(path);
+
+  if (publicDiscoveryRun !== null && request.method === "GET") {
+    if (publicDiscoveryRun[1] !== uuid(801)) {
+      problem(response, 404, "not_found");
+    } else if (url.searchParams.get("since_version") === "2") {
+      response.writeHead(304, { "Cache-Control": "no-store" }).end();
+    } else {
+      noStoreJson(
+        response,
+        {
+          created_at: "2026-09-20T09:00:00Z",
+          demo_replay: true,
+          failure_code: null,
+          finished_at: "2026-09-20T09:01:00Z",
+          label: "discovered — not yet reviewed",
+          progress: { analysed: 2, fetched: 3, results_found: 3 },
+          project_slug: "synthetic-record-full",
+          result: null,
+          run_id: uuid(801),
+          sources: [],
+          status: "complete",
+          version: 2
+        },
+        locale
+      );
+    }
     return;
   }
 

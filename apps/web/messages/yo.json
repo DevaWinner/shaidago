@@ -343,6 +343,29 @@
       "report": null,
       "note": null
     },
+    "discovery": {
+      "heading": null,
+      "intro": null,
+      "notice": null,
+      "start": null,
+      "stop": null,
+      "resume": null,
+      "checking": null,
+      "action": { "create": null, "reuse_fresh": null, "show_latest_completed": null },
+      "states": {
+        "queued": null,
+        "searching": null,
+        "analysing": null,
+        "needs_review": null,
+        "complete": null
+      },
+      "counts": null,
+      "replay": null,
+      "live": null,
+      "started": null,
+      "unavailable": null,
+      "invalid": null
+    },
     "notFound": {
       "title": null,
       "body": null,
