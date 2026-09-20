@@ -1,7 +1,8 @@
 """Grounded project questions through the restricted public database role."""
 
 import uuid
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator, AsyncIterator, Sequence
+from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from datetime import UTC, datetime
 
@@ -14,6 +15,12 @@ from sqlalchemy.exc import DBAPIError
 from shaidago.api.app import create_app
 from shaidago.api.dependencies import Dependencies
 from shaidago.retrieval.corpus import CorpusBuilder
+from shaidago.retrieval.embeddings import (
+    EMBEDDINGS_ROOT,
+    EmbeddingUnavailableError,
+    QueryEmbedder,
+    load_embeddings,
+)
 from shaidago.retrieval.language import (
     PROMPT_VERSION,
     SCHEMA_VERSION,
@@ -24,6 +31,7 @@ from shaidago.retrieval.language import (
     LanguageModelResult,
     RetryClass,
 )
+from shaidago.retrieval.search import EMBEDDING_DIMENSIONS
 from shaidago.shared.clock import ManualClock
 from shaidago.shared.database import Database, build_engine
 from shaidago.shared.ids import Uuid7Generator
@@ -42,6 +50,7 @@ from tests.integration.support import (
 NOW = datetime(2026, 9, 19, 19, 0, tzinfo=UTC)
 AUTH = {"Authorization": f"Bearer web.{CREDENTIAL}"}
 QUESTION = "When did the synthetic clinic open?"
+FIXTURE_MODEL = "fixture-hash-v1"
 ANSWER = "The synthetic clinic opened on 1 March."
 
 
@@ -108,6 +117,17 @@ class Harness:
 
 @pytest.fixture
 async def questions(role_urls: dict[str, URL]) -> AsyncIterator[Harness]:
+    async with harness(role_urls) as built:
+        yield built
+
+
+@asynccontextmanager
+async def harness(
+    role_urls: dict[str, URL],
+    *,
+    query_embedder: QueryEmbedder | None = None,
+    with_vectors: bool = False,
+) -> AsyncGenerator[Harness]:
     owner_engine = build_engine(
         role_urls["owner"], application_name="question-owner", statement_timeout_ms=8000
     )
@@ -143,12 +163,22 @@ async def questions(role_urls: dict[str, URL]) -> AsyncIterator[Harness]:
     clock = ManualClock(NOW)
     async with worker.unit_of_work() as session:
         await CorpusBuilder(session, clock=clock, ids=Uuid7Generator(clock)).refresh()
+    if with_vectors:
+        # The checked-in synthetic vector for DOCUMENT, so the stored chunk is embedded.
+        async with worker.unit_of_work() as session:
+            await load_embeddings(
+                session,
+                EMBEDDINGS_ROOT / f"{FIXTURE_MODEL}.jsonl",
+                expected_model=FIXTURE_MODEL,
+                now=NOW,
+            )
     model = StubLanguageModel()
     app = create_app(
         build_settings(RATE_QA_PER_HOUR="20"),
         Dependencies(
             public_database=public,
             language_model=model,
+            query_embedder=query_embedder,
             rate_limiter=InMemoryRateLimiter(clock),
             clock=clock,
             ids=Uuid7Generator(clock),
@@ -294,3 +324,96 @@ async def test_questions_are_rate_limited_per_pseudonymous_client(questions: Har
     assert blocked.status_code == 429
     assert blocked.json()["code"] == "rate_limited"
     assert blocked.headers["cache-control"] == "no-store"
+
+
+class FakeQueryEmbedder:
+    """A local embedder stand-in: records what it was given, or fails on demand."""
+
+    model_id = FIXTURE_MODEL
+
+    def __init__(self, *, failure: str | None = None) -> None:
+        self.received: list[str] = []
+        self.failure = failure
+
+    async def embed_query(self, text: str) -> Sequence[float]:
+        self.received.append(text)
+        if self.failure is not None:
+            raise EmbeddingUnavailableError(self.failure)
+        return [1.0, *([0.0] * (EMBEDDING_DIMENSIONS - 1))]
+
+
+async def test_a_local_embedder_makes_retrieval_hybrid_and_sees_only_the_screened_question(
+    role_urls: dict[str, URL],
+) -> None:
+    embedder = FakeQueryEmbedder()
+    async with harness(role_urls, query_embedder=embedder, with_vectors=True) as h:
+        response = await h.client.post(
+            f"/v1/projects/{h.slug}/questions", json={"question": f"  {QUESTION}  "}
+        )
+
+        assert response.status_code == 200
+        assert response.json()["retrieval"]["mode"] == "hybrid"
+        assert response.json()["answer"] == ANSWER
+        # Only the normalised, bounded question reached the embedder: no padding, no project.
+        assert embedder.received == [QUESTION]
+        assert h.slug not in embedder.received[0]
+        assert (await h.metrics())[-1][2] == "hybrid"
+
+
+async def test_a_question_with_no_keyword_overlap_still_finds_the_passage_by_meaning(
+    role_urls: dict[str, URL],
+) -> None:
+    """The point of the feature: keyword search finds nothing for this text, hybrid still does."""
+    embedder = FakeQueryEmbedder()
+    non_english = "Yaushe aka buɗe asibitin?"  # shares no word with the English passage
+    async with harness(role_urls, query_embedder=embedder, with_vectors=True) as h:
+        hybrid = await h.client.post(
+            f"/v1/projects/{h.slug}/questions", json={"question": non_english}
+        )
+    async with harness(role_urls) as keyword_only:
+        keyword = await keyword_only.client.post(
+            f"/v1/projects/{keyword_only.slug}/questions", json={"question": non_english}
+        )
+
+    assert hybrid.json()["retrieval"] == {"mode": "hybrid", "chunks_considered": 1}
+    assert keyword.json()["retrieval"]["chunks_considered"] == 0
+    assert keyword.json()["insufficient_evidence"] is True
+
+
+@pytest.mark.parametrize(
+    "code", ["embedding_not_loaded", "embedding_busy", "embedding_timeout", "embedding_failed"]
+)
+async def test_any_embedding_failure_falls_back_to_keyword_and_still_answers(
+    role_urls: dict[str, URL], code: str
+) -> None:
+    embedder = FakeQueryEmbedder(failure=code)
+    async with harness(role_urls, query_embedder=embedder, with_vectors=True) as h:
+        response = await h.client.post(
+            f"/v1/projects/{h.slug}/questions", json={"question": QUESTION}
+        )
+
+        assert response.status_code == 200, "an embedding outage is never the user's problem"
+        body = response.json()
+        assert body["retrieval"]["mode"] == "keyword", "and the answer says which mode it used"
+        assert body["answer"] == ANSWER
+        assert embedder.received == [QUESTION]
+
+
+async def test_without_an_embedder_retrieval_is_keyword_only(role_urls: dict[str, URL]) -> None:
+    async with harness(role_urls, with_vectors=True) as h:
+        response = await h.client.post(
+            f"/v1/projects/{h.slug}/questions", json={"question": QUESTION}
+        )
+        assert response.json()["retrieval"]["mode"] == "keyword"
+
+
+async def test_an_embedder_with_no_stored_vectors_degrades_to_keyword(
+    role_urls: dict[str, URL],
+) -> None:
+    """A model with nothing to compare against must not pretend to be hybrid."""
+    async with harness(role_urls, query_embedder=FakeQueryEmbedder(), with_vectors=False) as h:
+        response = await h.client.post(
+            f"/v1/projects/{h.slug}/questions", json={"question": QUESTION}
+        )
+        assert response.json()["retrieval"]["mode"] == "keyword"
+        assert response.json()["answer"] == ANSWER

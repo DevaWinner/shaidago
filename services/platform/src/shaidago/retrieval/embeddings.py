@@ -31,10 +31,30 @@ _APPLY = text(
 )
 
 
+class EmbeddingUnavailableError(Exception):
+    """An embedding could not be produced: not loaded, busy, timed out, or unusable.
+
+    ``code`` is a stable, safe token. The message never contains the text that was embedded, so a
+    caller can log it and fall back to keyword retrieval without leaking a question.
+    """
+
+    def __init__(self, code: str) -> None:
+        super().__init__(code)
+        self.code = code
+
+
 class EmbeddingModel(Protocol):
     model_id: str
 
     async def embed(self, texts: Sequence[str]) -> Sequence[Sequence[float]]: ...
+
+
+class QueryEmbedder(Protocol):
+    """Turns a screened question into a vector. Any failure means: use keyword retrieval."""
+
+    model_id: str
+
+    async def embed_query(self, text: str) -> Sequence[float]: ...
 
 
 @dataclass(frozen=True)
@@ -52,14 +72,20 @@ class EmbeddingLoad:
 
 
 def embedding_path(model: str) -> Path:
+    """The checked-in file for a model. A Hugging Face id's ``/`` becomes ``__``, never a folder."""
     safe_characters = "-._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    stem = model.replace("/", "__")
     if (
         not model
         or len(model) > EMBEDDING_MODEL_MAX_CHARS
-        or any(character not in safe_characters for character in model)
+        # `..` is never a real model id, and `__` in the id would let two different ids ("a/b" and
+        # "a__b") share one file.
+        or ".." in model
+        or "__" in model
+        or any(character not in safe_characters for character in stem)
     ):
         raise ValueError("embedding model is not safe as a file name")
-    return EMBEDDINGS_ROOT / f"{model}.jsonl"
+    return EMBEDDINGS_ROOT / f"{stem}.jsonl"
 
 
 def _record(value: object, *, line: int, expected_model: str) -> EmbeddingRecord:

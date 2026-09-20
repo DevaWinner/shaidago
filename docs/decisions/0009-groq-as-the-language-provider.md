@@ -4,6 +4,7 @@
 - **Date:** 2026-09-19
 - **Task:** BE-004
 - **Supersedes:** the provider choice in [ADR-0008](0008-provider-isolation-replay-fixtures-and-live-tests.md); everything else in ADR-0008 (interfaces, replay fixtures, honest labelling, live-test policy) still stands
+- **Amended by:** [ADR-0010](0010-local-embeddings-with-fastembed.md), which replaces the optional OpenAI-compatible embeddings key (decision 5 below) with local FastEmbed embeddings. The Groq language-provider decisions here are unchanged.
 
 ## Context
 

@@ -17,6 +17,7 @@ from sqlalchemy.exc import ArgumentError
 
 from shaidago.retrieval.corpus import CorpusBuilder
 from shaidago.retrieval.embeddings import embedding_path, load_embeddings
+from shaidago.retrieval.local_embeddings import MODEL_ID
 from shaidago.seed.apply import SeedRefusedError, apply_plan, assert_safe_target
 from shaidago.seed.plan import REGISTER_PATH, RegisterInvalidError, build_plan, load_register
 from shaidago.shared.clock import SystemClock
@@ -34,7 +35,7 @@ async def run(environ: Mapping[str, str], register_path: Path = REGISTER_PATH) -
     engine = build_engine(url, application_name="seed-demo", statement_timeout_ms=30_000)
     clock = SystemClock()
     ids = Uuid7Generator(clock)
-    embedding_model = environ.get("EMBEDDING_MODEL", "text-embedding-3-small")
+    embedding_model = MODEL_ID  # the one local model whose vectors the corpus stores (ADR-0010)
     checked_in = embedding_path(embedding_model)
     try:
         async with Database(engine).unit_of_work() as session:

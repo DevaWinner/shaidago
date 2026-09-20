@@ -9,6 +9,7 @@ from fastapi import Request
 from shaidago.auth.passwords import PasswordVerifier
 from shaidago.files.pipeline import EvidencePipeline
 from shaidago.files.storage import ObjectStore
+from shaidago.retrieval.embeddings import QueryEmbedder
 from shaidago.retrieval.language import LanguageModel
 from shaidago.shared.clock import Clock, SystemClock
 from shaidago.shared.config import Settings
@@ -41,6 +42,8 @@ class Dependencies:
     password_verifier: PasswordVerifier = field(default_factory=PasswordVerifier)
     rate_limiter: RateLimiter | None = None
     language_model: LanguageModel | None = None
+    # Local query embeddings for hybrid retrieval (ADR-0010); None means keyword retrieval only.
+    query_embedder: QueryEmbedder | None = None
     monotonic: Callable[[], float] = monotonic
     # None means attachments cannot be processed; reports are still accepted without them.
     evidence_pipeline: EvidencePipeline | None = None
