@@ -1,0 +1,19 @@
+# Only what the web build needs; keeps secrets, local state, caches, and other services out.
+.git
+.github
+.env
+.env.*
+**/node_modules
+**/.next
+**/coverage
+**/test-results
+**/playwright-report
+**/tsconfig.tsbuildinfo
+apps/web/tests
+docs
+services
+data
+contracts
+infra
+scripts
+railway

@@ -8,11 +8,39 @@ The hackathon pilot covers Abuja's AMAC and Bwari Area Councils. The public expe
 
 ## Repository status
 
-**Backend release gate in progress.** `services/platform` contains the FastAPI application, reviewed migrations, restricted database roles, deterministic tests, production container, staging configuration, and the frozen frontend contract. `apps/web` now has a pinned, strict Next.js foundation that builds without reaching the private API; product routes, BFF handlers, locale messages, and visible surfaces are not implemented yet, so this repository does not claim to provide the complete runnable product.
+The backend (`services/platform`) and the frontend (`apps/web`) are both built and verified locally against fictional data and recorded replay providers. `apps/web` is a Next.js app and thin BFF with public records, cited Q&A, a private anonymous report flow, tracking and optional reporter handles, a reviewer workspace with publication, Source Scout, an offline-capable public shell, and English, Hausa, Igbo, and Yoruba routes. Hausa, Igbo, and Yoruba copy is largely pending fluent review (see the limitations). The complete gate is `make verify`; the last full run of the frontend gate from a clean checkout is recorded in [`docs/AI_BUILD_LOG.md`](docs/AI_BUILD_LOG.md) and [`docs/FRONTEND_BUILD_ORDER.md`](docs/FRONTEND_BUILD_ORDER.md).
 
-The remaining backend gates are explicit: human source and language review, live-provider evidence,
-a complete private-network staging smoke, and the first green hosted CI run for the release branch.
-Public seed facts remain limited to the exact evidence and caveats recorded in the source register.
+Not yet done, and stated plainly: nothing has been deployed or run against a hosted origin, the first hosted CI run has not happened, the independent visual finish review has not been done, and human source, language, screen-reader, legal, privacy, and security reviews are outstanding. Public seed facts remain limited to the exact evidence and caveats recorded in the source register.
+
+## Run it
+
+Needs Docker, Node (see `.nvmrc`), `pnpm`, and `uv`. Everything uses fictional data and recorded replay providers, so no API key is needed.
+
+```text
+make setup           # .env from the example, dependencies, local services, migrations, cited demo data
+make backend-verify  # the backend gate (needs the local services)
+make web-verify      # the frontend gate that needs only Node
+make web-verify-full # ...plus the browser suites (run once: pnpm --dir apps/web exec playwright install chromium webkit)
+make verify          # backend and full frontend gate
+```
+
+To look around without the backend, `pnpm --dir apps/web build` and the standalone server work against the fictional mock used by the browser tests (`apps/web/tests/support/mock-api.mjs`). The demonstration path is in [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md).
+
+## Screenshots
+
+All screenshots use the synthetic "Synthetic full record" and other clearly fictional data, captured with motion reduced, and show no one-time credential. They are in [`docs/evidence/frontend-visual/readme/`](docs/evidence/frontend-visual/readme/).
+
+| Narrow phone, a record | Desktop, project evidence |
+| --- | --- |
+| ![A project record at 360 px](docs/evidence/frontend-visual/readme/record-mobile-narrow.png) | ![A project record with its evidence rail](docs/evidence/frontend-visual/readme/record-desktop.png) |
+
+| Report: safety first | Reviewer queue |
+| --- | --- |
+| ![The report form's emergency-service notice](docs/evidence/frontend-visual/readme/report-safety-mobile.png) | ![The reviewer queue](docs/evidence/frontend-visual/readme/reviewer-queue.png) |
+
+| Reviewer report detail | Source Scout (labelled, unreviewed) |
+| --- | --- |
+| ![A reviewer report detail](docs/evidence/frontend-visual/readme/reviewer-detail.png) | ![Source Scout results](docs/evidence/frontend-visual/readme/source-scout.png) |
 
 ## The problem
 
@@ -78,13 +106,25 @@ Start with the [documentation index](docs/README.md).
 | [Privacy and safety](docs/PRIVACY_AND_SAFETY.md) | Implemented privacy controls, evidence, and production blockers |
 | [AI build log](docs/AI_BUILD_LOG.md) | Transparent record of AI-assisted engineering work and human review status |
 
+## Accessibility and low bandwidth
+
+WCAG 2.2 AA is the bar. Every public and reviewer route is checked in four languages for structure, axe, 320 px reflow, 200% text, forced colours, reduced motion, and 44 px targets (`make web-a11y`). The manual screen-reader smoke is scripted in [`docs/FRONTEND_HARDENING_AUDIT.md`](docs/FRONTEND_HARDENING_AUDIT.md) and **has not been run**. For weak connections: public pages are server-rendered and work without JavaScript where feasible, first-load JavaScript is under 170 KB on every public route, a service worker saves recently viewed public records for offline reading (and never stores anything private, proven by cache inspection), and a low-data switch removes motion and slows background checking. The app ships no images or web fonts beyond a small letter-mark icon.
+
+## How AI was used
+
+AI assisted the design, code, tests, and documentation of this repository, and it is used inside the product only to explain source-grounded answers, never as a source. The full record, including what a human still has to review, is [`docs/AI_BUILD_LOG.md`](docs/AI_BUILD_LOG.md). Human review of the unattended frontend work is **pending** and is not claimed anywhere.
+
+## Demo and links
+
+The demo path is in [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md). **No hosted demo URL and no video exist yet**; this section will link them once they do, and only after every link has been checked signed out.
+
 ## Unattended build loops
 
 The tracked Claude commands [`backend-build-loop`](.claude/commands/backend-build-loop.md) and [`frontend-build-loop`](.claude/commands/frontend-build-loop.md) execute the respective build orders task by task. Each requires an explicit task packet, verification evidence, documentation, and one Conventional Commit per task; neither may publish, deploy, or substitute human decisions for source, language, or visual review. The frontend loop uses one `frontend/<circle-goal>` branch per circle and excludes roadmap labels, circle numbers, and task IDs from branch names and commit subjects.
 
 ## Development
 
-`services/platform` has a pinned Python toolchain (see its README); the root `Makefile` provides `make backend-*` targets (`make backend-verify` is the backend gate); the judge-facing `make setup`/`make verify` do not exist yet. The frozen frontend handoff is [`docs/FRONTEND_BACKEND_CONTRACT.md`](docs/FRONTEND_BACKEND_CONTRACT.md), backed by generated OpenAPI and MSW-ready response fixtures. `make infra-up-core` (after `cp .env.example .env`) starts local PostgreSQL 18 + pgvector, Redis, and MinIO through Docker Compose on loopback-only ports; `make infra-up` adds the ClamAV scanner, which needs 1.5-3 GB of memory. `make migrate` then `make db-roles` prepare the database (schema, roles, and role logins), and `make seed-demo` loads local demo data, refreshes approved public source chunks, and loads the checked-in vectors for those chunks. It never calls an AI provider and needs no model. Embeddings run locally with FastEmbed and multilingual-e5-small (ADR-0010): `make embedding-model` downloads the 129 MB model once (pinned and checksum-verified), `make embeddings` regenerates the checked-in vectors, and `EMBEDDING_BACKEND=fastembed` turns on hybrid retrieval, which is what lets a Hausa, Igbo or Yoruba question find English source passages. It is off by default, and retrieval then runs keyword-only and says so in `retrieval_mode`. No key, no network at run time, and no question leaves the server to be embedded.
+`services/platform` has a pinned Python toolchain (see its README); the root `Makefile` provides `make backend-*` targets (`make backend-verify` is the backend gate); `make setup` and `make verify` are the judge-facing entry points (see "Run it"). The frozen frontend handoff is [`docs/FRONTEND_BACKEND_CONTRACT.md`](docs/FRONTEND_BACKEND_CONTRACT.md), backed by generated OpenAPI and MSW-ready response fixtures. `make infra-up-core` (after `cp .env.example .env`) starts local PostgreSQL 18 + pgvector, Redis, and MinIO through Docker Compose on loopback-only ports; `make infra-up` adds the ClamAV scanner, which needs 1.5-3 GB of memory. `make migrate` then `make db-roles` prepare the database (schema, roles, and role logins), and `make seed-demo` loads local demo data, refreshes approved public source chunks, and loads the checked-in vectors for those chunks. It never calls an AI provider and needs no model. Embeddings run locally with FastEmbed and multilingual-e5-small (ADR-0010): `make embedding-model` downloads the 129 MB model once (pinned and checksum-verified), `make embeddings` regenerates the checked-in vectors, and `EMBEDDING_BACKEND=fastembed` turns on hybrid retrieval, which is what lets a Hausa, Igbo or Yoruba question find English source passages. It is off by default, and retrieval then runs keyword-only and says so in `retrieval_mode`. No key, no network at run time, and no question leaves the server to be embedded.
 
 When implementation starts, the separate stacks remain independently owned:
 
@@ -97,7 +137,8 @@ When implementation starts, the separate stacks remain independently owned:
 This remains a fictional-data prototype, not an emergency service.
 
 - **Sources.** Three of the six source-register projects have no verified fact, because their sources block automated access.
-- **Languages.** The Hausa, Igbo and Yoruba copy was reviewed by the maintainer alone; it has no independent second review.
+- **Languages.** The Hausa, Igbo and Yoruba copy for the shell, evidence labels, recovery, and landing was reviewed by the maintainer alone, with no independent second review; every other domain (forms, tracking, reviewer, Source Scout, offline) is still pending and shows the English original with a visible notice.
+- **Frontend.** Nothing is deployed; the visual finish has had no independent review; the screen-reader smoke has not been run; the CSP keeps `unsafe-inline` for scripts and styles (a recorded trade-off); and Playwright cannot test offline navigation with a service worker on WebKit, so that proof is Chromium-only.
 - **Language model.** Live Groq and Brave runs were made once, and the model's answers were weak against the golden corpus (see [BE-085](docs/evidence/BE-085-live-evaluation.md)), so the demo defaults to replay and labels it.
 - **Retrieval.** Local embeddings let a Hausa, Igbo or Yoruba question find English passages that keyword search misses, measured on a small sample only (see [BE-081](docs/evidence/BE-081-local-embeddings.md)).
 - **Hosting.** The hosted demo has no malware scanner, and the API service uses about 65% of its 1 GB memory limit at rest and 83% at peak.

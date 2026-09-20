@@ -303,7 +303,6 @@ export function ProjectDiscovery({
         <h2 className="m-0 text-ledger-xl leading-tight" id={headingId}>
           {copy.heading}
         </h2>
-        <p className="m-0">{copy.intro}</p>
       </div>
       <Callout title={copy.notice} tone="information">
         <p className="m-0">{copy.intro}</p>
