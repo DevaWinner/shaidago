@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
-import { FileWarning } from "lucide-react";
+import { FilePenLine } from "lucide-react";
 
 import { TranslationNotice } from "@/components/evidence/evidence";
 import { PageState } from "@/components/project/page-state";
@@ -68,7 +68,7 @@ export default async function ReportPage({ params }: Properties): Promise<ReactN
         {report.isOriginal || problems.isOriginal ? (
           <TranslationNotice labels={evidence.messages.translation} status="unavailable" />
         ) : null}
-        <PageHeader icon={FileWarning} title={report.messages.title} />
+        <PageHeader icon={FilePenLine} title={report.messages.title} />
         <ReportWizard
           copy={report.messages}
           handleHref={`/${locale}/handle`}

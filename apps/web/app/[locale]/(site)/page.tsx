@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { setRequestLocale } from "next-intl/server";
-import { ArrowRight, FileWarning } from "lucide-react";
+import { ArrowRight, FilePenLine } from "lucide-react";
 import type { ReactNode } from "react";
 
 import {
@@ -93,7 +93,7 @@ export default async function LandingPage({ params }: LandingProperties): Promis
                 <ArrowRight aria-hidden="true" className="size-4" />
               </ButtonLink>
               <ButtonLink href={`/${locale}/report`} variant="secondary">
-                <FileWarning aria-hidden="true" className="size-4" />
+                <FilePenLine aria-hidden="true" className="size-4" />
                 {landing.messages.report}
               </ButtonLink>
             </div>

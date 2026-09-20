@@ -1,14 +1,14 @@
 import type { ReactNode } from "react";
 import {
-  BookOpenCheck,
+  BookOpenText,
   Check,
   ChevronDown,
   ClipboardList,
-  FileWarning,
+  FilePenLine,
   Languages,
+  ListChecks,
   LogIn,
-  SearchCheck,
-  ShieldCheck
+  SearchCheck
 } from "lucide-react";
 
 import { LanguageAnnouncer } from "@/components/shell/language-announcer";
@@ -254,7 +254,7 @@ export function PublicShell({
                   )}
                   href={links.localities}
                 >
-                  <BookOpenCheck aria-hidden="true" className="size-4" />
+                  <BookOpenText aria-hidden="true" className="size-4" />
                   {messages.navLocalities}
                 </a>
               </li>
@@ -267,7 +267,7 @@ export function PublicShell({
                   )}
                   href={links.trust}
                 >
-                  <ShieldCheck aria-hidden="true" className="size-4" />
+                  <ListChecks aria-hidden="true" className="size-4" />
                   {messages.navTrust}
                 </a>
               </li>
@@ -277,7 +277,7 @@ export function PublicShell({
                   className="inline-flex min-h-11 items-center gap-2 rounded-ledger-control bg-primary px-4 py-2 font-semibold text-primary-foreground no-underline hover:bg-ledger-accent-strong"
                   href={links.report}
                 >
-                  <FileWarning aria-hidden="true" className="size-4" />
+                  <FilePenLine aria-hidden="true" className="size-4" />
                   {messages.navReport}
                 </a>
               </li>

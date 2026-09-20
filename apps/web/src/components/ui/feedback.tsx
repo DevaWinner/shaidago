@@ -14,7 +14,7 @@ import { useId, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
-/** A decorative shape that accompanies words so a state is never colour alone. */
+/** A compact semantic mark that accompanies words so a state is never colour alone. */
 export function Glyph({
   children,
   className
@@ -23,7 +23,7 @@ export function Glyph({
     <span
       aria-hidden="true"
       className={cn(
-        "inline-grid size-5 min-w-5 flex-none place-items-center rounded-lg border-2 border-current px-1 text-xs leading-none font-extrabold",
+        "inline-flex size-5 min-w-5 flex-none items-center justify-center text-current",
         className
       )}
       data-slot="glyph"

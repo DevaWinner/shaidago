@@ -2,14 +2,13 @@ import type { ReactNode } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
-  BookOpenCheck,
+  BookOpenText,
+  ClipboardCheck,
   CheckCircle2,
-  FileWarning,
+  FilePenLine,
   MapPin,
   Search,
-  SearchCheck,
-  Shapes,
-  UserCheck
+  Tags
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -175,7 +174,7 @@ export function EntryPoints({
       {categories.length === 0 ? null : (
         <section aria-labelledby="categories-heading" className={section}>
           <div className="flex items-center gap-3">
-            <Shapes aria-hidden="true" className="size-6 text-primary" strokeWidth={1.8} />
+            <Tags aria-hidden="true" className="size-6 text-primary" strokeWidth={1.8} />
             <h2 className={heading} id="categories-heading">
               {copy.categories.heading}
             </h2>
@@ -187,7 +186,6 @@ export function EntryPoints({
                   className={link}
                   href={directoryHref(locale, { category }, { withResults: true })}
                 >
-                  <BookOpenCheck aria-hidden="true" className="size-4" />
                   {directory.categories[category]}
                 </a>
               </li>
@@ -237,9 +235,9 @@ export function TrustAndSteps({
         </h2>
         <ol className="m-0 grid list-none gap-6 p-0 md:grid-cols-3">
           {[
-            { copy: copy.how.read, icon: SearchCheck },
-            { copy: copy.how.report, icon: FileWarning },
-            { copy: copy.how.review, icon: UserCheck }
+            { copy: copy.how.read, icon: BookOpenText },
+            { copy: copy.how.report, icon: FilePenLine },
+            { copy: copy.how.review, icon: ClipboardCheck }
           ].map((step, index) => {
             const StepIcon = step.icon;
             return (
