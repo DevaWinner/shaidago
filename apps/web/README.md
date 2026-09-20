@@ -108,3 +108,14 @@ The nine handlers under `app/api/` (`public/questions`, `public/discovery`, `pub
 send an optional `X-Shaidago-Locale` and, for idempotent operations, a lower-case UUID
 `Idempotency-Key` that is generated once per user intent and reused only for retries of that intent.
 Responses are always `no-store`; failures are `application/problem+json` with a stable `code`.
+
+## Reviewer session and handlers
+
+Reviewer cookies are created and read only in server code (`src/lib/bff/reviewer-session.ts`). The
+session token and the CSRF token are both `HttpOnly`; neither reaches JavaScript, a response body,
+or a log. Development/test use `sg_session`/`sg_csrf` on `http://localhost`; staging and production
+use `__Host-sg_session`/`__Host-sg_csrf` with `Secure`, and `NEXT_PUBLIC_APP_ORIGIN` must be set or
+every browser mutation is refused. The 17 handlers under `app/api/reviewer/` call one typed operation
+each, apply Origin then session then CSRF then body limits, and never decide roles, transitions, or
+publication. Evidence downloads are streamed with re-asserted `attachment`, `nosniff`, sandbox CSP,
+and `no-store` headers.

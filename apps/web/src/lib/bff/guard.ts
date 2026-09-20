@@ -10,6 +10,8 @@ export type MutationGuardOptions = {
   readonly body: { readonly rule: ContentTypeRule | "empty"; readonly maxBytes: number };
   /** Present only for cookie-authenticated reviewer mutations; both values are server-resolved. */
   readonly csrf?: { readonly presented: unknown; readonly expected: unknown };
+  /** Runs after the Origin check and before CSRF, e.g. to answer 401 before 403. */
+  readonly afterOrigin?: () => Response | undefined;
   /** True when the operation requires (and the handler will forward) an idempotency key. */
   readonly requireIdempotencyKey?: boolean;
 };
@@ -41,6 +43,12 @@ export function guardMutation(request: Request, options: MutationGuardOptions): 
       ok: false,
       response: problemResponse({ status: 403, code: "origin_forbidden", requestId })
     };
+  }
+
+  const early = options.afterOrigin?.();
+
+  if (early !== undefined) {
+    return { ok: false, response: early };
   }
 
   if (
