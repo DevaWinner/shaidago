@@ -53,7 +53,17 @@ test("a cached page never keeps another visitor's private data, because none is 
 
     return (
       parts[0] === "v1" &&
-      ((parts.length === 2 && ["localities", "projects", "reports"].includes(parts[1] ?? "")) ||
+      ((parts.length === 2 &&
+        [
+          "localities",
+          "projects",
+          "reports",
+          "report-status:lookup",
+          "report-status:answer-follow-up",
+          "reporter-handles",
+          "reporter-handles:list-reports",
+          "reporter-handles:delete"
+        ].includes(parts[1] ?? "")) ||
         (parts.length === 3 && parts[1] === "projects") ||
         (parts.length === 4 && parts[1] === "projects" && parts[3] === "questions") ||
         (parts.length === 5 && parts[1] === "projects" && parts[3] === "sources"))

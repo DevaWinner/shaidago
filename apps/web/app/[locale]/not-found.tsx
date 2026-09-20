@@ -2,10 +2,10 @@ import type { Route } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import en from "../../messages/en.json";
+import { RECOVERY as recovery } from "@/lib/recovery-copy";
 import { RecoveryPage } from "../_components/recovery-page";
 
-const copy = en.recovery.notFound;
+const copy = recovery.notFound;
 
 // Static English for now: reading the request locale here would make the page dynamic. The layout
 // declares `lang="en"` for any locale without reviewed copy, and the link is `/`, which the proxy

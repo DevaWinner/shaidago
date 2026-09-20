@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 
-import en from "../messages/en.json";
+import { RECOVERY as recovery } from "@/lib/recovery-copy";
 import { RecoveryPage } from "./_components/recovery-page";
 import { toSafeRequestReference } from "@/lib/support/request-reference";
 
@@ -22,19 +22,19 @@ export default function GlobalError({ error, reset }: GlobalErrorProperties): Re
     <html lang="en">
       <body>
         <RecoveryPage
-          title={en.recovery.fatal.title}
+          title={recovery.fatal.title}
           referenceText={
             reference === undefined
               ? undefined
-              : en.recovery.error.reference.replace("{reference}", reference)
+              : recovery.error.reference.replace("{reference}", reference)
           }
           action={
             <button type="button" onClick={reset}>
-              {en.recovery.error.retry}
+              {recovery.error.retry}
             </button>
           }
         >
-          {en.recovery.error.body}
+          {recovery.error.body}
         </RecoveryPage>
       </body>
     </html>

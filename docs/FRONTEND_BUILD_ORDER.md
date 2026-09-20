@@ -884,21 +884,31 @@ Build `/{locale}/track` with POST-backed form state only. Normalise separators f
 
 Use one generic not-found/invalid response and handle rate limit, offline, backend unavailable, and retry. Do not reveal reviewer, contact, report text, evidence, handle, internal notes, or private discovery.
 
+> **Execution status (2026-09-20): complete.** `/{locale}/track` (`src/components/track/track-panel.tsx`, dynamic, no-store, noindex) posts the code in a JSON body to `/api/tracking/lookup` only. Whitespace, zero-width characters, and look-alike dashes are normalised and nothing else, so a code is never turned into a different one; the service decides validity. After a successful check the box is cleared and the code stays only in memory for a re-check and follow-up answers; it is never echoed, put in the address, storage, or a cookie (asserted for requests, URL, page content, storage, and cookies). One generic message covers an unknown code; a rate limit shows the wait; an outage, offline, and an unreadable response are separate honest states, and the box is kept on failure. Every status has a plain-word meaning taken from the controlled vocabulary, the exact last update, the service's message, and the next action. Reviewer questions can be answered, skipped, or marked unsafe; each exact response has its own idempotency key that is reused on retry. Not shown: anything but the public-safe status.
+
 ### FE-101 — Handle creation and one-time credentials
 
 Build `/{locale}/handle` creation with explanation of benefits/risks, no identity fields, explicit create action, and one-time handle/passphrase display with copy/print. Never auto-copy, persist, or offer recovery. Refresh/back after loss shows cannot recover and allows creating a new unrelated handle.
+
+> **Execution status (2026-09-20): complete.** `/{locale}/handle` explains the benefit, the linking risk, and the absence of recovery before an explicit Create action (one idempotency key per attempt, reused if the answer is lost). The handle and passphrase exist only in page memory: shown once with copy, print, and download (each only on request), cleared on request, absent from storage, cookies, and the address, and gone after a reload, which then offers a new unrelated handle. The wording never calls a handle an account, a sign-in, or proof of identity (asserted).
 
 ### FE-102 — Handle report list
 
 Accept handle and passphrase in POST body through BFF, keep them in form memory only, and list public-safe report statuses. Do not call it an account, sign-in, identity, reputation score, or proof. Wrong credentials and missing handle share one generic state. Apply backoff feedback without revealing which part was valid.
 
+> **Execution status (2026-09-20): complete.** On the status page, a handle and passphrase go in a POST body through `/api/reporter-handle/reports`, stay in form memory, and the passphrase box is cleared after a successful listing. The list shows only public-safe statuses. A wrong handle and a missing handle produce byte-identical results in the browser test, and a rate limit shows the wait. No account, identity, or reputation language is used.
+
 ### FE-103 — Handle deletion
 
 Explain that deletion unlinks reports but does not delete the reports. Require explicit confirmation and current credentials, handle failure generically, clear credentials/state after success, and never imply the reports or public updates disappeared. Test race/backoff/retry and accessible confirmation/focus.
 
+> **Execution status (2026-09-20): complete.** The deletion section explains first that deleting unlinks the handle, does not delete the reports, and does not remove anything already published. It requires the current credentials and an explicit confirmation box, treats a failure generically, clears the credentials on success, and says the reports were not deleted. The backend's race and backoff behaviour was not exercised beyond the mock's rate limit.
+
 ### FE-104 — Tracking/handle test matrix
 
 Test malformed/valid code, generic missing, rate limit, success states, follow-up available, offline, session/history navigation, no persistence, no code/credential in artifacts, handle creation one-time display, list, wrong credentials, deletion/unlink explanation, four locales, mobile, keyboard, and screen reader announcements.
+
+> **Execution status (2026-09-20): complete.** Proof: 17 unit tests (normalisation, response parsers, the request helper), 10 component tests, and 14 browser flows on Chromium and mobile WebKit (POST-only lookup with no code in requests, URL, content, storage, or cookies; reload and back leave nothing; unknown, rate-limited, outage, and malformed responses; every status explained; follow-up answered once and retried with the same key; handle list, identical wrong and missing results, empty list; Enter to submit and offline retry; no JavaScript; no-store and noindex in four languages; handle creation shown once and gone after refresh; copy, download, clear; deletion confirmation and generic failure). axe clean, 320 px and 200% reflow for the status page in four states and the handle page in three, in four languages (32 cases). Not done: a screen-reader run, and real backend timing and backoff.
 
 ### Circle 10 exit gate
 
@@ -907,6 +917,8 @@ Test malformed/valid code, generic missing, rate limit, success states, follow-u
 - One-time credential loss is honest and unrecoverable.
 - Handle language never implies verified identity or proof.
 - Deletion semantics exactly match backend unlink behaviour.
+
+> **Gate status (2026-09-20): closed with caveats.** Met: tracking and handle credentials are body and memory only; every response shown is public-safe and generic on a missing or invalid credential; one-time credentials are not recoverable and the page says so; handle language never implies verified identity or proof; deletion is described as unlinking, matching the backend's description. Open: the real API was not run for this circle; the `track` and `handle` domains are untranslated in ha/ig/yo; the escalation guidance the status page points to (FE-141) does not exist yet; the follow-up flow works by tracking code only because the handle listing returns no question identifiers; no screen-reader run. A bundle finding came out of this circle: the client error boundaries imported the whole English catalogue, which grew every page's first load by about 20 KB; they now use a small module checked against the catalogue by a test.
 
 ## 14. Circle 11 — reviewer sign-in, queue, report detail, and publication
 

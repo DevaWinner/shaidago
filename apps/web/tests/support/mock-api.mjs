@@ -465,6 +465,61 @@ function multipartFacts(buffer) {
   };
 }
 
+// --- Tracking and handles (fictional) ----------------------------------------------------------
+// Scenarios are chosen by the words in the fictional code or handle, statelessly. Nothing entered is
+// ever stored: only how many times each idempotency key was seen.
+const answers = new Map();
+const handleReplays = new Map();
+let handleCounter = 0;
+const seenCredentials = [];
+const at = () => `${iso(2)}T09:00:00Z`;
+
+function readBody(request, done) {
+  let text = "";
+  request.on("data", (chunk) => (text += chunk));
+  request.on("end", () => {
+    try {
+      done(JSON.parse(text || "{}"));
+    } catch {
+      done(undefined);
+    }
+  });
+}
+
+function statusFor(code) {
+  const base = {
+    follow_up_questions: [],
+    message: "Your fictional report is being handled.",
+    next_action: "wait_for_review",
+    status: "under_review",
+    status_updated_at: at()
+  };
+
+  if (code.includes("FOLLOWUP")) {
+    return {
+      ...base,
+      follow_up_questions: [
+        {
+          question_id: uuid(701),
+          state: "open",
+          text: "Roughly when did you see this (fictional)?"
+        },
+        { question_id: uuid(702), state: "answered", text: "Was the site fenced off (fictional)?" }
+      ],
+      message: "A reviewer has a question.",
+      next_action: "answer_follow_up",
+      status: "needs_information"
+    };
+  }
+  if (code.includes("CLOSED")) return { ...base, next_action: "none", status: "closed" };
+  if (code.includes("REFERRED"))
+    return { ...base, next_action: "see_escalation_guidance", status: "referred" };
+  if (code.includes("PUBLIC"))
+    return { ...base, next_action: "watch_public_updates", status: "verified_for_public_update" };
+
+  return base;
+}
+
 let mode = "ok";
 let projects = makeProjects(30);
 const stats = {};
@@ -543,6 +598,16 @@ createServer((request, response) => {
       return;
     }
     response.writeHead(200, { "Content-Type": "application/json" }).end(JSON.stringify(reportLog));
+    return;
+  }
+  if (path === "/__tracking") {
+    response.writeHead(200, { "Content-Type": "application/json" }).end(
+      JSON.stringify({
+        answers: Object.fromEntries(answers),
+        handles: Object.fromEntries(handleReplays),
+        seenCredentials
+      })
+    );
     return;
   }
   if (path === "/health/live") {
@@ -732,6 +797,97 @@ createServer((request, response) => {
 
       if (scenario === "__slow") setTimeout(send, 6000);
       else send();
+    });
+    return;
+  }
+
+  if (request.method === "POST" && path === "/v1/report-status:lookup") {
+    readBody(request, (body) => {
+      const code = String(body?.code ?? "");
+      seenCredentials.push({ path, code: code.length });
+
+      if (code.includes("NOTFOUND") || code === "")
+        return problem(response, 404, "tracking_code_not_recognised");
+      if (code.includes("RATELIMIT"))
+        return problem(response, 429, "rate_limited", { "Retry-After": "30" });
+      if (code.includes("DOWN")) return problem(response, 503, "dependency_unavailable");
+      if (code.includes("MALFORMED")) return json(response, { status: "unheard_of" }, locale);
+      json(response, statusFor(code), locale);
+    });
+    return;
+  }
+  if (request.method === "POST" && path === "/v1/report-status:answer-follow-up") {
+    readBody(request, (body) => {
+      const key = String(request.headers["idempotency-key"] ?? "");
+      const kind = String(body?.kind ?? "");
+      answers.set(key, (answers.get(key) ?? 0) + 1);
+
+      if (String(body?.code ?? "").includes("NOTFOUND"))
+        return problem(response, 404, "tracking_code_not_recognised");
+      if (String(body?.answer ?? "").includes("__unavailable"))
+        return problem(response, 503, "dependency_unavailable");
+      json(response, { acknowledged: true, question_state: kind }, locale);
+    });
+    return;
+  }
+  if (request.method === "POST" && path === "/v1/reporter-handles") {
+    const key = String(request.headers["idempotency-key"] ?? "");
+    handleReplays.set(key, (handleReplays.get(key) ?? 0) + 1);
+    handleCounter += 1;
+    response.writeHead(201, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+    response.end(
+      JSON.stringify({
+        handle: `fictional-handle-${String(handleCounter).padStart(3, "0")}`,
+        passphrase: "amber bridge candle dune ember flint",
+        recoverable: false
+      })
+    );
+    return;
+  }
+  if (request.method === "POST" && path === "/v1/reporter-handles:list-reports") {
+    readBody(request, (body) => {
+      const handle = String(body?.handle ?? "");
+      seenCredentials.push({
+        path,
+        handle: handle.length,
+        passphrase: String(body?.passphrase ?? "").length
+      });
+
+      if (handle.includes("wrong") || handle.includes("missing"))
+        return problem(response, 403, "invalid_credentials");
+      if (handle.includes("ratelimit"))
+        return problem(response, 429, "rate_limited", { "Retry-After": "30" });
+      if (handle.includes("empty")) return json(response, { reports: [] }, locale);
+      json(
+        response,
+        {
+          reports: [
+            {
+              message: "Being handled.",
+              next_action: "wait_for_review",
+              status: "under_review",
+              status_updated_at: at()
+            },
+            {
+              message: "Received.",
+              next_action: "wait_for_review",
+              status: "received",
+              status_updated_at: at()
+            }
+          ]
+        },
+        locale
+      );
+    });
+    return;
+  }
+  if (request.method === "POST" && path === "/v1/reporter-handles:delete") {
+    readBody(request, (body) => {
+      const handle = String(body?.handle ?? "");
+
+      if (handle.includes("wrong") || handle.includes("missing"))
+        return problem(response, 403, "invalid_credentials");
+      response.writeHead(204, { "Cache-Control": "no-store" }).end();
     });
     return;
   }

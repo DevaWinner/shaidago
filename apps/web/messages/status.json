@@ -39,6 +39,12 @@
     },
     "report": {
       "critical": false
+    },
+    "track": {
+      "critical": false
+    },
+    "handle": {
+      "critical": false
     }
   },
   "locales": {
@@ -107,6 +113,16 @@
         "status": "reviewed",
         "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
         "reviewedOn": "2026-09-20"
+      },
+      "track": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
+        "reviewedOn": "2026-09-20"
+      },
+      "handle": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
+        "reviewedOn": "2026-09-20"
       }
     },
     "ha": {
@@ -155,6 +171,12 @@
         "status": "pending"
       },
       "report": {
+        "status": "pending"
+      },
+      "track": {
+        "status": "pending"
+      },
+      "handle": {
         "status": "pending"
       }
     },
@@ -205,6 +227,12 @@
       },
       "report": {
         "status": "pending"
+      },
+      "track": {
+        "status": "pending"
+      },
+      "handle": {
+        "status": "pending"
       }
     },
     "yo": {
@@ -253,6 +281,12 @@
         "status": "pending"
       },
       "report": {
+        "status": "pending"
+      },
+      "track": {
+        "status": "pending"
+      },
+      "handle": {
         "status": "pending"
       }
     }
