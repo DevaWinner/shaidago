@@ -8,22 +8,39 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Current state
 
-The repository is **pre-scaffold (Gate 0)**: it contains planning, governance, and documentation only. There is no `apps/`, `services/`, `Makefile`, lockfile, Compose file, migration, or test yet, so **no build, lint, or test command exists**. Do not run or claim to have run a command from the plan until the artifact that provides it has been created and verified.
+The backend is built: `services/platform` (FastAPI API, Dramatiq worker, Alembic migrations 0001 to 0027), `contracts/` (generated OpenAPI and frontend fixtures), `data/` (source register, seed vectors, replay and evaluation fixtures), `railway/` (service config), and `docs/` (build orders, ADR-0001 to ADR-0010, threat model, runbooks, and `docs/evidence/`). The frontend, `apps/web`, has **not been started**: nothing under `apps/` is tracked. `docs/FRONTEND_BUILD_ORDER.md` is its plan and `docs/FRONTEND_BACKEND_CONTRACT.md` is the frozen contract it consumes. Each circle's gate note in `docs/BACKEND_BUILD_ORDER.md` says exactly what is proven and what is still open; read it before claiming anything is done.
 
-The only executable checks today are dependency-free Python 3 validators for the Circle 0 contracts. Run all of them after touching `contracts/`, `docs/THREAT_MODEL.md`, `docs/decisions/`, or task IDs in the build orders:
+Commands, from the repository root (Docker is needed for the local services):
+
+```text
+cp .env.example .env
+make infra-up-core             # PostgreSQL 18 + pgvector, Redis, MinIO (`make infra-up` adds ClamAV, 1.5-3 GB)
+make migrate && make db-roles  # schema, then the application-role logins from .env
+make seed-demo                 # cited demo data and checked-in vectors; local databases only
+make backend-verify            # the canonical gate: format, lint, pyright strict, every test layer,
+                               # 85% branch coverage, OpenAPI drift, Bandit, pip-audit
+make openapi-generate          # after changing a route or schema (also frontend-contract-generate)
+make embedding-model           # optional: 2.2 GB local embedding model, pinned and SHA-256 verified
+make embeddings                # regenerate data/embeddings/*.jsonl after approved chunks change
+make worker                    # the discovery worker (needs Redis and DATABASE_URL_WORKER)
+```
+
+A single test, from `services/platform`: `uv run pytest tests/unit/path/test_file.py::test_name`. Integration tests need the services and the environment: `uv run --frozen --env-file ../../.env pytest tests/integration/test_x.py`. **The integration suite re-provisions the local database roles with its own throwaway passwords**, so run `make db-roles` again before using the dev database afterwards.
+
+`make verify` (the judge-facing full gate) and `make setup` do not exist yet; they belong to the frontend work.
+
+Dependency-free validators for the design contracts. Run all of them after touching `contracts/`, `docs/THREAT_MODEL.md`, `docs/decisions/`, the source register, or task IDs in the build orders:
 
 ```text
 python3 scripts/validate_controlled_vocabulary.py --self-test
-python3 scripts/render_controlled_vocabulary.py --check   # generated docs/CONTROLLED_VOCABULARY.md has no drift
+python3 scripts/render_controlled_vocabulary.py --check   # docs/CONTROLLED_VOCABULARY.md has no drift
 python3 scripts/validate_threat_model.py --self-test
 python3 scripts/validate_decisions.py --self-test
 python3 scripts/validate_source_register.py --self-test
-python3 scripts/render_source_register.py --check        # docs/SOURCE_REGISTER.md matches data/source-register.json
+python3 scripts/render_source_register.py --check         # docs/SOURCE_REGISTER.md matches data/source-register.json
 ```
 
-Work is executed task by task from `docs/BACKEND_BUILD_ORDER.md` (circles of `BE-*` tasks). Each task gets one Conventional Commit, an `Execution status` note under its heading, and an entry in `docs/AI_BUILD_LOG.md`.
-
-Status (see `docs/BACKEND_BUILD_ORDER.md` for every task's evidence and each circle's gate note): Circles 0 to 5 are done, and Circle 0 is closed with a caveat. BE-060 (envelope encryption) and the pure core of BE-062 (tracking codes) are done. `docs/SOURCE_REGISTER.md` (generated from `data/source-register.json`) holds the six-project register: only facts with a passage verified word for word are eligible for seeding, and three projects have no verified fact yet because their sources block automated access. `make seed-demo` loads only the verified subset (local databases only; nothing is published). No seed data may be presented as factual beyond that register. Never fabricate project data, sources, escalation routes, or translations.
+Work is executed task by task from `docs/BACKEND_BUILD_ORDER.md`. Each task gets a Conventional Commit, an `Execution status` note under its heading, and an entry in `docs/AI_BUILD_LOG.md`. `docs/SOURCE_REGISTER.md` (generated from `data/source-register.json`) holds the six-project register: only facts with a passage verified word for word are seeded, and three projects have none because their sources block automated access. No seed data may be presented as factual beyond that register, and never fabricate project data, sources, escalation routes, or translations.
 
 Hard deadline: **21 September 2026, 23:59 UTC** (hackathon submission). When time is short, follow the plan's scope-cut order; never cut the items it marks as uncuttable.
 
@@ -34,24 +51,11 @@ Read in this order when they conflict (details in `docs/README.md`):
 1. `PRODUCT.md`: scope, pilot, users, languages, non-goals.
 2. `docs/PRODUCT_BRIEF.md`: journeys, trust model, requirements, acceptance criteria.
 3. `docs/IMPLEMENTATION_PLAN.md`: stack, BFF boundary, data model, API list, security controls, test strategy, gates, and scope-cut order.
-   - `docs/decisions/` (ADR-0001 to ADR-0008) makes binding the hard-to-reverse backend choices: internal-service auth, DB roles, envelope encryption, tracking codes, sanitation, OpenAPI, providers.
+   - `docs/decisions/` (ADR-0001 to ADR-0010) makes binding the hard-to-reverse backend choices: internal-service auth, DB roles, envelope encryption, tracking codes, sanitation, OpenAPI, providers, the Groq language provider, and local embeddings.
    - `docs/THREAT_MODEL.md` classifies every asset and lists the allowed data per flow and destination.
-4. `contracts/openapi.json`, migrations, and tests once they exist.
+4. `contracts/openapi.json`, migrations, and tests.
 
 Log material AI assistance in `docs/AI_BUILD_LOG.md` as part of each change.
-
-## Planned commands (target interfaces, not yet implemented)
-
-Once Gate 1 lands, the root `Makefile` is the judge-facing entry point:
-
-```text
-cp .env.example .env
-make setup && make infra-up && make migrate && make seed-demo
-make dev
-make verify     # canonical full gate: format, lint, types, tests, contract diff, migrations, builds, E2E
-```
-
-Stack-specific commands stay with their stack: `pnpm` in `apps/web` (Vitest, Playwright), `uv` in `services/platform` (Ruff, Pyright, pytest). When they exist, a single backend test runs as `uv run pytest path/to/test_file.py::test_name` from `services/platform`, and a single frontend test runs through the web package's Vitest script with a file filter. Confirm the actual scripts in `package.json`/`pyproject.toml` before relying on this.
 
 ## Big-picture architecture
 
@@ -71,5 +75,8 @@ These are recorded in `docs/IMPLEMENTATION_PLAN.md` and override the original br
 - Public Source Scout runs are cached per project for 24 hours and capped by a global daily budget; reviewer runs are separate and audited.
 - Hosted demo runs without ClamAV (`SCANNER_MODE=not_deployed`, files labelled `not_scanned_demo`); local and CI scan for real; production refuses that mode.
 - Session cookie is `__Host-sg_session` (Secure) in staging/production and plain `sg_session` in development/test so WebKit E2E works on `http://localhost`.
-- Seed embeddings are checked in under `data/embeddings/`; without a key, Q&A falls back to full-text search and reports `retrieval_mode: "keyword"`.
+- Language model is Groq (ADR-0009), not OpenAI; the strict schema sent over the wire drops `pattern` because Groq's constrained decoder rejects it, and our own Pydantic models still enforce it.
+- Embeddings are local: FastEmbed with `multilingual-e5-large`, 1024 dimensions (ADR-0010). `EMBEDDING_BACKEND` is `off` by default; when on, a question is embedded in-process and retrieval is hybrid, otherwise (or on any failure) it falls back to keyword and reports `retrieval_mode`. The model must be a real directory, not a Hugging Face cache, because ONNX Runtime rejects the symlink layout. Only the API image bakes it in (`WITH_EMBEDDING_MODEL=1`) and it needs at least 3 GB of memory.
+- A cited fact can be public while `awaiting_verification`, and public citations expose `source_version_id` (migrations 0025 and 0026). Seeded source versions are `approved` because the register validator re-checks every passage hash; that approves the quoted text, not the claim.
+- The demo seed refuses everything except local databases, plus `APP_ENV=staging` with `SEED_ALLOW_DEPLOYED=1`. Production has no seed mode, with or without the flag.
 - Optional anonymous reporter handles: server-generated handle plus six-word passphrase, Argon2id hash, no contact or recovery data, verified only at submission, reviewer-only track record, deletable without deleting reports. Fully anonymous reporting remains the default, and handles are built only after the anonymous path works.
