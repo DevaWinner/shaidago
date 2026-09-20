@@ -45,7 +45,7 @@ ShaidaGo connects three activities that are usually separated: understanding an 
 - Human review is required before a private report or discovered source can affect the public record.
 - The product is not an emergency service and must show appropriate escalation guidance.
 - No native mobile application, public allegation feed, autonomous publication, legal judgment, nationwide coverage, blockchain, or complex predictive analytics in the proof of concept.
-- Open decisions: final source registry and project list; reviewed translations; hosted-service credentials; visual direction; and the standing comp-first or code-first UI workflow preference.
+- Open decisions: human audit/approval of the six source-register candidates; reviewed translations; remaining hosted-service evidence; visual direction; and the standing comp-first or code-first UI workflow preference.
 
 ## Brand Commitments
 
@@ -56,7 +56,9 @@ ShaidaGo connects three activities that are usually separated: understanding an 
 ## Evidence on Hand
 
 - [`docs/PRODUCT_BRIEF.md`](docs/PRODUCT_BRIEF.md) is the current product and technical source brief.
-- No verified AMAC/Bwari project dataset, source archive, escalation directory, logo, visual system, or human-reviewed translation pack exists in the repository yet. Future work must not fabricate these assets or present fictional reports as real.
+- [`docs/SOURCE_REGISTER.md`](docs/SOURCE_REGISTER.md) records six AMAC/Bwari candidate projects, exact retrieved passages where available, source availability, seed eligibility, and unresolved gaps. It is not a completed human audit; facts marked ineligible or awaiting verification must not be presented as verified.
+- [`contracts/openapi.json`](contracts/openapi.json), [`contracts/frontend-fixtures.json`](contracts/frontend-fixtures.json), and [`docs/FRONTEND_BACKEND_CONTRACT.md`](docs/FRONTEND_BACKEND_CONTRACT.md) form the implemented frontend handoff.
+- No approved logo, visual system, or human-reviewed Hausa, Igbo, and Yoruba translation pack exists yet. Future work must not fabricate these assets, overstate source verification, or present fictional reports as real.
 
 ## Product Principles
 

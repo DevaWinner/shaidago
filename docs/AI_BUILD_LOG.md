@@ -1387,3 +1387,65 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Discovered that query embedding never existed, measured the candidate models rather than assuming, deployed to staging, diagnosed the memory kill from platform metrics, downgraded the two databases before rewriting an applied migration, and recorded what went wrong. Its own informal Hausa, Igbo and Yoruba test sentences are unreviewed and are labelled as such.
 - **Prompt summary:** Use FastEmbed for embeddings instead of a paid provider; clear the backend's open items on a new branch and use Railway.
 - **Human review:** Pending maintainer review of this branch.
+
+## 2026-09-20 — FE-000 frontend scope and authority reconciliation
+
+- **Task:** FE-000 — Reconcile frontend scope and authority.
+- **Outcome delivered:** A frontend traceability contract maps all five journeys, 16 must-have capabilities, Product Brief acceptance criteria, routes, data classes, cache/render rules, backend operations, enforcement boundaries, non-goals, and proof owners before UI or BFF implementation begins.
+- **Files changed:** `PRODUCT.md`, `docs/FRONTEND_REQUIREMENTS_TRACEABILITY.md`, `docs/FRONTEND_BUILD_ORDER.md`, `docs/README.md`, `scripts/validate_frontend_traceability.py`, and this log.
+- **Contract/schema impact:** No generated contract or runtime schema changed. The register consumes the committed OpenAPI `0.0.0` operation IDs and frontend fixture schema `1` without inspecting backend implementation.
+- **Security/privacy impact:** Public, public-after-review, private, one-time-secret, and operational-only fields now have explicit browser/cache handling. The BFF is explicitly excluded as sole domain, authorisation, verification, or publication authority.
+- **Accessibility/localisation impact:** Ownership is assigned for keyboard, focus, error association, text-not-colour status, WCAG 2.2 AA, four-locale parity, honest translation status, and source-language preservation; no translated copy or accessibility implementation is claimed yet.
+- **Verification:** `python3 scripts/validate_frontend_traceability.py --self-test` validates all frontend task references, all 35 non-health OpenAPI operations, five journeys, 16 capabilities, 29 acceptance criteria, five data classes, eight non-goals, and three negative mutations. JSON/OpenAPI parsing, local Markdown links, Python compilation, whitespace, and staged-diff checks are run before commit.
+- **Human review:** The maintainer directed frontend work from the completed backend baseline. The mapping remains reviewable in its task commit; no visual direction or fluent language review has been approved yet.
+- **Result:** FE-001 may define the detailed route/journey matrix without inventing backend fields. The evidence register's unresolved human-audit gaps remain visible and are not misrepresented as frontend work.
+- **AI assistance used:** Reconciled product, frontend build order, OpenAPI, controlled vocabulary, source register, and backend handoff into one validated authority map; updated stale product evidence wording to match repository reality.
+- **Prompt summary:** Create a frontend branch from the maintainer's in-progress backend branch and begin the frontend build order while leaving backend gate-closing work out of scope.
+
+## 2026-09-20 — FE-001 route and user-journey inventory
+
+- **Task:** FE-001 — Route and user-journey inventory.
+- **Outcome delivered:** All twelve required routes and seven complete journey sequences now define audience, job, primary action, handoff, backend operations, rendering/cache/authentication, locale/canonical/robots policy, material states, and interruption recovery.
+- **Files changed:** `docs/FRONTEND_ROUTE_MATRIX.md`, `docs/FRONTEND_BUILD_ORDER.md`, `docs/README.md`, `scripts/validate_frontend_route_matrix.py`, and this log.
+- **Contract/schema impact:** No runtime contract changed. The matrix covers every non-health OpenAPI operation and keeps Source Scout embedded in project/reviewer detail as accepted.
+- **Security/privacy impact:** Private/one-time credentials are excluded from paths, queries, canonical metadata, prefetch, and offline caches. Reviewer and reporter routes are dynamic, no-store, and noindex; hidden/unknown public records retain safe not-found handling.
+- **Accessibility/localisation impact:** Each route names locale source, no-JavaScript/public behavior, keyboard/error states, and handoff/focus responsibility. Actual UI and translations remain future tasks.
+- **Verification:** `python3 scripts/validate_frontend_route_matrix.py --self-test` checks all twelve route IDs/patterns, all 35 non-health operations, seven journey rows, the exit gate, and negative cases for missing route, secret-in-path, and missing operation.
+- **Human review:** The route plan follows the maintainer-approved product and backend handoff; interaction and visual presentation remain open to review.
+- **Result:** FE-002 can define shared state fixtures per surface without inventing routes or navigation behavior.
+- **AI assistance used:** Converted the implementation plan and backend handoff into an App Router ownership and recovery matrix with explicit public/private boundaries.
+- **Prompt summary:** Continue the frontend build order from the maintainer's updated backend branch.
+
+## 2026-09-20 — FE-002 frontend state and fixture matrices
+
+- **Task:** FE-002 — Complete state matrices.
+- **Outcome delivered:** A stable fixture namespace and 34-state vocabulary now cover 304 explicitly expanded UI fixtures across 28 public, Q&A, reporting, tracking, handle, reviewer, publication, evidence, and Source Scout surfaces.
+- **Files changed:** `docs/FRONTEND_STATE_MATRIX.md`, `docs/FRONTEND_BUILD_ORDER.md`, `docs/README.md`, `scripts/validate_frontend_state_matrix.py`, and this log.
+- **Contract/schema impact:** Generated transport fixtures remain unchanged. UI fixtures compose their eight documented transport scenarios with browser, locale, cache, connectivity, and interaction context.
+- **Security/privacy impact:** Public cached-offline and private unavailable-offline behavior are distinct. Unknown mutation completion preserves idempotency; credentials/private data never gain a cache fallback; session, CSRF, Origin, forbidden, conflict, and provider failures have separate recovery.
+- **Accessibility/localisation impact:** State rules cover focus, busy semantics, useful announcements, field-error association, text-not-colour status, long/min/max content, partial translations, machine-assisted labels, no-JavaScript public baselines, and safe locale preservation.
+- **Verification:** `python3 scripts/validate_frontend_state_matrix.py --self-test` validates the exact 34-state catalogue, at least 180 expanded fixtures (304 present), all 28 surfaces, all eight transport scenarios, the seven-item exit gate, and three negative mutations.
+- **Human review:** The maintainer directed execution of the frontend order. Visible copy, visual treatment, and fluent-language review remain future human decisions.
+- **Result:** FE-003 may size content fixtures against stable state names; later component and E2E tests must consume these names rather than invent local error labels.
+- **AI assistance used:** Separated materially different recovery paths and converted backend response semantics into implementation-ready UI fixture contracts.
+- **Prompt summary:** Continue the frontend Circle 0 inventory from the updated backend handoff.
+
+## 2026-09-20 — Frontend/BFF unattended build-loop command
+
+- **Task:** Repository developer workflow — frontend/BFF loop aligned with the backend loop.
+- **User outcome delivered:** A repeatable command now drives eligible frontend tasks through the accepted frontend build order with one coherent task packet, implementation, proof, record, and commit lifecycle.
+- **Routes/components changed:** No runtime route, component, BFF handler, or client bundle changed; added `.claude/commands/frontend-build-loop.md`.
+- **Backend operations/contract version:** No contract changed. The command requires the committed OpenAPI, frontend fixture, controlled-vocabulary, and frontend-backend handoff contracts before an affected task begins.
+- **Public/private data handled:** No data flow changed. The loop explicitly preserves browser-to-Next-only routing, server-only API access, purpose-built BFF handlers, no-store private handling, and prohibited sensitive browser/cache/log locations.
+- **States implemented:** No product UI state changed. The workflow requires task packets to enumerate initial, loading, empty, success, stale, partial, validation, denied, rate-limited, offline, dependency-down, and recovery states as applicable.
+- **Accessibility evidence:** No UI changed. The command requires semantic, focus, keyboard, assistive announcement, zoom, contrast, reduced-motion, locale-length, mobile, and screenshot evidence for relevant visible tasks.
+- **Locales reviewed:** No message or translation changed. The workflow requires parity for `en`, `ha`, `ig`, and `yo` and prevents a claim of fluent human review without that review.
+- **Performance/cache impact:** No runtime cache or bundle changed. The command requires public/private cache inspection, server/client boundary checks, and viewport/network evidence when a task affects them.
+- **Commands run and results:** Inspected the current `CLAUDE.md`, backend loop command, frontend build order, documentation index, AI log, repository status, and recent commits. No planned frontend build command was run because no `apps/web` package exists yet.
+- **Screenshots/traces/artifacts checked:** Reviewed the tracked backend loop and the frontend execution specification; no rendered surface exists to inspect.
+- **Known limitations/open decisions:** Circle 1 remains human-directed. An unattended run must record FE-010 as blocked and may continue only with eligible non-visual work; Circle 4 and visible product surfaces wait for approval.
+- **Commit/PR:** `docs: add the frontend build loop command`
+- **Next task may rely on:** The frontend loop's task-selection, safety-boundary, validation, documentation, commit, blocked-task, and hard-stop rules.
+- **AI assistance used:** Mirrored the proven backend loop structure, then adapted it to the frontend's Server Component/BFF boundary, state-matrix proof, four-locale requirements, and mandatory human visual-direction gate.
+- **Prompt summary:** Create a frontend loop equivalent to the backend loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

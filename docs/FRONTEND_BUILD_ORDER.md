@@ -160,6 +160,8 @@ Colocate a component with a feature when it has one domain owner. Promote it to 
 
 ### FE-000 — Reconcile frontend scope and authority
 
+> **Execution status (2026-09-20): complete.** [`FRONTEND_REQUIREMENTS_TRACEABILITY.md`](FRONTEND_REQUIREMENTS_TRACEABILITY.md) maps all accepted journeys, capabilities, acceptance criteria, routes, data classes, backend operations, enforcement boundaries, and proof owners. Its dependency-free validator checks frontend task and OpenAPI-operation coverage.
+
 1. Read `PRODUCT.md`, `AGENTS.md`, `docs/PRODUCT_BRIEF.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/BACKEND_BUILD_ORDER.md`, and the committed OpenAPI contract.
 2. Map every frontend acceptance criterion to a circle/task in this document.
 3. Confirm route ownership and render/cache rules from the implementation plan.
@@ -168,6 +170,8 @@ Colocate a component with a feature when it has one domain owner. Promote it to 
 6. Reject any route that requires reading backend tables or undocumented fields.
 
 ### FE-001 — Route and user-journey inventory
+
+> **Execution status (2026-09-20): complete.** [`FRONTEND_ROUTE_MATRIX.md`](FRONTEND_ROUTE_MATRIX.md) defines all twelve routes, seven journey sequences, operation dependencies, render/cache/auth rules, locale/canonical/robots policy, material states, safe interruption, and route handoffs.
 
 Create a route matrix covering:
 
@@ -187,6 +191,8 @@ Create a route matrix covering:
 For each route define: audience, primary job, primary action, required backend operations, rendering mode, cache policy, authentication, source of locale, canonical URL, metadata/robots policy, empty/error/offline states, and handoff to the next route.
 
 ### FE-002 — Complete state matrices
+
+> **Execution status (2026-09-20): complete.** [`FRONTEND_STATE_MATRIX.md`](FRONTEND_STATE_MATRIX.md) defines the shared state semantics and 304 stable UI fixture names across 28 async surfaces, including public/private offline separation, idempotent recovery, reviewer security failures, and Source Scout lifecycle behavior.
 
 For each async feature, enumerate fixtures and UI behaviour for:
 
