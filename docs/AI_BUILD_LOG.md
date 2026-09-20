@@ -2045,3 +2045,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Integrated the maintainer's translations, updated the status and tests, and added per-locale browser checks.
 - **Prompt summary:** Maintainer added translations and asked that they not be pending and that the work be committed.
 - **Human review:** The maintainer authored the translations and set their status by instruction; the code and test changes have not been reviewed by anyone else.
+
+## 2026-09-20 — FE-053 Localised validation and problem mapping, and pending-key tracking
+
+- **Task:** FE-053 — Localised validation and problem mapping; plus the maintainer's instruction to add all new keys with `null` translations and translate them at the end of the build.
+- **User outcome delivered:** A failed action can be explained to a resident from the problem's stable code alone, in reviewed wording, without ever showing backend text, submitted values, or internals; form errors have an accessible summary that moves focus to the field.
+- **Files changed:** `apps/web/src/lib/problems/{problem-messages,browser-problem}.ts`, `apps/web/src/components/ui/{error-summary,field}.tsx`, `apps/web/messages/*.json` (new `problems` domain, restored `recovery.fatal.title`, `pendingKeysAllowed`), `apps/web/scripts/{messages-parity.mjs,messages-parity.d.mts,check-messages.mjs}`, `apps/web/app/global-error.tsx`, tests (problem messages, error summary, parity, catalogue), `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None called. Covers the problem codes in `docs/API.md`, `contracts/openapi.json`, and the BFF's own codes.
+- **Public/private data handled:** Problem responses only. The parser ignores `title` and `detail` and any submitted value; `preservedValues` never restores secrets, contacts, or files.
+- **States implemented:** known code, unknown code with reference, Retry-After, completion-unknown after timeout or network loss, field rule errors, unmapped errors, empty summary, focused summary.
+- **Accessibility evidence:** component tests show the summary takes focus and is an alert, each link moves focus to its field by mouse and keyboard, and the field keeps its value, is `aria-invalid`, and has its message as its accessible description. Browser axe and reflow suites for all four locales still pass.
+- **Locales reviewed:** English only. The `problems` domain is `null` in `ha`, `ig`, and `yo` and `pending`/non-critical so it does not flip those languages back to English; I wrote no Hausa, Igbo, or Yorùbá text. It must be translated, reviewed, and made critical before the first form ships.
+- **Pending keys:** restored `recovery.fatal.title` (English) with `null` in the other three, as instructed. `status.json` now has `pendingKeysAllowed: true`; the checker allows `null` keys in a reviewed domain during the build, lists 36 per language, keeps requiring a reviewer and date, and fails on any `null` once the switch is `false`.
+- **Performance/cache impact:** No dependency. The problem code adds no client JavaScript until a form imports it; the bundle scan is clean.
+- **Failure behaviour verified:** hostile or malformed problem bodies, a wrong content type, an unsafe request ID, a non-numeric Retry-After, inherited object keys (`constructor`, `__proto__`) used as codes, unmapped and duplicate field errors, and files and secrets in preserved values.
+- **Commands run and results:** `make web-verify` exit 0 (331 unit, 51 component, catalogues consistent with 36 pending keys per language, bundle scan clean); `make web-e2e` 41 passed and 1 skipped (iOS WebKit Tab-to-link); `make web-a11y` 32 passed.
+- **Known limitations/open decisions:** No form uses this yet, so no page renders a problem message; Circle 9 wires it in. Adding keys to a served domain would show a fallback notice, so new keys go into new domains. The Circle 5 exit criterion for critical validation copy in every language is open until the translation pass.
+- **Commit/PR:** `feat: map problem codes to reviewed copy and add an accessible error summary`
+- **AI assistance used:** Designed the mapping, parser, and summary, extended the checker, and wrote the tests.
+- **Prompt summary:** Unattended frontend/BFF build loop for Circle 5; maintainer asked to keep the fatal key and add all future keys as null.
+- **Human review:** none yet; unattended run, pending maintainer review.

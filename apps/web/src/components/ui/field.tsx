@@ -58,8 +58,8 @@ export function Field({
 }: Readonly<{
   children: ReactNode;
   controlId: string;
-  description?: string;
-  error?: string;
+  description?: string | undefined;
+  error?: string | undefined;
   label: string;
   required?: boolean;
   /** Localised text such as "required"; shown beside the label so it is not colour-only. */

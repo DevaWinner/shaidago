@@ -155,3 +155,11 @@ reviewer and date. `pnpm run messages:check` (also part of `make web-contract`) 
 keys, valid ICU, the same variables and types, identical `select` branches, and consistent status.
 `resolveDomain` in `src/i18n/catalogue.ts` serves a locale's text only when its domain is reviewed
 and complete; otherwise it returns the flagged English original and the page says so.
+
+## Adding a key
+
+Add it to `messages/en.json` and to `ha.json`, `ig.json`, and `yo.json` with the value `null`, then run
+`pnpm run messages:check`; it lists every key still waiting for translation. While
+`pendingKeysAllowed` is `true` in `messages/status.json` that is allowed; at the end of the build set it
+to `false` and the check fails on any remaining `null`. Prefer a new domain for a new feature, because
+a served domain with a `null` key falls back, flagged, to English.

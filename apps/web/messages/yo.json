@@ -119,6 +119,52 @@
       "retry": "Gbìyànjú lẹ́ẹ̀kan sí i",
       "reference": "Nọ́ńbà ìtọ́kasí ìrànlọ́wọ́: {reference}"
     },
-    "loading": "A ń múra ojú ìwé yìí sílẹ̀."
+    "loading": "A ń múra ojú ìwé yìí sílẹ̀.",
+    "fatal": {
+      "title": null
+    }
+  },
+  "problems": {
+    "codes": {
+      "badRequest": null,
+      "unauthenticated": null,
+      "forbidden": null,
+      "notFound": null,
+      "codeNotRecognised": null,
+      "invalidCredentials": null,
+      "rateLimited": null,
+      "conflict": null,
+      "idempotencyConflict": null,
+      "notAllowedNow": null,
+      "tooLarge": null,
+      "unsupportedType": null,
+      "validationFailed": null,
+      "markupNotAllowed": null,
+      "publicationIncomplete": null,
+      "invalidCursor": null,
+      "queryChanged": null,
+      "notVerified": null,
+      "timeout": null,
+      "unavailable": null,
+      "aborted": null,
+      "network": null,
+      "internal": null,
+      "unknown": null
+    },
+    "rules": {
+      "required": null,
+      "tooShort": null,
+      "tooLong": null,
+      "invalidFormat": null,
+      "notAccepted": null,
+      "markup": null,
+      "invalid": null
+    },
+    "summary": {
+      "title": null
+    },
+    "mayHaveCompleted": null,
+    "retryAfter": null,
+    "reference": null
   }
 }

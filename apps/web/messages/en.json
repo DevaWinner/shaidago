@@ -119,6 +119,52 @@
       "retry": "Try again",
       "reference": "Support reference: {reference}"
     },
-    "loading": "Preparing this page."
+    "loading": "Preparing this page.",
+    "fatal": {
+      "title": "ShaidaGo could not be opened"
+    }
+  },
+  "problems": {
+    "codes": {
+      "badRequest": "The request could not be understood. Check what you entered and try again.",
+      "unauthenticated": "Sign in to continue.",
+      "forbidden": "You do not have permission to do that.",
+      "notFound": "We could not find that.",
+      "codeNotRecognised": "We could not find a report for that code. Check the code and try again.",
+      "invalidCredentials": "Those details were not accepted. Check them and try again.",
+      "rateLimited": "Too many attempts. Wait a moment and try again.",
+      "conflict": "This changed while you were working. Refresh and try again.",
+      "idempotencyConflict": "This request was already used with different details. Start again.",
+      "notAllowedNow": "That action is not available in the current state.",
+      "tooLarge": "That is too large to send. Reduce its size and try again.",
+      "unsupportedType": "That format is not supported.",
+      "validationFailed": "Some details need attention.",
+      "markupNotAllowed": "Remove formatting or markup and try again.",
+      "publicationIncomplete": "Something required is missing before this can be published.",
+      "invalidCursor": "That page of results is no longer valid. Return to the first page.",
+      "queryChanged": "The search changed. Review the new plan before continuing.",
+      "notVerified": "This request could not be verified. Reload the page and try again.",
+      "timeout": "The service took too long to respond. Try again.",
+      "unavailable": "The service is unavailable right now. Try again shortly.",
+      "aborted": "The request was cancelled.",
+      "network": "Could not reach ShaidaGo. Check your connection and try again.",
+      "internal": "Something went wrong on our side.",
+      "unknown": "Something went wrong."
+    },
+    "rules": {
+      "required": "Enter a value.",
+      "tooShort": "This is too short.",
+      "tooLong": "This is too long.",
+      "invalidFormat": "This is not in the expected format.",
+      "notAccepted": "This field is not accepted.",
+      "markup": "Remove formatting or markup.",
+      "invalid": "Check this value."
+    },
+    "summary": {
+      "title": "{count, plural, one {Fix # problem to continue} other {Fix # problems to continue}}"
+    },
+    "mayHaveCompleted": "If you already sent this, check before sending it again.",
+    "retryAfter": "Try again in {seconds, plural, one {# second} other {# seconds}}.",
+    "reference": "Support reference: {reference}"
   }
 }

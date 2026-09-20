@@ -22,7 +22,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProperties): Re
     <html lang="en">
       <body>
         <RecoveryPage
-          title={en.recovery.error.title}
+          title={en.recovery.fatal.title}
           referenceText={
             reference === undefined
               ? undefined

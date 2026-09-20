@@ -3,8 +3,12 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-// @ts-expect-error -- plain ESM script shared with the CLI; it has no type declarations.
-import { LOCALES, checkCatalogues, describeMessage } from "../../scripts/messages-parity.mjs";
+import {
+  LOCALES,
+  checkCatalogues,
+  describeMessage,
+  pendingKeys
+} from "../../scripts/messages-parity.mjs";
 import { REVIEWED_LOCALES } from "@/i18n/routing";
 
 type Json = Record<string, unknown>;
@@ -66,24 +70,42 @@ const translate = (
 
 describe("real catalogues", () => {
   it("are consistent and cover the four public locales", () => {
-    const catalogues = Object.fromEntries(
-      (LOCALES as string[]).map((locale) => [locale, read(locale)])
-    );
+    const catalogues = Object.fromEntries([...LOCALES].map((locale) => [locale, read(locale)]));
 
     expect(LOCALES).toEqual(["en", "ha", "ig", "yo"]);
     expect(checkCatalogues({ catalogues, status: read("status") })).toEqual([]);
   });
 
-  it("mark every locale and domain reviewed with a named reviewer and date, so all four are served as themselves", () => {
+  it("list the keys still waiting for the maintainer's translation pass, identically for every locale", () => {
+    const catalogues = Object.fromEntries([...LOCALES].map((locale) => [locale, read(locale)]));
+    const pending = pendingKeys({ catalogues }) as Record<string, string[]>;
+
+    expect(pending["ha"]).toEqual(pending["ig"]);
+    expect(pending["ha"]).toEqual(pending["yo"]);
+    expect(pending["ha"]).toContain("recovery.fatal.title");
+    expect(
+      pending["ha"]?.every((key) => key === "recovery.fatal.title" || key.startsWith("problems."))
+    ).toBe(true);
+    expect((read("status") as { pendingKeysAllowed?: boolean }).pendingKeysAllowed).toBe(true);
+  });
+
+  it("mark every served domain reviewed with a named reviewer and date, and keep the untranslated `problems` domain pending", () => {
     const status = read("status") as {
+      domains: Record<string, { critical: boolean }>;
       locales: Record<
         string,
         Record<string, { status: string; reviewer?: string; reviewedOn?: string }>
       >;
     };
 
-    for (const locale of LOCALES as string[]) {
+    for (const locale of LOCALES) {
       for (const [domain, record] of Object.entries(status.locales[locale] ?? {})) {
+        if (domain === "problems" && locale !== "en") {
+          // New keys are added as null for the maintainer's end-of-build translation pass.
+          expect(record.status, `${locale}.${domain}`).toBe("pending");
+          expect(status.domains[domain]?.critical, domain).toBe(false);
+          continue;
+        }
         expect(record.status, `${locale}.${domain}`).toBe("reviewed");
         expect(record.reviewer, `${locale}.${domain}`).toMatch(/\S/);
         expect(record.reviewedOn, `${locale}.${domain}`).toBe("2026-09-20");
@@ -250,6 +272,52 @@ describe("translation status", () => {
     expect(partial).toContain(
       "status: ha.landing is machine_assisted and needs a reviewedOn date (YYYY-MM-DD)"
     );
+  });
+
+  it("allows null keys in a reviewed domain only while the build-phase switch is on, and lists them", () => {
+    const gappy = (input: ReturnType<typeof fixture>, allowed: boolean | undefined) => {
+      input.catalogues["ha"] = {
+        shell: { greeting: "Sannu {name}", count: null },
+        landing: { title: "T", kind: "{kind, select, a {A} b {B} other {C}}" }
+      };
+      const record = { status: "reviewed", reviewer: "tester", reviewedOn: "2026-09-20" };
+      (input.status["locales"] as Record<string, Json>)["ha"] = { shell: record, landing: record };
+      if (allowed !== undefined) {
+        input.status["pendingKeysAllowed"] = allowed;
+      }
+    };
+
+    expect(errorsFor((input) => gappy(input, true))).toEqual([]);
+    expect(errorsFor((input) => gappy(input, false))).toContain(
+      "status: ha.shell is reviewed but 1 key(s) are still null"
+    );
+    expect(errorsFor((input) => gappy(input, undefined))).toContain(
+      "status: ha.shell is reviewed but 1 key(s) are still null"
+    );
+
+    const input = fixture();
+    gappy(input, true);
+    expect(pendingKeys(input)).toEqual({
+      ha: ["shell.count"],
+      ig: ["shell.greeting", "shell.count", "landing.title", "landing.kind"],
+      yo: ["shell.greeting", "shell.count", "landing.title", "landing.kind"]
+    });
+  });
+
+  it("still requires a reviewer and date for a reviewed domain that has pending keys", () => {
+    const errors = errorsFor((input) => {
+      input.status["pendingKeysAllowed"] = true;
+      input.catalogues["ha"] = {
+        shell: { greeting: "Sannu {name}", count: null },
+        landing: { title: "T", kind: "{kind, select, a {A} b {B} other {C}}" }
+      };
+      (input.status["locales"] as Record<string, Json>)["ha"] = {
+        shell: { status: "reviewed" },
+        landing: { status: "reviewed" }
+      };
+    });
+
+    expect(errors).toContain("status: ha.shell is reviewed and needs a named reviewer");
   });
 
   it("requires a valid status value, matching domains, and a reviewed English source", () => {

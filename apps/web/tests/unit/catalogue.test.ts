@@ -25,7 +25,8 @@ describe("resolveDomain", () => {
     const catalogues = { ha, ig, yo };
 
     for (const locale of ["ha", "ig", "yo"] as const) {
-      for (const domain of ["shell", "evidence", "landing", "recovery"] as const) {
+      // `recovery` still has a pending key (see below), so only complete domains are checked here.
+      for (const domain of ["shell", "evidence", "landing"] as const) {
         const copy = resolveDomain(locale, domain);
 
         expect(copy, `${locale}.${domain}`).toMatchObject({ language: locale, isOriginal: false });
@@ -33,6 +34,13 @@ describe("resolveDomain", () => {
       }
     }
     expect(isDomainReviewed("ha", "shell")).toBe(true);
+  });
+
+  it("returns the flagged English original for a domain that still has a pending key", () => {
+    for (const locale of ["ha", "ig", "yo"] as const) {
+      expect(resolveDomain(locale, "recovery")).toMatchObject({ language: "en", isOriginal: true });
+      expect(resolveDomain(locale, "problems")).toMatchObject({ language: "en", isOriginal: true });
+    }
   });
 
   async function withMocks(
@@ -91,8 +99,8 @@ describe("resolveDomain", () => {
     );
 
     expect(resolveWith("ha", "shell")).toMatchObject({ language: "en", isOriginal: true });
-    // A domain that is complete still serves its own language.
-    expect(resolveWith("ha", "recovery")).toMatchObject({ language: "ha", isOriginal: false });
+    // A complete domain still serves its own language.
+    expect(resolveWith("ha", "evidence")).toMatchObject({ language: "ha", isOriginal: false });
     vi.doUnmock("../../messages/status.json");
     vi.doUnmock("../../messages/ha.json");
     vi.resetModules();

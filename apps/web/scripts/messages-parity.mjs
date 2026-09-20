@@ -295,7 +295,7 @@ function checkStatus({ catalogues, status, errors }) {
       }
 
       if (record.status !== "pending") {
-        if (gaps > 0) {
+        if (gaps > 0 && status.pendingKeysAllowed !== true) {
           errors.push(
             `status: ${locale}.${domain} is ${record.status} but ${gaps} key(s) are still null`
           );
@@ -317,4 +317,16 @@ function checkStatus({ catalogues, status, errors }) {
       errors.push(`status: en.${domain} is the source and must be reviewed`);
     }
   }
+}
+
+/** Null keys per non-English locale, by dotted path: what is still waiting for translation. */
+export function pendingKeys({ catalogues }) {
+  return Object.fromEntries(
+    LOCALES.filter((locale) => locale !== "en").map((locale) => [
+      locale,
+      leaves(catalogues[locale])
+        .filter(([, value]) => value === null)
+        .map(([path]) => path)
+    ])
+  );
 }

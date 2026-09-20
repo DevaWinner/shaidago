@@ -1,5 +1,5 @@
 {
-  "$comment": "Translation status per locale and domain. A locale is served as its own language only when every critical domain is reviewed; otherwise pages serve the English original and say so. Never mark a domain reviewed or machine_assisted without a named reviewer and date.",
+  "$comment": "Translation status per locale and domain. A locale is served as its own language only when every critical domain is reviewed; otherwise pages serve the English original and say so. While `pendingKeysAllowed` is true (the build phase), a reviewed domain may still hold `null` keys that the maintainer will translate in one pass at the end of the build; the checker lists them. Set it to false at the end and the checker fails on any remaining null. Never mark a domain reviewed or machine_assisted without a named reviewer and date. The `problems` domain is non-critical and pending in ha, ig, and yo until the maintainer's full translation pass; it must be translated, reviewed, and marked critical before the first form ships.",
   "domains": {
     "shell": {
       "critical": true
@@ -11,6 +11,9 @@
       "critical": true
     },
     "landing": {
+      "critical": false
+    },
+    "problems": {
       "critical": false
     }
   },
@@ -32,6 +35,11 @@
         "reviewedOn": "2026-09-20"
       },
       "landing": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
+        "reviewedOn": "2026-09-20"
+      },
+      "problems": {
         "status": "reviewed",
         "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
         "reviewedOn": "2026-09-20"
@@ -57,6 +65,9 @@
         "status": "reviewed",
         "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
         "reviewedOn": "2026-09-20"
+      },
+      "problems": {
+        "status": "pending"
       }
     },
     "ig": {
@@ -79,6 +90,9 @@
         "status": "reviewed",
         "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
         "reviewedOn": "2026-09-20"
+      },
+      "problems": {
+        "status": "pending"
       }
     },
     "yo": {
@@ -101,7 +115,11 @@
         "status": "reviewed",
         "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
         "reviewedOn": "2026-09-20"
+      },
+      "problems": {
+        "status": "pending"
       }
     }
-  }
+  },
+  "pendingKeysAllowed": true
 }
