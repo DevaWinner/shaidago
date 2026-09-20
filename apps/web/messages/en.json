@@ -889,6 +889,90 @@
         "signed_out": "You have been signed out."
       },
       "note": "This sign-in never says which part was wrong. Nothing you type is stored in this browser."
+    },
+    "queue": {
+      "title": "Report queue",
+      "lead": "Oldest first. This list shows triage details only. Open a report to read it.",
+      "filters": {
+        "label": "Filter the queue",
+        "status": "Status",
+        "risk": "Risk level",
+        "category": "Concern",
+        "project": "Record name (as in its address)",
+        "projectHelp": "Lowercase letters, numbers and hyphens.",
+        "any": "Any",
+        "apply": "Apply filters",
+        "clear": "Clear filters"
+      },
+      "statuses": {
+        "received": "Received",
+        "needs_information": "Waiting for the reporter",
+        "under_review": "Under review",
+        "verified_for_public_update": "Verified for a public update",
+        "referred": "Referred",
+        "closed": "Closed"
+      },
+      "risks": {
+        "standard": "Standard",
+        "elevated": "Elevated",
+        "high": "High"
+      },
+      "categories": {
+        "no_visible_work": "No visible work",
+        "incomplete_work": "Incomplete work",
+        "unsafe_construction": "Unsafe construction",
+        "suspected_incorrect_status": "Status may be wrong",
+        "access_barrier": "Access barrier",
+        "other_concern": "Other concern"
+      },
+      "item": {
+        "riskLabel": "Risk",
+        "statusLabel": "Status",
+        "received": "Received {date}",
+        "updated": "Status changed {date}",
+        "files": "{count, plural, one {# file} other {# files}}",
+        "noFiles": "No files",
+        "questions": "{count, plural, one {# open question} other {# open questions}}",
+        "noQuestions": "No open questions",
+        "contact": "Contact details provided",
+        "noContact": "No contact details",
+        "open": "Open report",
+        "openLabel": "Open report for {project}, received {date}"
+      },
+      "results": {
+        "heading": "Reports",
+        "count": "{count, plural, one {# report on this page} other {# reports on this page}}",
+        "paginationLabel": "Queue pages",
+        "next": "Next reports",
+        "first": "Back to the first page"
+      },
+      "states": {
+        "empty": {
+          "title": "Nothing is waiting",
+          "body": "No reports need attention right now."
+        },
+        "noMatches": {
+          "title": "No reports match these filters",
+          "body": "Clear a filter to see more."
+        },
+        "invalidCursor": {
+          "title": "That page is no longer valid",
+          "body": "The queue changed. Go back to the first page."
+        },
+        "forbidden": {
+          "title": "This account cannot open the queue",
+          "body": "Ask an administrator to check your role. Nothing was loaded."
+        },
+        "rateLimited": {
+          "title": "Too many requests",
+          "body": "Wait a moment, then reload the page."
+        },
+        "unavailable": {
+          "title": "The queue could not be loaded",
+          "body": "The service did not answer. Nothing has changed. Try again.",
+          "retry": "Try again"
+        }
+      }
     }
   }
 }

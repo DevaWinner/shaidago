@@ -889,6 +889,90 @@
         "signed_out": null
       },
       "note": null
+    },
+    "queue": {
+      "title": null,
+      "lead": null,
+      "filters": {
+        "label": null,
+        "status": null,
+        "risk": null,
+        "category": null,
+        "project": null,
+        "projectHelp": null,
+        "any": null,
+        "apply": null,
+        "clear": null
+      },
+      "statuses": {
+        "received": null,
+        "needs_information": null,
+        "under_review": null,
+        "verified_for_public_update": null,
+        "referred": null,
+        "closed": null
+      },
+      "risks": {
+        "standard": null,
+        "elevated": null,
+        "high": null
+      },
+      "categories": {
+        "no_visible_work": null,
+        "incomplete_work": null,
+        "unsafe_construction": null,
+        "suspected_incorrect_status": null,
+        "access_barrier": null,
+        "other_concern": null
+      },
+      "item": {
+        "riskLabel": null,
+        "statusLabel": null,
+        "received": null,
+        "updated": null,
+        "files": null,
+        "noFiles": null,
+        "questions": null,
+        "noQuestions": null,
+        "contact": null,
+        "noContact": null,
+        "open": null,
+        "openLabel": null
+      },
+      "results": {
+        "heading": null,
+        "count": null,
+        "paginationLabel": null,
+        "next": null,
+        "first": null
+      },
+      "states": {
+        "empty": {
+          "title": null,
+          "body": null
+        },
+        "noMatches": {
+          "title": null,
+          "body": null
+        },
+        "invalidCursor": {
+          "title": null,
+          "body": null
+        },
+        "forbidden": {
+          "title": null,
+          "body": null
+        },
+        "rateLimited": {
+          "title": null,
+          "body": null
+        },
+        "unavailable": {
+          "title": null,
+          "body": null,
+          "retry": null
+        }
+      }
     }
   }
 }

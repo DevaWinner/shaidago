@@ -2193,3 +2193,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the sign-in surface, allowlist, session helpers, mock endpoints and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-111 Minimal-data reviewer queue
+
+- **Task:** FE-111 — Minimal-data reviewer queue (Circle 11).
+- **User outcome delivered:** A reviewer sees the oldest reports first as scannable cards with status, risk, dates, and counts, can filter and page through them with shareable links, and never sees report text or contact values in the list.
+- **Routes/components changed:** `app/[locale]/reviewer/reports/page.tsx`, `app/[locale]/reviewer/loading.tsx`, `src/components/reviewer/queue.tsx`, `src/lib/reviewer/queue-filters.ts`, `messages/*` (`reviewer.queue`), `tests/support/{mock-reviewer.mjs,reviewer-session.ts}`, unit, component and e2e tests.
+- **Backend operations/contract version:** `reviewer_reports_queue` via `serverApi().listReviewerReports` (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Private triage projection only (identifiers, category, status, risk, dates, counts, contact-exists flag). The address holds only filters and an opaque cursor. The list is never cached, prefetched, or indexed. Fictional mock data.
+- **States implemented:** results, empty, filter-empty, stale cursor, forbidden, rate limited, unavailable with retry, signed out, ended session, loading boundary.
+- **Accessibility evidence:** semantic list, labelled filter controls, link names that state the report, status and risk as text with shapes, 320 px no horizontal scroll on Chromium and mobile WebKit. No axe or screen-reader run yet (FE-116).
+- **Locales reviewed:** English only; `ha`/`ig`/`yo` `reviewer` keys are `null` and pending.
+- **Performance/cache impact:** Server-rendered, no client JavaScript on this page beyond the shell's sign-out island; no-store.
+- **Commands run and results:** `make web-verify` exit 0 (473 unit, 124 component, bundle scan clean); targeted e2e `reviewer-queue` 20 passed (Chromium and mobile WebKit).
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** The API's queue does not include a handle marker, so none is shown. Real API not run. The queue is oldest first as the API returns it; there is no sort control.
+- **Commit/PR:** `feat: add the minimal-data reviewer report queue with URL-owned filters`
+- **Next task may rely on:** `parseQueueFilters`/`queueQuery`/`queueHref`, `QueueList`, the mock queue and `signInAs` helper, and the report links `/{locale}/reviewer/reports/{id}`.
+- **AI assistance used:** Designed and implemented the queue page, filters, components, mock data and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
