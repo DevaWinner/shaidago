@@ -361,3 +361,52 @@ async def test_public_citations_expose_the_version_a_reviewer_must_cite(owner: D
     assert rows, "the seeded facts publish citations"
     assert all(row.source_version_id is not None for row in rows)
     assert all(row.source_version_id != row.source_id for row in rows)
+
+
+async def test_the_staging_fixture_seeds_idempotently_and_is_fictional_on_the_public_page(
+    role_urls: dict[str, URL],
+) -> None:
+    from shaidago.seed import staging_fixture  # noqa: PLC0415 - only this test needs it
+
+    environ = {
+        "APP_ENV": "development",
+        "DATABASE_URL": role_urls["owner"].render_as_string(hide_password=False),
+    }
+    first = await staging_fixture.run(environ)
+    second = await staging_fixture.run(environ)
+
+    assert "added 1" in first
+    assert "added 0" in second, "a second run adds nothing"
+
+    engine = build_engine(
+        role_urls["shaidago_public"], application_name="fixture-check", statement_timeout_ms=8000
+    )
+    try:
+        app = create_app(build_settings(), Dependencies(public_database=Database(engine)))
+        with TestClient(app, headers={"Authorization": f"Bearer web.{CREDENTIAL}"}) as client:
+            detail = client.get(f"/v1/projects/{staging_fixture.SLUG}").json()
+    finally:
+        await engine.dispose()
+
+    assert detail["text"]["title"] == staging_fixture.TITLE
+    assert "fictional" in detail["text"]["summary"].lower()
+    (fact,) = detail["facts"]
+    assert fact["statement"].startswith("FICTIONAL")
+    (citation,) = fact["citations"]
+    assert citation["passage"] == staging_fixture.PASSAGE
+    assert citation["canonical_url"].startswith("https://synthetic.example/")
+    assert citation["source_version_id"], "a reviewer can cite exactly this version"
+
+
+async def test_the_staging_fixture_refuses_production_and_unflagged_staging(
+    role_urls: dict[str, URL],
+) -> None:
+    from shaidago.seed import staging_fixture  # noqa: PLC0415
+
+    url = role_urls["owner"].render_as_string(hide_password=False)
+    for environ in (
+        {"APP_ENV": "production", "SEED_ALLOW_DEPLOYED": "1", "DATABASE_URL": url},
+        {"APP_ENV": "staging", "DATABASE_URL": url},
+    ):
+        with pytest.raises(SeedRefusedError):
+            await staging_fixture.run(environ)

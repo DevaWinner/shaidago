@@ -285,7 +285,7 @@ async def _sources(s: AsyncSession, plan: SeedPlan, ctx: Ctx) -> dict[str, UUID]
                 "media_type, retrieved_at, review_state, reviewed_at, reviewer_note, created_at) "
                 "VALUES (:id, :s, :h, :c, 'text/plain', :r, 'approved', :r, :note, :now)",
                 id=versions[src.url], s=source_id, h=src.sha256, c=src.content,
-                r=src.checked_at, now=ctx.now, note=REGISTER_APPROVAL_NOTE,
+                r=src.checked_at, now=ctx.now, note=src.approval_note or REGISTER_APPROVAL_NOTE,
             )  # fmt: skip
             ctx.report.bump("versions", "added")
         else:
@@ -302,7 +302,9 @@ async def _sources(s: AsyncSession, plan: SeedPlan, ctx: Ctx) -> dict[str, UUID]
                     s,
                     "UPDATE app.source_versions SET review_state = 'approved', "
                     "reviewed_at = :r, reviewer_note = :note WHERE id = :id",
-                    id=version.id, r=src.checked_at, note=REGISTER_APPROVAL_NOTE,
+                    id=version.id,
+                    r=src.checked_at,
+                    note=src.approval_note or REGISTER_APPROVAL_NOTE,
                 )  # fmt: skip
                 ctx.report.bump("versions", "updated")
             else:
