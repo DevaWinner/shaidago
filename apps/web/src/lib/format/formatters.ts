@@ -17,8 +17,8 @@ const BCP47: Readonly<Record<ApiLocale, string>> = {
 
 const PUBLIC_TIME_ZONE = "Africa/Lagos";
 const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
-const DECIMAL = /^-?\d{1,15}(?:\.\d+)?$/;
-const NAIRA_AMOUNT = /^-?\d{1,15}(?:\.\d{1,2})?$/;
+const WHOLE_DIGITS = /^\d{1,15}$/;
+const FRACTION_DIGITS = /^\d+$/;
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
@@ -41,11 +41,25 @@ export type Formatters = Readonly<{
   languageName: (code: string) => string;
 }>;
 
-function decimalString(value: number | string, pattern: RegExp, what: string): string {
+/** A plain decimal: optional minus, 1 to 15 whole digits, optional fraction of bounded length. */
+function isPlainDecimal(text: string, maxFractionDigits: number): boolean {
+  const [whole, fraction, extra] = (text.startsWith("-") ? text.slice(1) : text).split(".");
+
+  if (extra !== undefined || whole === undefined || !WHOLE_DIGITS.test(whole)) {
+    return false;
+  }
+
+  return (
+    fraction === undefined ||
+    (FRACTION_DIGITS.test(fraction) && fraction.length <= maxFractionDigits)
+  );
+}
+
+function decimalString(value: number | string, maxFractionDigits: number, what: string): string {
   const text = typeof value === "number" ? String(value) : value;
 
-  // `String(1e21)` and non-finite numbers do not match, so they are rejected rather than guessed at.
-  if (!pattern.test(text)) {
+  // `String(1e21)` and non-finite numbers are not plain decimals, so they are rejected, not guessed at.
+  if (!isPlainDecimal(text, maxFractionDigits)) {
     throw new RangeError(`${what} must be a plain decimal`);
   }
 
@@ -139,9 +153,9 @@ export function createFormatters(language: ApiLocale): Formatters {
     },
     // Intl.NumberFormat accepts a decimal string and keeps full precision (ES2023); the lib typing
     // still says `number`, hence the assertion. The pattern above proves the string is a decimal.
-    number: (value) => plain.format(decimalString(value, DECIMAL, "number") as unknown as number),
-    naira: (amount) =>
-      currency.format(decimalString(amount, NAIRA_AMOUNT, "amount") as unknown as number),
+    number: (value) =>
+      plain.format(decimalString(value, Number.MAX_SAFE_INTEGER, "number") as unknown as number),
+    naira: (amount) => currency.format(decimalString(amount, 2, "amount") as unknown as number),
     list: (items) => conjunction.format(items),
     languageName: (code) => {
       try {
