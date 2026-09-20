@@ -2671,3 +2671,103 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-150 Deterministic E2E journeys
+
+- **Task:** FE-150 — Deterministic E2E journeys (Circle 15). Status: complete. Delivered in the commits `feat: add the ten end-to-end journeys, the ordered frontend gate, DESIGN.md, and the visual finish fixes` and `test: keep the mock's public request counters independent of reviewer traffic`.
+- **User outcome delivered:** The ten build-order journeys pass as continuous paths against fictional data, each checking that its synthetic secrets are nowhere in the browser.
+- **Routes/components changed:** `tests/e2e/journeys.spec.ts`.
+- **Backend operations/contract version:** none new (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Fictional data only; screenshots, traces, and reports contain none that is real or private. Screenshots are committed under `docs/evidence/frontend-visual/`.
+- **States implemented:** see the task note in `docs/FRONTEND_BUILD_ORDER.md`.
+- **Accessibility evidence:** `make web-a11y` 356 passed; the field-edge contrast fix is pinned by a unit test.
+- **Locales reviewed:** English visually inspected; Hausa landing captured; ha/ig/yo copy is pending fluent review.
+- **Performance/cache impact:** none beyond the low-data switch moving to the footer.
+- **Commands run and results:** clean-checkout `make web-verify-full` exit 0: 765 unit and component tests, coverage 91.4/85.3/91.6/92.0 against 80, bundle scan clean, 443 e2e passed and 11 skipped (WebKit offline, WebKit abort, and Tab-focus limitations, each stated in its test), 357 accessibility passed. In the working tree, `make web-verify` exit 0.
+- **Screenshots/traces/artifacts checked:** 20 initial, 8 confirmation, and 2 final screenshots, each opened; the last alignment fix was not re-captured.
+- **Known limitations/open decisions:** No independent finish review; the Impeccable detector was not run; CI has not run this branch; the letter-mark icon has had no visual review beyond the instruction.
+- **Commit/PR:** `feat: add the ten end-to-end journeys, the ordered frontend gate, DESIGN.md, and the visual finish fixes`
+- **Next task may rely on:** `make web-verify-full`, `DESIGN.md`, the journeys suite, and the finish-review packet.
+- **AI assistance used:** Wrote the journeys, gate, design record, and fixes; found the three visual defects by inspecting screenshots and the unit-tested edge contrast.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-151 Canonical frontend verification
+
+- **Task:** FE-151 — Canonical frontend verification (Circle 15). Status: complete. Delivered in the commits `feat: add the ten end-to-end journeys, the ordered frontend gate, DESIGN.md, and the visual finish fixes` and `test: keep the mock's public request counters independent of reviewer traffic`.
+- **User outcome delivered:** `make web-verify` and `make web-verify-full` run the gate in the documented order, and CI includes the coverage step.
+- **Routes/components changed:** `Makefile`, `.github/workflows/frontend.yml`, `scripts/validate_frontend_workflow.py`.
+- **Backend operations/contract version:** none new (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Fictional data only; screenshots, traces, and reports contain none that is real or private. Screenshots are committed under `docs/evidence/frontend-visual/`.
+- **States implemented:** see the task note in `docs/FRONTEND_BUILD_ORDER.md`.
+- **Accessibility evidence:** `make web-a11y` 356 passed; the field-edge contrast fix is pinned by a unit test.
+- **Locales reviewed:** English visually inspected; Hausa landing captured; ha/ig/yo copy is pending fluent review.
+- **Performance/cache impact:** none beyond the low-data switch moving to the footer.
+- **Commands run and results:** clean-checkout `make web-verify-full` exit 0: 765 unit and component tests, coverage 91.4/85.3/91.6/92.0 against 80, bundle scan clean, 443 e2e passed and 11 skipped (WebKit offline, WebKit abort, and Tab-focus limitations, each stated in its test), 357 accessibility passed. In the working tree, `make web-verify` exit 0.
+- **Screenshots/traces/artifacts checked:** 20 initial, 8 confirmation, and 2 final screenshots, each opened; the last alignment fix was not re-captured.
+- **Known limitations/open decisions:** No independent finish review; the Impeccable detector was not run; CI has not run this branch; the letter-mark icon has had no visual review beyond the instruction.
+- **Commit/PR:** `feat: add the ten end-to-end journeys, the ordered frontend gate, DESIGN.md, and the visual finish fixes`
+- **Next task may rely on:** `make web-verify-full`, `DESIGN.md`, the journeys suite, and the finish-review packet.
+- **AI assistance used:** Wrote the journeys, gate, design record, and fixes; found the three visual defects by inspecting screenshots and the unit-tested edge contrast.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-152 Bounded visual inspection
+
+- **Task:** FE-152 — Bounded visual inspection (Circle 15). Status: complete. Delivered in the commits `feat: add the ten end-to-end journeys, the ordered frontend gate, DESIGN.md, and the visual finish fixes` and `test: keep the mock's public request counters independent of reviewer traffic`.
+- **User outcome delivered:** One batched capture and one fix round removed three visible problems: the low-data switch above every first viewport, the stacked reviewer filters on a phone, and pale form-field edges.
+- **Routes/components changed:** `docs/evidence/frontend-visual/*`, `site-shell.tsx`, `low-data-control.tsx`, `queue.tsx`, `field.tsx`, `globals.css`.
+- **Backend operations/contract version:** none new (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Fictional data only; screenshots, traces, and reports contain none that is real or private. Screenshots are committed under `docs/evidence/frontend-visual/`.
+- **States implemented:** see the task note in `docs/FRONTEND_BUILD_ORDER.md`.
+- **Accessibility evidence:** `make web-a11y` 356 passed; the field-edge contrast fix is pinned by a unit test.
+- **Locales reviewed:** English visually inspected; Hausa landing captured; ha/ig/yo copy is pending fluent review.
+- **Performance/cache impact:** none beyond the low-data switch moving to the footer.
+- **Commands run and results:** clean-checkout `make web-verify-full` exit 0: 765 unit and component tests, coverage 91.4/85.3/91.6/92.0 against 80, bundle scan clean, 443 e2e passed and 11 skipped (WebKit offline, WebKit abort, and Tab-focus limitations, each stated in its test), 357 accessibility passed. In the working tree, `make web-verify` exit 0.
+- **Screenshots/traces/artifacts checked:** 20 initial, 8 confirmation, and 2 final screenshots, each opened; the last alignment fix was not re-captured.
+- **Known limitations/open decisions:** No independent finish review; the Impeccable detector was not run; CI has not run this branch; the letter-mark icon has had no visual review beyond the instruction.
+- **Commit/PR:** `feat: add the ten end-to-end journeys, the ordered frontend gate, DESIGN.md, and the visual finish fixes`
+- **Next task may rely on:** `make web-verify-full`, `DESIGN.md`, the journeys suite, and the finish-review packet.
+- **AI assistance used:** Wrote the journeys, gate, design record, and fixes; found the three visual defects by inspecting screenshots and the unit-tested edge contrast.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-153 Independent finish review
+
+- **Task:** FE-153 — Independent finish review (Circle 15). Status: blocked. Delivered in the commits `feat: add the ten end-to-end journeys, the ordered frontend gate, DESIGN.md, and the visual finish fixes` and `test: keep the mock's public request counters independent of reviewer traffic`.
+- **User outcome delivered:** A packet for a fresh reviewer exists; no independent disposition was obtained and none was faked.
+- **Routes/components changed:** `docs/FRONTEND_FINISH_REVIEW_PACKET.md`.
+- **Backend operations/contract version:** none new (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Fictional data only; screenshots, traces, and reports contain none that is real or private. Screenshots are committed under `docs/evidence/frontend-visual/`.
+- **States implemented:** see the task note in `docs/FRONTEND_BUILD_ORDER.md`.
+- **Accessibility evidence:** `make web-a11y` 356 passed; the field-edge contrast fix is pinned by a unit test.
+- **Locales reviewed:** English visually inspected; Hausa landing captured; ha/ig/yo copy is pending fluent review.
+- **Performance/cache impact:** none beyond the low-data switch moving to the footer.
+- **Commands run and results:** clean-checkout `make web-verify-full` exit 0: 765 unit and component tests, coverage 91.4/85.3/91.6/92.0 against 80, bundle scan clean, 443 e2e passed and 11 skipped (WebKit offline, WebKit abort, and Tab-focus limitations, each stated in its test), 357 accessibility passed. In the working tree, `make web-verify` exit 0.
+- **Screenshots/traces/artifacts checked:** 20 initial, 8 confirmation, and 2 final screenshots, each opened; the last alignment fix was not re-captured.
+- **Known limitations/open decisions:** No independent finish review; the Impeccable detector was not run; CI has not run this branch; the letter-mark icon has had no visual review beyond the instruction.
+- **Commit/PR:** `feat: add the ten end-to-end journeys, the ordered frontend gate, DESIGN.md, and the visual finish fixes`
+- **Next task may rely on:** `make web-verify-full`, `DESIGN.md`, the journeys suite, and the finish-review packet.
+- **AI assistance used:** Wrote the journeys, gate, design record, and fixes; found the three visual defects by inspecting screenshots and the unit-tested edge contrast.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-154 Write DESIGN.md from shipped reality
+
+- **Task:** FE-154 — Write DESIGN.md from shipped reality (Circle 15). Status: complete. Delivered in the commits `feat: add the ten end-to-end journeys, the ordered frontend gate, DESIGN.md, and the visual finish fixes` and `test: keep the mock's public request counters independent of reviewer traffic`.
+- **User outcome delivered:** `DESIGN.md` documents the shipped visual system with measured values and its known gaps.
+- **Routes/components changed:** `DESIGN.md`, `docs/FRONTEND_VISUAL_DIRECTION.md`, `docs/README.md`.
+- **Backend operations/contract version:** none new (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Fictional data only; screenshots, traces, and reports contain none that is real or private. Screenshots are committed under `docs/evidence/frontend-visual/`.
+- **States implemented:** see the task note in `docs/FRONTEND_BUILD_ORDER.md`.
+- **Accessibility evidence:** `make web-a11y` 356 passed; the field-edge contrast fix is pinned by a unit test.
+- **Locales reviewed:** English visually inspected; Hausa landing captured; ha/ig/yo copy is pending fluent review.
+- **Performance/cache impact:** none beyond the low-data switch moving to the footer.
+- **Commands run and results:** clean-checkout `make web-verify-full` exit 0: 765 unit and component tests, coverage 91.4/85.3/91.6/92.0 against 80, bundle scan clean, 443 e2e passed and 11 skipped (WebKit offline, WebKit abort, and Tab-focus limitations, each stated in its test), 357 accessibility passed. In the working tree, `make web-verify` exit 0.
+- **Screenshots/traces/artifacts checked:** 20 initial, 8 confirmation, and 2 final screenshots, each opened; the last alignment fix was not re-captured.
+- **Known limitations/open decisions:** No independent finish review; the Impeccable detector was not run; CI has not run this branch; the letter-mark icon has had no visual review beyond the instruction.
+- **Commit/PR:** `feat: add the ten end-to-end journeys, the ordered frontend gate, DESIGN.md, and the visual finish fixes`
+- **Next task may rely on:** `make web-verify-full`, `DESIGN.md`, the journeys suite, and the finish-review packet.
+- **AI assistance used:** Wrote the journeys, gate, design record, and fixes; found the three visual defects by inspecting screenshots and the unit-tested edge contrast.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
