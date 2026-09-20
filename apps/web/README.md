@@ -19,6 +19,7 @@ make web-unit
 make web-component
 make web-contract
 make web-boundary
+make web-ci-check
 make web-e2e
 make web-a11y
 pnpm --dir apps/web build
@@ -33,6 +34,11 @@ install the pinned browsers explicitly:
 ```text
 pnpm --dir apps/web exec playwright install chromium webkit
 ```
+
+`web-ci-check` validates the committed GitHub Actions workflow without network access. The hosted
+workflow repeats frozen install, formatting, lint, types, unit/component, contract, and boundary
+checks, then installs the pinned browsers for E2E and axe. It uploads no browser, coverage, or
+test artifacts.
 
 The automated tooling is development-only: ESLint checks Next.js, TypeScript, import,
 accessibility, and security rules; Prettier owns formatting; Vitest provides deterministic

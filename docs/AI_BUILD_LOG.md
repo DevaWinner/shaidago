@@ -1559,3 +1559,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Implemented separate runtime/public schemas, added a production-artifact canary scan, and fixed test-runner-only handling of Next's server-only import without altering the production barrier.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
 - **Human review:** none yet; unattended loop, pending maintainer review.
+
+## 2026-09-20 — FE-024 least-privilege frontend CI
+
+- **Task:** FE-024 — Frontend CI foundation.
+- **User outcome delivered:** The repository now contains a reviewable frontend CI workflow that reproduces the deterministic web foundation and isolated browser/axe gates without write permission, real secrets, or exported test artifacts.
+- **Files changed:** `.github/workflows/frontend.yml`, `scripts/validate_frontend_workflow.py`, root `Makefile`, `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** No API operation, BFF handler, generated client, schema, or OpenAPI content changed. The workflow runs the existing contract drift check and private-canary boundary build; it does not contact the private API.
+- **Public/private data handled:** Workflow permissions are `contents: read`; each checkout disables persisted credentials. It references no `secrets` context, no live provider, no service credential, and no external artifact upload/download action. The boundary build supplies only synthetic canaries. Browser traces, screenshots, video, coverage, and reports are never uploaded.
+- **States implemented:** Foundation failures block browser execution; the required aggregate fails for failed, skipped, cancelled, or otherwise non-successful prerequisite jobs. Browser checks start a standalone app only with synthetic test configuration. No product UI state changed.
+- **Accessibility evidence:** CI installs Chromium and WebKit and runs the existing real-browser E2E and axe tests. No visible component changed; the test gate continues to cover the semantic shell and generic unavailable state at desktop/mobile viewports.
+- **Locales reviewed:** No locale routing, message, or translation changed. CI preserves the existing English-source-only foundation status; FE-050 remains responsible for `en`, `ha`, `ig`, and `yo` parity.
+- **Performance/cache impact:** `setup-node` caches only the pnpm package store keyed by `pnpm-lock.yaml`, not application output or private test data. Browser engines install only in the browser job. The workflow validator is standard-library Python and performs no network request.
+- **Failure behaviour verified:** `web-ci-check --self-test` rejects a missing boundary command and an unpinned action reference. Structural checks require exactly four full-SHA action uses, the expected frozen/install/check commands, read-only permissions, disabled checkout credentials, and no artifact, secrets-context, `pull_request_target`, or write-permission use. YAML parsing passed. `actionlint` is not installed locally, so no actionlint result is claimed.
+- **Commands run and results:** `git ls-remote` verified `actions/setup-node` v7.0.0 SHA `820762786026740c76f36085b0efc47a31fe5020`; the checked-in `actions/checkout` v7.0.1 SHA was reused. `make web-ci-check`, Ruby YAML parsing, Python compilation, `git diff --check`, and Prettier format checking passed. The existing local foundation/browser/axe gates were passing before workflow creation; the final task gate re-runs them before commit.
+- **Screenshots/traces/artifacts checked:** Reviewed the workflow itself and confirmed no artifact action appears. No screenshots/traces are produced or committed by this configuration-only task.
+- **Known limitations/open decisions:** The first hosted run is pending because this local branch has not been pushed, and this task does not authorise a push. Circle 2 remains open until GitHub reports the workflow green. A later CI policy change should update the validator in the same commit.
+- **Commit/PR:** pending.
+- **Next task may rely on:** A SHA-pinned, read-only workflow and local workflow-invariant validator; not on a claimed hosted green result.
+- **AI assistance used:** Implemented the workflow and its negative-path validator, resolved the setup action revision, and kept browser data artifacts out of pull-request visibility.
+- **Prompt summary:** Use the frontend loop and keep working without stopping.
+- **Human review:** none yet; unattended loop, pending maintainer review.

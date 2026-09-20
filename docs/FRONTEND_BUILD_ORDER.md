@@ -370,7 +370,11 @@ Implement the root layout, global error, route error/loading/not-found component
 
 Create least-privilege, SHA-pinned workflow jobs for frozen install, format/lint/types, unit/component tests, OpenAPI client drift, production build with API unreachable, and artifact-safe E2E when available. Do not upload traces/screenshots containing one-time secrets or private content; tests use synthetic values and redact artifacts.
 
+> **Implementation status (2026-09-20): ready for hosted proof.** `.github/workflows/frontend.yml` has read-only permissions, pinned `checkout`/`setup-node` action SHAs, frozen pnpm install, deterministic foundation checks, private-canary client-bundle inspection, and standalone Chromium/mobile-WebKit E2E plus axe jobs. It neither uses secrets nor uploads artifacts. `web-ci-check` validates these invariants with negative cases locally. The workflow has not yet run on GitHub because this branch has not been published; do not mark the Circle 2 CI exit condition complete until its first hosted execution succeeds.
+
 ### Circle 2 exit gate
+
+> **Gate status (2026-09-20): awaiting hosted CI.** Local foundation, boundary, browser, and accessibility proof pass, but the newly committed workflow has no GitHub run yet.
 
 - Frozen pnpm install and strict typecheck pass.
 - Production build succeeds with the API deliberately unreachable.
