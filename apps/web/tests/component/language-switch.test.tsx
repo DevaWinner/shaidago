@@ -13,7 +13,9 @@ const links = {
   home: "/en",
   localities: "/en/l",
   report: "/en/report",
+  reviewer: "/en/reviewer/sign-in",
   sources: "/en/s",
+  track: "/en/track",
   trust: "/en/t"
 };
 

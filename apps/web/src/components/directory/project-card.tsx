@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ArrowUpRight } from "lucide-react";
 
 import type { Messages } from "@/i18n/catalogue";
 import type { ApiLocale } from "@/lib/api/forwarded-context";
@@ -51,6 +52,11 @@ export function ProjectCard({
           href={`/${locale}/projects/${encodeURIComponent(project.slug)}`}
         >
           {project.text.title}
+          <ArrowUpRight
+            aria-hidden="true"
+            className="ms-1 inline size-4 align-[-0.1em]"
+            strokeWidth={1.8}
+          />
         </a>
       </h2>
       <p className="m-0 max-w-[68ch] text-muted-foreground" lang={project.text.served_locale}>

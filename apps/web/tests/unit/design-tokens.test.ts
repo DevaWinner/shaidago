@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
 const stylesheetPath = fileURLToPath(new URL("../../app/globals.css", import.meta.url));
+const shellPath = fileURLToPath(new URL("../../src/components/shell/shell.tsx", import.meta.url));
 
 const contrastPairs = [
   ["--color-text", "--color-canvas"],
@@ -76,6 +77,7 @@ function contrastRatio(first: string, second: string): number {
 
 describe("Field Ledger design tokens", async () => {
   const stylesheet = await readFile(stylesheetPath, "utf8");
+  const shell = await readFile(shellPath, "utf8");
   const tokens = parseHexTokens(firstRootBlock(stylesheet));
 
   it("defines every semantic colour role and named evidence state", () => {
@@ -108,7 +110,10 @@ describe("Field Ledger design tokens", async () => {
   });
 
   it("preserves focus, contrast, forced-colours, and motion overrides", () => {
-    expect(stylesheet).toContain("inline-size: min(calc(100% - (var(--layout-gutter) * 2))");
+    // The shell owns one shared gutter for header, main, and footer. A second global main width
+    // would inset page content twice and break their alignment.
+    expect(stylesheet).not.toContain("inline-size: min(calc(100% - (var(--layout-gutter) * 2))");
+    expect(shell).toContain("max-w-[var(--layout-content-max)] px-[var(--layout-gutter)]");
     expect(stylesheet).toContain("font-size: var(--font-size-display);");
     expect(stylesheet).toContain(":focus-visible");
     expect(stylesheet).toContain("@media (prefers-contrast: more)");

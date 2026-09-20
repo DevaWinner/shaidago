@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
+import { KeyRound } from "lucide-react";
 
 import { TranslationNotice } from "@/components/evidence/evidence";
 import { SiteShell } from "@/components/shell/site-shell";
+import { PageHeader } from "@/components/ui/page-header";
 import { HandlePanel } from "@/components/track/handle-panel";
 import { resolveDomain } from "@/i18n/catalogue";
 import { isSupportedLocale } from "@/i18n/routing";
@@ -42,8 +44,11 @@ export default async function HandlePage({ params }: Properties): Promise<ReactN
         {handle.isOriginal || problems.isOriginal ? (
           <TranslationNotice labels={evidence.messages.translation} status="unavailable" />
         ) : null}
-        <h1 className="m-0 text-ledger-display leading-[1.1]">{handle.messages.title}</h1>
-        <p className="m-0 max-w-[68ch]">{handle.messages.lead}</p>
+        <PageHeader
+          icon={KeyRound}
+          intro={<p>{handle.messages.lead}</p>}
+          title={handle.messages.title}
+        />
         <HandlePanel
           copy={handle.messages}
           locale={locale}

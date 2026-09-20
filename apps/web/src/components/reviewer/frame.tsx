@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { LockKeyhole } from "lucide-react";
 
 import { TranslationNotice } from "@/components/evidence/evidence";
 import { ReviewerShell } from "@/components/shell/shell";
@@ -44,10 +45,13 @@ export function ReviewerFrame({
           <TranslationNotice labels={evidence.messages.translation} status="unavailable" />
         ) : null}
         <p
-          className="m-0 border-2 border-double border-border p-3 text-sm"
+          className="m-0 flex items-start gap-3 border-2 border-double border-border bg-card p-3 text-sm"
           data-slot="private-banner"
         >
-          <strong>{copy.common.noindex}.</strong> {copy.common.private}
+          <LockKeyhole aria-hidden="true" className="mt-0.5 size-4 flex-none text-primary" />
+          <span>
+            <strong>{copy.common.noindex}.</strong> {copy.common.private}
+          </span>
         </p>
         {children}
       </div>

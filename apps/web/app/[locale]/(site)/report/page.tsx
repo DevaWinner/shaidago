@@ -2,10 +2,12 @@ import type { Metadata, Route } from "next";
 import { notFound, redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
+import { ListChecks } from "lucide-react";
 
 import { TranslationNotice } from "@/components/evidence/evidence";
 import { SiteShell } from "@/components/shell/site-shell";
 import { ButtonLink } from "@/components/ui/button";
+import { PageHeader } from "@/components/ui/page-header";
 import { resolveDomain } from "@/i18n/catalogue";
 import { isSupportedLocale } from "@/i18n/routing";
 import { loadProjectPage } from "@/lib/api/public-data";
@@ -58,8 +60,11 @@ export default async function ReportEntryPage({
         {report.isOriginal ? (
           <TranslationNotice labels={evidence.messages.translation} status="unavailable" />
         ) : null}
-        <h1 className="m-0 text-ledger-display leading-[1.1]">{report.messages.chooser.title}</h1>
-        <p className="m-0">{report.messages.chooser.lead}</p>
+        <PageHeader
+          icon={ListChecks}
+          intro={<p>{report.messages.chooser.lead}</p>}
+          title={report.messages.chooser.title}
+        />
         {read.state === "ok" && read.data.items.length > 0 ? (
           <section aria-labelledby="records-heading" className="grid gap-3">
             <h2 className="m-0 text-ledger-lg" id="records-heading">

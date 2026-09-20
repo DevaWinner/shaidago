@@ -18,20 +18,20 @@ There is no dark mode. `forced-colors` and `prefers-contrast: more` are supporte
 
 Contrast is computed from the token values (WCAG relative luminance).
 
-| Role | Token | Value | Used for | Contrast |
-| --- | --- | --- | --- | --- |
-| Page | `--color-canvas` | `#F7F2E8` | page background | text on it 14.47:1 |
-| Surface | `--color-surface` | `#FFFCF6` | cards, fields, dialogs | text on it 15.76:1 |
-| Text | `--color-text` | `#172323` | body, headings | |
-| Muted | `--color-muted` | `#526260` | secondary text, **field edges** | 5.75:1 on page, 6.26:1 on surface |
-| Rule | `--color-rule` | `#D4CCBE` | dividers only | 1.43:1 (never a control edge) |
-| Accent | `--color-accent` | `#006E65` | links, primary buttons | 5.51:1 on page; white on it 6.14:1 |
-| Accent strong | `--color-accent-strong` | `#004F49` | hover, icon mark | 8.50:1 on page; white on it 9.48:1 |
-| Danger | `--color-danger` | `#A7383B` | errors, high risk | 6.27:1 on surface |
-| Warning | `--color-warning` | `#9D5C16` | under review, caution | 5.16:1 on surface |
-| Information | `--color-information` | `#005FCC` | limited evidence, focus ring | 5.84:1 on surface |
-| Selected | `--state-selected-*` | `#003D37` on `#D9EBE7` | selected state | 9.86:1 |
-| Read-only | `--state-read-only-*` | `#384746` on `#EEE8DC` | read-only fields | 7.98:1 |
+| Role          | Token                   | Value                  | Used for                        | Contrast                           |
+| ------------- | ----------------------- | ---------------------- | ------------------------------- | ---------------------------------- |
+| Page          | `--color-canvas`        | `#F7F2E8`              | page background                 | text on it 14.47:1                 |
+| Surface       | `--color-surface`       | `#FFFCF6`              | cards, fields, dialogs          | text on it 15.76:1                 |
+| Text          | `--color-text`          | `#172323`              | body, headings                  |                                    |
+| Muted         | `--color-muted`         | `#526260`              | secondary text, **field edges** | 5.75:1 on page, 6.26:1 on surface  |
+| Rule          | `--color-rule`          | `#D4CCBE`              | dividers only                   | 1.43:1 (never a control edge)      |
+| Accent        | `--color-accent`        | `#006E65`              | links, primary buttons          | 5.51:1 on page; white on it 6.14:1 |
+| Accent strong | `--color-accent-strong` | `#004F49`              | hover, icon mark                | 8.50:1 on page; white on it 9.48:1 |
+| Danger        | `--color-danger`        | `#A7383B`              | errors, high risk               | 6.27:1 on surface                  |
+| Warning       | `--color-warning`       | `#9D5C16`              | under review, caution           | 5.16:1 on surface                  |
+| Information   | `--color-information`   | `#005FCC`              | limited evidence, focus ring    | 5.84:1 on surface                  |
+| Selected      | `--state-selected-*`    | `#003D37` on `#D9EBE7` | selected state                  | 9.86:1                             |
+| Read-only     | `--state-read-only-*`   | `#384746` on `#EEE8DC` | read-only fields                | 7.98:1                             |
 
 Rules: colour reinforces a state and never carries it (every status is words plus a shape). Field edges use the muted colour so they reach 3:1 (WCAG 1.4.11); this was corrected in the finish round after the pale rule colour was found on fields. With `prefers-contrast: more` the muted and rule colours darken and borders widen.
 
@@ -41,7 +41,7 @@ System fonts only: no web font is shipped, requested, or subset. The stacks name
 
 ## 4. Spacing, layout, and density
 
-An 8-step space scale (`.25` to `6` rem), a `76 rem` content maximum, and a fluid gutter `clamp(1rem, 3vw, 2rem)`. Public pages are a reading column; a record page adds an evidence rail at large widths and stacks it below on phones. Reviewer pages use cards, not tables, so a queue row stays scannable on a phone; the filter form is two columns from 360 px. Controls are at least 44 px tall (tested). Density tokens (`0.875` compact, `1` comfortable) exist; only comfortable is used today.
+An 8-step space scale (`.25` to `6` rem), a `76 rem` content maximum, and a fluid gutter `clamp(1rem, 3vw, 2rem)`. The global header, page content, and footer use the same single gutter calculation so their edges align at every width. Public pages are a reading column; the landing hero uses an asymmetric two-column search composition on wide screens and stacks on phones. A record page adds an evidence rail at large widths and stacks it below on phones. Reviewer pages use cards, not tables, so a queue row stays scannable on a phone; the filter form is two columns from 360 px. Controls are at least 44 px tall (tested). Density tokens (`0.875` compact, `1` comfortable) exist; only comfortable is used today.
 
 ## 5. Evidence and status language
 
@@ -53,7 +53,7 @@ Five information classes and six verification states are written out in words (`
 
 ## 7. Surface adaptations
 
-- **Public**: language switch first on the right, low-data switch in the page footer (a data-saving suggestion appears at the top only when the browser asks for it), source citations as in-page links that work without JavaScript.
+- **Public**: project records and trust are stable primary destinations; reporting is the strongest action; tracking and reviewer sign-in are persistent utility destinations. The top-right language selector is a no-script dropdown with real links. Low-data remains an explicit control, and source citations are in-page links that work without JavaScript.
 - **Report**: the emergency-service limit is the first thing after the step list; one question per step; the tracking code appears once and never again.
 - **Reviewer**: private banner, jump list, progressive reveal for contact and evidence, one confirmation for every consequential action, and a visibly separate public-update composer with an exact preview drawn by the public timeline's own component.
 - **Read-only and offline**: saved copies carry a banner with the saved time; the offline page is static and lists saved pages.
@@ -64,11 +64,11 @@ Almost none. The motion tokens are 120 and 180 ms; where a transition is used it
 
 ## 9. Responsive transformations
 
-Tested from 320 px to 1440 px, including landscape phone and 200% text: navigation wraps instead of collapsing into a hidden menu, the record's evidence rail moves below the record, reviewer filters go two-up, and tables do not exist. No page scrolls sideways at any size.
+Tested from 320 px to 1440 px, including landscape phone and 200% text: the brand and language selector stay in the first row, task navigation wraps beneath them, the record's evidence rail moves below the record, reviewer filters go two-up, and tables do not exist. No page scrolls sideways at any tested size.
 
 ## 10. Accessibility, low data, and assets
 
-WCAG 2.2 AA is the bar: one `h1`, one `main`, a first-focus skip link, labelled fields with associated errors, status and alert regions, reduced motion, forced colours, and 44 px targets are tested on every route in four languages. Low-data mode is one plain cookie and removes motion and slows polling. **Assets:** the only images are the letter-mark icons and logo in `apps/web/public/icons`, drawn as SVG from the accent and canvas colours (a plain "S" with a double rule, made on the maintainer's instruction with no font or external source) and rendered to PNG by `scripts/render-icons.mjs`; there is no photograph, illustration, web font, or third-party asset, and none has raster provenance beyond that script. The letter mark has had no visual review beyond the instruction to make it.
+WCAG 2.2 AA is the bar: one `h1`, one `main`, a first-focus skip link, labelled fields with associated errors, status and alert regions, reduced motion, forced colours, and 44 px targets are tested on every route in four languages. Low-data mode is one plain cookie and removes motion and slows polling. **Icons and assets:** interface icons come from `lucide-react`, keep visible text for state and action meaning, and use consistent stroke weight. The installable icon uses the same Lucide `SearchCheck` geometry and is rendered to committed PNG sizes by `scripts/render-icons.mjs`. There is no photograph, illustration, or web font.
 
 ## 11. What would dilute the identity
 
@@ -76,4 +76,4 @@ Colour-only status; a score, rank, or "AI confidence"; decorative imagery or gra
 
 ## 12. Known gaps
 
-The independent finish review (FE-153) has not been done, so the visual finish has not been accepted by anyone but its author. Hausa, Igbo, and Yoruba lengths are stress-tested for overflow but their copy is not fluently reviewed.
+The earlier independent finish review returned `fix`; this reorganization addresses its navigation, hierarchy, alignment, icon, and first-viewport findings but has not yet received a new independent disposition. English, Hausa, Igbo, and Yoruba each contain all 1,125 interface messages and are stress-tested for overflow. The maintainer reviewed every catalogue on 2026-09-20; Hausa, Igbo, and Yoruba have no independent second-language review.

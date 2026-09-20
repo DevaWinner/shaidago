@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { X } from "lucide-react";
 
 import type { Messages } from "@/i18n/catalogue";
 import type { Locality } from "@/lib/api/public-data";
@@ -65,7 +66,7 @@ export function FilterPills({
               href={directoryHref(locale, withoutFilter(filters, name), { withResults: true })}
             >
               <span>{describe(name)}</span>
-              <span aria-hidden="true">×</span>
+              <X aria-hidden="true" className="size-4" strokeWidth={2} />
             </a>
           </li>
         ))}

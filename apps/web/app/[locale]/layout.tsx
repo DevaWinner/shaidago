@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     default: "ShaidaGo",
     template: "%s | ShaidaGo"
   },
-  description: "Source-backed project records and safer next actions for Abuja communities.",
+  description: "Source-backed public project records and safer next actions for communities.",
   icons: {
     icon: [
       { url: "/icons/icon.svg", type: "image/svg+xml" },

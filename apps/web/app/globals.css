@@ -152,12 +152,6 @@
     line-height: var(--line-height-body);
   }
 
-  main {
-    inline-size: min(calc(100% - (var(--layout-gutter) * 2)), var(--layout-content-max));
-    margin-inline: auto;
-    padding-block: var(--space-12);
-  }
-
   main > h1 {
     max-inline-size: var(--measure-prose);
     margin-block: 0 var(--space-4);
@@ -237,6 +231,13 @@
     --state-selected-text: HighlightText;
     --state-read-only-background: Canvas;
     --state-read-only-text: CanvasText;
+  }
+
+  [aria-current="page"] {
+    background: Canvas !important;
+    color: CanvasText !important;
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
   }
 }
 

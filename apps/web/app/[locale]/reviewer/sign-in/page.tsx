@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
+import { LockKeyhole } from "lucide-react";
 
 import { Callout } from "@/components/ui/feedback";
+import { PageHeader } from "@/components/ui/page-header";
 import { ReviewerFrame } from "@/components/reviewer/frame";
 import { SignInForm } from "@/components/reviewer/sign-in-form";
 import { resolveDomain } from "@/i18n/catalogue";
@@ -49,8 +51,7 @@ export default async function ReviewerSignInPage({
 
   return (
     <ReviewerFrame locale={locale} signedIn={false}>
-      <h1 className="m-0 text-ledger-display leading-[1.1]">{copy.signIn.title}</h1>
-      <p className="m-0 max-w-[68ch]">{copy.signIn.lead}</p>
+      <PageHeader icon={LockKeyhole} intro={<p>{copy.signIn.lead}</p>} title={copy.signIn.title} />
       {reason === undefined ? null : (
         <Callout title={copy.signIn.reasons[reason]} tone="information">
           {copy.signIn.note}

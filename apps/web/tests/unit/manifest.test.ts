@@ -18,7 +18,7 @@ describe("web app manifest", () => {
     expect(value.display).toBe("standalone");
   });
 
-  it("declares the letter-mark icons, including a maskable one, and claims nothing unapproved", () => {
+  it("declares the evidence-search icons, including a maskable one, and claims nothing unapproved", () => {
     const icons = value.icons ?? [];
 
     expect(icons.map((icon) => icon.sizes)).toEqual(expect.arrayContaining(["192x192", "512x512"]));

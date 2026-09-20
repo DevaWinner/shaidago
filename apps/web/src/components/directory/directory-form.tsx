@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Field, Input, Select } from "@/components/ui/field";
@@ -35,7 +36,7 @@ export function DirectoryForm({
       // The fragment survives a GET submission, so the results are scrolled to and (with JavaScript) focused.
       action={`/${locale}/projects#results`}
       aria-label={form.label}
-      className="grid gap-4 border-y border-border py-4"
+      className="grid gap-5 border border-border bg-card p-4 sm:p-6"
       method="get"
       role="search"
     >
@@ -95,7 +96,10 @@ export function DirectoryForm({
       </div>
       <div>
         {/* Submits the form natively; not a script-driven button. */}
-        <Button type="submit">{form.apply}</Button>
+        <Button type="submit">
+          <Search aria-hidden="true" className="size-4" />
+          {form.apply}
+        </Button>
       </div>
     </form>
   );

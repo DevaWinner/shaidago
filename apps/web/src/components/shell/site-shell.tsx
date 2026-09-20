@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { TranslationNotice } from "@/components/evidence/evidence";
 import { LowDataControl } from "@/components/pwa/low-data-control";
 import { PwaSupport } from "@/components/pwa/pwa-support";
-import { PublicShell } from "@/components/shell/shell";
+import { PublicShell, type PublicDestination } from "@/components/shell/shell";
 import { resolveDomain } from "@/i18n/catalogue";
 import { localeHref, type RouteState } from "@/i18n/locale-href";
 import { LOCALES, REVIEWED_LOCALES } from "@/i18n/routing";
@@ -23,9 +23,23 @@ export function SiteShell({
   const language = resolveDomain(locale, "language");
   const offline = resolveDomain(locale, "offline");
   const base = `/${locale}`;
+  const firstSegment = route?.segments?.[0];
+  const active: PublicDestination =
+    firstSegment === "projects"
+      ? "localities"
+      : firstSegment === "report"
+        ? "report"
+        : firstSegment === "track" || firstSegment === "handle"
+          ? "track"
+          : firstSegment === "trust"
+            ? "trust"
+            : firstSegment === "reviewer"
+              ? "reviewer"
+              : "home";
 
   return (
     <PublicShell
+      active={active}
       currentLocale={locale}
       languageSwitch={{
         announce: language.messages.changed,
@@ -36,7 +50,9 @@ export function SiteShell({
         home: base,
         localities: `${base}/projects`,
         report: `${base}/report`,
+        reviewer: `${base}/reviewer/sign-in`,
         sources: `${base}/trust#sources`,
+        track: `${base}/track`,
         trust: `${base}/trust`
       }}
       localeRoutes={{

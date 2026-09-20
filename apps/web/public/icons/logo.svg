@@ -1,8 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 512" role="img" aria-label="ShaidaGo">
   <rect width="512" height="512" rx="96" fill="#004f49"/>
-  <path d="M 330 170 C 330 108 178 108 178 190 C 178 262 334 250 334 330 C 334 408 176 404 176 346" fill="none" stroke="#ffffff" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="150" y="424" width="212" height="10" fill="#f7f2e8"/>
-  <rect x="150" y="444" width="212" height="4" fill="#f7f2e8"/>
+  <g transform="scale(21.333333)" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m8 11 2 2 4-4"/>
+    <circle cx="11" cy="11" r="8"/>
+    <path d="m21 21-4.3-4.3"/>
+  </g>
   <text x="560" y="322" font-family="Georgia, 'Times New Roman', serif" font-size="150" font-weight="700" fill="#172323">ShaidaGo</text>
   <rect x="560" y="352" width="440" height="10" fill="#004f49"/>
   <rect x="560" y="372" width="440" height="4" fill="#004f49"/>

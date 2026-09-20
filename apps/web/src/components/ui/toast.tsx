@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { CircleX, Info, X } from "lucide-react";
 
 import { IconButton } from "@/components/ui/button";
 import { Glyph } from "@/components/ui/feedback";
@@ -27,10 +28,16 @@ export function Toast({
       data-slot="toast"
       role={tone === "danger" ? "alert" : "status"}
     >
-      <Glyph>{tone === "danger" ? "×" : "i"}</Glyph>
+      <Glyph>
+        {tone === "danger" ? (
+          <CircleX className="size-3.5" strokeWidth={2} />
+        ) : (
+          <Info className="size-3.5" strokeWidth={2} />
+        )}
+      </Glyph>
       <div className="flex-1">{children}</div>
       <IconButton label={dismissLabel} onClick={onDismiss}>
-        ×
+        <X className="size-5" strokeWidth={1.8} />
       </IconButton>
     </div>
   );
