@@ -218,3 +218,42 @@ def test_env_example_loads_in_development_and_is_refused_in_production() -> None
     environ = dict(line.split("=", 1) for line in lines if line and not line.startswith("#"))
     assert load_settings(environ).app.environment == "development"
     assert failure(environ | {"APP_ENV": "production"}).problems
+
+
+def test_local_embeddings_are_off_by_default_and_need_no_key() -> None:
+    settings = load_settings(development_environ())
+    assert settings.providers.embedding_backend == "off"
+    assert settings.providers.embedding_model_path is None
+    assert settings.providers.embedding_threads == 2
+
+
+def test_the_fastembed_backend_needs_a_model_path() -> None:
+    environ = development_environ() | {"EMBEDDING_BACKEND": "fastembed"}
+    assert {"EMBEDDING_MODEL_PATH: required when EMBEDDING_BACKEND=fastembed"} <= set(
+        failure(environ).problems
+    )
+    assert {"EMBEDDING_MODEL_PATH: required when EMBEDDING_BACKEND=fastembed"} <= set(
+        failure(environ | {"EMBEDDING_MODEL_PATH": ""}).problems
+    ), "a blank path is the same as none"
+
+
+def test_a_configured_model_path_is_accepted_without_touching_the_disk() -> None:
+    environ = development_environ() | {
+        "EMBEDDING_BACKEND": "fastembed",
+        "EMBEDDING_MODEL_PATH": "/models/does-not-exist-yet",
+        "EMBEDDING_THREADS": "4",
+    }
+    settings = load_settings(environ)
+    assert settings.providers.embedding_backend == "fastembed"
+    assert str(settings.providers.embedding_model_path) == "/models/does-not-exist-yet"
+    assert settings.providers.embedding_threads == 4
+
+
+@pytest.mark.parametrize("value", ["on", "true", "openai", "FASTEMBED"])
+def test_an_unknown_embedding_backend_is_refused(value: str) -> None:
+    assert failure(development_environ() | {"EMBEDDING_BACKEND": value}).problems
+
+
+@pytest.mark.parametrize("value", ["0", "17", "-1", "many"])
+def test_embedding_threads_are_bounded(value: str) -> None:
+    assert failure(development_environ() | {"EMBEDDING_THREADS": value}).problems

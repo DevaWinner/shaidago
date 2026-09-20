@@ -1,6 +1,6 @@
 # Key management
 
-Applies to private report data (descriptions, contacts, reviewer notes, follow-up answers). The design is [ADR-0004](decisions/0004-envelope-encryption-and-key-versioning-for-private-fields.md); this page is the operating summary.
+Applies to private report data (descriptions, contacts, reviewer notes, follow-up answers). The design is [ADR-0004](decisions/0004-envelope-encryption-and-key-versioning.md); this page is the operating summary.
 
 ## How it works
 

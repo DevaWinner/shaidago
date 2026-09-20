@@ -1,6 +1,6 @@
 """One grounded project-question use case with privacy-safe operational persistence."""
 
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from datetime import datetime
 from time import monotonic
@@ -12,6 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from shaidago.projects.models import Locale
 from shaidago.projects.repository import PublicProjectRepository
+from shaidago.retrieval.embeddings import EmbeddingUnavailableError, QueryEmbedder
 from shaidago.retrieval.language import (
     PROMPT_VERSION,
     SCHEMA_VERSION,
@@ -208,7 +209,7 @@ async def _record(session: AsyncSession, metric: QuestionMetric) -> None:
 
 
 class ProjectQuestionService:
-    def __init__(
+    def __init__(  # noqa: PLR0913 - every argument is an injected collaborator tests replace
         self,
         database: Database,
         model: LanguageModel,
@@ -216,12 +217,28 @@ class ProjectQuestionService:
         ids: IdGenerator,
         *,
         elapsed: Callable[[], float] = monotonic,
+        query_embedder: QueryEmbedder | None = None,
     ) -> None:
         self._database = database
         self._model = model
         self._clock = clock
         self._ids = ids
         self._elapsed = elapsed
+        self._embedder = query_embedder
+
+    async def _embed(self, safe_question: str) -> Sequence[float] | None:
+        """Embed locally, before any database session is held. ``None`` means keyword retrieval.
+
+        Only the already-screened, bounded question is embedded, in this process; it goes to no
+        provider. Any failure is a fallback, never an error: the answer still runs and reports
+        ``retrieval_mode`` honestly.
+        """
+        if self._embedder is None:
+            return None
+        try:
+            return await self._embedder.embed_query(safe_question)
+        except EmbeddingUnavailableError:
+            return None
 
     async def ask(
         self,
@@ -235,6 +252,7 @@ class ProjectQuestionService:
         safe_question = normalise_query(question)
         started_at = self._clock.now()
         timer = self._elapsed()
+        query_vector = await self._embed(safe_question)
         async with self._database.unit_of_work() as session:
             projects = PublicProjectRepository(session)
             project = await projects.get_project(project_slug, locale)
@@ -242,7 +260,13 @@ class ProjectQuestionService:
             if project is None or project_id is None:
                 raise ProjectQuestionNotFoundError
             retrieval = await Retriever(session).search(
-                project_id, safe_question, limit=MAX_QUESTION_SOURCES
+                project_id,
+                safe_question,
+                query_embedding=query_vector,
+                embedding_model=self._embedder.model_id
+                if query_vector and self._embedder
+                else None,
+                limit=MAX_QUESTION_SOURCES,
             )
 
         evidence = _evidence(retrieval.chunks)
