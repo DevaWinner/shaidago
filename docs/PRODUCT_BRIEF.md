@@ -5,15 +5,15 @@
 ### Detailed Product and Technical Build Brief
 
 - **Project name:** ShaidaGo
-- **Tagline:** *Track promises. Verify progress. Take action.*
-- **Hackathon:** OSF × Andela — *Information You Can Trust*
+- **Tagline:** _Track promises. Verify progress. Take action._
+- **Hackathon:** OSF × Andela — _Information You Can Trust_
 - **Primary track:** Transparency & Accountability
 - **Secondary track:** Safety, Reporting & Protection
 - **Submission deadline:** 21 September 2026 at 23:59 UTC
 - **Project type:** Individual hackathon proof of concept
-- **Pilot location:** Abuja — AMAC and Bwari Area Councils
+- **Initial judge dataset:** Abuja — AMAC and Bwari Area Councils
 
-> **Name meaning:** “Shaida” means evidence, proof, testimony, or witness in Hausa. “Go” expresses movement from trusted information to practical action. The pilot location can be changed, while the central concept remains focused on helping communities monitor local government projects and report concerns more safely.
+> **Name meaning:** “Shaida” means evidence, proof, testimony, or witness in Hausa. “Go” expresses movement from trusted information to practical action. ShaidaGo is location-configurable; AMAC and Bwari identify the initial judge dataset, not the product itself.
 
 ---
 
@@ -113,7 +113,7 @@ Each project page and report outcome should explain the next safe step available
 
 ## 6. Proof-of-concept scope
 
-The initial proof of concept should run as one Abuja deployment covering AMAC and Bwari Area Councils and contain approximately five to eight seeded public projects across both localities. Use only publicly available, non-sensitive information for the demo.
+The initial proof of concept should use one location-configurable deployment. Its judge dataset covers Abuja's AMAC and Bwari Area Councils and contains approximately five to eight seeded public projects across both localities. Product identity, navigation, routes, and reusable interface copy must remain location-neutral. Use only publicly available, non-sensitive information for the demo.
 
 ### Must-have capabilities
 
@@ -136,7 +136,7 @@ The initial proof of concept should run as one Abuja deployment covering AMAC an
 
 ### Required language coverage
 
-Provide English, Hausa, Igbo, and Yoruba for essential interface text, safety guidance, validation messages, and project summaries. Machine-assisted translations must be labelled honestly and reviewed by fluent speakers before the final demonstration; original source titles and excerpts remain visibly attributed in their source language.
+Provide English, Hausa, Igbo, and Yoruba for essential interface text, safety guidance, validation messages, and project summaries. The complete interface catalogues received maintainer review on 2026-09-20; that status does not claim an independent second-language review. Machine-assisted translations must remain labelled honestly, and original source titles and excerpts remain visibly attributed in their source language.
 
 ### Out of scope for the sprint
 
@@ -948,20 +948,20 @@ Use one coherent scenario across the application, video, deck, README, and summa
 
 ## 26. Key risks and mitigations
 
-| Risk | Mitigation |
-| --- | --- |
-| Unverified accusations cause harm | Keep reports private; require human review; publish only neutral, evidence-backed summaries. |
-| Reporter identity is exposed | Anonymous-first design, separated optional contact data, metadata stripping, minimal logs, and access controls. |
-| Official information is outdated | Display publication and last-checked dates; mark stale or unavailable sources. |
-| AI invents an answer | Retrieval limited to approved sources, mandatory citations, and explicit insufficient-evidence responses. |
-| Public-web discovery repeats a false allegation | Label results as unverified, distinguish reported claims from supported facts, require citations, and require human review before publication. |
-| Search queries expose a reporter | Generate reduced privacy-safe queries, show them before incident searches, and never send private fields or attachments externally. |
-| A malicious page attempts prompt injection | Treat retrieved text as untrusted data, isolate it from instructions, use structured extraction, and prohibit tool or publication actions from page content. |
-| The fetcher accesses an unsafe internal address | Allow only public HTTP/HTTPS destinations and block private, loopback, link-local, and metadata-service networks. |
-| Scope becomes too large | One pilot locality, five to eight projects, and five complete user journeys, with Source Scout limited to ten results per run in the proof of concept. |
-| Demo depends on live third-party sites | Store permitted excerpts and metadata locally while linking to the original source. |
-| Poor connectivity breaks reporting | Small payloads, retry states, progress feedback, and local draft support with a shared-device warning. |
-| The prototype is mistaken for an emergency service | Prominent disclaimer and direct referral to appropriate official emergency or support channels. |
+| Risk                                               | Mitigation                                                                                                                                                   |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Unverified accusations cause harm                  | Keep reports private; require human review; publish only neutral, evidence-backed summaries.                                                                 |
+| Reporter identity is exposed                       | Anonymous-first design, separated optional contact data, metadata stripping, minimal logs, and access controls.                                              |
+| Official information is outdated                   | Display publication and last-checked dates; mark stale or unavailable sources.                                                                               |
+| AI invents an answer                               | Retrieval limited to approved sources, mandatory citations, and explicit insufficient-evidence responses.                                                    |
+| Public-web discovery repeats a false allegation    | Label results as unverified, distinguish reported claims from supported facts, require citations, and require human review before publication.               |
+| Search queries expose a reporter                   | Generate reduced privacy-safe queries, show them before incident searches, and never send private fields or attachments externally.                          |
+| A malicious page attempts prompt injection         | Treat retrieved text as untrusted data, isolate it from instructions, use structured extraction, and prohibit tool or publication actions from page content. |
+| The fetcher accesses an unsafe internal address    | Allow only public HTTP/HTTPS destinations and block private, loopback, link-local, and metadata-service networks.                                            |
+| Scope becomes too large                            | One pilot locality, five to eight projects, and five complete user journeys, with Source Scout limited to ten results per run in the proof of concept.       |
+| Demo depends on live third-party sites             | Store permitted excerpts and metadata locally while linking to the original source.                                                                          |
+| Poor connectivity breaks reporting                 | Small payloads, retry states, progress feedback, and local draft support with a shared-device warning.                                                       |
+| The prototype is mistaken for an emergency service | Prominent disclaimer and direct referral to appropriate official emergency or support channels.                                                              |
 
 ## 27. Definition of done
 

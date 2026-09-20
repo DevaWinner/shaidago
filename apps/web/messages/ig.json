@@ -14,8 +14,10 @@
       },
       "localeUnavailable": "enyochabeghị",
       "navLabel": "Isi menu",
-      "navLocalities": "Mpaghara",
+      "navLocalities": "Ndekọ ọrụ ngo",
       "navReport": "Kọwaa nchegbu",
+      "navReviewer": "Nbanye onye nyocha",
+      "navTrack": "Soro ma ọ bụ nweta akụkọ",
       "navTrust": "Otu ndekọ si arụ ọrụ",
       "notEmergency": "ShaidaGo abụghị ọrụ enyemaka mberede. Ọ bụrụ na mmadụ nọ n'ihe ize ndụ, buru ụzọ kpọtụrụ ndị ọrụ enyemaka mberede dị n'ógbè ahụ.",
       "productName": "ShaidaGo",
@@ -80,7 +82,7 @@
     "citedLabel": "Isi mmalite nke okwu a",
     "citationBack": "Laghachi n'okwu ahụ",
     "evidenceHeading": "Ihe akaebe nwere ụbọchị",
-    "heading": "Ndekọ ọrụ ngo ọha nke AMAC na Bwari, tinyere isi mmalite ha",
+    "heading": "Ndekọ ọrụ ngo ọha, nke isi mmalite na-akwado",
     "lead": "Ndekọ ọ bụla na-egosi ihe e kwere ná nkwa, ihe isi mmalite kwuru, mgbe e nyochara ya ikpeazụ, na ihe a ka na-amaghị.",
     "localityLabel": "Ọmụmaatụ mpaghara",
     "recordKind": "Ndekọ ọrụ ngo ọha",
@@ -121,1401 +123,1401 @@
     },
     "loading": "Na-akwadebe peeji a.",
     "fatal": {
-      "title": null
+      "title": "Enweghị ike imeghe ShaidaGo"
     }
   },
   "problems": {
     "codes": {
-      "badRequest": null,
-      "unauthenticated": null,
-      "forbidden": null,
-      "notFound": null,
-      "codeNotRecognised": null,
-      "invalidCredentials": null,
-      "rateLimited": null,
-      "conflict": null,
-      "idempotencyConflict": null,
-      "notAllowedNow": null,
-      "tooLarge": null,
-      "unsupportedType": null,
-      "validationFailed": null,
-      "markupNotAllowed": null,
-      "publicationIncomplete": null,
-      "invalidCursor": null,
-      "queryChanged": null,
-      "notVerified": null,
-      "timeout": null,
-      "unavailable": null,
-      "aborted": null,
-      "network": null,
-      "internal": null,
-      "unknown": null
+      "badRequest": "Enweghị ike ịghọta arịrịọ ahụ. Lelee ihe ị tinyere wee nwaa ọzọ.",
+      "unauthenticated": "Banye ka ị gaa n'ihu.",
+      "forbidden": "Ị nweghị ikike ime nke ahụ.",
+      "notFound": "Anyị enweghị ike ịhụ nke ahụ.",
+      "codeNotRecognised": "Anyị enweghị ike ịhụ mkpesa maka koodu ahụ. Lelee koodu ahụ wee nwaa ọzọ.",
+      "invalidCredentials": "Anabataghị nkọwa ndị ahụ. Lelee ha wee nwaa ọzọ.",
+      "rateLimited": "Nnwale karịrị akarị. Chere nwa oge wee nwaa ọzọ.",
+      "conflict": "Nke a gbanwere mgbe ị na-arụ ọrụ. Nwagharịa wee nwaa ọzọ.",
+      "idempotencyConflict": "Ejirila arịrịọ a na nkọwa dị iche iche. Malite ọzọ.",
+      "notAllowedNow": "Omume ahụ adịghị na ọnọdụ ugbu a.",
+      "tooLarge": "Nke ahụ buru oke ibu izipu. Belata nha ya wee nwaa ọzọ.",
+      "unsupportedType": "Akwadoghị usoro ahụ.",
+      "validationFailed": "Ụfọdụ nkọwa chọrọ nlebara anya.",
+      "markupNotAllowed": "Wepụ nhazi ma ọ bụ akara wee nwaa ọzọ.",
+      "publicationIncomplete": "Ihe achọrọ adịghị tupu ebipụta nke a.",
+      "invalidCursor": "Peeji nsonaazụ ahụ adịghịzi. Laghachi na peeji mbụ.",
+      "queryChanged": "Ọchụchọ ahụ agbanweela. Nyochaa atụmatụ ọhụrụ tupu ị gaa n'ihu.",
+      "notVerified": "Enweghị ike ịkwado arịrịọ a. Bunyegharịa peeji ahụ wee nwaa ọzọ.",
+      "timeout": "Ọrụ ahụ were oke oge iji zaghachi. Nwaa ọzọ.",
+      "unavailable": "Ọrụ ahụ adịghị ugbu a. Nwaa ọzọ n'oge adịghị anya.",
+      "aborted": "A kagbuola arịrịọ ahụ.",
+      "network": "Enweghị ike iru ShaidaGo. Lelee njikọ gị wee nwaa ọzọ.",
+      "internal": "Ihe mebiri n'akụkụ anyị.",
+      "unknown": "Ihe mebiri emebi."
     },
     "rules": {
-      "required": null,
-      "tooShort": null,
-      "tooLong": null,
-      "invalidFormat": null,
-      "notAccepted": null,
-      "markup": null,
-      "invalid": null
+      "required": "Tinye uru.",
+      "tooShort": "Nke a dị mkpirikpi.",
+      "tooLong": "Nke a dị ogologo.",
+      "invalidFormat": "Nke a adịghị n'usoro a na-atụ anya ya.",
+      "notAccepted": "Anabataghị mpaghara a.",
+      "markup": "Wepụ nhazi ma ọ bụ akara.",
+      "invalid": "Lelee uru a."
     },
     "summary": {
-      "title": null
+      "title": "{count, plural, one {Dozie nsogbu # ka ị gaa n'ihu} other {Dozie nsogbu # ka ị gaa n'ihu}}"
     },
-    "mayHaveCompleted": null,
-    "retryAfter": null,
-    "reference": null
+    "mayHaveCompleted": "Ọ bụrụ na izipụlarị nke a, lelee tupu izipu ya ọzọ.",
+    "retryAfter": "Nwaa ọzọ na {seconds, plural, one {sekọnd #} other {sekọnd #}}.",
+    "reference": "Akara nkwado: {reference}"
   },
   "language": {
-    "changed": null,
+    "changed": "Agbanwela asụsụ gaa na {language}.",
     "draft": {
-      "title": null,
-      "body": null,
-      "stay": null,
-      "leave": null
+      "title": "Gbanwee asụsụ?",
+      "body": "Ịgbanwe asụsụ ga-ebunyegharị peeji a. Ihe ọ bụla ị na-echekwaghị ga-efu.",
+      "stay": "Nọrọ na peeji a",
+      "leave": "Gbanwee asụsụ"
     }
   },
   "directory": {
-    "title": null,
-    "intro": null,
+    "title": "Ndekọ ọrụ ngo",
+    "intro": "Chọgharịa ndekọ ọrụ ngo ọha site na mpaghara, ngalaba, ọnọdụ, ma ọ bụ ọnọdụ ihe akaebe. Ndekọ ọ bụla na-egosi isi mmalite ya na ụbọchị e nyochara ya ikpeazụ.",
     "form": {
-      "label": null,
-      "searchLabel": null,
-      "searchHelp": null,
-      "locality": null,
-      "category": null,
-      "status": null,
-      "verification": null,
-      "any": null,
-      "apply": null,
-      "clear": null
+      "label": "Chọọ ma nyochaa ndekọ ọrụ ngo",
+      "searchLabel": "Chọọ ndekọ ọrụ ngo",
+      "searchHelp": "Chọọ site n'aha ọrụ ngo ma ọ bụ ihe e kwere ná nkwa.",
+      "locality": "Mpaghara",
+      "category": "Ngalaba",
+      "status": "Ọnọdụ e dekọrọ",
+      "verification": "Nkwenye",
+      "any": "Ọ bụla",
+      "apply": "Chọọ",
+      "clear": "Kpochapụ nzacha niile"
     },
     "categories": {
-      "health": null,
-      "education": null,
-      "water_sanitation": null,
-      "roads_public_works": null,
-      "other_public_service": null
+      "health": "Ahụike",
+      "education": "Agụmakwụkwọ",
+      "water_sanitation": "Mmiri na ịdị ọcha",
+      "roads_public_works": "Ụzọ na ọrụ ọha",
+      "other_public_service": "Ọrụ ọha ndị ọzọ"
     },
     "statuses": {
-      "unknown": null,
-      "planned": null,
-      "procurement": null,
-      "in_progress": null,
-      "on_hold": null,
-      "completed": null,
-      "cancelled": null
+      "unknown": "Amaghị",
+      "planned": "A haziri",
+      "procurement": "Na ịzụta",
+      "in_progress": "Na-aga n'ihu",
+      "on_hold": "A kwụsịrị nwa oge",
+      "completed": "A rụchara",
+      "cancelled": "A kagbuola"
     },
     "pills": {
-      "label": null,
-      "remove": null,
-      "search": null
+      "label": "Nzacha na-arụ ọrụ",
+      "remove": "Wepụ nzacha: {filter}",
+      "search": "Chọọ: {value}"
     },
     "results": {
-      "heading": null,
-      "shown": null,
-      "moreAvailable": null
+      "heading": "Nsonaazụ",
+      "shown": "{count, plural, one {Na-egosi ndekọ ọrụ ngo #.} other {Na-egosi ndekọ ọrụ ngo #.}}",
+      "moreAvailable": "Ndekọ ndị ọzọ dị."
     },
     "card": {
-      "recordedStatus": null,
-      "lastChecked": null,
-      "notChecked": null,
-      "staleNote": null,
-      "original": null
+      "recordedStatus": "Ọnọdụ e dekọrọ",
+      "lastChecked": "Nnyocha ikpeazụ",
+      "notChecked": "Enyochabeghị",
+      "staleNote": "E nyochara ya karịa {days, plural, one {ụbọchị #} other {ụbọchị #}} gara aga.",
+      "original": "E gosipụtara ya n'asụsụ izizi: enweghị ntụgharị asụsụ maka ndekọ a."
     },
     "states": {
       "empty": {
-        "title": null,
-        "body": null
+        "title": "Enweghị ndekọ ọrụ ngo ugbu a",
+        "body": "Ọnweghị ndekọ ọrụ ngo ọha dị ugbu a. Lelee ọzọ emechaa."
       },
       "noMatches": {
-        "title": null,
-        "body": null
+        "title": "Enweghị ndekọ dabara na nzacha ndị a",
+        "body": "Gbalịa iwepụ nzacha ma ọ bụ chọọ okwu dị iche. Ndekọ nwere ike ịdị na nzacha ndị ọzọ."
       },
       "unavailable": {
-        "title": null,
-        "body": null,
-        "retry": null
+        "title": "Enweghị ike ibunye ndekọ ọrụ ngo",
+        "body": "Ọrụ ahụ anaghị aza ugbu a. Ọnweghị ihe furu efu. Nwaa ọzọ na nwa oge.",
+        "retry": "Nwaa ọzọ"
       },
       "invalidCursor": {
-        "title": null,
-        "body": null,
-        "first": null
+        "title": "Peeji nsonaazụ ahụ adịghịzi",
+        "body": "Ndepụta ahụ agbanweela kemgbe e mere njikọ a. Malite ọzọ site na peeji mbụ.",
+        "first": "Gaa na peeji mbụ"
       }
     },
     "pagination": {
-      "label": null,
-      "next": null,
-      "first": null
+      "label": "Peeji ndekọ ọrụ ngo",
+      "next": "Ndekọ ọzọ",
+      "first": "Laghachi na peeji mbụ"
     }
   },
   "home": {
     "search": {
-      "apply": null,
-      "label": null,
-      "help": null
+      "apply": "Chọọ",
+      "label": "Chọọ ndekọ ọrụ ngo",
+      "help": "Chọọ site n'aha ọrụ ngo ma ọ bụ ihe e kwere ná nkwa."
     },
     "localities": {
-      "heading": null,
-      "all": null
+      "heading": "Họrọ ebe ị ga-ele",
+      "all": "Mpaghara niile"
     },
     "categories": {
-      "heading": null,
-      "note": null
+      "heading": "Chọgharịa site na ngalaba",
+      "note": "Naanị ngalaba nwere ndekọ ka e depụtara."
     },
     "latest": {
-      "heading": null,
-      "recordedStatus": null,
-      "lastChecked": null,
-      "notChecked": null,
-      "view": null,
-      "unavailable": null,
-      "empty": null
+      "heading": "Ndekọ ọhụrụ",
+      "recordedStatus": "Ọnọdụ e dekọrọ",
+      "lastChecked": "Nnyocha ikpeazụ",
+      "notChecked": "Enyochabeghị",
+      "view": "Lelee ndekọ",
+      "unavailable": "Enweghị ike ibunye ndekọ ọrụ ngo ugbu a. Akụkụ ndị ọzọ nke peeji a ka na-arụ ọrụ.",
+      "empty": "Ọnweghị ndekọ ọrụ ngo ọha dị ugbu a."
     },
     "trust": {
-      "heading": null,
-      "sources": null,
-      "review": null,
-      "privacy": null,
-      "link": null
+      "heading": "Otu ị nwere ike isi lelee ihe ị gụrụ",
+      "sources": "Eziokwu ọ bụla na-ejikọ na isi mmalite ebe ọ si, tinyere kpọmkwem ederede ahụ na ụbọchị e nyochara ya.",
+      "review": "Mmadụ na-enyocha ihe akaebe tupu ọ gbanwee ndekọ ọha. Ngwaọrụ akpaaka na-akọwa ma na-achọ, mana ha abụghị isi mmalite.",
+      "privacy": "Mkpesa bụ nke nzuzo ma a naghị ebipụta ha ozugbo.",
+      "link": "Otu ndekọ si arụ ọrụ"
     },
     "how": {
-      "heading": null,
+      "heading": "Otu ShaidaGo si arụ ọrụ",
       "read": {
-        "title": null,
-        "body": null
+        "title": "Gụọ ndekọ ahụ",
+        "body": "Chọọ ọrụ ngo wee hụ ihe e kwere ná nkwa na ihe isi mmalite kwuru."
       },
       "report": {
-        "title": null,
-        "body": null
+        "title": "Kọwaa nchegbu n'enweghị nsogbu",
+        "body": "Zipụ mkpesa nzuzo na-enweghị akaụntụ. Naanị onye nyocha nwere ike ịgụ ya."
       },
       "review": {
-        "title": null,
-        "body": null
+        "title": "Mmadụ na-enyocha",
+        "body": "Ndị nyocha na-ekpebi ihe a ga-agbakwunye na ndekọ ọha, ọ bụrụ na ọ dị, tinyere isi mmalite ya."
       }
     },
-    "limitation": null
+    "limitation": "ShaidaGo bụ ihe nlereanya. Ọ abụghị ọrụ enyemaka mberede. Ọ bụrụ na mmadụ nọ n'ihe ize ndụ, buru ụzọ kpọtụrụ ndị ọrụ enyemaka mberede dị n'ógbè ahụ."
   },
   "project": {
     "breadcrumb": {
-      "label": null,
-      "directory": null
+      "label": "Ị nọ ebe a",
+      "directory": "Ndekọ ọrụ ngo"
     },
     "promised": {
-      "heading": null,
-      "notRecorded": null
+      "heading": "Ihe e kwere ná nkwa",
+      "notRecorded": "E dekọghị nkwa ahụ maka ndekọ a."
     },
     "state": {
-      "heading": null,
-      "status": null,
-      "lastChecked": null,
-      "notChecked": null,
-      "caveat": null,
-      "stale": null
+      "heading": "Ọnọdụ e dekọrọ ugbu a",
+      "status": "Ọnọdụ e dekọrọ",
+      "lastChecked": "Nnyocha ikpeazụ",
+      "notChecked": "Enyochabeghị",
+      "caveat": "Ọnọdụ e dekọrọ bụ ihe ndekọ a na-ekwu. Ọ bụghị ikpe. Okwu ọ bụla dị n'okpuru na-egosi otú e si kwado ya.",
+      "stale": "E nyochara ndekọ a karịa {days, plural, one {ụbọchị #} other {ụbọchị #}} gara aga."
     },
     "facts": {
-      "heading": null,
-      "empty": null,
-      "sourceCount": null,
-      "sourceLabel": null,
-      "citedLabel": null,
-      "evidenceHeading": null,
-      "openSource": null,
-      "back": null,
-      "triggerName": null
+      "heading": "Ihe isi mmalite na-ekwu",
+      "empty": "Ebipụtabeghị nkwupụta nwere isi mmalite maka ndekọ a.",
+      "sourceCount": "{count, plural, one {isi mmalite #} other {isi mmalite #}}",
+      "sourceLabel": "Isi mmalite {number, number}",
+      "citedLabel": "Isi mmalite maka nkwupụta a",
+      "evidenceHeading": "Ihe akaebe",
+      "openSource": "Mepee peeji isi mmalite",
+      "back": "Laghachi na nkwupụta ahụ",
+      "triggerName": "{label}: na-akwado nkwupụta \"{statement}\""
     },
     "timeline": {
-      "heading": null,
-      "empty": null,
-      "scheduled": null,
-      "date": null
+      "heading": "Mmelite n'ime oge",
+      "empty": "Ebipụtabeghị mmelite ọ bụla maka ndekọ a.",
+      "scheduled": "A haziri",
+      "date": "Ụbọchị"
     },
     "unknown": {
-      "heading": null,
-      "none": null,
-      "awaiting": null,
-      "disputed": null,
-      "outdated": null
+      "heading": "Ihe a na-amaghị",
+      "none": "Ọnweghị ihe e mere akara dị ka akwadoghị, a na-arụ ụka, ma ọ bụ nke ochie maka nkwupụta ndị egosiri. Nke ahụ apụtaghị na ndekọ ahụ ezuola.",
+      "awaiting": "Akwadobeghị ya: {statement}",
+      "disputed": "Isi mmalite ekwekọghị: {statement}",
+      "outdated": "O nwere ike ịbụ ozi ochie: {statement}"
     },
     "actions": {
-      "heading": null,
-      "report": null,
-      "note": null
+      "heading": "Usoro ndị ọzọ",
+      "report": "Kọwaa nchegbu gbasara ọrụ ngo a",
+      "note": "Mkpesa bụ nke nzuzo ma a naghị ebipụta ha ozugbo."
     },
     "discovery": {
-      "heading": null,
-      "intro": null,
-      "notice": null,
-      "start": null,
-      "stop": null,
-      "resume": null,
-      "checking": null,
+      "heading": "Chọta ozi ọha ndị metụtara ya",
+      "intro": "Nchọgharị na-eji naanị ndekọ ọrụ ngo ọha a. A naghị akwado ihe ọhụrụ ma ha enweghị ike ịgbanwe ndekọ a ozugbo.",
+      "notice": "Nchọgharị a anaghị eji mkpesa, kọntaktị, mgbakwunye, ma ọ bụ nkọwa nsochi.",
+      "start": "Chọta ozi ọha",
+      "stop": "Kwụsị ịlele peeji a",
+      "resume": "Gaa n'ihu ịlele",
+      "checking": "Na-enyocha ọsọ nchọta ahụ.",
       "action": {
-        "create": null,
-        "reuse_fresh": null,
-        "show_latest_completed": null
+        "create": "Nchọgharị ọha ọhụrụ amalitela.",
+        "reuse_fresh": "Na-egosi nchọgharị ọha kekọrịtara na nso nso a.",
+        "show_latest_completed": "Na-egosi nchọgharị ọha kachasị ọhụrụ arụchara."
       },
       "states": {
-        "queued": null,
-        "searching": null,
-        "analysing": null,
-        "needs_review": null,
-        "complete": null
+        "queued": "Na-eche ịchọ",
+        "searching": "Na-achọ isi mmalite ọha",
+        "analysing": "Na-enyocha ihe ndị e wetara",
+        "needs_review": "Na-eche nyocha",
+        "complete": "Nchọgharị agwụla"
       },
-      "counts": null,
-      "replay": null,
-      "live": null,
-      "started": null,
-      "unavailable": null,
-      "invalid": null
+      "counts": "A hụrụ {found}; a dọtara {fetched}; a nyochara {analysed}.",
+      "replay": "Na-egosi nkwugharị echepụtara maka ngosipụta ahụ.",
+      "live": "Ọsọ a jiri ọrụ isi mmalite ọha a haziri ahazi.",
+      "started": "Malitere:",
+      "unavailable": "Nchọgharị ọha adịghị ugbu a. Ndekọ ọrụ ngo ahụ agbanwebeghị.",
+      "invalid": "Enweghị ike igosi nsonaazụ nchọta a n'enweghị nsogbu."
     },
     "notFound": {
-      "title": null,
-      "body": null,
-      "back": null
+      "title": "Ndekọ a adịghị",
+      "body": "Lelee adreesị ahụ ma ọ bụ laghachi na ndekọ ọrụ ngo. ShaidaGo anaghị akwado ma ndekọ nzuzo ọ dị.",
+      "back": "Laghachi na ndekọ ọrụ ngo"
     },
     "unavailable": {
-      "title": null,
-      "body": null,
-      "retry": null
+      "title": "Enweghị ike ibunye ndekọ a",
+      "body": "Ọrụ ahụ anaghị aza ugbu a. Ọnweghị ihe furu efu. Nwaa ọzọ na nwa oge.",
+      "retry": "Nwaa ọzọ"
     }
   },
   "source": {
-    "heading": null,
-    "back": null,
+    "heading": "Isi mmalite",
+    "back": "Laghachi na ndekọ ahụ",
     "facts": {
-      "publisher": null,
-      "type": null,
-      "availability": null,
-      "checked": null,
-      "unchecked": null
+      "publisher": "Onye bipụtara",
+      "type": "Ụdị isi mmalite",
+      "availability": "Nnweta",
+      "checked": "Nnweta a nyochara ikpeazụ",
+      "unchecked": "Enyochabeghị"
     },
     "types": {
-      "government_publication": null,
-      "budget_document": null,
-      "procurement_record": null,
-      "audit_oversight_report": null,
-      "independent_media": null,
-      "civic_research": null,
-      "community_evidence": null,
-      "other_public_source": null
+      "government_publication": "Akwụkwọ gọọmentị bipụtara",
+      "budget_document": "Akwụkwọ mmefu ego",
+      "procurement_record": "Ndekọ ịzụta ihe",
+      "audit_oversight_report": "Mkpesa nyocha ego ma ọ bụ nlekọta",
+      "independent_media": "Mgbasa ozi nọọrọ onwe ya",
+      "civic_research": "Nnyocha obodo",
+      "community_evidence": "Ihe akaebe obodo",
+      "other_public_source": "Isi mmalite ọha ọzọ"
     },
     "availabilityNote": {
-      "unchecked": null,
-      "available": null,
-      "temporarily_unavailable": null,
-      "access_restricted": null,
-      "permanently_unavailable": null
+      "unchecked": "Enyochabeghị peeji mbụ ahụ. E chekwaara ederede ndị dị n'okpuru mgbe akwadoro isi mmalite ahụ.",
+      "available": "Peeji mbụ ahụ na-emeghe mgbe a nyochara ya ikpeazụ.",
+      "temporarily_unavailable": "Enweghị ike iru peeji mbụ ahụ mgbe a nyochara ya ikpeazụ. E chekwaara ederede ndị dị n'okpuru mgbe akwadoro isi mmalite ahụ ma ha ka dị ire.",
+      "access_restricted": "Peeji mbụ ahụ machibidoro ịnweta ya, ya mere ọ nwere ike ghara imeghe gị. E chekwaara ederede ndị dị n'okpuru mgbe akwadoro isi mmalite ahụ.",
+      "permanently_unavailable": "Peeji mbụ ahụ adịghịzi. E chekwaara ederede ndị dị n'okpuru mgbe akwadoro isi mmalite ahụ."
     },
     "excerpts": {
-      "heading": null,
-      "quoteNote": null,
-      "location": null,
-      "supportsFact": null,
-      "supportsUpdate": null,
-      "seeUse": null,
-      "showFull": null,
-      "empty": null
+      "heading": "Ederede e jiri mee ihe na ndekọ a",
+      "quoteNote": "A na-ehota ya n'isi mmalite n'okwu mbụ ya. Ọ bụghị ederede nke ShaidaGo.",
+      "location": "Ebe ọ dị n'isi mmalite",
+      "supportsFact": "Na-akwado nkwupụta",
+      "supportsUpdate": "Na-akwado mmelite",
+      "seeUse": "Hụ ebe e jiri ya mee ihe",
+      "showFull": "Gosi ederede ahụ n'uju",
+      "empty": "Enweghị ederede sitere na isi mmalite a ebipụtara maka ndekọ a."
     },
     "original": {
-      "link": null,
-      "note": null,
-      "newTab": null
+      "link": "Mepee isi mmalite mbụ ahụ",
+      "note": "Na-emepe peeji onye bipụtara na taabụ ọhụrụ. ShaidaGo anaghị agwa peeji ahụ ebe ị si bịa ma enweghị ike ijikwa ọdịnaya ya.",
+      "newTab": "na-emepe na taabụ ọhụrụ"
     },
     "notFound": {
-      "title": null,
-      "body": null,
-      "back": null
+      "title": "Isi mmalite a adịghị",
+      "body": "Lelee adreesị ahụ ma ọ bụ laghachi na ndekọ ahụ.",
+      "back": "Laghachi na ndekọ ahụ"
     },
     "unavailable": {
-      "title": null,
-      "body": null,
-      "retry": null
+      "title": "Enweghị ike ibunye isi mmalite a",
+      "body": "Ọrụ ahụ anaghị aza ugbu a. Nwaa ọzọ na nwa oge.",
+      "retry": "Nwaa ọzọ"
     }
   },
   "trust": {
-    "title": null,
-    "lead": null,
-    "toc": null,
+    "title": "Otu ndekọ si arụ ọrụ",
+    "lead": "ShaidaGo na-egosi ndekọ ọha gbasara ọrụ ngo, nke ọ bụla nwere isi mmalite ebe o si bịa. Peeji a na-akọwa otú e si agụ ha nakwa ihe ha na-adịghị agwa gị.",
+    "toc": "Na peeji a",
     "classes": {
-      "heading": null,
-      "intro": null,
-      "official_source": null,
-      "independent_source": null,
-      "community_evidence_reviewed": null,
-      "community_report_unverified": null,
-      "ai_generated_explanation": null
+      "heading": "Ụdị ozi",
+      "intro": "Ejirila ụdị ozi o si akara nkwupụta ọ bụla.",
+      "official_source": "Nke ụlọ ọrụ ọha bipụtara, dị ka akwụkwọ gọọmentị, mmefu ego, ma ọ bụ ndekọ ịzụta ihe.",
+      "independent_source": "Nke onye nọọrọ onwe ya n'ọrụ ngo ahụ bipụtara, dị ka akwụkwọ akụkọ ma ọ bụ otu nnyocha.",
+      "community_evidence_reviewed": "Nke onye obodo zitere ma onye nyochara ya tupu agbakwunye ya.",
+      "community_report_unverified": "Nke onye obodo zitere ma enyochabeghị ya. Ọ gaghị abụ akụkụ nke ndekọ ọha ruo mgbe onye nyochara ya.",
+      "ai_generated_explanation": "Ihe e ji ngwaọrụ akpaaka dee iji kọwaa ihe. Ọ bụghị isi mmalite ma a na-etinye akara na ya mgbe niile."
     },
     "states": {
-      "heading": null,
-      "intro": null,
-      "awaiting_verification": null,
-      "verified_official": null,
-      "corroborated": null,
-      "community_reviewed": null,
-      "disputed": null,
-      "outdated": null
+      "heading": "Otú e si kwado nkwupụta",
+      "intro": "Akara na-akọwa nkwado, ọ bụghị ikpe gbasara onye ma ọ bụ nzukọ ọ bụla.",
+      "awaiting_verification": "Nkwupụta ahụ nwere isi mmalite ma a kabeghị ya na isi mmalite nke abụọ.",
+      "verified_official": "Isi mmalite gọọmentị na-ekwu ya ozugbo.",
+      "corroborated": "Ihe karịrị otu isi mmalite na-akwado ya.",
+      "community_reviewed": "Onye nyochara ihe akaebe obodo maka ya.",
+      "disputed": "Isi mmalite ekwekọghị. A na-egosi akụkụ abụọ ahụ.",
+      "outdated": "O nwere ike ọ gaghịzi abụ eziokwu. A na-egosi ụbọchị e nyochara ya ikpeazụ."
     },
     "citations": {
-      "heading": null,
-      "body": null
+      "heading": "Nkwupụta na ụbọchị",
+      "body": "Nkwupụta ọ bụla na-ejikọta na isi mmalite o si pụta, jiri ederede ziri ezi, ebe ọ pụtara na isi mmalite, na ụbọchị e nyochara ya ikpeazụ. Ọ bụrụ na enweghịzi ike imeghe isi mmalite, ederede e chekwaara na-adị ka ị ka nwee ike ịhụ ihe a dabeere na ya."
     },
     "ai": {
-      "heading": null,
-      "body": null
+      "heading": "Ihe ngwaọrụ akpaaka na-eme na ihe ha na-adịghị eme",
+      "body": "Ngwaọrụ akpaaka nwere ike ịchọ isi mmalite ma zaa ajụjụ site n'iji naanị ederede akwadoro. Ha enweghị ike ịkwado nkwupụta, kpebie onye mejọrọ, gbanwee ọnọdụ, ma ọ bụ bipụta ihe ọ bụla. Azịza ha bụ nkọwa, ọ bụghị isi mmalite, ha na-egosikwa isi mmalite ha jiri mee point mgbe niile. Ọ bụrụ na isi mmalite anaghị aza ajụjụ, azịza ahụ na-ekwu otu ahụ."
     },
     "scout": {
-      "heading": null,
-      "body": null
+      "heading": "Isi mmalite achọpụtara ọhụrụ",
+      "body": "E tinyela akara \"achọpụtara — enyochabeghị\" na isi mmalite ndị a hụrụ site na nchọta. Ha abụghị akụkụ nke ndekọ ahụ. Mmadụ na-ekpebi ma a ga-agbakwunye otu, na ịgbakwunye isi mmalite anaghị eme ka nkwupụta bụrụ eziokwu n'onwe ya."
     },
     "review": {
-      "heading": null,
-      "body": null
+      "heading": "Nyocha mmadụ",
+      "body": "Mmadụ na-enyocha ihe akaebe tupu ọ gbanwee ndekọ ọha, na ibipụta bụ usoro dị iche site n'inyocha mkpesa. Ngwaọrụ akpaaka anaghị ebipụta ihe."
     },
     "reporting": {
-      "heading": null,
-      "body": null,
-      "limit": null
+      "heading": "Ịkọwa nchegbu",
+      "body": "Ị nwere ike izipu mkpesa na-enweghị akaụntụ, adreesị email, ma ọ bụ nọmba ekwentị. Mkpesa bụ nke nzuzo ma a naghị ebipụta ha ozugbo. Naanị onye nyocha nwere ike ịgụ ha. A na-asachapụ foto na faịlụ site na nkọwa ndị zoro ezo dị ka ọnọdụ tupu e chekwaa ha, ị nwekwara ike ịhọrọ ma ị ga-ahapụ nkọwa kọntaktị.",
+      "limit": "Nke a bụ ihe nlereanya. Ọ bụghị ọrụ enyemaka mberede, ọ nweghị ike ikwe nkwa nzaghachi ma ọ bụ nchebe, ekwesịghịkwa iji ya kọọ ihe ize ndụ. Ọ bụrụ na mmadụ nọ n'ihe ize ndụ, buru ụzọ kpọtụrụ ndị ọrụ enyemaka mberede dị n'ógbè ahụ."
     },
     "correct": {
-      "heading": null,
-      "body": null,
-      "report": null
+      "heading": "Ọ bụrụ na ihe dị njọ",
+      "body": "Ọ bụrụ na i chere na ndekọ ezighi ezi, oge ya agafeela, ma ọ bụ enweghị isi mmalite, ị nwere ike ịkọ ya na nzuzo site na ndekọ ahụ. Onye nyocha na-ekpebi ihe na-agbanwe, ma ọ bụrụ na ọ dị. ShaidaGo enweghị ike ikwe nkwa nsonaazụ ma ọ bụ oge ọ bụla.",
+      "report": "Kọwaa nchegbu na nzuzo"
     },
-    "back": null
+    "back": "Laghachi na ndekọ ọrụ ngo"
   },
   "qa": {
-    "heading": null,
-    "intro": null,
-    "privacy": null,
-    "reportLink": null,
-    "label": null,
-    "hint": null,
-    "counter": null,
-    "submit": null,
-    "cancel": null,
-    "retry": null,
-    "loading": null,
-    "cancelled": null,
-    "empty": null,
-    "tooLong": null,
+    "heading": "Jụọ maka ndekọ a",
+    "intro": "Azịza na-eji naanị isi mmalite akwadoro maka ndekọ a. AI na-edepụta okwu ahụ. Ọ bụ nkọwa, ọ bụghị isi mmalite, ọ nweghịkwa ike ịkwado nkwupụta ma ọ bụ kpebie ọnọdụ.",
+    "privacy": "Edekpala aha gị, nkọwa kọntaktị, ma ọ bụ ozi nzuzo ebe a. Iji gwa anyị ihe na nzuzo, jiri fọm mkpesa.",
+    "reportLink": "Kọwaa nchegbu na nzuzo",
+    "label": "Ajụjụ gị",
+    "hint": "Jụọ maka ihe isi mmalite na-ekwu. Ruo mkpụrụedemede {max}.",
+    "counter": "Mkpụrụedemede {count} nke {max}",
+    "submit": "Jụọ isi mmalite",
+    "cancel": "Kagbuo",
+    "retry": "Nwaa ọzọ",
+    "loading": "Na-enyocha isi mmalite akwadoro maka ndekọ a.",
+    "cancelled": "A kagbuola ajụjụ ahụ. Ọ ka dị n'igbe ahụ ma ọ bụrụ na ịchọrọ ịjụ ọzọ.",
+    "empty": "Dee ajụjụ na mbụ.",
+    "tooLong": "Ajụjụ a dị ogologo. Belata ya na mkpụrụedemede {max} ma ọ bụ karịa.",
     "result": {
-      "heading": null,
-      "ready": null,
-      "aiLabel": null,
-      "generated": null,
-      "retrievalKeyword": null,
-      "retrievalHybrid": null,
-      "considered": null,
-      "keywordCaution": null,
-      "noteLabel": null,
-      "statementsHeading": null,
-      "sourcesHeading": null,
-      "sourceLabel": null,
-      "cites": null,
-      "openSourcePage": null,
-      "openOriginal": null,
-      "newTab": null,
-      "location": null,
-      "retrieved": null,
-      "showFull": null,
-      "backToStatement": null
+      "heading": "Azịza",
+      "ready": "Azịza dị njikere n'okpuru.",
+      "aiLabel": "AI dere ya site na isi mmalite akwadoro. Ọ bụ nkọwa, ọ bụghị isi mmalite. Lelee nkwupụta ọ bụla na isi mmalite ya.",
+      "generated": "Emepụtara {time}",
+      "retrievalKeyword": "Usoro nchọta: isiokwu",
+      "retrievalHybrid": "Usoro nchọta: isiokwu na ihe ọ pụtara",
+      "considered": "Ederede a tụlere: {count}",
+      "keywordCaution": "Nchọta isiokwu nwere ike hapụ ederede jiri okwu dị iche iche mee ihe.",
+      "noteLabel": "Ihe edeturu sistemụ",
+      "statementsHeading": "Nkwupụta",
+      "sourcesHeading": "Isi mmalite maka azịza a",
+      "sourceLabel": "Isi mmalite {number}",
+      "cites": "Isi mmalite maka nkwupụta a",
+      "openSourcePage": "Mepee peeji isi mmalite",
+      "openOriginal": "Mepee isi mmalite mbụ ahụ",
+      "newTab": "na-emepe na taabụ ọhụrụ",
+      "location": "Ebe ọ dị n'isi mmalite",
+      "retrieved": "E chekwaara {date}",
+      "showFull": "Gosi ederede ahụ n'uju",
+      "backToStatement": "Laghachi na azịza ahụ"
     },
     "insufficient": {
-      "title": null,
-      "body": null,
-      "read": null
+      "title": "Isi mmalite akwadoro anaghị aza nke a",
+      "body": "ShaidaGo anaghị echepụta ihe. Ọ nwere ike ịza naanị site na isi mmalite akwadoro maka ndekọ a.",
+      "read": "Gụọ ihe isi mmalite na-ekwu"
     },
     "rejected": {
-      "title": null,
-      "body": null
+      "title": "Enweghị ike inyocha azịza a",
+      "body": "Nkwupụta ya adabaghị na isi mmalite ndị eweghachitere na ya, ya mere egosighi ya. Nwaa ọzọ, ma ọ bụ gụọ isi mmalite dị na ndekọ a."
     },
     "failure": {
-      "title": null,
-      "still": null,
-      "wait": null
+      "title": "Enweghị ike ịza ajụjụ ahụ",
+      "still": "Ndekọ ahụ na isi mmalite ya ka dị na peeji a.",
+      "wait": "Nwaa ọzọ na ihe dị ka sekọnd {seconds}."
     },
-    "needsScript": null
+    "needsScript": "Ịjụ ajụjụ chọrọ JavaScript. Ị ka nwere ike ịgụ isi mmalite ọ bụla na peeji a."
   },
   "report": {
-    "title": null,
-    "needsScript": null,
-    "context": null,
+    "title": "Kọwaa nchegbu na nzuzo",
+    "needsScript": "Izipu mkpesa chọrọ JavaScript. Ọ nweghị ihe ị na-ede a na-ezipu ma ọ bụ chekwaa ruo mgbe ị họọrọ izipu ya.",
+    "context": "Ịkọ banyere: {title}",
     "chooser": {
-      "title": null,
-      "lead": null,
-      "listHeading": null,
-      "browse": null,
-      "unavailable": null
+      "title": "Họrọ ọrụ ngo mkpesa gị gbasara",
+      "lead": "Mkpesa gbasara otu ndekọ ọrụ ngo. Họrọ ndekọ ahụ, wee kọọ site na peeji ya.",
+      "listHeading": "Ndekọ ọrụ ngo",
+      "browse": "Chọgharịa ndekọ ọrụ ngo niile",
+      "unavailable": "Enweghị ike ibunye ndepụta ndekọ ahụ. Nwaa ọzọ na nwa oge, ma ọ bụ chọgharịa ndekọ ndị ahụ."
     },
     "unknownProject": {
-      "title": null,
-      "body": null,
-      "choose": null
+      "title": "Anyị enweghị ike imeghe ndekọ ahụ",
+      "body": "Lelee adreesị ahụ, ma ọ bụ họrọ ndekọ na ndepụta ahụ.",
+      "choose": "Họrọ ndekọ"
     },
     "steps": {
-      "label": null,
-      "progress": null,
-      "notice": null,
-      "observation": null,
-      "evidence": null,
-      "anonymity": null,
-      "review": null
+      "label": "Usoro mkpesa",
+      "progress": "Nzọụkwụ {number} nke {total}",
+      "notice": "Tupu ịmalite",
+      "observation": "Ihe ị hụrụ",
+      "evidence": "Ihe akaebe",
+      "anonymity": "Otu e si amata gị",
+      "review": "Nyochaa ma zipụ"
     },
     "notice": {
-      "heading": null,
-      "fictional": null,
-      "private": null,
-      "anonymous": null,
-      "limitTitle": null,
-      "limit": null,
-      "trust": null,
-      "start": null
+      "heading": "Tupu ịmalite",
+      "fictional": "Ihe nlereanya a na-anabata naanị mkpesa echepụtara echepụta. Etinyela ezigbo aha, nkọwa kọntaktị, ma ọ bụ mmemme.",
+      "private": "Mkpesa gị bụ nzuzo. A naghị ebipụta ya ozugbo. Onye na-enyocha ya na-agụ ya tupu ihe ọ bụla eruo ndekọ ọha.",
+      "anonymous": "Ị chọghị akaụntụ, adreesị email, ma ọ bụ nọmba ekwentị.",
+      "limitTitle": "Nke a abụghị ọrụ enyemaka mberede",
+      "limit": "ShaidaGo abụghị ọrụ enyemaka mberede. Ọ nweghị ike ikwe nkwa nchebe, nyocha, ma ọ bụ nzaghachi. Ọ bụrụ na mmadụ nọ n'ihe ize ndụ ozugbo, ejila fọm a. Kpọtụrụ ndị ọrụ enyemaka mberede mpaghara.",
+      "trust": "Otu e si elekọta ndekọ na mkpesa",
+      "start": "Aghọtara m. Gaa n'ihu"
     },
     "observation": {
-      "heading": null,
-      "categoryLabel": null,
-      "categoryPlaceholder": null,
+      "heading": "Ihe ị hụrụ",
+      "categoryLabel": "Kedu ụdị nchegbu ọ bụ?",
+      "categoryPlaceholder": "Họrọ ụdị nchegbu",
       "categories": {
-        "no_visible_work": null,
-        "incomplete_work": null,
-        "unsafe_construction": null,
-        "suspected_incorrect_status": null,
-        "access_barrier": null,
-        "other_concern": null
+        "no_visible_work": "Enweghị ọrụ a na-ahụ anya na saịtị ahụ",
+        "incomplete_work": "Ọrụ na-ele anya ka ezughị ezu",
+        "unsafe_construction": "Ihe owuwu adịghị mma",
+        "suspected_incorrect_status": "Ọnọdụ e dekọrọ na-ele anya ka ezighi ezi",
+        "access_barrier": "Ihe mgbochi iji ọrụ ngo ahụ",
+        "other_concern": "Ihe ọzọ"
       },
-      "descriptionLabel": null,
-      "descriptionHint": null,
-      "counter": null
+      "descriptionLabel": "Gịnị ka ị hụrụ?",
+      "descriptionHint": "Kwu ihe ị hụrụ, ebe, na ihe dị ka mgbe, n'okwu nke gị. Dee opekata mpe mkpụrụedemede {min} ma kacha {max}. Etinyela aha ma ọ bụ nkọwa kọntaktị.",
+      "counter": "Mkpụrụedemede {count} nke {max}"
     },
     "evidence": {
-      "heading": null,
-      "lead": null,
-      "hint": null,
-      "pick": null,
-      "none": null,
-      "remove": null,
-      "preview": null,
-      "previewNone": null,
-      "prepared": null,
-      "pdfNotPrepared": null,
-      "role": null,
-      "preparing": null,
+      "heading": "Ihe akaebe",
+      "lead": "Foto ma ọ bụ PDF nwere ike inyere onye nyocha aka. Nzọụkwụ a bụ nhọrọ.",
+      "hint": "Ruo faịlụ {max}, {size} MB nke ọ bụla. JPEG, PNG, WebP, ma ọ bụ PDF.",
+      "pick": "Gbakwunye faịlụ",
+      "none": "Agbakwunyeghị faịlụ.",
+      "remove": "Wepụ faịlụ {number}",
+      "preview": "Nlele nke faịlụ {number}",
+      "previewNone": "PDF: enweghị nlele",
+      "prepared": "Ewepụrụ ọnọdụ na nkọwa igwefoto na ihe nchọgharị gị.",
+      "pdfNotPrepared": "A naghị agbanwe PDF na ihe nchọgharị gị. Ihe nkesa na-elele ya ma nwee ike ịjụ ya.",
+      "role": "Ihe nchọgharị gị na-ewepụ nkọwa foto zoro ezo tupu izipu. Ihe nkesa na-emeghachi nyocha nchekwa nke ya, ma naanị nyocha ihe nkesa ka a na-agụ. Faịlụ nke ihe nkesa jụrụ anaghị akwụsị inweta mkpesa ahụ.",
+      "preparing": "Na-akwadebe faịlụ {number}",
       "errors": {
-        "unsupported": null,
-        "tooLarge": null,
-        "tooMany": null,
-        "mismatch": null,
-        "tooManyPixels": null,
-        "failed": null,
-        "empty": null
+        "unsupported": "Faịlụ {number} abụghị JPEG, PNG, WebP, ma ọ bụ PDF, ya mere agbakwunyeghị ya.",
+        "tooLarge": "Faịlụ {number} buru ibu karịa {size} MB, ya mere agbakwunyeghị ya.",
+        "tooMany": "Ị nwere ike ịgbakwunye kacha faịlụ {max}.",
+        "mismatch": "Faịlụ {number} abụghị ụdị faịlụ aha ya na-ekwu, ya mere agbakwunyeghị ya.",
+        "tooManyPixels": "Faịlụ {number} buru oke ibu na pikselụ iji kwadebe n'enweghị nsogbu, ya mere agbakwunyeghị ya.",
+        "failed": "Enweghị ike ịkwadebe faịlụ {number} na ihe nchọgharị gị, ya mere agbakwunyeghị ya. Ezipughị ya.",
+        "empty": "Faịlụ {number} tọgbọ chakoo, ya mere agbakwunyeghị ya."
       }
     },
     "anonymity": {
-      "heading": null,
-      "lead": null,
+      "heading": "Otu e si amata gị",
+      "lead": "Họrọ otu ịchọrọ ka esi mara gị. Ị nwere ike ịnọgide na-amaghị gị kpamkpam.",
       "modes": {
         "anonymous": {
-          "label": null,
-          "body": null
+          "label": "Nọgide na-amaghị gị kpamkpam (atụnyere)",
+          "body": "Enweghị aha, kọntaktị, ma ọ bụ aka. Ị nwere ike ịlele ọnọdụ ahụ ma emechaa jiri koodu nsochi ị nwetara."
         },
         "contact": {
-          "label": null,
-          "body": null
+          "label": "Nye ụzọ isi kpọtụrụ m",
+          "body": "Onye nyocha nwere ike iji ya jụọ ajụjụ. Ọ bụ nhọrọ ma echekwara ya iche na ederede mkpesa gị."
         },
         "handle": {
-          "label": null,
-          "body": null,
-          "warning": null
+          "label": "Jiri aka onye nta akụkọ",
+          "body": "Aka na-ejikọta mkpesa gị na-enyefeghị njirimara gị.",
+          "warning": "Ndị nyocha nwere ike ịmata mkpesa n'okpuru otu aka dị ka ihe jikọrọ ya. Aka nwere ike ọ gaghị adaba na mkpesa dị nro nke ukwuu."
         }
       },
-      "channelLabel": null,
+      "channelLabel": "Kedu otu anyị ga-esi erutere gị?",
       "channels": {
-        "email": null,
-        "phone": null,
-        "messaging_app": null
+        "email": "Email",
+        "phone": "Ekwentị",
+        "messaging_app": "Ngwa ozi"
       },
-      "contactLabel": null,
-      "contactHint": null,
-      "handleLabel": null,
-      "passphraseLabel": null,
-      "reveal": null,
-      "hide": null,
-      "handleNote": null,
-      "createHandle": null
+      "contactLabel": "Nkọwa kọntaktị",
+      "contactHint": "Naanị nye ụzọ obi ruru gị ala ka a kpọtụrụ gị. A na-egosi ya naanị ndị nyocha.",
+      "handleLabel": "Aka",
+      "passphraseLabel": "Okwu ngafe",
+      "reveal": "Gosi okwu ngafe",
+      "hide": "Zoo okwu ngafe",
+      "handleNote": "A na-enyocha aka gị na okwu ngafe gị naanị mgbe ị zitere mkpesa ahụ. A naghị edebe ha na ihe nchọgharị a.",
+      "createHandle": "Mepụta aka na mbụ"
     },
     "review": {
-      "heading": null,
-      "lead": null,
+      "heading": "Nyochaa ma zipụ",
+      "lead": "Lelee ihe niile. Enweghị ike ịgbanwe mkpesa mgbe ezipụchara ya.",
       "rows": {
-        "concern": null,
-        "description": null,
-        "files": null,
-        "identity": null
+        "concern": "Ụdị nchegbu",
+        "description": "Ihe ị hụrụ",
+        "files": "Faịlụ",
+        "identity": "Otu e si amata gị"
       },
-      "noFiles": null,
-      "files": null,
+      "noFiles": "Enweghị faịlụ",
+      "files": "Faịlụ {count}",
       "identity": {
-        "anonymous": null,
-        "contact": null,
-        "handle": null
+        "anonymous": "Amaghị kpamkpam",
+        "contact": "Enyere kọntaktị: {channel}",
+        "handle": "Aka: {handle}. Ezoro okwu ngafe."
       },
-      "change": null,
-      "sendNote": null,
-      "submit": null
+      "change": "Gbanwee",
+      "sendNote": "Izipu na-emepụta mkpesa nzuzo. Ọnweghị ihe ebipụtara.",
+      "submit": "Zipụ mkpesa"
     },
     "draft": {
-      "heading": null,
-      "consent": null,
-      "warning": null,
-      "remove": null,
-      "removed": null,
-      "found": null,
-      "restore": null,
-      "discard": null,
-      "restored": null,
-      "unavailable": null
+      "heading": "Chekwaa ihe odide na ngwaọrụ a",
+      "consent": "Chekwaa ihe m dere na ngwaọrụ a",
+      "warning": "Onye ọ bụla jiri ihe nchọgharị a nwere ike ịgụ ihe odide echekwara. Echekwala ihe odide na ngwaọrụ ekekọrịtara ma ọ bụ nke ọha. A na-echekwa naanị ụdị nchegbu na nkọwa gị. A naghị echekwa faịlụ, nkọwa kọntaktị, na aka. A na-ehichapụ ihe odide mgbe awa 24 gachara.",
+      "remove": "Hichapụ ihe odide echekwara",
+      "removed": "Ehichapụla ihe odide echekwara.",
+      "found": "Ị nwere ihe odide echekwara site na {when}.",
+      "restore": "Weghachi ihe odide ahụ",
+      "discard": "Hichapụ ya",
+      "restored": "Eweghachila ihe odide ahụ.",
+      "unavailable": "Ihe nchọgharị a enweghị ike ichekwa ihe odide, ya mere echekwaghị ihe ọ bụla."
     },
     "send": {
-      "sending": null,
-      "progress": null,
-      "cancel": null,
-      "cancelled": null,
-      "retry": null,
-      "offline": null,
-      "unknown": null,
-      "fixFields": null,
-      "failedTitle": null,
-      "wait": null
+      "sending": "Na-ezipu mkpesa gị",
+      "progress": "Ezigara pasent {percent}",
+      "cancel": "Kagbuo izipu",
+      "cancelled": "Akagbuola izipu. Mkpesa gị ka nọ ebe a.",
+      "retry": "Zipụ ọzọ",
+      "offline": "Ọ dị ka ịnọghị n'ịntanetị. Jikọọ ọzọ, wee zipụ ọzọ. Mkpesa gị ka nọ ebe a.",
+      "unknown": "Anyị enweghị ike ikwenye ma a natara mkpesa gị. Zipụ ọzọ. Agaghị emepụta otu mkpesa ahụ ugboro abụọ.",
+      "fixFields": "Ụfọdụ nkọwa chọrọ mmezi tupu ezipụ mkpesa ahụ.",
+      "failedTitle": "Ezipughị mkpesa ahụ",
+      "wait": "Nwaa ọzọ na ihe dị ka sekọnd {seconds}."
     },
     "nav": {
-      "back": null,
-      "next": null,
-      "stepErrors": null,
-      "jump": null,
-      "loading": null
+      "back": "Laghachi",
+      "next": "Gaa n'ihu",
+      "stepErrors": "Dozie ndị a tupu ị gaa n'ihu",
+      "jump": "Gaa na mpaghara ahụ",
+      "loading": "Na-ebunye nzọụkwụ a"
     },
     "errors": {
-      "category": null,
-      "descriptionRequired": null,
-      "descriptionShort": null,
-      "descriptionLong": null,
-      "contact": null,
-      "channel": null,
-      "handle": null,
-      "passphrase": null
+      "category": "Họrọ ụdị nchegbu.",
+      "descriptionRequired": "Kọwaa ihe ị hụrụ.",
+      "descriptionShort": "Dee opekata mpe mkpụrụedemede {min}.",
+      "descriptionLong": "Dee kacha mkpụrụedemede {max}.",
+      "contact": "Tinye nkọwa kọntaktị.",
+      "channel": "Họrọ otu anyị ga-esi erutere gị.",
+      "handle": "Tinye aka gị.",
+      "passphrase": "Tinye okwu ngafe gị."
     },
     "complete": {
-      "title": null,
-      "lead": null,
-      "codeLabel": null,
-      "codeWarning": null,
-      "copy": null,
-      "copied": null,
-      "copyFailed": null,
-      "print": null,
-      "download": null,
-      "fileText": null,
+      "title": "A natara mkpesa gị",
+      "lead": "Ọ bụ nzuzo. Ọnweghị ihe ebipụtara.",
+      "codeLabel": "Koodu nsochi gị",
+      "codeWarning": "A na-egosi koodu a otu ugboro. ShaidaGo enweghị ike igosi ya ọzọ ma ọ bụ nwetaghachi ya. Onye ọ bụla nwere koodu ahụ nwere ike ịhụ ọnọdụ mkpesa ahụ.",
+      "copy": "Detuo koodu ahụ",
+      "copied": "Edeturu",
+      "copyFailed": "Idetu adịghị ebe a. Họrọ koodu ahụ wee detuo ya n'onwe gị.",
+      "print": "Bipụta",
+      "download": "Budata dị ka faịlụ ederede",
+      "fileText": "Koodu nsochi ShaidaGo: {code}\nA na-egosi koodu a otu ugboro. Dobe ya na nzuzo.\nNke a bụ ihe nlereanya echepụtara echepụta.",
       "next": {
-        "heading": null,
-        "save_tracking_code": null,
-        "check_status_later": null,
-        "see_escalation_guidance": null
+        "heading": "Ihe na-eme ọzọ",
+        "save_tracking_code": "Chekwaa koodu nsochi ahụ ugbu a.",
+        "check_status_later": "Lelee ọnọdụ ahụ ma emechaa na peeji ọnọdụ. Nyocha nwere ike iwepụta oge.",
+        "see_escalation_guidance": "Gụọ ebe ọzọ a ga-ewere nchegbu."
       },
-      "filesHeading": null,
-      "fileKept": null,
-      "fileRejected": null,
+      "filesHeading": "Faịlụ gị",
+      "fileKept": "Faịlụ {number}: echekwara mgbe nyocha ihe nkesa gasịrị.",
+      "fileRejected": "Faịlụ {number}: echekwaghị ({reason}). A natara mkpesa n'onwe ya.",
       "reasons": {
-        "unsupported_type": null,
-        "spoofed_type": null,
-        "active_content": null,
-        "encrypted_pdf": null,
-        "too_large": null,
-        "too_many_pixels": null,
-        "too_many_pages": null,
-        "malformed": null,
-        "malware_detected": null,
-        "scan_failed": null,
-        "storage_failed": null,
-        "timeout": null
+        "unsupported_type": "ụdị akwadoghị",
+        "spoofed_type": "ụdị ahụ adabaghị",
+        "active_content": "ọ nwere ọdịnaya na-arụ ọrụ",
+        "encrypted_pdf": "ezoro ezo PDF ahụ",
+        "too_large": "buru oke ibu",
+        "too_many_pixels": "ọtụtụ pikselụ",
+        "too_many_pages": "ọtụtụ ibe",
+        "malformed": "enweghị ike ịgụ ya",
+        "malware_detected": "nyocha nchekwa kụrụ afọ n'ala",
+        "scan_failed": "enweghị ike ịrụ nyocha nchekwa",
+        "storage_failed": "enweghị ike ichekwa ya",
+        "timeout": "nyocha ahụ were oke oge"
       },
-      "contactSaved": null,
-      "contactNotSaved": null,
-      "track": null,
-      "leave": null,
+      "contactSaved": "E chekwaara nkọwa kọntaktị gị iche.",
+      "contactNotSaved": "Echekwaghị nkọwa kọntaktị.",
+      "track": "Gaa na peeji ọnọdụ",
+      "leave": "Echekwaala m koodu m. Pụọ",
       "lost": {
-        "title": null,
-        "body": null,
-        "newReport": null
+        "title": "Koodu nsochi ahụ adịghịzi",
+        "body": "Maka nchekwa gị, a na-egosi koodu ahụ naanị otu ugboro, a naghị edebe ya na ihe nchọgharị a. Ọ bụrụ na ichekwaghị ya, enweghị ike inwetaghachi ya. Ị nwere ike izipu mkpesa ọhụrụ.",
+        "newReport": "Zipụ mkpesa ọhụrụ"
       }
     }
   },
   "track": {
-    "title": null,
-    "lead": null,
-    "privacy": null,
-    "needsScript": null,
-    "loading": null,
+    "title": "Lelee ọnọdụ mkpesa",
+    "lead": "Jiri koodu nsochi e nyere gị mgbe ị zitere mkpesa, ma ọ bụ aka onye nta akụkọ. Ị na-ahụ naanị ọnọdụ nchekwa ọha. ShaidaGo anaghị egosi ihe ị dere, faịlụ gị, ma ọ bụ ihe edeturu onye nyocha.",
+    "privacy": "A na-ezipu koodu gị na okwu ngafe gị naanị mgbe ị pịa bọtịnụ. A naghị etinye ha na adreesị, echekwa, ma ọ bụ cheta site na ihe nchọgharị a.",
+    "needsScript": "Ịlele ọnọdụ chọrọ JavaScript. Ọ nweghị ihe ị na-ede a na-ezipu ruo mgbe ị họọrọ ịlele.",
+    "loading": "Na-enyocha ọnọdụ mkpesa gị.",
     "code": {
-      "heading": null,
-      "label": null,
-      "hint": null,
-      "submit": null,
-      "again": null,
-      "forget": null,
-      "empty": null
+      "heading": "Lelee jiri koodu nsochi",
+      "label": "Koodu nsochi",
+      "hint": "Oghere na akara n'okpuru dị mma. Ọrụ ahụ na-ekpebi ma koodu ahụ ọ bara uru.",
+      "submit": "Lelee ọnọdụ",
+      "again": "Lelee ọzọ",
+      "forget": "Kpochapụ wee malite ọzọ",
+      "empty": "Tinye koodu nsochi gị."
     },
     "handle": {
-      "heading": null,
-      "handleLabel": null,
-      "passphraseLabel": null,
-      "reveal": null,
-      "hide": null,
-      "note": null,
-      "submit": null,
-      "forget": null,
-      "emptyHandle": null,
-      "emptyPassphrase": null,
-      "listHeading": null,
-      "none": null,
-      "create": null
+      "heading": "Lelee jiri aka onye nta akụkọ",
+      "handleLabel": "Aka",
+      "passphraseLabel": "Okwu ngafe",
+      "reveal": "Gosi okwu ngafe",
+      "hide": "Zoo okwu ngafe",
+      "note": "Aka abụghị akaụntụ ma ọ bụ ihe akaebe nke onye ị bụ. Ọ na-ejikọta naanị mkpesa ị zitere ya.",
+      "submit": "Depụta mkpesa m",
+      "forget": "Kpochapụ wee malite ọzọ",
+      "emptyHandle": "Tinye aka gị.",
+      "emptyPassphrase": "Tinye okwu ngafe gị.",
+      "listHeading": "Mkpesa jikọrọ na aka a",
+      "none": "Ọnweghị mkpesa jikọrọ na aka a ugbu a.",
+      "create": "Mepụta aka"
     },
     "result": {
-      "heading": null,
-      "updated": null,
-      "nextHeading": null,
-      "message": null
+      "heading": "Ọnọdụ",
+      "updated": "E melitere ikpeazụ {date}",
+      "nextHeading": "Ihe ị ga-eme ọzọ",
+      "message": "Ozi"
     },
     "statuses": {
       "received": {
-        "label": null,
-        "meaning": null
+        "label": "A natara",
+        "meaning": "Anabatala mkpesa gị. Mmadụ amalitebeghị inyocha ya."
       },
       "needs_information": {
-        "label": null,
-        "meaning": null
+        "label": "Achọrọ ozi ndị ọzọ",
+        "meaning": "Onye nyocha chọrọ azịza akọwapụtara n'aka gị ka ọ gaa n'ihu."
       },
       "under_review": {
-        "label": null,
-        "meaning": null
+        "label": "N'okpuru nyocha",
+        "meaning": "Onye nyocha na-eleba anya na mkpesa gị na faịlụ ọ bụla."
       },
       "verified_for_public_update": {
-        "label": null,
-        "meaning": null
+        "label": "Enyochara maka mmelite ọha nwere ike ịdị",
+        "meaning": "Onye nyocha chọtara nkwado zuru oke iji dee mmelite ọha dị iche. Ọnweghị ihe ebipụtara ozugbo."
       },
       "referred": {
-        "label": null,
-        "meaning": null
+        "label": "Eduru ya",
+        "meaning": "Onye nyocha hụrụ ntụgharị site na ụzọ akwadoro. Nke a adịghị ekwe nkwa nzaghachi site n'aka onye ọzọ."
       },
       "closed": {
-        "label": null,
-        "meaning": null
+        "label": "Emechiela",
+        "meaning": "Enweghị nyocha ọzọ a haziri ọ gwụla ma onye nyocha emepe ya ọzọ."
       }
     },
     "next": {
-      "wait_for_review": null,
-      "answer_follow_up": null,
-      "watch_public_updates": null,
-      "see_escalation_guidance": null,
-      "none": null
+      "wait_for_review": "Chere nyocha ahụ. Nyocha nwere ike iwepụta oge.",
+      "answer_follow_up": "Zaa ajụjụ dị n'okpuru.",
+      "watch_public_updates": "Lelee mmelite ọha nke ọrụ ngo ahụ. Ọnweghị ihe ebipụtara ozugbo.",
+      "see_escalation_guidance": "Gụọ ebe ọzọ a ga-ewere nchegbu.",
+      "none": "Ọnweghị ihe ọzọ a chọrọ n'aka gị ugbu a."
     },
     "followUp": {
-      "heading": null,
-      "intro": null,
+      "heading": "Ajụjụ sitere n'aka onye nyocha",
+      "intro": "Ị nwere ike ịza, mafe, ma ọ bụ kwuo na ọ dịghị mma ịza ajụjụ. Etinyela aha ma ọ bụ nkọwa kọntaktị.",
       "states": {
-        "open": null,
-        "answered": null,
-        "skipped": null,
-        "unsafe": null
+        "open": "Na-eche nzaghachi gị",
+        "answered": "Ị zara",
+        "skipped": "Ị mafe ya",
+        "unsafe": "Ị sịrị na ọ dịghị mma ịza"
       },
-      "answerLabel": null,
-      "counter": null,
-      "answer": null,
-      "skip": null,
-      "unsafe": null,
-      "sent": null,
-      "answerEmpty": null
+      "answerLabel": "Azịza gị",
+      "counter": "Mkpụrụedemede {count} nke {max}",
+      "answer": "Zipụ azịza",
+      "skip": "Mafe ajụjụ a",
+      "unsafe": "Nke a adịghị mma ka m zaa",
+      "sent": "Ezigawo nzaghachi gị.",
+      "answerEmpty": "Dee azịza, ma ọ bụ họrọ ịmafe."
     },
     "failure": {
-      "title": null,
-      "still": null,
-      "wait": null
+      "title": "Enweghị ike ịlele ọnọdụ ahụ",
+      "still": "Ọnweghị ihe gbanwere.",
+      "wait": "Nwaa ọzọ na ihe dị ka sekọnd {seconds}."
     },
-    "newReport": null
+    "newReport": "Zipụ mkpesa ọhụrụ"
   },
   "handle": {
-    "title": null,
-    "lead": null,
-    "needsScript": null,
+    "title": "Aka ndị nta akụkọ",
+    "lead": "Aka bụ akara nhọrọ na-ejikọta mkpesa gị na-enweghị aha gị, kọntaktị, ma ọ bụ nkọwa njirimara ọ bụla. Ọ abụghị akaụntụ, nbanye, ma ọ bụ ihe akaebe nke onye ị bụ.",
+    "needsScript": "Ịmepụta ma ọ bụ ihichapụ aka chọrọ JavaScript. Ọnweghị ihe a na-ezipu ruo mgbe ị họọrọ.",
     "facts": {
-      "heading": null,
-      "benefit": null,
-      "risk": null,
-      "recovery": null
+      "heading": "Tupu ị mepụta otu",
+      "benefit": "Uru: ị nwere ike ịhụ ọnọdụ nke ọtụtụ mkpesa n'otu ebe.",
+      "risk": "Ihe ize ndụ: ndị nyocha nwere ike ịmata mkpesa n'okpuru otu aka dị ka ihe jikọrọ ya. Aka nwere ike ọ gaghị adaba na mkpesa dị nro nke ukwuu.",
+      "recovery": "Enweghị mweghachi: ọ bụrụ na ị tụfuo aka ma ọ bụ okwu ngafe, ọ nweghị onye nwere ike iweghachi ha."
     },
     "create": {
-      "heading": null,
-      "button": null,
-      "creating": null,
-      "again": null
+      "heading": "Mepụta aka",
+      "button": "Mepụta aka",
+      "creating": "Na-emepụta aka gị.",
+      "again": "Ọ bụrụ na ị bunyeghachiri ma ọ bụ hapụ peeji a, enweghị ike igosi aka ị mere ebe a ọzọ. Ị nwere ike ịmepụta nke ọhụrụ, nke na-enweghị njikọ na nke mbụ."
     },
     "created": {
-      "heading": null,
-      "handle": null,
-      "passphrase": null,
-      "warning": null,
-      "use": null,
-      "copy": null,
-      "copied": null,
-      "copyFailed": null,
-      "print": null,
-      "download": null,
-      "fileText": null,
-      "done": null
+      "heading": "Aka gị na okwu ngafe",
+      "handle": "Aka",
+      "passphrase": "Okwu ngafe",
+      "warning": "A na-egosi ndị a otu ugboro. ShaidaGo enweghị ike igosi ha ọzọ ma ọ bụ nwetaghachi ha. Chekwaa ha ugbu a.",
+      "use": "Jiri ha mgbe ị zitere mkpesa, ma ọ bụ na peeji ọnọdụ.",
+      "copy": "Detuo aka na okwu ngafe",
+      "copied": "Edeturu",
+      "copyFailed": "Idetu adịghị ebe a. Họrọ ederede ahụ wee detuo ya n'onwe gị.",
+      "print": "Bipụta",
+      "download": "Budata dị ka faịlụ ederede",
+      "fileText": "Aka onye nta akụkọ ShaidaGo: {handle}\nOkwu ngafe: {passphrase}\nEgosiri otu ugboro. Dobe nke a na nzuzo.\nNke a bụ ihe nlereanya echepụtara echepụta.",
+      "done": "Echekwaala m ha. Kpochapụ peeji a"
     },
     "delete": {
-      "heading": null,
-      "explain": null,
-      "handleLabel": null,
-      "passphraseLabel": null,
-      "confirm": null,
-      "needConfirm": null,
-      "submit": null,
-      "done": null,
-      "failedTitle": null
+      "heading": "Hichapụ aka",
+      "explain": "Ihichapụ aka na-ewepụ njikọ ya na mkpesa gị. Ọ naghị ehichapụ mkpesa ahụ, ọ naghịkwa ewepụ ihe ọ bụla e bipụtarala. Mgbe ehichapụrụ ya, enweghịzi ike iji aka ahụ ọzọ.",
+      "handleLabel": "Aka",
+      "passphraseLabel": "Okwu ngafe",
+      "confirm": "Aghọtara m na mkpesa ndị ahụ na-anọrọ na naanị njikọ ahụ ka a na-ewepụ",
+      "needConfirm": "Tịpụta igbe ahụ iji gosi.",
+      "submit": "Hichapụ aka a",
+      "done": "Ehichapụla aka ahụ. Ehichapụghị mkpesa gị.",
+      "failedTitle": "Ehichapụghị aka ahụ"
     },
-    "statusLink": null
+    "statusLink": "Lelee ọnọdụ mkpesa"
   },
   "reviewer": {
     "common": {
-      "private": null,
-      "noindex": null,
-      "backToQueue": null,
-      "signedOut": null,
-      "language": null,
-      "signOut": null,
-      "signingOut": null
+      "private": "Ebe onye nyocha nke nzuzo. Ihe niile dị ebe a bụ echepụtara echepụta ma abụghị nke ọha.",
+      "noindex": "Ọ bụghị maka ikesa",
+      "backToQueue": "Laghachi na ahịrị mkpesa",
+      "signedOut": "Ị pụọla n'usoro.",
+      "language": "Ebe onye nyocha a ka edere na Bekee; enyochabeghị asụsụ ndị ọzọ ugbu a.",
+      "signOut": "Pụọ",
+      "signingOut": "Na-apụ"
     },
     "signIn": {
-      "title": null,
-      "lead": null,
-      "needsScript": null,
-      "identifier": null,
-      "password": null,
-      "submit": null,
-      "pending": null,
-      "required": null,
-      "identifierRequired": null,
-      "passwordRequired": null,
-      "wait": null,
-      "waitDone": null,
-      "failureTitle": null,
+      "title": "Nbanye onye nyocha",
+      "lead": "Maka naanị ndị nyocha ShaidaGo nyere ikike. Ndị na-akọ akụkọ achọghị akaụntụ.",
+      "needsScript": "Nbanye chọrọ JavaScript. Gbanwuo ya maka saịtị a wee bunyegharịa.",
+      "identifier": "Ihe ngosi onye nyocha",
+      "password": "Okwu ngafe",
+      "submit": "Banye",
+      "pending": "Na-abanye",
+      "required": "A chọrọ",
+      "identifierRequired": "Tinye ihe ngosi onye nyocha gị.",
+      "passwordRequired": "Tinye okwu ngafe gị.",
+      "wait": "Nnwale karịrị akarị. Ị nwere ike ịnwale ọzọ na sekọnd {seconds}.",
+      "waitDone": "Ị nwere ike ịnwale ọzọ ugbu a.",
+      "failureTitle": "Nbanye arụghị ọrụ",
       "reasons": {
-        "expired": null,
-        "signed_out": null
+        "expired": "Oge gị agwụla. Banye ọzọ iji gaa n'ihu.",
+        "signed_out": "Ị pụọla n'usoro."
       },
-      "note": null
+      "note": "Nbanye a anaghị ekwu akụkụ nke ezighi ezi. Ọ nweghị ihe ị na-ede a na-echekwa na ihe nchọgharị a."
     },
     "queue": {
-      "title": null,
-      "lead": null,
+      "title": "Ahịrị mkpesa",
+      "lead": "Nke kacha ochie na mbụ. Ndepụta a na-egosi naanị nkọwa triage. Mepee mkpesa ka ịgụọ ya.",
       "filters": {
-        "label": null,
-        "status": null,
-        "risk": null,
-        "category": null,
-        "project": null,
-        "projectHelp": null,
-        "any": null,
-        "apply": null,
-        "clear": null
+        "label": "Nyochaa ahịrị",
+        "status": "Ọnọdụ",
+        "risk": "Ọkwa ihe ize ndụ",
+        "category": "Nchegbu",
+        "project": "Aha ndekọ (dị ka ọ dị na adreesị ya)",
+        "projectHelp": "Mkpụrụedemede nta, nọmba na akara.",
+        "any": "Ọ bụla",
+        "apply": "Nyochaa",
+        "clear": "Kpochapụ nzacha niile"
       },
       "statuses": {
-        "received": null,
-        "needs_information": null,
-        "under_review": null,
-        "verified_for_public_update": null,
-        "referred": null,
-        "closed": null
+        "received": "A natara",
+        "needs_information": "Na-eche onye kọrọ akụkọ",
+        "under_review": "N'okpuru nyocha",
+        "verified_for_public_update": "Enyochara maka mmelite ọha",
+        "referred": "Eduru ya",
+        "closed": "Emechiela"
       },
       "risks": {
-        "standard": null,
-        "elevated": null,
-        "high": null
+        "standard": "Ahaziri",
+        "elevated": "E buliri elu",
+        "high": "Dị elu"
       },
       "categories": {
-        "no_visible_work": null,
-        "incomplete_work": null,
-        "unsafe_construction": null,
-        "suspected_incorrect_status": null,
-        "access_barrier": null,
-        "other_concern": null
+        "no_visible_work": "Enweghị ọrụ a na-ahụ anya",
+        "incomplete_work": "Ọrụ na-ezughị ezu",
+        "unsafe_construction": "Ihe owuwu adịghị mma",
+        "suspected_incorrect_status": "Ọnọdụ nwere ike ịbụ ezighi ezi",
+        "access_barrier": "Ihe mgbochi",
+        "other_concern": "Nchegbu ọzọ"
       },
       "item": {
-        "riskLabel": null,
-        "statusLabel": null,
-        "received": null,
-        "updated": null,
-        "files": null,
-        "noFiles": null,
-        "questions": null,
-        "noQuestions": null,
-        "contact": null,
-        "noContact": null,
-        "open": null,
-        "openLabel": null
+        "riskLabel": "Ihe ize ndụ",
+        "statusLabel": "Ọnọdụ",
+        "received": "A natara {date}",
+        "updated": "Ọnọdụ gbanwere {date}",
+        "files": "{count, plural, one {faịlụ #} other {faịlụ #}}",
+        "noFiles": "Enweghị faịlụ",
+        "questions": "{count, plural, one {ajụjụ mepere emepe #} other {ajụjụ mepere emepe #}}",
+        "noQuestions": "Enweghị ajụjụ mepere emepe",
+        "contact": "Enyere nkọwa kọntaktị",
+        "noContact": "Enweghị nkọwa kọntaktị",
+        "open": "Mepee mkpesa",
+        "openLabel": "Mepee mkpesa maka {project}, anabatara na {date}"
       },
       "results": {
-        "heading": null,
-        "count": null,
-        "paginationLabel": null,
-        "next": null,
-        "first": null
+        "heading": "Mkpesa",
+        "count": "{count, plural, one {mkpesa # na peeji a} other {mkpesa # na peeji a}}",
+        "paginationLabel": "Peeji ahịrị",
+        "next": "Mkpesa ọzọ",
+        "first": "Laghachi na peeji mbụ"
       },
       "states": {
         "empty": {
-          "title": null,
-          "body": null
+          "title": "Ọnweghị ihe na-eche",
+          "body": "Ọnweghị mkpesa chọrọ nlebara anya ugbu a."
         },
         "noMatches": {
-          "title": null,
-          "body": null
+          "title": "Enweghị mkpesa dabara na nzacha ndị a",
+          "body": "Kpochapụ nzacha iji hụ ọtụtụ."
         },
         "invalidCursor": {
-          "title": null,
-          "body": null
+          "title": "Peeji ahụ adịghịzi ire",
+          "body": "Ahịrị ahụ agbanweela. Gaa na peeji mbụ."
         },
         "forbidden": {
-          "title": null,
-          "body": null
+          "title": "Akaụntụ a enweghị ike imeghe ahịrị",
+          "body": "Rịọ onye nchịkwa ka ọ lelee ọrụ gị. Ọnweghị ihe ebunyere."
         },
         "rateLimited": {
-          "title": null,
-          "body": null
+          "title": "Arịrịọ karịrị akarị",
+          "body": "Chere nwa oge, wee bunyegharịa peeji ahụ."
         },
         "unavailable": {
-          "title": null,
-          "body": null,
-          "retry": null
+          "title": "Enweghị ike ibunye ahịrị ahụ",
+          "body": "Ọrụ ahụ azaghị. Ọnweghị ihe agbanweela. Nwaa ọzọ.",
+          "retry": "Nwaa ọzọ"
         }
       }
     },
     "detail": {
-      "title": null,
-      "back": null,
-      "jump": null,
+      "title": "Mkpesa",
+      "back": "Laghachi na ahịrị mkpesa",
+      "jump": "Na peeji a",
       "demo": {
-        "title": null,
-        "body": null
+        "title": "Data nlereanya echepụtara echepụta",
+        "body": "A na-emepụta mkpesa ọ bụla na ngosi a. Ekwesịghị itinye ezigbo mkpesa, aha, na nkọwa kọntaktị ma ọ bụ mepee ha ebe a."
       },
       "header": {
-        "status": null,
-        "risk": null,
-        "received": null,
-        "updated": null,
-        "version": null,
-        "project": null,
-        "publicRecord": null
+        "status": "Ọnọdụ",
+        "risk": "Ihe ize ndụ",
+        "received": "A natara {date}",
+        "updated": "Ọnọdụ gbanwere {date}",
+        "version": "Ụdị {version}",
+        "project": "Ndekọ ọrụ ngo",
+        "publicRecord": "Mepee ndekọ ọha"
       },
       "sections": {
-        "status": null,
-        "observation": null,
-        "evidence": null,
-        "contact": null,
-        "history": null,
-        "questions": null,
-        "handle": null,
-        "scout": null,
-        "publication": null,
-        "notes": null
+        "status": "Ọnọdụ na omume",
+        "observation": "Ihe akọrọ",
+        "evidence": "Faịlụ ihe akaebe",
+        "contact": "Nkọwa kọntaktị",
+        "history": "Akụkọ ihe mere eme ọnọdụ",
+        "questions": "Ajụjụ ndị akọrọ akụkọ",
+        "handle": "Aka onye nta akụkọ",
+        "scout": "Source Scout",
+        "publication": "Mmelite ọha",
+        "notes": "Ihe edeturu n'ime"
       },
       "observation": {
-        "category": null,
-        "project": null,
-        "description": null,
-        "descriptionNote": null,
-        "received": null
+        "category": "Nchegbu",
+        "project": "Ndekọ ọrụ ngo",
+        "description": "Nkọwa sitere n'aka onye kọrọ akụkọ",
+        "descriptionNote": "Egosiri ya ka ederede doro anya kpọmkwem otú e siri zipụ ya. Ọ bụ nke nzuzo ma a naghị ebipụta ya ozugbo.",
+        "received": "A natara"
       },
       "evidence": {
-        "empty": null,
-        "name": null,
-        "type": null,
-        "size": null,
-        "sanitation": null,
-        "scan": null,
-        "added": null,
-        "note": null,
+        "empty": "Agbakwunyeghị faịlụ ọ bụla.",
+        "name": "Faịlụ",
+        "type": "Ụdị",
+        "size": "Nha",
+        "sanitation": "Nchacha",
+        "scan": "Nnyocha Malware",
+        "added": "Agbakwunyere {date}",
+        "note": "A na-asachapụ faịlụ tupu nchekwa. Ọnweghị ihe egosiri n'ịntanetị: a na-ebudata faịlụ naanị mgbe ị rịọrọ ya.",
         "sanitationStates": {
-          "pending": null,
-          "processing": null,
-          "sanitised": null,
-          "rejected": null,
-          "failed": null
+          "pending": "Nchacha amalitebeghị",
+          "processing": "Na-asachapụ",
+          "sanitised": "Asachapụrụ",
+          "rejected": "Ajụrụ",
+          "failed": "Nchacha dara"
         },
         "scanStates": {
-          "pending": null,
-          "scanning": null,
-          "clean": null,
-          "malware_detected": null,
-          "scan_failed": null,
-          "not_scanned_demo": null
+          "pending": "Nnyocha amalitebeghị",
+          "scanning": "Na-enyocha",
+          "clean": "Achọpụtaghị malware",
+          "malware_detected": "Achọpụtara malware",
+          "scan_failed": "Nnyocha dara",
+          "not_scanned_demo": "Enyochaghị (naanị nlereanya)"
         },
-        "demoLimit": null,
-        "bytes": null,
-        "kilobytes": null,
-        "megabytes": null
+        "demoLimit": "Nlereanya a enweghị ihe nyocha malware, ya mere enyochaghị faịlụ a. Emepekwala ya n'èzí ebe nchekwa dị nchebe.",
+        "bytes": "{count, plural, one {bayịtị #} other {bayịtị #}}",
+        "kilobytes": "{count} KB",
+        "megabytes": "{count} MB"
       },
       "contact": {
-        "none": null,
-        "hidden": null,
-        "reveal": null,
-        "revealNote": null,
-        "shown": null,
-        "hide": null,
-        "denied": null,
-        "unavailable": null,
-        "auditNote": null
+        "none": "Onye kọrọ akụkọ enyeghị nkọwa kọntaktị.",
+        "hidden": "Nkọwa kọntaktị dị mana e zoro ya.",
+        "reveal": "Gosi nkọwa kọntaktị",
+        "revealNote": "A na-edekọ igosi ha na log nyocha.",
+        "shown": "{channel}: {value}",
+        "hide": "Zoo nkọwa kọntaktị",
+        "denied": "Akaụntụ a enweghị ikike ịhụ nkọwa kọntaktị.",
+        "unavailable": "Enweghị ike igosi nkọwa kọntaktị ugbu a.",
+        "auditNote": "E dekọrọ echiche a na log nyocha."
       },
       "history": {
-        "empty": null,
-        "from": null,
-        "first": null,
-        "actor": null,
+        "empty": "Ọnweghị mgbanwe ọnọdụ ugbu a.",
+        "from": "Site na {from} ruo {to}",
+        "first": "Tọọ na {to}",
+        "actor": "Site n'aka {actor}",
         "actors": {
-          "reporter": null,
-          "reviewer": null,
-          "admin": null,
-          "system": null
+          "reporter": "onye kọrọ akụkọ",
+          "reviewer": "onye nyocha",
+          "admin": "onye nchịkwa",
+          "system": "usoro"
         },
-        "shownToReporter": null,
-        "internal": null,
-        "noMessage": null
+        "shownToReporter": "Egosiri onye kọrọ akụkọ",
+        "internal": "Ihe kpatara n'ime (nzuzo)",
+        "noMessage": "Ọnweghị ozi egosiri onye kọrọ akụkọ."
       },
       "questions": {
-        "empty": null,
-        "asked": null,
-        "answered": null,
-        "private": null,
-        "noAnswer": null,
-        "withdrawn": null,
+        "empty": "Ajụbeghị ajụjụ ọ bụla.",
+        "asked": "Ajụrụ na {date}",
+        "answered": "Azịza ({kind})",
+        "private": "Azịza ya bụ nke nzuzo.",
+        "noAnswer": "A zaghị ya ugbu a.",
+        "withdrawn": "Ewepụrụ",
         "kinds": {
-          "answered": null,
-          "skipped": null,
-          "unsafe": null
+          "answered": "zaa",
+          "skipped": "mafere",
+          "unsafe": "etinyere akara na adịghị mma"
         }
       },
       "handle": {
-        "none": null,
-        "note": null,
-        "name": null,
-        "total": null,
-        "verified": null,
-        "closed": null
+        "none": "Mkpesa a enweghị njikọ na aka onye nta akụkọ ọ bụla.",
+        "note": "Aka bụ aha ojiri mara, ọ bụghị ihe akaebe njirimara ma ọ bụ eziokwu. Jiri nke a dị ka nchịkọta ozi naanị.",
+        "name": "Aka",
+        "total": "Mkpesa jikọtara",
+        "verified": "Enyochara maka mmelite ọha",
+        "closed": "Emechiela"
       },
       "scout": {
-        "body": null,
-        "private": null,
-        "concepts": null,
-        "conceptsHint": null,
-        "prepare": null,
-        "preparing": null,
-        "planTitle": null,
-        "query": null,
-        "queryHint": null,
-        "policy": null,
-        "included": null,
-        "excluded": null,
-        "noneExcluded": null,
-        "approve": null,
-        "discard": null,
-        "cancel": null,
-        "confirm": null,
-        "confirmTitle": null,
-        "confirmBody": null,
-        "started": null
+        "body": "Kwadebe ajụjụ echekwara nzuzo, nyochaa ya kpọmkwem otú a ga-esi zipụ ya, wee kwado ya tupu nchọta isi mmalite ọ bụla amalite.",
+        "private": "Akụkụ a anaghị anata ederede mkpesa, kọntaktị, faịlụ, nzere nsochi, ma ọ bụ ebe kpọmkwem. Etinyela nke ọ bụla n'ime ha n'okpuru.",
+        "concepts": "Okwu nchọta ọha nhọrọ",
+        "conceptsHint": "Jiri rịkọm maka okwu ọha ruru 20. Ịgbanwe okwu na-ewepụ atụmatụ dị ugbu a ma chọọ nyocha ọhụrụ.",
+        "prepare": "Kwadebe ajụjụ maka nyocha",
+        "preparing": "Na-akwadebe ajụjụ…",
+        "planTitle": "Nyochaa ajụjụ mbupụ kpọmkwem",
+        "query": "Ajụjụ mbupụ",
+        "queryHint": "Nke a bụ naanị ajụjụ a ga-ezipu ma ọ bụrụ na ị kwado ya.",
+        "policy": "Iwu ajụjụ",
+        "included": "Okwu gụnyere",
+        "excluded": "Ewepụrụ na ajụjụ a",
+        "noneExcluded": "Ọnweghị okwu ewepụrụ.",
+        "approve": "Kwado ma malite nchọta",
+        "discard": "Tụfuo atụmatụ a",
+        "cancel": "Gaa n'ihu ịnyocha",
+        "confirm": "Kwado ma malite",
+        "confirmTitle": "Malite nchọta isi mmalite a?",
+        "confirmBody": "A ga-ezipụ ajụjụ kpọmkwem egosiri n'elu na ngalaba nchọpụta. Ọsọ ahụ ka bụ nzuzo na nsonaazụ ọ bụla chọrọ nyocha mmadụ.",
+        "started": "Nchọta isi mmalite amalitela. Nsonaazụ ka na-abụ nzuzo na anaghị enyocha ya ruo mgbe ị kpebiri na isi mmalite ọ bụla."
       },
       "states": {
         "notFound": {
-          "title": null,
-          "body": null
+          "title": "Mkpesa a adịghị",
+          "body": "Lelee adreesị ahụ ma ọ bụ laghachi na ahịrị. Peeji a anaghị ekwu ma mkpesa dị."
         },
         "forbidden": {
-          "title": null,
-          "body": null
+          "title": "Akaụntụ a enweghị ike imeghe mkpesa a",
+          "body": "Rịọ onye nchịkwa ka ọ lelee ọrụ gị. Ọnweghị ihe ebunyere."
         },
         "rateLimited": {
-          "title": null,
-          "body": null
+          "title": "Arịrịọ karịrị akarị",
+          "body": "Chere nwa oge, wee bunyegharịa peeji ahụ."
         },
         "unavailable": {
-          "title": null,
-          "body": null,
-          "retry": null
+          "title": "Enweghị ike ibunye mkpesa ahụ",
+          "body": "Ọrụ ahụ azaghị. Ọnweghị ihe agbanweela. Nwaa ọzọ.",
+          "retry": "Nwaa ọzọ"
         }
       }
     },
     "actions": {
-      "sessionEnded": null,
-      "signIn": null,
-      "pending": null,
-      "tryAgain": null
+      "sessionEnded": "Oge gị agwụla. Banye ọzọ iji gaa n'ihu. Ọnweghị ihe ị pịnyere ebe a ka a ga-edobe.",
+      "signIn": "Banye ọzọ",
+      "pending": "Na-arụ ọrụ",
+      "tryAgain": "Ọnweghị ihe gbanwere site na arịrịọ dara ada ọ gwụla ma ọ kwuru otu a. Ị nwere ike ịnwale ọzọ."
     },
     "download": {
-      "button": null,
-      "buttonLabel": null,
-      "pending": null,
-      "done": null,
-      "failed": null,
-      "note": null
+      "button": "Budata",
+      "buttonLabel": "Budata {name}",
+      "pending": "Na-akwadebe nbudata ahụ",
+      "done": "Nbudata nke {name} amalitela.",
+      "failed": "Enweghị ike ibudata faịlụ ahụ.",
+      "note": "A na-eme arịrịọ ọhụrụ oge ọ bụla. Ọnweghị ihe a na-edobe na ihe nchọgharị a."
     },
     "notes": {
-      "empty": null,
-      "intro": null,
-      "label": null,
-      "hint": null,
-      "counter": null,
-      "submit": null,
-      "required": null,
-      "tooLong": null,
-      "confirmTitle": null,
-      "confirmBody": null,
-      "confirm": null,
-      "cancel": null,
-      "added": null,
-      "by": null,
-      "gone": null,
-      "more": null,
-      "first": null,
-      "navLabel": null,
-      "unavailable": null,
-      "retry": null
+      "empty": "Ọnweghị ihe edeturu ugbu a.",
+      "intro": "Ihe edeturu bụ nzuzo na ederede doro anya. Enweghị ike ịdezi ma ọ bụ hichapụ ha; mgbazi bụ ndetu ọhụrụ.",
+      "label": "Ihe edeturu ọhụrụ",
+      "hint": "Ederede doro anya naanị, ruo mkpụrụedemede {max}. Edebekwala nkọwa kọntaktị ma ọ bụ ihe ọ bụla na-egosi onye kọrọ akụkọ.",
+      "counter": "{count} nke {max}",
+      "submit": "Gbakwunye ndetu",
+      "required": "Dee ndetu na mbụ.",
+      "tooLong": "Ndetu a dị ogologo.",
+      "confirmTitle": "Gbakwunye ndetu a?",
+      "confirmBody": "Ọ bụ nzuzo na-adịgide adịgide. Enweghị ike ịdezi ma ọ bụ hichapụ ya ma emechaa.",
+      "confirm": "Gbakwunye ndetu",
+      "cancel": "Nọgide na-edezi",
+      "added": "Agbakwunyere ndetu.",
+      "by": "Site n'aka {author}",
+      "gone": "Ederede nke ndetu a adịghịzi ire.",
+      "more": "Gosi ndetu mgbe emechaa",
+      "first": "Laghachi na ndetu mbụ",
+      "navLabel": "Peeji ndetu",
+      "unavailable": "Enweghị ike ibunye ndetu ahụ. Akụkụ ndị ọzọ nke mkpesa ahụ emetụtaghị.",
+      "retry": "Nwaa ibunye ndetu ahụ ọzọ"
     },
     "questionActions": {
-      "label": null,
-      "hint": null,
-      "counter": null,
-      "submit": null,
-      "tooShort": null,
-      "tooLong": null,
-      "confirmTitle": null,
-      "confirmBody": null,
-      "confirm": null,
-      "cancel": null,
-      "added": null,
-      "withdraw": null,
-      "withdrawLabel": null,
-      "withdrawTitle": null,
-      "withdrawBody": null,
-      "withdrawConfirm": null,
-      "withdrawn": null
+      "label": "Ajụjụ ọhụrụ maka onye kọrọ akụkọ",
+      "hint": "Onye kọrọ akụkọ na-ahụ nke a na peeji ọnọdụ. Mkpụrụedemede 5 ruo 500. Ajụla maka nkọwa njirimara.",
+      "counter": "{count} nke {max}",
+      "submit": "Jụọ ajụjụ",
+      "tooShort": "Dee opekata mpe mkpụrụedemede 5.",
+      "tooLong": "Ajụjụ a dị ogologo.",
+      "confirmTitle": "Zipụ ajụjụ a?",
+      "confirmBody": "Onye kọrọ akụkọ ga-ahụ ya mgbe ha lere ọnọdụ ha. Ọ naghị agbanwe ọnọdụ mkpesa ahụ.",
+      "confirm": "Zipụ ajụjụ",
+      "cancel": "Nọgide na-edezi",
+      "added": "Agbakwunyere ajụjụ.",
+      "withdraw": "Wepụ",
+      "withdrawLabel": "Wepụ ajụjụ a: {question}",
+      "withdrawTitle": "Wepụ ajụjụ a?",
+      "withdrawBody": "Onye kọrọ akụkọ agaghịzi ahụ ya. Azịza enyerelarị na-anọrị na ndekọ ahụ.",
+      "withdrawConfirm": "Wepụ ajụjụ",
+      "withdrawn": "Ewepụrụ ajụjụ."
     },
     "transition": {
-      "legend": null,
-      "command": null,
-      "commandHelp": null,
+      "legend": "Gbanwee ọnọdụ",
+      "command": "Omume",
+      "commandHelp": "Na-ebugharị mkpesa site na {from} ruo {to}.",
       "commands": {
-        "start_review": null,
-        "request_information": null,
-        "resume_review": null,
-        "verify_for_public_update": null,
-        "refer": null,
-        "close": null,
-        "reopen": null
+        "start_review": "Malite nyocha",
+        "request_information": "Jụọ onye kọrọ akụkọ maka ozi ọzọ",
+        "resume_review": "Gaa n'ihu nyocha",
+        "verify_for_public_update": "Kaa akara enyochara maka mmelite ọha",
+        "refer": "Dekọọ ntụgharị",
+        "close": "Mechie mkpesa ahụ",
+        "reopen": "Meghee mkpesa ahụ"
       },
-      "message": null,
-      "messageHint": null,
-      "messageRequired": null,
-      "messageTooLong": null,
-      "reason": null,
-      "reasonHint": null,
-      "reasonRequired": null,
-      "reasonTooLong": null,
-      "counter": null,
-      "submit": null,
-      "pending": null,
-      "confirmTitle": null,
-      "confirmBody": null,
-      "confirmCareful": null,
-      "confirm": null,
-      "cancel": null,
-      "done": null,
-      "conflict": null,
-      "reload": null,
-      "none": null,
-      "publishNote": null,
-      "reloading": null
+      "message": "Ozi onye kọrọ akụkọ ga-ahụ",
+      "messageHint": "Egosiri na peeji ọnọdụ onye kọrọ akụkọ, ọ dịghị mgbe a na-egosi ya na ndekọ ọha. Ruo mkpụrụedemede {max}. Hapụ ya oghere ka iji ozi ọkọlọtọ. Etinyela aha ma ọ bụ nkọwa kọntaktị.",
+      "messageRequired": "Kwu ihe ịchọrọ n'aka onye kọrọ akụkọ.",
+      "messageTooLong": "Ozi a dị ogologo.",
+      "reason": "Ihe kpatara n'ime (nzuzo)",
+      "reasonHint": "Ọnweghị mgbe egosiri onye kọrọ akụkọ. Ruo mkpụrụedemede {max}.",
+      "reasonRequired": "Nye ihe kpatara iji meghee ọzọ.",
+      "reasonTooLong": "Ihe kpatara a dị ogologo.",
+      "counter": "{count} nke {max}",
+      "submit": "Tinye mgbanwe",
+      "pending": "Na-etinye",
+      "confirmTitle": "Gbanwee ọnọdụ ahụ ka ọ bụrụ {to}?",
+      "confirmBody": "Onye kọrọ akụkọ ga-ahụ ọnọdụ ọhụrụ na ozi dị n'elu. Nke a anaghị ebipụta ihe ọ bụla na ndekọ ọha.",
+      "confirmCareful": "Nke a na-agbanwe ihe a na-agwa onye kọrọ akụkọ na otú esi emeso okwu ahụ. Lelee ozi ahụ tupu ị gosi.",
+      "confirm": "Tinye mgbanwe",
+      "cancel": "Nọgide na-edezi",
+      "done": "Ọnọdụ gbanwere site na {from} ruo {to}. Ọnweghị ihe ebipụtara.",
+      "conflict": "Mkpesa a gbanwere ka ị na-arụ ọrụ, ma ọ bụ omume ahụ adịghịzi. Bunyegharịa ka ịhụ ọnọdụ ọhụrụ na akụkọ ihe mere eme, wee họrọ ọzọ. Ihe ị pịnyere ka edobere.",
+      "reload": "Bunyegharịa mkpesa ahụ",
+      "none": "Ọnweghị mgbanwe ọnọdụ dị site na ọnọdụ a.",
+      "publishNote": "Mgbanwe ọnọdụ anaghị ebipụta ederede. Mmelite ọha bụ nzọụkwụ dị iche n'ihu na peeji a.",
+      "reloading": "Na-ebunyegharị"
     },
     "publication": {
-      "intro": null,
-      "guidance": null,
-      "needsVerified": null,
-      "noCitations": null,
-      "citationsUnavailable": null,
-      "statement": null,
-      "statementHint": null,
-      "counter": null,
-      "effectiveOn": null,
-      "effectiveHelp": null,
-      "lastChecked": null,
-      "lastCheckedHelp": null,
-      "verification": null,
-      "citations": null,
-      "citationsHint": null,
-      "citationLine": null,
-      "submit": null,
-      "creating": null,
+      "intro": "Ị na-ede mmelite ọha, iche na mgbanwe ọnọdụ ọ bụla ma ọ bụ ndetu nzuzo. A na-egosi ya na usoro iheomume ọha nke ọrụ ngo ahụ naanị mgbe ị nyocharachara ya wee kwado kpọmkwem ederede ahụ.",
+      "guidance": "Kwuo naanị ihe akụkụ ndị e zoro aka na-ekwu. Edetukwala ederede na mkpesa nzuzo, egbula onye ọ bụla ma ọ bụ ihe ọ bụla rụrụ arụ, aghụghọ, ikpe ọmụma, a gbahapụrụ, ma ọ bụ zuru ezu ọ gwụla ma akụkụ e zoro aka kwuru otu ahụ na okwu ndị ahụ.",
+      "needsVerified": "Enwere ike depụta mmelite ọha naanị mgbe etinyere mkpesa ahụ akara Enyochara maka mmelite ọha. Gbanwee ọnọdụ na mbụ.",
+      "noCitations": "Enweghị nkwupụta akwadoro dị maka ọrụ ngo a, ya mere enweghị ike idepụta mmelite ọha.",
+      "citationsUnavailable": "Enweghị ike ibunye nkwupụta akwadoro maka ọrụ ngo a, ya mere enweghị ike idepụta mmelite ọha ugbu a. Bunyegharịa peeji ahụ iji nwaa ọzọ.",
+      "statement": "Nkwupụta ọha",
+      "statementHint": "Ederede doro anya, mkpụrụedemede 10 ruo {max}. Okwu na-anọpụ iche naanị. A na-egosi ya onye ọ bụla.",
+      "counter": "{count} nke {max}",
+      "effectiveOn": "Ụbọchị nke a na-emetụta",
+      "effectiveHelp": "Ụbọchị isi mmalite a na-ekwu na nke a malitere ịrụ ọrụ.",
+      "lastChecked": "E nyochara ikpeazụ (nhọrọ)",
+      "lastCheckedHelp": "Hapụ ya oghere ma ọ bụrụ na ịnyochaghị isi mmalite ahụ ọzọ.",
+      "verification": "Ọnọdụ nkwenye",
+      "citations": "Nkwupụta akwadoro",
+      "citationsHint": "Họrọ 1 ruo 5. Edeturu akụkụ ahụ kpọmkwem site na isi mmalite akwadoro ma enweghị ike idezi ya.",
+      "citationLine": "{title}, {publisher}, {location}",
+      "submit": "Mepụta nlele",
+      "creating": "Na-emepụta nlele ahụ",
       "errors": {
-        "statementRequired": null,
-        "statementShort": null,
-        "statementLong": null,
-        "dateRequired": null,
-        "citationsRequired": null,
-        "citationsTooMany": null
+        "statementRequired": "Dee nkwupụta ọha.",
+        "statementShort": "Dee opekata mpe mkpụrụedemede 10.",
+        "statementLong": "Nkwupụta a dị ogologo.",
+        "dateRequired": "Họrọ ụbọchị nke a na-emetụta.",
+        "citationsRequired": "Họrọ opekata mpe otu nkwupụta akwadoro.",
+        "citationsTooMany": "Họrọ kacha nkwupụta 5."
       },
       "preview": {
-        "heading": null,
-        "lead": null,
-        "status": null,
-        "issuesHeading": null,
-        "noIssues": null,
-        "citationsHeading": null,
-        "edit": null,
-        "discard": null,
-        "publish": null,
-        "publishing": null,
-        "cannot": null,
-        "stale": null,
-        "newPreview": null,
-        "viewPublic": null,
-        "publishedAt": null,
-        "publishedHeading": null,
-        "publishedBody": null,
-        "discarded": null,
-        "confirmTitle": null,
-        "confirmBody": null,
-        "confirm": null,
-        "cancel": null,
-        "discardTitle": null,
-        "discardBody": null,
-        "discardConfirm": null
+        "heading": "Nlele kpọmkwem",
+        "lead": "Nke a bụ kpọmkwem ihe usoro iheomume ọha ga-egosi, sere na otu ihe ahụ. Ọnweghị ihe bụ ọha na eze ugbu a.",
+        "status": "Ọnọdụ mkpesa mgbe e mere nlele a: {status} (ụdị {version}).",
+        "issuesHeading": "Enweghị ike ibipụta nke a ugbu a",
+        "noIssues": "Achọpụtaghị okwu ọ bụla na-egbochi ya.",
+        "citationsHeading": "Akụkụ e zoro aka",
+        "edit": "Dezie ederede ahụ",
+        "discard": "Tụfuo ihe odide a",
+        "publish": "Bipụta mmelite a",
+        "publishing": "Na-ebipụta",
+        "cannot": "Ibipụta adịghị maka nlele a.",
+        "stale": "Mkpesa ma ọ bụ nlele ahụ gbanwere mgbe e mesịrị ya, ya mere ebipụtaghị ya. Mepụta nlele ọhụrụ wee lelee ya ọzọ.",
+        "newPreview": "Laghachi na ndezi",
+        "viewPublic": "Hụ ya na ndekọ ọha",
+        "publishedAt": "Ebipụtara {date}.",
+        "publishedHeading": "Ebipụtara",
+        "publishedBody": "Mmelite a dịzi na usoro iheomume ọha nke ọrụ ngo ahụ kpọmkwem otú e siri nyochaa ya.",
+        "discarded": "A tụfuru ihe odide ahụ. Ọnweghị ihe ebipụtara.",
+        "confirmTitle": "Bipụta mmelite a nye onye ọ bụla?",
+        "confirmBody": "Nkwupụta ahụ, ụbọchị ya, akara nkwenye ya, na akụkụ ndị a kpọtụrụ aha ga-apụta na usoro iheomume ọha nke ọrụ ngo ahụ kpọmkwem dịka egosiri na nlele ahụ. A na-egosi nke a ọha na eze na enweghị ike ịgbanwe ya na nzuzo.",
+        "confirm": "Bipụta",
+        "cancel": "Dowe nlele ahụ",
+        "discardTitle": "Tụfuo ihe odide a?",
+        "discardBody": "Ewepụrụ ihe odide ahụ. Ọnweghị ihe ebipụtara.",
+        "discardConfirm": "Tụfuo ihe odide"
       },
       "issues": {
-        "statement": null,
+        "statement": "Nkwupụta",
         "known": {
-          "report_text": null,
-          "citations": null,
-          "effective_on": null,
-          "verification_state": null,
-          "statement": null,
-          "contact_detail": null,
-          "tracking_code": null
+          "report_text": "Nkwupụta ahụ na-emegharị okwu site na mkpesa nzuzo, azịza, ma ọ bụ ndetu. Degharịa ya site na isi mmalite e zoro aka.",
+          "citations": "Nkwupụta na-efu ma ọ bụ anaghị akwado mmelite a.",
+          "effective_on": "Ụbọchị na-efu ma ọ bụ anabataghị ya.",
+          "verification_state": "Ọnọdụ nkwenye adabaghị na isi mmalite e zoro aka.",
+          "statement": "Nkwupụta ahụ chọrọ nlebara anya.",
+          "contact_detail": "Nkwupụta ahụ nwere ihe dị ka nkọwa kọntaktị. Wepụ ya.",
+          "tracking_code": "Nkwupụta ahụ nwere ihe dị ka koodu nsochi. Wepụ ya."
         },
-        "term": null,
-        "other": null,
-        "field": null
+        "term": "A na-eji okwu \"{term}\" eme ihe, mana enweghị akụkụ e zoro aka nwere ya. Wepụ ya ma ọ bụ kọwaa akụkụ nwere ya.",
+        "other": "Nsogbu a na-amaghị ({code}) na-egbochi mbipụta.",
+        "field": "Mpaghara: {field}"
       },
       "drafts": {
-        "heading": null,
-        "empty": null,
-        "state": null,
+        "heading": "Ihe odide ndị gara aga",
+        "empty": "Enweghị ihe odide ugbu a.",
+        "state": "Ọnọdụ: {state}",
         "states": {
-          "draft": null,
-          "published": null,
-          "withdrawn": null
+          "draft": "Ihe odide",
+          "published": "Ebipụtara",
+          "withdrawn": "Ewepụrụ"
         },
-        "created": null,
-        "open": null,
-        "withdraw": null,
-        "loading": null,
-        "openFailed": null
+        "created": "Emepụtara {date}",
+        "open": "Mepee nlele",
+        "withdraw": "Wepụ",
+        "loading": "Na-ebunye nlele ahụ",
+        "openFailed": "Enweghị ike imeghe nlele ahụ."
       },
-      "guidanceTitle": null
+      "guidanceTitle": "Dee na-anọpụ iche"
     }
   },
   "discovery": {
-    "label": null,
-    "unreviewedNote": null,
+    "label": "achọpụtara — enyochabeghị",
+    "unreviewedNote": "A hụrụ ya na webụ ọha. Ọnweghị ihe dị ebe a akwadoro, anabatara, ma ọ bụ bipụtara, na isi mmalite ịpụta ebe a ma ọ bụ ikwughachi anaghị eme ka ọ bụrụ eziokwu.",
     "results": {
-      "heading": null,
-      "count": null,
-      "none": null,
-      "cap": null
+      "heading": "Isi mmalite achọpụtara",
+      "count": "Isi mmalite egosiri: {count}",
+      "none": "Ọnweghị isi mmalite a hụrụ maka ọsọ a.",
+      "cap": "A na-egosi kacha isi mmalite 10."
     },
     "card": {
-      "untitled": null,
-      "publisher": null,
-      "type": null,
-      "published": null,
-      "publishedUnknown": null,
-      "dateConflict": null,
-      "discovered": null,
-      "retrieved": null,
-      "availability": null,
-      "open": null,
-      "noLink": null,
-      "injection": null,
-      "excerpt": null,
-      "repeatsHeading": null,
-      "repeats": null,
-      "decision": null
+      "untitled": "Peeji na-enweghị aha",
+      "publisher": "Onye bipụtara",
+      "type": "Ụdị",
+      "published": "Ebipụtara {date} ({provenance})",
+      "publishedUnknown": "Ụbọchị mbipụta amaghị",
+      "dateConflict": "Peeji ndị ahụ ekwekọghị na ụbọchị a.",
+      "discovered": "Hụrụ na mbụ {date}",
+      "retrieved": "Lelee ikpeazụ {date}",
+      "availability": "Nnweta",
+      "open": "Mepee peeji mbụ ahụ (taabụ ọhụrụ)",
+      "noLink": "Enweghị ike igosi adreesị ahụ n'enweghị nsogbu, ya mere enweghị njikọ.",
+      "injection": "Peeji a nwere ederede na-agbalị inye ntụziaka. E weere ya dị ka ederede doro anya na elegharịghị ya anya.",
+      "excerpt": "Nkewa akwadoro",
+      "repeatsHeading": "Nkwughachi nke peeji a",
+      "repeats": "Nkwughachi: {title}",
+      "decision": "Mkpebi"
     },
     "availabilityStates": {
-      "unchecked": null,
-      "available": null,
-      "temporarily_unavailable": null,
-      "access_restricted": null,
-      "permanently_unavailable": null,
-      "stale": null
+      "unchecked": "Enyochabeghị",
+      "available": "Dị",
+      "temporarily_unavailable": "Adịghị nwa oge",
+      "access_restricted": "E gbochiri ohere ịnweta ya",
+      "permanently_unavailable": "Adịghịzi",
+      "stale": "O nwere ike ịbụ ozi ochie"
     },
     "analysis": {
-      "heading": null,
-      "unavailable": null,
-      "facts": null,
-      "claims": null,
-      "claimBy": null,
-      "contradictions": null,
-      "sides": null,
-      "gaps": null,
-      "none": null,
-      "safety": null,
-      "sourceRef": null,
-      "noScore": null
+      "heading": "Nyocha (nkọwa, ọ bụghị isi mmalite)",
+      "unavailable": "Ọnweghị nyocha egosiri: ọ na-efu ma ọ bụ enweghị ike iji ya tụnyere isi mmalite ndị ahụ. Gụọ isi mmalite ozugbo.",
+      "facts": "Eziokwu akwadoro",
+      "claims": "Nkwupụta akọrọ (dị ka isi mmalite si kwuo ya)",
+      "claimBy": "{publisher} na-ekwu: {claim}",
+      "contradictions": "Nkwenye",
+      "sides": "Isi mmalite n'akụkụ ọ bụla",
+      "gaps": "Oghere ozi",
+      "none": "Ọnweghị nke akọrọ.",
+      "safety": "Ncheta nchekwa na mkpuchi",
+      "sourceRef": "Isi mmalite {number}",
+      "noScore": "Ọnweghị ogo ma ọ bụ akara ntụkwasị obi egosiri. Usoro nchọta na ntụkwasị obi ihe nlereanya abụghị ihe akaebe."
     },
     "status": {
-      "label": null,
+      "label": "Ọnọdụ ọsọ",
       "states": {
-        "queued": null,
-        "searching": null,
-        "analysing": null,
-        "needs_review": null,
-        "complete": null,
-        "failed": null,
-        "cancelled": null
+        "queued": "N'ahịrị",
+        "searching": "Na-achọ",
+        "analysing": "Na-enyocha",
+        "needs_review": "Achọrọ mkpebi onye nyocha",
+        "complete": "Emechara",
+        "failed": "Dara",
+        "cancelled": "Akagbuola"
       },
-      "counts": null,
-      "replay": null,
-      "live": null,
-      "started": null,
-      "finished": null,
+      "counts": "Achọtara {found}, gụọ {fetched}, nyochara {analysed}.",
+      "replay": "Nkwugharị edere ede (ngosipụta), ọ bụghị nchọta dị ndụ.",
+      "live": "Nchọta dị ndụ.",
+      "started": "Malitere {date}",
+      "finished": "Gwụchara {date}",
       "scope": {
-        "public": null,
-        "reviewer": null
+        "public": "Ọsọ ọha na-ekerịta maka ọrụ ngo a",
+        "reviewer": "Ọsọ nzuzo maka mkpesa a"
       }
     },
     "failure": {
-      "title": null,
+      "title": "Ọsọ a agwụchaghị",
       "codes": {
-        "provider_unavailable": null,
-        "fetch_blocked": null,
-        "unsafe_text": null,
-        "extraction_failed": null,
-        "analysis_invalid": null,
-        "budget_exhausted": null,
-        "rate_limited": null,
-        "dead_letter": null
+        "provider_unavailable": "Onye na-enye nchọta adịghị.",
+        "fetch_blocked": "Enweghị ike iweta peeji n'enweghị nsogbu na a mafere ya.",
+        "unsafe_text": "Peeji nwere ederede adịghị mma na ejighị ya.",
+        "extraction_failed": "Enweghị ike ịgụ ederede na peeji.",
+        "analysis_invalid": "Enweghị ike inyocha nyocha ahụ megide isi mmalite, ya mere egosighi ya.",
+        "budget_exhausted": "Ihe mmefu nchọta kwa ụbọchị agwụla. A na-egosi ọsọ arụchara kachasị ọhụrụ kama mgbe enwere otu.",
+        "rate_limited": "Arịrịọ karịrị akarị. Nwaa ọzọ ma emechaa.",
+        "dead_letter": "Ọrụ ahụ nọ na-ada ada wee kwụsị ya. Onye nyocha nwere ike ịmalite ọsọ ọhụrụ."
       },
-      "generic": null,
-      "partial": null,
-      "empty": null
+      "generic": "Ọsọ ahụ biri n'enweghị nsonaazụ nwere ike iji mee ihe.",
+      "partial": "Isi mmalite ndị a chọtara tupu ọ kwụsị ka egosiri n'okpuru ma nwee ike ọ gaghị ezu ezu.",
+      "empty": "Ọnweghị ihe achọtara tupu ọ kwụsị."
     },
     "states": {
-      "cancelledPartial": null,
-      "cancelledEmpty": null,
-      "needsReview": null,
-      "offline": null,
-      "stale": null,
-      "checking": null,
-      "paused": null
+      "cancelledPartial": "Akagbuola. Ihe ọ bụla a chọtara tupu ịkagbuo na-egosi n'okpuru ma ezughị ezu.",
+      "cancelledEmpty": "Akagbuola tupu achọta ihe ọ bụla.",
+      "needsReview": "Ọsọ a chọrọ mkpebi onye nyocha tupu a dabere na nyocha ya.",
+      "offline": "Ị nọghị n'ịntanetị. Ihe dịlarị na peeji a na-anọgide na-ahụ anya, na ịlele na-amaliteghachi mgbe ị nọ n'ịntanetị.",
+      "stale": "Nsonaazụ ndị a nwere ike ịbụ ihe ochie. Ọsọ ahụ gwụchara na {date}.",
+      "checking": "Na-elele maka mmelite.",
+      "paused": "Akwụsịla ịlele."
     },
     "controls": {
-      "cancel": null,
-      "cancelTitle": null,
-      "cancelBody": null,
-      "cancelConfirm": null,
-      "keep": null,
-      "cancelRequested": null,
-      "approve": null,
-      "reject": null,
-      "reviewTitle": null,
-      "approveBody": null,
-      "rejectBody": null,
-      "reviewConfirm": null,
-      "reviewed": null,
-      "retry": null,
-      "stopChecking": null,
-      "resumeChecking": null
+      "cancel": "Kagbuo ọsọ a",
+      "cancelTitle": "Kagbuo nchọta isi mmalite a?",
+      "cancelBody": "Akwụsịla ọrụ a ga-arụ. Ihe ọ bụla achọtaralarị ka echekwara.",
+      "cancelConfirm": "Kagbuo ọsọ ahụ",
+      "keep": "Mee ka ọ na-agba ọsọ",
+      "cancelRequested": "Arịrịọ ịkagbu. E debere ọrụ a rụrụla.",
+      "approve": "Kwado mmecha",
+      "reject": "Jụ ọsọ a",
+      "reviewTitle": "Dekọọ mkpebi a na ọsọ ahụ?",
+      "approveBody": "Nke a na-akwado na ọsọ ahụ kwụsịrị nke ọma. Ọ naghị akwado isi mmalite ọ bụla ma ọ bụ bipụta ihe ọ bụla.",
+      "rejectBody": "Nke a na-ajụ ọsọ ahụ. Isi mmalite ya ka depụtara dị ka enyochaghị.",
+      "reviewConfirm": "Dekọọ mkpebi",
+      "reviewed": "Edekọrọ mkpebi ọsọ.",
+      "retry": "Lelee ọzọ",
+      "stopChecking": "Kwụsị ịlele",
+      "resumeChecking": "Gaa n'ihu ịlele"
     },
     "followUps": {
-      "heading": null,
-      "cap": null,
-      "why": null,
-      "sensitivity": null,
-      "answerLabel": null,
-      "answerHint": null,
-      "send": null,
-      "skip": null,
-      "unsafe": null,
-      "sent": null,
-      "skipped": null,
-      "flagged": null,
-      "required": null,
-      "tooLong": null,
-      "none": null,
-      "stale": null
+      "heading": "Ajụjụ ndị na-eso ya",
+      "cap": "A na-egosi kacha ajụjụ 5.",
+      "why": "Ihe mere e ji jụọ ya: {reason}",
+      "sensitivity": "Mmetụta: {level}",
+      "answerLabel": "Azịza gị (nzuzo)",
+      "answerHint": "Edobere na ncheta ruo mgbe ị zipụrụ ya. Etinyeghị ya na adreesị ma ọ bụ chekwaa ya na ihe nchọgharị a.",
+      "send": "Zipụ azịza",
+      "skip": "Mafe",
+      "unsafe": "Kaa akara dị ka adịghị mma ịjụ",
+      "sent": "Edekọrọ. Ihe ị pịnyere agaghị egosi ọzọ.",
+      "skipped": "Amafere.",
+      "flagged": "E ji akara na adịghị mma.",
+      "required": "Dee azịza ma ọ bụ họrọ Mafe.",
+      "tooLong": "Azịza a dị ogologo.",
+      "none": "Enweghị ajụjụ ndị na-eso ya.",
+      "stale": "Ajụjụ a bụ nke ọsọ dị iche, ya mere ezipughị ya."
     },
     "decisions": {
-      "attach": null,
-      "reject": null,
-      "defer": null,
-      "reconsider": null,
-      "reason": null,
-      "reasonHint": null,
-      "reasonRequired": null,
-      "reasonTooLong": null,
-      "confirmTitle": null,
-      "attachBody": null,
-      "rejectBody": null,
-      "deferBody": null,
-      "reconsiderBody": null,
-      "confirm": null,
-      "cancel": null,
-      "recorded": null,
-      "conflict": null,
+      "attach": "Mgbakwunye dị ka isi mmalite na-echere",
+      "reject": "Jụ",
+      "defer": "Bigharịa",
+      "reconsider": "Chegharịa echiche",
+      "reason": "Ihe kpatara",
+      "reasonHint": "Kwu ihe kpatara ya. Ruo mkpụrụedemede 400. A na-echekwa ya na nzuzo.",
+      "reasonRequired": "Nye ihe kpatara ya.",
+      "reasonTooLong": "Ihe kpatara a dị ogologo.",
+      "confirmTitle": "Dekọọ mkpebi a na isi mmalite ahụ?",
+      "attachBody": "Nke a na-emepụta isi mmalite na-echere maka ọrụ isi mmalite akwadoro. Ọ naghị akwado eziokwu ọ bụla ma ọ bụ bipụta ihe ọ bụla.",
+      "rejectBody": "Nke a na-ajụ isi mmalite maka mkpesa a. Ọ na-anọgide na ndepụta enwere ike ichegharị ya echiche.",
+      "deferBody": "Nke a na-ewepụta isi mmalite n'akụkụ na-enweghị mkpebi ikpeazụ.",
+      "reconsiderBody": "Nke a na-eme ka isi mmalite ahụ laghachi azụ gaa n'ihe ebigharịrị abigharịa.",
+      "confirm": "Dekọọ mkpebi",
+      "cancel": "Nọgide na-edezi",
+      "recorded": "Mkpebi edekọrọ: {disposition}.",
+      "conflict": "Isi mmalite a gbanwere kemgbe i bunyere ya, ma ọ bụ mkpebi ahụ adịghịzi. Bunyegharịa nsonaazụ ahụ wee nwaa ọzọ.",
       "dispositions": {
-        "not_reviewed": null,
-        "attached": null,
-        "rejected": null,
-        "deferred": null
+        "not_reviewed": "Enyochaghị",
+        "attached": "E jikọtara ya ka isi mmalite na-echere (akwadoghị ya)",
+        "rejected": "Ajụrụ",
+        "deferred": "Ebigharịrị"
       }
     }
   },
   "offline": {
-    "title": null,
-    "lead": null,
-    "retry": null,
-    "savedHeading": null,
-    "savedNone": null,
-    "savedOn": null,
-    "savedNote": null,
-    "clear": null,
-    "cleared": null,
-    "privateNote": null,
-    "banner": null,
-    "bannerNoDate": null,
-    "backOnline": null,
-    "update": null,
-    "updateApply": null,
-    "updateLater": null,
+    "title": "Ị nọghị n'ịntanetị",
+    "lead": "ShaidaGo enweghị ike iru netwọk ahụ. Peeji ị mepere nso nso a nwere ike ịnọ na ngwaọrụ a.",
+    "retry": "Nwaa ọzọ",
+    "savedHeading": "Peeji echekwara",
+    "savedNone": "Ọnweghị peeji echekwara ugbu a. Mepee ndekọ ọrụ ngo mgbe ị nọ n'ịntanetị, a ga-edobe ya ebe a ruo otu izu.",
+    "savedOn": "Echekwara na {date}",
+    "savedNote": "Peeji echekwara na-egosi ụbọchị e nyochara ya ikpeazụ ọ nwere mgbe e chekwaara ya. O nwere ike ịbụ ozi ochie.",
+    "clear": "Chefuo peeji echekwara",
+    "cleared": "Ewepụla peeji echekwara na ngwaọrụ a.",
+    "privateNote": "Mkpesa, nsochi, na omume onye nyocha chọrọ njikọ. Ọnweghị ihe ị na-abanye a na-ezipu, chekwaa, ma ọ bụ kwado ahịrị mgbe ịnọghị n'ịntanetị.",
+    "banner": "Ị nọghị n'ịntanetị. Peeji a bụ nnomi echekwara site na {date} ma nwee ike ịbụ ozi ochie.",
+    "bannerNoDate": "Ị nọghị n'ịntanetị. Ị na-ahụ nnomi echekwara nke nwere ike ịbụ ozi ochie.",
+    "backOnline": "Ị lọghachila n'ịntanetị.",
+    "update": "Mmelite nke ShaidaGo dị njikere.",
+    "updateApply": "Bunyegharịa iji ya",
+    "updateLater": "Ọ ga-etinye n'ọrụ oge ọzọ i mepere ShaidaGo. O metụtaghị mkpesa gị.",
     "lowData": {
-      "suggest": null,
-      "on": null,
-      "off": null,
-      "turnOn": null,
-      "turnOff": null,
-      "label": null,
-      "note": null,
-      "dismiss": null
+      "suggest": "Ihe nchọgharị gị na-arịọ ka ichekwa data. Gbanwuo ọnọdụ obere data?",
+      "on": "Ọnọdụ obere data dị n'ọrụ",
+      "off": "Ọnọdụ obere data agbanyụrụ",
+      "turnOn": "Gbanwuo ọnọdụ obere data",
+      "turnOff": "Gbanyụọ ọnọdụ obere data",
+      "label": "Ọnọdụ obere data",
+      "note": "Anya ngosi dị ole na ole, enweghị ume ọhụrụ ndabere ma ọ bụ iwebata, ịlele nwayọ nke Source Scout. Eziokwu niile na omume na-anọgide na-adị.",
+      "dismiss": "Ọ bụghị ugbu a"
     }
   }
 }

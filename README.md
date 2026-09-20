@@ -4,13 +4,13 @@
 
 ShaidaGo is a low-bandwidth civic accountability platform for understanding local public projects, checking the evidence behind public claims, and reporting concerns through a private, human-reviewed workflow.
 
-The hackathon pilot covers Abuja's AMAC and Bwari Area Councils. The public experience is designed for English, Hausa, Igbo, and Yoruba.
+ShaidaGo is location-configurable. Its initial hackathon dataset covers Abuja's AMAC and Bwari Area Councils, while the product identity and navigation remain location-neutral. The public experience is designed for English, Hausa, Igbo, and Yoruba.
 
 ## Repository status
 
-The backend (`services/platform`) and the frontend (`apps/web`) are both built and verified locally against fictional data and recorded replay providers. `apps/web` is a Next.js app and thin BFF with public records, cited Q&A, a private anonymous report flow, tracking and optional reporter handles, a reviewer workspace with publication, Source Scout, an offline-capable public shell, and English, Hausa, Igbo, and Yoruba routes. Hausa, Igbo, and Yoruba copy is largely pending fluent review (see the limitations). The complete gate is `make verify`; the last full run of the frontend gate from a clean checkout is recorded in [`docs/AI_BUILD_LOG.md`](docs/AI_BUILD_LOG.md) and [`docs/FRONTEND_BUILD_ORDER.md`](docs/FRONTEND_BUILD_ORDER.md).
+The backend (`services/platform`) and the frontend (`apps/web`) are both built and verified locally against fictional data and recorded replay providers. `apps/web` is a Next.js app and thin BFF with public records, cited Q&A, a private anonymous report flow, tracking and optional reporter handles, a reviewer workspace with publication, Source Scout, an offline-capable public shell, and complete English, Hausa, Igbo, and Yoruba interface catalogues. All four catalogues were maintainer-reviewed on 2026-09-20; the non-English copy has not received an independent second-language review. The complete gate is `make verify`; the last full run of the frontend gate from a clean checkout is recorded in [`docs/AI_BUILD_LOG.md`](docs/AI_BUILD_LOG.md) and [`docs/FRONTEND_BUILD_ORDER.md`](docs/FRONTEND_BUILD_ORDER.md).
 
-Not yet done, and stated plainly: production is not deployed (staging is), there is no demo video, the independent visual finish review returned `fix` with open design fixes, and human source, fluent-language, screen-reader, legal, privacy, and security reviews are outstanding. Public seed facts remain limited to the exact evidence and caveats recorded in the source register.
+Not yet done, and stated plainly: production is not deployed (staging is), there is no demo video, and independent source, second-language, screen-reader, legal, privacy, and security reviews are outstanding. Public seed facts remain limited to the exact evidence and caveats recorded in the source register.
 
 ## Run it
 
@@ -30,16 +30,16 @@ To look around without the backend, `pnpm --dir apps/web build` and the standalo
 
 All screenshots use the synthetic "Synthetic full record" and other clearly fictional data, captured with motion reduced, and show no one-time credential. They are in [`docs/evidence/frontend-visual/readme/`](docs/evidence/frontend-visual/readme/).
 
-| Narrow phone, a record | Desktop, project evidence |
-| --- | --- |
+| Narrow phone, a record                                                                       | Desktop, project evidence                                                                           |
+| -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | ![A project record at 360 px](docs/evidence/frontend-visual/readme/record-mobile-narrow.png) | ![A project record with its evidence rail](docs/evidence/frontend-visual/readme/record-desktop.png) |
 
-| Report: safety first | Reviewer queue |
-| --- | --- |
+| Report: safety first                                                                                         | Reviewer queue                                                                 |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
 | ![The report form's emergency-service notice](docs/evidence/frontend-visual/readme/report-safety-mobile.png) | ![The reviewer queue](docs/evidence/frontend-visual/readme/reviewer-queue.png) |
 
-| Reviewer report detail | Source Scout (labelled, unreviewed) |
-| --- | --- |
+| Reviewer report detail                                                                | Source Scout (labelled, unreviewed)                                            |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | ![A reviewer report detail](docs/evidence/frontend-visual/readme/reviewer-detail.png) | ![Source Scout results](docs/evidence/frontend-visual/readme/source-scout.png) |
 
 ## The problem
@@ -50,7 +50,7 @@ ShaidaGo brings the public project record, citations, plain-language explanation
 
 ## Core journeys
 
-1. Browse or search cited projects in AMAC and Bwari.
+1. Browse or search cited public projects by configured locality.
 2. Inspect facts, status, responsible institutions, timelines, and original sources.
 3. Ask a question answered only from approved project evidence.
 4. Submit a fictional anonymous-first concern and receive a non-identifying tracking code.
@@ -93,26 +93,26 @@ The rationale, exact boundaries, rejected alternatives, data model, tests, deplo
 
 Start with the [documentation index](docs/README.md).
 
-| Document | Purpose |
-| --- | --- |
-| [PRODUCT.md](PRODUCT.md) | Durable product scope, users, operating context, and non-goals |
-| [Product brief](docs/PRODUCT_BRIEF.md) | Detailed problem, journeys, functional requirements, and acceptance criteria |
-| [Implementation plan](docs/IMPLEMENTATION_PLAN.md) | Chosen stack, architecture, security model, quality gates, and build order |
-| [Backend build order](docs/BACKEND_BUILD_ORDER.md) | Closed implementation circles for the FastAPI API, worker, data, security, tests, and deployment |
+| Document                                             | Purpose                                                                                                   |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| [PRODUCT.md](PRODUCT.md)                             | Durable product scope, users, operating context, and non-goals                                            |
+| [Product brief](docs/PRODUCT_BRIEF.md)               | Detailed problem, journeys, functional requirements, and acceptance criteria                              |
+| [Implementation plan](docs/IMPLEMENTATION_PLAN.md)   | Chosen stack, architecture, security model, quality gates, and build order                                |
+| [Backend build order](docs/BACKEND_BUILD_ORDER.md)   | Closed implementation circles for the FastAPI API, worker, data, security, tests, and deployment          |
 | [Frontend build order](docs/FRONTEND_BUILD_ORDER.md) | Closed implementation circles for the Next.js UI/BFF, localisation, accessibility, PWA, and visual finish |
-| [AGENTS.md](AGENTS.md) | Repository-wide implementation and code-review rules for coding agents |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Human contribution workflow and pull-request expectations |
-| [SECURITY.md](SECURITY.md) | Private vulnerability reporting and prototype data policy |
-| [Privacy and safety](docs/PRIVACY_AND_SAFETY.md) | Implemented privacy controls, evidence, and production blockers |
-| [AI build log](docs/AI_BUILD_LOG.md) | Transparent record of AI-assisted engineering work and human review status |
+| [AGENTS.md](AGENTS.md)                               | Repository-wide implementation and code-review rules for coding agents                                    |
+| [CONTRIBUTING.md](CONTRIBUTING.md)                   | Human contribution workflow and pull-request expectations                                                 |
+| [SECURITY.md](SECURITY.md)                           | Private vulnerability reporting and prototype data policy                                                 |
+| [Privacy and safety](docs/PRIVACY_AND_SAFETY.md)     | Implemented privacy controls, evidence, and production blockers                                           |
+| [AI build log](docs/AI_BUILD_LOG.md)                 | Transparent record of AI-assisted engineering work and human review status                                |
 
 ## Accessibility and low bandwidth
 
-WCAG 2.2 AA is the bar. Every public and reviewer route is checked in four languages for structure, axe, 320 px reflow, 200% text, forced colours, reduced motion, and 44 px targets (`make web-a11y`). The manual screen-reader smoke is scripted in [`docs/FRONTEND_HARDENING_AUDIT.md`](docs/FRONTEND_HARDENING_AUDIT.md) and **has not been run**. For weak connections: public pages are server-rendered and work without JavaScript where feasible, first-load JavaScript is under 170 KB on every public route, a service worker saves recently viewed public records for offline reading (and never stores anything private, proven by cache inspection), and a low-data switch removes motion and slows background checking. The app ships no images or web fonts beyond a small letter-mark icon.
+WCAG 2.2 AA is the bar. Every public and reviewer route is checked in four languages for structure, axe, 320 px reflow, 200% text, forced colours, reduced motion, and 44 px targets (`make web-a11y`). The manual screen-reader smoke is scripted in [`docs/FRONTEND_HARDENING_AUDIT.md`](docs/FRONTEND_HARDENING_AUDIT.md) and **has not been run**. For weak connections: public pages are server-rendered and work without JavaScript where feasible, first-load JavaScript is under 170 KB on every public route, a service worker saves recently viewed public records for offline reading (and never stores anything private, proven by cache inspection), and a low-data switch removes motion and slows background checking. The app ships no photography or web fonts beyond its small installable mark.
 
 ## How AI was used
 
-AI assisted the design, code, tests, and documentation of this repository, and it is used inside the product only to explain source-grounded answers, never as a source. The full record is [`docs/AI_BUILD_LOG.md`](docs/AI_BUILD_LOG.md). The maintainer reviewed and merged the work (pull requests #17 to #36); each entry lists what that review does not cover, such as fluent-language review, a screen-reader pass, and hosted checks.
+AI assisted the design, code, tests, and documentation of this repository, and it is used inside the product only to explain source-grounded answers, never as a source. The full record is [`docs/AI_BUILD_LOG.md`](docs/AI_BUILD_LOG.md). The maintainer reviewed and merged the work (pull requests #17 to #36); each entry lists what that review does not cover, such as independent second-language review, a screen-reader pass, and hosted checks.
 
 ## Demo and links
 
@@ -137,8 +137,8 @@ When implementation starts, the separate stacks remain independently owned:
 This remains a fictional-data prototype, not an emergency service.
 
 - **Sources.** Three of the six source-register projects have no verified fact, because their sources block automated access.
-- **Languages.** The Hausa, Igbo and Yoruba copy for the shell, evidence labels, recovery, and landing was reviewed by the maintainer alone, with no independent second review; every other domain (forms, tracking, reviewer, Source Scout, offline) is still pending and shows the English original with a visible notice.
-- **Frontend.** Only staging is deployed (Railway Free plan, generated domain); an independent finish review returned `fix` and its larger design fixes are open; the screen-reader smoke has not been run; the CSP keeps `unsafe-inline` for scripts and styles (a recorded trade-off); and Playwright cannot test offline navigation with a service worker on WebKit, so that proof is Chromium-only.
+- **Languages.** English, Hausa, Igbo, and Yoruba contain all 1,125 interface messages with matching ICU variables and no fallback keys. Every domain was reviewed by the maintainer on 2026-09-20. Hausa, Igbo, and Yoruba have no independent second-language review, so the repository does not present that maintainer review as external linguistic assurance.
+- **Frontend.** Only staging is deployed (Railway Free plan, generated domain); the independent finish review returned `fix` and its recorded navigation, hierarchy, alignment, icon, and first-viewport findings remain open; the screen-reader smoke has not been run; the CSP keeps `unsafe-inline` for scripts and styles (a recorded trade-off); and Playwright cannot test offline navigation with a service worker on WebKit, so that proof is Chromium-only.
 - **Language model.** Live Groq and Brave runs were made once, and the model's answers were weak against the golden corpus (see [BE-085](docs/evidence/BE-085-live-evaluation.md)), so the demo defaults to replay and labels it.
 - **Retrieval.** Local embeddings let a Hausa, Igbo or Yoruba question find English passages that keyword search misses, measured on a small sample only (see [BE-081](docs/evidence/BE-081-local-embeddings.md)).
 - **Hosting.** The hosted demo has no malware scanner, and the API service uses about 65% of its 1 GB memory limit at rest and 83% at peak.

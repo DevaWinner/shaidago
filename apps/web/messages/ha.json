@@ -14,8 +14,10 @@
       },
       "localeUnavailable": "ba a tantance ba tukuna",
       "navLabel": "Babban menu",
-      "navLocalities": "Yankuna",
+      "navLocalities": "Kundin ayyuka",
       "navReport": "Bayar da rahoton wata damuwa",
+      "navReviewer": "Shigar masu dubawa",
+      "navTrack": "Bibiyi ko duba rahotanni",
       "navTrust": "Yadda kundin bayanai ke aiki",
       "notEmergency": "ShaidaGo ba sabis na gaggawa ba ne. Idan wani yana cikin haɗari, a fara tuntuɓar ma'aikatan agajin gaggawa na yankin.",
       "productName": "ShaidaGo",
@@ -80,7 +82,7 @@
     "citedLabel": "Majiyoyin wannan bayani",
     "citationBack": "Komawa ga bayanin",
     "evidenceHeading": "Shaida mai ɗauke da kwanan wata",
-    "heading": "Kundin ayyukan jama'a na AMAC da Bwari, tare da majiyoyinsu",
+    "heading": "Kundin ayyukan jama'a, tare da majiyoyin da ke goyon bayansu",
     "lead": "Kowane kundi yana nuna abin da aka yi alkawari, abin da majiyoyi suka ce, lokacin dubawa ta ƙarshe, da abin da har yanzu ba a sani ba.",
     "localityLabel": "Misalin yanki",
     "recordKind": "Kundin aikin jama'a",
@@ -121,1401 +123,1401 @@
     },
     "loading": "Ana shirya wannan shafin.",
     "fatal": {
-      "title": null
+      "title": "Ba a iya buɗe ShaidaGo ba"
     }
   },
   "problems": {
     "codes": {
-      "badRequest": null,
-      "unauthenticated": null,
-      "forbidden": null,
-      "notFound": null,
-      "codeNotRecognised": null,
-      "invalidCredentials": null,
-      "rateLimited": null,
-      "conflict": null,
-      "idempotencyConflict": null,
-      "notAllowedNow": null,
-      "tooLarge": null,
-      "unsupportedType": null,
-      "validationFailed": null,
-      "markupNotAllowed": null,
-      "publicationIncomplete": null,
-      "invalidCursor": null,
-      "queryChanged": null,
-      "notVerified": null,
-      "timeout": null,
-      "unavailable": null,
-      "aborted": null,
-      "network": null,
-      "internal": null,
-      "unknown": null
+      "badRequest": "Ba a gane buƙatar ba. Duba abin da ka shigar sannan ka sake gwadawa.",
+      "unauthenticated": "Shiga don ci gaba.",
+      "forbidden": "Baka da izinin yin hakan.",
+      "notFound": "Ba mu iya samun wannan ba.",
+      "codeNotRecognised": "Ba mu iya samun rahoto kan wannan lambar ba. Duba lambar sannan ka sake gwadawa.",
+      "invalidCredentials": "Ba a karɓi waɗannan bayanan ba. Duba su sannan ka sake gwadawa.",
+      "rateLimited": "An yi yunkuri da yawa. Jira kaɗan sannan ka sake gwadawa.",
+      "conflict": "Wannan ya canza yayin da kake aiki. Sabunta shafin sannan ka sake gwadawa.",
+      "idempotencyConflict": "An riga an yi amfani da wannan buƙatar da bayanai daban. Sake farawa.",
+      "notAllowedNow": "Wannan aikin ba ya samuwa a halin yanzu.",
+      "tooLarge": "Wannan yayi girma sosai don a aikawa. Rage girmansa sannan ka sake gwadawa.",
+      "unsupportedType": "Ba a tallafawa wannan tsarin.",
+      "validationFailed": "Wasu bayanai suna buƙatar kulawa.",
+      "markupNotAllowed": "Cire tsari ko markup sannan ka sake gwadawa.",
+      "publicationIncomplete": "Akwai abin da ake buƙata da ya ɓace kafin a iya wallafa wannan.",
+      "invalidCursor": "Wannan shafin sakamakon ba ya aiki kuma. Koma shafin farko.",
+      "queryChanged": "Binciken ya canza. Duba sabon tsarin kafin ka ci gaba.",
+      "notVerified": "Ba a iya tantance wannan buƙatar ba. Sake loda shafin sannan ka sake gwadawa.",
+      "timeout": "Sabis ɗin ya ɗauki lokaci mai tsawo kafin ya amsa. Sake gwadawa.",
+      "unavailable": "Sabis ɗin ba ya samuwa a yanzu. Sake gwadawa nan ba da jimawa ba.",
+      "aborted": "An soke buƙatar.",
+      "network": "Ba a iya samun ShaidaGo ba. Duba haɗin yanar gizon ka sannan ka sake gwadawa.",
+      "internal": "Wani abu ya faru daga ɓangaren mu.",
+      "unknown": "Wani abu ya faru."
     },
     "rules": {
-      "required": null,
-      "tooShort": null,
-      "tooLong": null,
-      "invalidFormat": null,
-      "notAccepted": null,
-      "markup": null,
-      "invalid": null
+      "required": "Shigar da ƙima.",
+      "tooShort": "Wannan yayi gajere sosai.",
+      "tooLong": "Wannan yayi tsayi sosai.",
+      "invalidFormat": "Wannan ba a cikin tsarin da ake tsammani yake ba.",
+      "notAccepted": "Ba a karɓi wannan filin ba.",
+      "markup": "Cire tsari ko markup.",
+      "invalid": "Duba wannan ƙimar."
     },
     "summary": {
-      "title": null
+      "title": "{count, plural, one {Gyara matsala # don ci gaba} other {Gyara matsaloli # don ci gaba}}"
     },
-    "mayHaveCompleted": null,
-    "retryAfter": null,
-    "reference": null
+    "mayHaveCompleted": "Idan ka riga ka aiko da wannan, duba kafin ka sake aikawa.",
+    "retryAfter": "Sake gwadawa bayan {seconds, plural, one {daƙiƙa #} other {daƙiƙoƙi #}}.",
+    "reference": "Lambar tallafi: {reference}"
   },
   "language": {
-    "changed": null,
+    "changed": "An canza harshe zuwa {language}.",
     "draft": {
-      "title": null,
-      "body": null,
-      "stay": null,
-      "leave": null
+      "title": "Canza harshe?",
+      "body": "Canza harshe yana sake loda wannan shafin. Duk wani abin da baka ajiye ba zai ɓace.",
+      "stay": "Tsaya a kan wannan shafin",
+      "leave": "Canza harshe"
     }
   },
   "directory": {
-    "title": null,
-    "intro": null,
+    "title": "Kundin ayyuka",
+    "intro": "Yi bincike a kundin ayyukan jama'a ta wuri, rukuni, matsayi, ko yanayin shaida. Kowane kundi yana nuna majiyoyinsa da ranar da aka duba shi ta ƙarshe.",
     "form": {
-      "label": null,
-      "searchLabel": null,
-      "searchHelp": null,
-      "locality": null,
-      "category": null,
-      "status": null,
-      "verification": null,
-      "any": null,
-      "apply": null,
-      "clear": null
+      "label": "Bincika kuma tace kundin ayyuka",
+      "searchLabel": "Bincika kundin ayyuka",
+      "searchHelp": "Bincika da sunan aiki ko abin da aka yi alkawari.",
+      "locality": "Yanki",
+      "category": "Rukuni",
+      "status": "Matsayin da aka rubuta",
+      "verification": "Tabbatarwa",
+      "any": "Duk wani",
+      "apply": "Bincika",
+      "clear": "Cire duk matatun bincike"
     },
     "categories": {
-      "health": null,
-      "education": null,
-      "water_sanitation": null,
-      "roads_public_works": null,
-      "other_public_service": null
+      "health": "Lafiya",
+      "education": "Ilimi",
+      "water_sanitation": "Ruwa da tsabta",
+      "roads_public_works": "Hanyoyi da ayyukan jama'a",
+      "other_public_service": "Sauran ayyukan jama'a"
     },
     "statuses": {
-      "unknown": null,
-      "planned": null,
-      "procurement": null,
-      "in_progress": null,
-      "on_hold": null,
-      "completed": null,
-      "cancelled": null
+      "unknown": "Ba a sani ba",
+      "planned": "An tsara",
+      "procurement": "A cikin saye",
+      "in_progress": "Ana kan yi",
+      "on_hold": "A tsaye",
+      "completed": "An kammala",
+      "cancelled": "An soke"
     },
     "pills": {
-      "label": null,
-      "remove": null,
-      "search": null
+      "label": "Matatun bincike masu aiki",
+      "remove": "Cire matata: {filter}",
+      "search": "Bincika: {value}"
     },
     "results": {
-      "heading": null,
-      "shown": null,
-      "moreAvailable": null
+      "heading": "Sakamako",
+      "shown": "{count, plural, one {Ana nuna kundin aiki #.} other {Ana nuna kundin ayyuka #.}}",
+      "moreAvailable": "Akwai ƙarin kundin bayanai."
     },
     "card": {
-      "recordedStatus": null,
-      "lastChecked": null,
-      "notChecked": null,
-      "staleNote": null,
-      "original": null
+      "recordedStatus": "Matsayin da aka rubuta",
+      "lastChecked": "Dubawa ta ƙarshe",
+      "notChecked": "Ba a duba ba tukuna",
+      "staleNote": "An duba fiye da {days, plural, one {rana #} other {kwanaki #}} da suka gabata.",
+      "original": "An nuna shi a asalin harshen: babu fassara a wannan kundin."
     },
     "states": {
       "empty": {
-        "title": null,
-        "body": null
+        "title": "Babu kundin ayyuka tukuna",
+        "body": "Babu kundin ayyukan jama'a a yanzu. Duba kuma daga baya."
       },
       "noMatches": {
-        "title": null,
-        "body": null
+        "title": "Babu kundin da ya yi daidai da waɗannan matatun",
+        "body": "Gwada cire matata ko bincika da wasu kalmomin. Ana iya samun kundi a ƙarƙashin wasu matatun."
       },
       "unavailable": {
-        "title": null,
-        "body": null,
-        "retry": null
+        "title": "Ba a iya loda kundin ayyuka ba",
+        "body": "Sabis ɗin baya bayar da amsa a yanzu. Babu abin da ya ɓace. Sake gwadawa anjima kaɗan.",
+        "retry": "Sake gwadawa"
       },
       "invalidCursor": {
-        "title": null,
-        "body": null,
-        "first": null
+        "title": "Wannan shafin sakamakon ba ya aiki kuma",
+        "body": "Jerin ya canza tun lokacin da aka yi wannan haɗin. Sake farawa daga shafin farko.",
+        "first": "Jeka shafin farko"
       }
     },
     "pagination": {
-      "label": null,
-      "next": null,
-      "first": null
+      "label": "Shafukan kundin aiki",
+      "next": "Kundin gaba",
+      "first": "Koma shafin farko"
     }
   },
   "home": {
     "search": {
-      "apply": null,
-      "label": null,
-      "help": null
+      "apply": "Bincika",
+      "label": "Bincika kundin ayyuka",
+      "help": "Bincika da sunan aiki ko abin da aka yi alkawari."
     },
     "localities": {
-      "heading": null,
-      "all": null
+      "heading": "Zaɓi inda za a duba",
+      "all": "Dukkan yankuna"
     },
     "categories": {
-      "heading": null,
-      "note": null
+      "heading": "Duba ta rukuni",
+      "note": "Rukunin da ke da kundi kawai aka lissafa."
     },
     "latest": {
-      "heading": null,
-      "recordedStatus": null,
-      "lastChecked": null,
-      "notChecked": null,
-      "view": null,
-      "unavailable": null,
-      "empty": null
+      "heading": "Kundi na baya-bayan nan",
+      "recordedStatus": "Matsayin da aka rubuta",
+      "lastChecked": "Dubawa ta ƙarshe",
+      "notChecked": "Ba a duba ba tukuna",
+      "view": "Duba kundi",
+      "unavailable": "Ba a iya loda kundin ayyuka a yanzu. Sauran ɓangaren shafin na aiki.",
+      "empty": "Babu kundin ayyukan jama'a tukuna."
     },
     "trust": {
-      "heading": null,
-      "sources": null,
-      "review": null,
-      "privacy": null,
-      "link": null
+      "heading": "Yadda zaka iya duba abin da ka karanta",
+      "sources": "Kowane bayani yana haɗe da majiyar da ya fito, tare da ainihin rubutun da ranar da aka duba shi.",
+      "review": "Mutum yana duba shaida kafin ta canza kundi na jama'a. Na'urori masu aiki da kansu suna bayani kuma suna bincike, amma su ba majiyoyi ba ne.",
+      "privacy": "Rahotanni na sirri ne kuma ba a taɓa wallafa su kai tsaye ba.",
+      "link": "Yadda kundin bayanai ke aiki"
     },
     "how": {
-      "heading": null,
+      "heading": "Yadda ShaidaGo ke aiki",
       "read": {
-        "title": null,
-        "body": null
+        "title": "Karanta kundin",
+        "body": "Nemo aiki kuma kaga abin da aka yi alkawari da abin da majiyoyi suka ce."
       },
       "report": {
-        "title": null,
-        "body": null
+        "title": "Bayar da rahoton wata damuwa a tsanake",
+        "body": "Aika rahoton sirri ba tare da asusu ba. Mai dubawa kawai zai iya karanta shi."
       },
       "review": {
-        "title": null,
-        "body": null
+        "title": "Mutum yana dubawa",
+        "body": "Masu dubawa ne ke yanke shawarar abin da za a ƙara a cikin kundin jama'a, idan da akwai, tare da nassoshi."
       }
     },
-    "limitation": null
+    "limitation": "ShaidaGo samfurin gwaji ne. Ba sabis na gaggawa ba ne. Idan wani yana cikin haɗari, a fara tuntuɓar ma'aikatan agajin gaggawa na yankin."
   },
   "project": {
     "breadcrumb": {
-      "label": null,
-      "directory": null
+      "label": "Kuna nan",
+      "directory": "Kundin ayyuka"
     },
     "promised": {
-      "heading": null,
-      "notRecorded": null
+      "heading": "Abin da aka yi alkawari",
+      "notRecorded": "Ba a rubuta alkawarin wannan kundin ba."
     },
     "state": {
-      "heading": null,
-      "status": null,
-      "lastChecked": null,
-      "notChecked": null,
-      "caveat": null,
-      "stale": null
+      "heading": "Halin da ake ciki a rubuce",
+      "status": "Matsayin da aka rubuta",
+      "lastChecked": "Dubawa ta ƙarshe",
+      "notChecked": "Ba a duba ba tukuna",
+      "caveat": "Matsayin da aka rubuta shine abin da wannan kundin ke cewa. Ba hukunci ba ne. Kowane bayani a ƙasa yana nuna yadda aka tallafa masa.",
+      "stale": "An duba wannan kundi fiye da {days, plural, one {rana #} other {kwanaki #}} da suka gabata."
     },
     "facts": {
-      "heading": null,
-      "empty": null,
-      "sourceCount": null,
-      "sourceLabel": null,
-      "citedLabel": null,
-      "evidenceHeading": null,
-      "openSource": null,
-      "back": null,
-      "triggerName": null
+      "heading": "Abin da majiyoyi suka ce",
+      "empty": "Ba a wallafa bayanan da ke da majiya don wannan kundi ba tukuna.",
+      "sourceCount": "{count, plural, one {majiya #} other {majiyoyi #}}",
+      "sourceLabel": "Majiya {number, number}",
+      "citedLabel": "Majiyoyin wannan bayani",
+      "evidenceHeading": "Shaida",
+      "openSource": "Buɗe shafin majiya",
+      "back": "Komawa ga bayanin",
+      "triggerName": "{label}: yana goyon bayan bayanin \"{statement}\""
     },
     "timeline": {
-      "heading": null,
-      "empty": null,
-      "scheduled": null,
-      "date": null
+      "heading": "Sabuntawa a tsawon lokaci",
+      "empty": "Ba a wallafa sabuntawa don wannan kundi ba.",
+      "scheduled": "An tsara",
+      "date": "Kwanan wata"
     },
     "unknown": {
-      "heading": null,
-      "none": null,
-      "awaiting": null,
-      "disputed": null,
-      "outdated": null
+      "heading": "Abin da ba a sani ba",
+      "none": "Babu abin da aka yiwa alama da ba a tabbatar ba, wanda ba a yarda da shi ba, ko ya wuce lokaci ga bayanan da aka nuna. Hakan ba ya nufin kundin ya cika.",
+      "awaiting": "Ba a tabbatar ba tukuna: {statement}",
+      "disputed": "Majiyoyi ba su yi daidai ba: {statement}",
+      "outdated": "Wataƙila ya tsufa: {statement}"
     },
     "actions": {
-      "heading": null,
-      "report": null,
-      "note": null
+      "heading": "Matakai na gaba",
+      "report": "Bayar da rahoton wata damuwa game da wannan aikin",
+      "note": "Rahotanni na sirri ne kuma ba a taɓa wallafa su kai tsaye ba."
     },
     "discovery": {
-      "heading": null,
-      "intro": null,
-      "notice": null,
-      "start": null,
-      "stop": null,
-      "resume": null,
-      "checking": null,
+      "heading": "Nemo bayanan jama'a masu alaƙa",
+      "intro": "Bincike yana amfani da wannan kundin aikin jama'a kawai. Ba a tabbatar da sababbin abubuwa ba kuma ba za su iya canza wannan kundin kai tsaye ba.",
+      "notice": "Wannan binciken ba ya amfani da rahotanni, lambobin sadarwa, fayiloli, ko bayanan bi-biyi.",
+      "start": "Nemo bayanan jama'a",
+      "stop": "Daina duba wannan shafin",
+      "resume": "Ci gaba da dubawa",
+      "checking": "Ana duba gudanar da binciken.",
       "action": {
-        "create": null,
-        "reuse_fresh": null,
-        "show_latest_completed": null
+        "create": "An fara sabon binciken jama'a.",
+        "reuse_fresh": "Ana nuna binciken jama'a na baya-bayan nan da aka raba.",
+        "show_latest_completed": "Ana nuna binciken jama'a na ƙarshe da aka kammala."
       },
       "states": {
-        "queued": null,
-        "searching": null,
-        "analysing": null,
-        "needs_review": null,
-        "complete": null
+        "queued": "Ana jiran yin bincike",
+        "searching": "Ana bincika majiyoyin jama'a",
+        "analysing": "Ana duba bayanan da aka samo",
+        "needs_review": "Ana jiran dubawa",
+        "complete": "An kammala bincike"
       },
-      "counts": null,
-      "replay": null,
-      "live": null,
-      "started": null,
-      "unavailable": null,
-      "invalid": null
+      "counts": "An gano {found}; an kawo {fetched}; an bincika {analysed}.",
+      "replay": "Ana nuna sakamakon gwaji don demo.",
+      "live": "Wannan aikin yayi amfani da sabis ɗin majiyar jama'a da aka tsara.",
+      "started": "An fara:",
+      "unavailable": "Binciken jama'a baya samuwa a yanzu. Kundin aikin bai canza ba.",
+      "invalid": "Ba a iya nuna wannan sakamakon gano cikin aminci ba."
     },
     "notFound": {
-      "title": null,
-      "body": null,
-      "back": null
+      "title": "Babu wannan kundin",
+      "body": "Duba adireshin ko komawa ga kundin ayyukan. ShaidaGo ba ya tabbatar da ko akwai wani kundi na sirri.",
+      "back": "Koma ga kundin ayyuka"
     },
     "unavailable": {
-      "title": null,
-      "body": null,
-      "retry": null
+      "title": "Ba a iya loda wannan kundin ba",
+      "body": "Sabis ɗin baya bayar da amsa a yanzu. Babu abin da ya ɓace. Sake gwadawa anjima kaɗan.",
+      "retry": "Sake gwadawa"
     }
   },
   "source": {
-    "heading": null,
-    "back": null,
+    "heading": "Majiya",
+    "back": "Komawa ga kundin",
     "facts": {
-      "publisher": null,
-      "type": null,
-      "availability": null,
-      "checked": null,
-      "unchecked": null
+      "publisher": "Mawallafi",
+      "type": "Irin majiya",
+      "availability": "Samuwa",
+      "checked": "Dubawa ta ƙarshe ta samuwa",
+      "unchecked": "Ba a duba ba tukuna"
     },
     "types": {
-      "government_publication": null,
-      "budget_document": null,
-      "procurement_record": null,
-      "audit_oversight_report": null,
-      "independent_media": null,
-      "civic_research": null,
-      "community_evidence": null,
-      "other_public_source": null
+      "government_publication": "Wallafe-wallafen gwamnati",
+      "budget_document": "Takardar kasafin kuɗi",
+      "procurement_record": "Kundin saye",
+      "audit_oversight_report": "Rahoton duba asusu ko kulawa",
+      "independent_media": "Kafofin yaɗa labarai masu zaman kansu",
+      "civic_research": "Binciken ƙungiyoyin farar hula",
+      "community_evidence": "Shaidar al'umma",
+      "other_public_source": "Sauran majiyar jama'a"
     },
     "availabilityNote": {
-      "unchecked": null,
-      "available": null,
-      "temporarily_unavailable": null,
-      "access_restricted": null,
-      "permanently_unavailable": null
+      "unchecked": "Ba a duba asalin shafin ba tukuna. An ajiye bayanan da ke ƙasa lokacin da aka amince da majiyar.",
+      "available": "An sami damar buɗe asalin shafin lokacin da aka duba shi ta ƙarshe.",
+      "temporarily_unavailable": "Ba a sami damar buɗe asalin shafin ba lokacin da aka duba ta ƙarshe. An ajiye bayanan da ke ƙasa lokacin da aka amince da majiyar kuma suna nan suna aiki.",
+      "access_restricted": "Asalin shafin yana takaita damar shiga, don haka ƙila ba zai buɗe muku ba. An ajiye bayanan da ke ƙasa lokacin da aka amince da majiyar.",
+      "permanently_unavailable": "Asalin shafin ba ya samuwa kuma. An ajiye bayanan da ke ƙasa lokacin da aka amince da majiyar."
     },
     "excerpts": {
-      "heading": null,
-      "quoteNote": null,
-      "location": null,
-      "supportsFact": null,
-      "supportsUpdate": null,
-      "seeUse": null,
-      "showFull": null,
-      "empty": null
+      "heading": "Rubutun da aka yi amfani da shi a cikin wannan kundi",
+      "quoteNote": "An ciro daga majiyar a ainihin kalmominta. Ba rubutun ShaidaGo ba ne.",
+      "location": "Wuri a cikin majiyar",
+      "supportsFact": "Yana goyon bayan wani bayani",
+      "supportsUpdate": "Yana goyon bayan wani sabuntawa",
+      "seeUse": "Duba inda aka yi amfani da shi",
+      "showFull": "Nuna cikakken rubutun",
+      "empty": "Babu rubutu daga wannan majiyar da aka wallafa don wannan kundin."
     },
     "original": {
-      "link": null,
-      "note": null,
-      "newTab": null
+      "link": "Buɗe ainihin majiyar",
+      "note": "Yana buɗe shafin mawallafin a cikin sabon shafi. ShaidaGo ba ya gaya wa shafin inda ka fito kuma ba zai iya sarrafa abubuwan cikinsa ba.",
+      "newTab": "yana buɗewa a sabon shafi"
     },
     "notFound": {
-      "title": null,
-      "body": null,
-      "back": null
+      "title": "Ba a samun wannan majiyar",
+      "body": "Duba adireshin ko komawa ga kundin.",
+      "back": "Koma ga kundin"
     },
     "unavailable": {
-      "title": null,
-      "body": null,
-      "retry": null
+      "title": "Ba a iya loda wannan majiyar",
+      "body": "Sabis ɗin baya bayar da amsa a yanzu. Sake gwadawa anjima kaɗan.",
+      "retry": "Sake gwadawa"
     }
   },
   "trust": {
-    "title": null,
-    "lead": null,
-    "toc": null,
+    "title": "Yadda kundin bayanai ke aiki",
+    "lead": "ShaidaGo tana nuna kundin bayanai na jama'a game da ayyuka, kowanne da majiyoyin da ya fito. Wannan shafin yana bayanin yadda za a karanta su da kuma abubuwan da ba sa nuna maka.",
+    "toc": "A kan wannan shafin",
     "classes": {
-      "heading": null,
-      "intro": null,
-      "official_source": null,
-      "independent_source": null,
-      "community_evidence_reviewed": null,
-      "community_report_unverified": null,
-      "ai_generated_explanation": null
+      "heading": "Irin bayanan",
+      "intro": "Kowane bayani an yi masa alama da irin majiyar da ya fito.",
+      "official_source": "An wallafa daga hukuma, kamar wallafe-wallafen gwamnati, kasafin kuɗi, ko kundin saye.",
+      "independent_source": "An wallafa ta hanyar wani mai zaman kansa, kamar jarida ko ƙungiyar bincike.",
+      "community_evidence_reviewed": "Wani ɗan al'umma ya aiko shi kuma wani mutum ya duba shi kafin a ƙara shi.",
+      "community_report_unverified": "Wani ɗan al'umma ya aiko shi kuma ba a duba ba. Ba zai taɓa zama cikin kundin jama'a ba har sai mutum ya duba shi.",
+      "ai_generated_explanation": "Wani kayan aiki mai sarrafa kansa ne ya rubuta shi don yin bayani. Ba majiya ba ce kuma ana sanya mata alama a kowane lokaci."
     },
     "states": {
-      "heading": null,
-      "intro": null,
-      "awaiting_verification": null,
-      "verified_official": null,
-      "corroborated": null,
-      "community_reviewed": null,
-      "disputed": null,
-      "outdated": null
+      "heading": "Yadda ake tallafawa bayani",
+      "intro": "Alama tana kwatanta goyon baya, ba hukunci game da wani mutum ko ƙungiya ba.",
+      "awaiting_verification": "Bayanin na da majiya amma ba a duba shi da majiya ta biyu ba tukuna.",
+      "verified_official": "Majiya ta hukuma ta faɗi hakan kai tsaye.",
+      "corroborated": "Fiye da majiya ɗaya sun goyi bayan shi.",
+      "community_reviewed": "Mutum ya duba shaidar al'umma game da shi.",
+      "disputed": "Majiyoyi ba su yarda da juna ba. Dukkan ɓangarorin biyu an nuna su.",
+      "outdated": "Wataƙila gaskiyar ta canza. An nuna ranar da aka duba shi ta ƙarshe."
     },
     "citations": {
-      "heading": null,
-      "body": null
+      "heading": "Nassoshi da kwanakin wata",
+      "body": "Kowane bayani yana haɗe da majiyar da ya fito, da ainihin rubutun, inda yake a cikin majiyar, da kuma ranar da aka duba shi ta ƙarshe. Idan majiya ta kasa buɗewa, ana kiyaye rubutun da aka ajiye domin ka ga abin da aka dogara da shi."
     },
     "ai": {
-      "heading": null,
-      "body": null
+      "heading": "Abubuwan da na'urori masu aiki da kansu suke yi da waɗanda ba sa yi",
+      "body": "Na'urori masu aiki da kansu za su iya bincika majiyoyi da amsa tambayoyi ta amfani da rubutun da aka amince da su kawai. Ba za su iya tabbatar da wata magana ba, yanke shawarar wanda ke da laifi, canza matsayi, ko wallafa kowane abu. Amsoshinsu bayani ne kawai, ba majiya ba, kuma koyaushe suna nuna majiyoyin da suka yi amfani da su. Idan majiyoyin ba su amsa tambaya ba, amsar za ta bayyana hakan."
     },
     "scout": {
-      "heading": null,
-      "body": null
+      "heading": "Sababbin majiyoyin da aka gano",
+      "body": "Majiyoyin da aka samu ta hanyar bincike ana sanya musu alamar \"an gano — ba a duba ba tukuna\". Ba sa cikin kundin bayanan. Mutum ne zai yanke shawarar ko za a ƙara ɗaya, kuma ƙara majiya ba ta sa wata magana zama gaskiya kai tsaye."
     },
     "review": {
-      "heading": null,
-      "body": null
+      "heading": "Duba na ɗan adam",
+      "body": "Mutum ne ke duba shaida kafin ta canza kundin jama'a, kuma wallafawa wani mataki ne na daban daga duba rahoto. Na'urori masu aiki da kansu ba sa wallafawa."
     },
     "reporting": {
-      "heading": null,
-      "body": null,
-      "limit": null
+      "heading": "Bayar da rahoton wata damuwa",
+      "body": "Zaka iya aiko da rahoto ba tare da asusu ba, adireshin imel, ko lambar waya. Rahotanni na sirri ne kuma ba a taɓa wallafa su kai tsaye ba. Mai dubawa kawai zai iya karanta su. Ana goge bayanai na ɓoye irin su wurin da aka ɗauki hoto kafin a adana fayiloli da hotuna, kuma zaka iya zaɓar ko zaka ba da bayanan sadarwa.",
+      "limit": "Wannan samfurin gwaji ne. Ba sabis na gaggawa ba ne, ba zai iya yin alkawarin ba da amsa ko bayar da kariya ba, kuma bai kamata a yi amfani da shi don ba da rahoton haɗari ba. Idan wani yana cikin haɗari, a fara tuntuɓar ma'aikatan agajin gaggawa na yankin."
     },
     "correct": {
-      "heading": null,
-      "body": null,
-      "report": null
+      "heading": "Idan wani abu ya yi kama da kuskure",
+      "body": "Idan kana tunanin wani kundi kuskure ne, ya wuce lokaci, ko babu majiya, za ka iya bayar da rahoto a ɓoye daga wannan kundin. Mai dubawa zai yanke shawarar abin da zai canza, idan da akwai. ShaidaGo ba za ta iya yin alkawarin wani takamaiman sakamako ko lokaci ba.",
+      "report": "Bayar da rahoton wata damuwa a ɓoye"
     },
-    "back": null
+    "back": "Koma ga kundin ayyuka"
   },
   "qa": {
-    "heading": null,
-    "intro": null,
-    "privacy": null,
-    "reportLink": null,
-    "label": null,
-    "hint": null,
-    "counter": null,
-    "submit": null,
-    "cancel": null,
-    "retry": null,
-    "loading": null,
-    "cancelled": null,
-    "empty": null,
-    "tooLong": null,
+    "heading": "Yi tambaya game da wannan kundi",
+    "intro": "Amsoshi suna amfani da majiyoyin da aka amince da su don wannan kundin kawai. AI ne ke tsara rubutun. Wannan bayani ne, ba majiya ba, kuma ba zai iya tabbatar da magana ko yanke shawara akan matsayi ba.",
+    "privacy": "Kada ka rubuta sunan ka, bayanan sadarwar ka, ko bayanan ka na sirri a nan. Don sanar da mu wani abu a asirce, yi amfani da fom ɗin rahoto.",
+    "reportLink": "Bayar da rahoton wata damuwa a ɓoye",
+    "label": "Tambayarka",
+    "hint": "Yi tambaya akan abin da majiyoyin suka ce. Har zuwa haruffa {max}.",
+    "counter": "Haruffa {count} daga cikin {max}",
+    "submit": "Tambayi majiyoyin",
+    "cancel": "Soke",
+    "retry": "Sake gwadawa",
+    "loading": "Ana duba majiyoyin da aka amince da su don wannan kundi.",
+    "cancelled": "An soke tambayar. Tana nan a cikin akwatin idan kana son sake tambaya.",
+    "empty": "Rubuta tambaya tukuna.",
+    "tooLong": "Tambayar ta yi tsayi da yawa. Rage ta zuwa haruffa {max} ko ƙasa da haka.",
     "result": {
-      "heading": null,
-      "ready": null,
-      "aiLabel": null,
-      "generated": null,
-      "retrievalKeyword": null,
-      "retrievalHybrid": null,
-      "considered": null,
-      "keywordCaution": null,
-      "noteLabel": null,
-      "statementsHeading": null,
-      "sourcesHeading": null,
-      "sourceLabel": null,
-      "cites": null,
-      "openSourcePage": null,
-      "openOriginal": null,
-      "newTab": null,
-      "location": null,
-      "retrieved": null,
-      "showFull": null,
-      "backToStatement": null
+      "heading": "Amsa",
+      "ready": "Amsa tana shirye a ƙasa.",
+      "aiLabel": "AI ne ya rubuta daga majiyoyin da aka amince da su. Bayani ne, ba majiya ba. Duba kowane bayani tare da majiyoyin sa.",
+      "generated": "An ƙirƙiro {time}",
+      "retrievalKeyword": "Hanyar bincike: kalmomi",
+      "retrievalHybrid": "Hanyar bincike: kalmomi da ma'ana",
+      "considered": "Bayanan da aka duba: {count}",
+      "keywordCaution": "Binciken kalmomi na iya rasa bayanan da suka yi amfani da kalmomi daban.",
+      "noteLabel": "Bayanin tsarin tsarin",
+      "statementsHeading": "Bayanai",
+      "sourcesHeading": "Majiyoyin wannan amsa",
+      "sourceLabel": "Majiya {number}",
+      "cites": "Majiyoyin wannan bayani",
+      "openSourcePage": "Buɗe shafin majiya",
+      "openOriginal": "Buɗe ainihin majiyar",
+      "newTab": "yana buɗewa a sabon shafi",
+      "location": "Wuri a cikin majiyar",
+      "retrieved": "An ajiye {date}",
+      "showFull": "Nuna cikakken rubutun",
+      "backToStatement": "Komawa ga amsar"
     },
     "insufficient": {
-      "title": null,
-      "body": null,
-      "read": null
+      "title": "Majiyoyin da aka amince ba su amsa wannan ba",
+      "body": "ShaidaGo ba ta hasashe. Tana iya bayar da amsa ne kawai daga majiyoyin da aka amince da su don wannan kundi.",
+      "read": "Karanta abin da majiyoyin suka ce"
     },
     "rejected": {
-      "title": null,
-      "body": null
+      "title": "Ba a iya bincika wannan amsar ba",
+      "body": "Nassoshin ta ba su yi daidai da majiyoyin da suka zo tare da ita ba, don haka ba a nuna ta ba. Sake gwadawa, ko ka karanta majiyoyin dake kan wannan kundi."
     },
     "failure": {
-      "title": null,
-      "still": null,
-      "wait": null
+      "title": "Ba a iya amsa tambayar ba",
+      "still": "Kundin da majiyoyin sa suna nan akan wannan shafin.",
+      "wait": "Sake gwadawa bayan kusan daƙiƙa {seconds}."
     },
-    "needsScript": null
+    "needsScript": "Yin tambaya yana buƙatar JavaScript. Zaka iya karanta kowace majiya dake kan wannan shafin."
   },
   "report": {
-    "title": null,
-    "needsScript": null,
-    "context": null,
+    "title": "Bayar da rahoton wata damuwa a ɓoye",
+    "needsScript": "Tura rahoto yana buƙatar JavaScript. Babu abin da ka rubuta da zai tafi ko a ajiye shi har sai ka zaɓi aikawa.",
+    "context": "Ba da rahoto akan: {title}",
     "chooser": {
-      "title": null,
-      "lead": null,
-      "listHeading": null,
-      "browse": null,
-      "unavailable": null
+      "title": "Zaɓi aikin da rahoton ka ke kansa",
+      "lead": "Rahoto na kan kundin aiki guda ɗaya ne. Zaɓi kundin, sannan ka ba da rahoto daga shafinsa.",
+      "listHeading": "Kundin ayyuka",
+      "browse": "Bincika duk kundin ayyuka",
+      "unavailable": "Ba a iya loda jerin kundin bayanan ba. Sake gwadawa anjima kaɗan, ko bincika kundin ayyukan."
     },
     "unknownProject": {
-      "title": null,
-      "body": null,
-      "choose": null
+      "title": "Ba mu iya buɗe wannan kundin ba",
+      "body": "Duba adireshin, ko ka zaɓi kundi daga jerin.",
+      "choose": "Zaɓi kundi"
     },
     "steps": {
-      "label": null,
-      "progress": null,
-      "notice": null,
-      "observation": null,
-      "evidence": null,
-      "anonymity": null,
-      "review": null
+      "label": "Matakan rahoto",
+      "progress": "Mataki {number} daga cikin {total}",
+      "notice": "Kafin ka fara",
+      "observation": "Abin da ka gani",
+      "evidence": "Shaida",
+      "anonymity": "Yadda za a gane ka",
+      "review": "Duba kuma ka aika"
     },
     "notice": {
-      "heading": null,
-      "fictional": null,
-      "private": null,
-      "anonymous": null,
-      "limitTitle": null,
-      "limit": null,
-      "trust": null,
-      "start": null
+      "heading": "Kafin ka fara",
+      "fictional": "Wannan samfurin gwaji yana karɓar rahotannin ƙirƙira ne kawai. Kada ka shigar da sunaye na gaskiya, bayanan sadarwa, ko al'amura na gaskiya.",
+      "private": "Rahoton ka na sirri ne. Ba a taɓa wallafa shi kai tsaye ba. Mutum ne zai duba shi kafin komai ya kai ga kundin jama'a.",
+      "anonymous": "Ba ka buƙatar asusu, adireshin imel, ko lambar waya.",
+      "limitTitle": "Wannan ba sabis na gaggawa ba ne",
+      "limit": "ShaidaGo ba sabis na gaggawa ba ne. Ba za ta iya yin alkawarin ba da kariya, bincike, ko amsa ba. Idan wani yana cikin haɗarin gaggawa, kada ka yi amfani da wannan fom ɗin. Tuntuɓi ma'aikatan agajin gaggawa na yankin.",
+      "trust": "Yadda ake kula da kundin bayanai da rahotanni",
+      "start": "Na fahimta. Ci gaba"
     },
     "observation": {
-      "heading": null,
-      "categoryLabel": null,
-      "categoryPlaceholder": null,
+      "heading": "Abin da ka gani",
+      "categoryLabel": "Wane irin damuwa ne?",
+      "categoryPlaceholder": "Zaɓi irin damuwar",
       "categories": {
-        "no_visible_work": null,
-        "incomplete_work": null,
-        "unsafe_construction": null,
-        "suspected_incorrect_status": null,
-        "access_barrier": null,
-        "other_concern": null
+        "no_visible_work": "Babu wani aiki da ake gani a wurin",
+        "incomplete_work": "Aiki da ya bayyana bai kammala ba",
+        "unsafe_construction": "Ginin da ba shi da tsaro",
+        "suspected_incorrect_status": "Matsayin da aka rubuta ya yi kama da kuskure",
+        "access_barrier": "Wani shinge na amfani da aikin",
+        "other_concern": "Wani abu daban"
       },
-      "descriptionLabel": null,
-      "descriptionHint": null,
-      "counter": null
+      "descriptionLabel": "Me ka gani?",
+      "descriptionHint": "Faɗi abin da ka gani, a ina, da kuma kusan yaushe, a cikin kalmominka. Rubuta aƙalla haruffa {min} kuma mafi yawa {max}. Kada ka saka sunaye ko bayanan sadarwa.",
+      "counter": "Haruffa {count} daga cikin {max}"
     },
     "evidence": {
-      "heading": null,
-      "lead": null,
-      "hint": null,
-      "pick": null,
-      "none": null,
-      "remove": null,
-      "preview": null,
-      "previewNone": null,
-      "prepared": null,
-      "pdfNotPrepared": null,
-      "role": null,
-      "preparing": null,
+      "heading": "Shaida",
+      "lead": "Hotuna ko PDF na iya taimakawa mai dubawa. Wannan matakin ba dole ba ne.",
+      "hint": "Har zuwa fayiloli {max}, MB {size} kowanne. JPEG, PNG, WebP, ko PDF.",
+      "pick": "Ƙara fayil",
+      "none": "Ba a ƙara fayiloli ba.",
+      "remove": "Cire fayil {number}",
+      "preview": "Siffar fayil {number}",
+      "previewNone": "PDF: babu siffa",
+      "prepared": "An cire wurin da bayanan kyamara a cikin masarrafar ka (browser).",
+      "pdfNotPrepared": "Ba a canza PDF a cikin masarrafar ka. Server zai duba shi kuma yana iya ƙin shi.",
+      "role": "Masarrafar ka tana cire bayanan hoto da ke ɓoye kafin ta aikawa. Server zai maimaita nasa binciken tsaro, kuma binciken server kawai ake ɗauka daban. Fayil ɗin da server ya ƙi ba zai hana a karɓi rahoton ba.",
+      "preparing": "Ana shirya fayil {number}",
       "errors": {
-        "unsupported": null,
-        "tooLarge": null,
-        "tooMany": null,
-        "mismatch": null,
-        "tooManyPixels": null,
-        "failed": null,
-        "empty": null
+        "unsupported": "Fayil {number} ba JPEG, PNG, WebP, ko PDF ba ne, don haka ba a ƙara shi ba.",
+        "tooLarge": "Fayil {number} ya fi MB {size} girma, don haka ba a ƙara shi ba.",
+        "tooMany": "Za ka iya ƙara fayiloli {max} kawai.",
+        "mismatch": "Fayil {number} ba irin fayil ɗin da sunan sa ya nuna ba ne, don haka ba a ƙara shi ba.",
+        "tooManyPixels": "Fayil {number} yayi girma a pixels wanda ba za a iya shirya shi cikin aminci ba, don haka ba a ƙara shi ba.",
+        "failed": "Ba a iya shirya fayil {number} a cikin masarrafar ka ba, don haka ba a ƙara shi ba. Ba a aike da shi ba.",
+        "empty": "Fayil {number} babu komai a ciki, don haka ba a ƙara shi ba."
       }
     },
     "anonymity": {
-      "heading": null,
-      "lead": null,
+      "heading": "Yadda za a gane ka",
+      "lead": "Zaɓi yadda kake son a san ka. Zaka iya zama gabaɗaya ba a san ka ba.",
       "modes": {
         "anonymous": {
-          "label": null,
-          "body": null
+          "label": "Kasance ba a san ka ba kwata-kwata (an bada shawara)",
+          "body": "Babu suna, lamba, ko handle. Zaka iya duba matsayin daga baya da lambar bi-biyi da ka karɓa."
         },
         "contact": {
-          "label": null,
-          "body": null
+          "label": "Bada hanyar tuntubata",
+          "body": "Mai dubawa na iya amfani da ita don yin tambaya. Ba dole ba ne kuma ana adana shi daban da rubutun rahoton ka."
         },
         "handle": {
-          "label": null,
-          "body": null,
-          "warning": null
+          "label": "Yi amfani da sunan mai rahoto (handle)",
+          "body": "Wannan handle ɗin zai haɗa rahotannin ka ba tare da bayar da asalin ka ba.",
+          "warning": "Masu dubawa za su iya gane cewa rahotanni a ƙarƙashin handle ɗaya suna da alaƙa. Handle na iya rashin dacewa da rahoto mai matuƙar muhimmanci."
         }
       },
-      "channelLabel": null,
+      "channelLabel": "Ta yaya zamu same ka?",
       "channels": {
-        "email": null,
-        "phone": null,
-        "messaging_app": null
+        "email": "Imel",
+        "phone": "Waya",
+        "messaging_app": "Manhajar saƙo"
       },
-      "contactLabel": null,
-      "contactHint": null,
-      "handleLabel": null,
-      "passphraseLabel": null,
-      "reveal": null,
-      "hide": null,
-      "handleNote": null,
-      "createHandle": null
+      "contactLabel": "Bayanin sadarwa",
+      "contactHint": "Bada hanyar da zaka ji daɗin a tuntuɓe ka dashi kawai. Masu dubawa ne kawai za su iya ganin sa.",
+      "handleLabel": "Sunan mai rahoto (Handle)",
+      "passphraseLabel": "Kalmar sirri",
+      "reveal": "Nuna kalmar sirri",
+      "hide": "Ɓoye kalmar sirri",
+      "handleNote": "Ana duba handle ɗin ka da kalmar sirri kawai lokacin da ka aika rahoton. Ba a ajiye su a cikin wannan masarrafar.",
+      "createHandle": "Ƙirƙiri handle tukuna"
     },
     "review": {
-      "heading": null,
-      "lead": null,
+      "heading": "Duba kuma ka aika",
+      "lead": "Duba komai. Ba za a iya canza rahoto bayan an aika shi ba.",
       "rows": {
-        "concern": null,
-        "description": null,
-        "files": null,
-        "identity": null
+        "concern": "Irin damuwa",
+        "description": "Abin da ka gani",
+        "files": "Fayiloli",
+        "identity": "Yadda za a gane ka"
       },
-      "noFiles": null,
-      "files": null,
+      "noFiles": "Babu fayiloli",
+      "files": "Fayiloli {count}",
       "identity": {
-        "anonymous": null,
-        "contact": null,
-        "handle": null
+        "anonymous": "Ba a san ka ba kwata-kwata",
+        "contact": "An bada bayanin sadarwa: {channel}",
+        "handle": "Handle: {handle}. An ɓoye kalmar sirri."
       },
-      "change": null,
-      "sendNote": null,
-      "submit": null
+      "change": "Canza",
+      "sendNote": "Aikawa yana ƙirƙirar rahoton sirri. Babu abin da ake wallafawa.",
+      "submit": "Aika rahoto"
     },
     "draft": {
-      "heading": null,
-      "consent": null,
-      "warning": null,
-      "remove": null,
-      "removed": null,
-      "found": null,
-      "restore": null,
-      "discard": null,
-      "restored": null,
-      "unavailable": null
+      "heading": "Ajiye daftarin akan wannan na'urar",
+      "consent": "Ajiye abin da na rubuta a kan wannan na'urar",
+      "warning": "Duk wanda ke amfani da wannan masarrafar zai iya karanta daftarin da aka ajiye. Kada ka ajiye daftari akan na'urar da kuke tarayya ko ta jama'a. Irin damuwar da bayaninka ne kawai ake ajiye wa. Ba a taɓa ajiye fayiloli, bayanan sadarwa, da handles ba. Ana goge daftari bayan awanni 24.",
+      "remove": "Goge daftarin da aka ajiye",
+      "removed": "An goge daftarin da aka ajiye.",
+      "found": "Kana da daftarin da aka ajiye tun {when}.",
+      "restore": "Maido da daftarin",
+      "discard": "Goge shi",
+      "restored": "An maido da daftarin.",
+      "unavailable": "Wannan masarrafar ba za ta iya ajiye daftari ba, don haka babu abin da aka ajiye."
     },
     "send": {
-      "sending": null,
-      "progress": null,
-      "cancel": null,
-      "cancelled": null,
-      "retry": null,
-      "offline": null,
-      "unknown": null,
-      "fixFields": null,
-      "failedTitle": null,
-      "wait": null
+      "sending": "Ana aika rahoton ka",
+      "progress": "An aika kashi {percent}",
+      "cancel": "Soke aikawa",
+      "cancelled": "An soke aikawa. Rahoton ka yana nan.",
+      "retry": "Sake aikawa",
+      "offline": "Da alama baka kan layi. Sake haɗawa, sannan ka sake aikawa. Rahoton ka yana nan.",
+      "unknown": "Ba mu iya tabbatar da ko an karɓi rahotonka ba. Sake aikawa. Ba za a ƙirƙiri rahoto iri ɗaya sau biyu ba.",
+      "fixFields": "Wasu bayanai suna buƙatar gyara kafin a aika rahoton.",
+      "failedTitle": "Ba a aika rahoton ba",
+      "wait": "Sake gwadawa bayan kusan daƙiƙa {seconds}."
     },
     "nav": {
-      "back": null,
-      "next": null,
-      "stepErrors": null,
-      "jump": null,
-      "loading": null
+      "back": "Baya",
+      "next": "Ci gaba",
+      "stepErrors": "Gyara waɗannan kafin ka ci gaba",
+      "jump": "Jeka wurin filin",
+      "loading": "Ana loda wannan matakin"
     },
     "errors": {
-      "category": null,
-      "descriptionRequired": null,
-      "descriptionShort": null,
-      "descriptionLong": null,
-      "contact": null,
-      "channel": null,
-      "handle": null,
-      "passphrase": null
+      "category": "Zaɓi irin damuwar.",
+      "descriptionRequired": "Bayyana abin da ka gani.",
+      "descriptionShort": "Rubuta aƙalla haruffa {min}.",
+      "descriptionLong": "Rubuta mafi yawa haruffa {max}.",
+      "contact": "Shigar da bayanin sadarwa.",
+      "channel": "Zaɓi yadda za mu same ka.",
+      "handle": "Shigar da handle ɗin ka.",
+      "passphrase": "Shigar da kalmar sirri."
     },
     "complete": {
-      "title": null,
-      "lead": null,
-      "codeLabel": null,
-      "codeWarning": null,
-      "copy": null,
-      "copied": null,
-      "copyFailed": null,
-      "print": null,
-      "download": null,
-      "fileText": null,
+      "title": "An karɓi rahoton ka",
+      "lead": "Na sirri ne. Ba a wallafa komai ba.",
+      "codeLabel": "Lambar bi-biyi ɗin ka",
+      "codeWarning": "Wannan lambar ana nuna ta sau ɗaya. ShaidaGo ba za ta iya sake nuna ta ba ko ta maido da ita. Duk wanda ke da lambar zai iya ganin matsayin rahoton.",
+      "copy": "Kwafi lambar",
+      "copied": "An kwafa",
+      "copyFailed": "Ba a samun damar kwafa a nan. Zaɓi lambar kuma ka kwafa da kanka.",
+      "print": "Buga",
+      "download": "Sauke a matsayin fayil ɗin rubutu",
+      "fileText": "Lambar bi-biyi ta ShaidaGo: {code}\nWannan lambar ana nuna ta sau ɗaya. Kula da ita a asirce.\nWannan samfurin gwaji ne na ƙirƙira.",
       "next": {
-        "heading": null,
-        "save_tracking_code": null,
-        "check_status_later": null,
-        "see_escalation_guidance": null
+        "heading": "Abin da zai faru na gaba",
+        "save_tracking_code": "Ajiye lambar bi-biyi a yanzu.",
+        "check_status_later": "Duba matsayin daga baya a kan shafin matsayi. Bita na iya ɗaukar lokaci.",
+        "see_escalation_guidance": "Karanta inda wani wuri za a iya kai wata damuwa."
       },
-      "filesHeading": null,
-      "fileKept": null,
-      "fileRejected": null,
+      "filesHeading": "Fayilolin ka",
+      "fileKept": "Fayil {number}: an kiyaye bayan binciken server.",
+      "fileRejected": "Fayil {number}: ba a kiyaye ba ({reason}). An karɓi rahoton kansa.",
       "reasons": {
-        "unsupported_type": null,
-        "spoofed_type": null,
-        "active_content": null,
-        "encrypted_pdf": null,
-        "too_large": null,
-        "too_many_pixels": null,
-        "too_many_pages": null,
-        "malformed": null,
-        "malware_detected": null,
-        "scan_failed": null,
-        "storage_failed": null,
-        "timeout": null
+        "unsupported_type": "nau'in da ba a tallafawa",
+        "spoofed_type": "nau'in bai yi daidai ba",
+        "active_content": "yana ƙunshe da abubuwa masu aiki",
+        "encrypted_pdf": "PDF ɗin yana da kalmar sirri",
+        "too_large": "ya yi girma da yawa",
+        "too_many_pixels": "pixels sun yi yawa",
+        "too_many_pages": "shafuka sun yi yawa",
+        "malformed": "ba a iya karanta shi ba",
+        "malware_detected": "binciken tsaro ya gaza",
+        "scan_failed": "ba a iya gudanar da binciken tsaro ba",
+        "storage_failed": "ba a iya adana shi ba",
+        "timeout": "binciken ya ɗauki lokaci mai tsawo"
       },
-      "contactSaved": null,
-      "contactNotSaved": null,
-      "track": null,
-      "leave": null,
+      "contactSaved": "An adana bayanin sadarwar ka daban.",
+      "contactNotSaved": "Ba a adana bayanin sadarwa ba.",
+      "track": "Jeka shafin matsayi",
+      "leave": "Na ajiye lambar ta. Fita",
       "lost": {
-        "title": null,
-        "body": null,
-        "newReport": null
+        "title": "Lambar bi-biyi ba ta samuwa kuma",
+        "body": "Don amincin ka ana nuna lambar sau ɗaya kawai, kuma ba a ajiye ta a wannan masarrafar. Idan ba ka ajiye ta ba, ba za a iya dawo da ita ba. Zaka iya aika sabon rahoto.",
+        "newReport": "Aika sabon rahoto"
       }
     }
   },
   "track": {
-    "title": null,
-    "lead": null,
-    "privacy": null,
-    "needsScript": null,
-    "loading": null,
+    "title": "Duba matsayin rahoto",
+    "lead": "Yi amfani da lambar bi-biyi da aka ba ka lokacin da ka aika rahoto, ko sunan mai rahoto (handle). Kuna ganin matsayi mai aminci ga jama'a ne kawai. ShaidaGo baya nuna abin da kuka rubuta, fayilolin ku, ko bayanan mai dubawa.",
+    "privacy": "Ana aikawa da lambar ku da kalmar sirri ne kawai lokacin da kuka danna maɓallin. Ba a saka su cikin adireshin, adana su, ko masarrafar ta riƙe su a ƙwaƙwalwa.",
+    "needsScript": "Duba matsayin yana buƙatar JavaScript. Babu abin da ka rubuta da zai tafi har sai ka zaɓi ka duba.",
+    "loading": "Ana duba matsayin rahoton ka.",
     "code": {
-      "heading": null,
-      "label": null,
-      "hint": null,
-      "submit": null,
-      "again": null,
-      "forget": null,
-      "empty": null
+      "heading": "Duba tare da lambar bi-biyi",
+      "label": "Lambar bi-biyi",
+      "hint": "Gurbi da dash suna aiki. Sabis ɗin zai yanke shawarar ko lambar tana da kyau.",
+      "submit": "Duba matsayi",
+      "again": "Duba kuma",
+      "forget": "Goge ka fara sake",
+      "empty": "Shigar da lambar bi-biyi ɗin ka."
     },
     "handle": {
-      "heading": null,
-      "handleLabel": null,
-      "passphraseLabel": null,
-      "reveal": null,
-      "hide": null,
-      "note": null,
-      "submit": null,
-      "forget": null,
-      "emptyHandle": null,
-      "emptyPassphrase": null,
-      "listHeading": null,
-      "none": null,
-      "create": null
+      "heading": "Duba tare da sunan mai rahoto (handle)",
+      "handleLabel": "Sunan mai rahoto (Handle)",
+      "passphraseLabel": "Kalmar sirri",
+      "reveal": "Nuna kalmar sirri",
+      "hide": "Ɓoye kalmar sirri",
+      "note": "Wannan handle ba asusu ba ne ko hujjar wane ne kai. Yana kawai haɗa rahotannin da ka aika dashi.",
+      "submit": "Kawo jerin rahotannin na",
+      "forget": "Goge ka fara sake",
+      "emptyHandle": "Shigar da handle ɗin ka.",
+      "emptyPassphrase": "Shigar da kalmar sirri.",
+      "listHeading": "Rahotannin da ke da alaƙa da wannan handle",
+      "none": "Babu rahotannin da ke da alaƙa da wannan handle ɗin a yanzu.",
+      "create": "Ƙirƙiri handle"
     },
     "result": {
-      "heading": null,
-      "updated": null,
-      "nextHeading": null,
-      "message": null
+      "heading": "Matsayi",
+      "updated": "Sabuntawar ƙarshe {date}",
+      "nextHeading": "Abin da za a yi na gaba",
+      "message": "Saƙo"
     },
     "statuses": {
       "received": {
-        "label": null,
-        "meaning": null
+        "label": "An karɓa",
+        "meaning": "An karɓi rahoton ka. Mutum bai fara duba shi ba tukuna."
       },
       "needs_information": {
-        "label": null,
-        "meaning": null
+        "label": "Ana buƙatar ƙarin bayani",
+        "meaning": "Mai dubawa yana buƙatar takamaiman amsa daga gare ka don ci gaba."
       },
       "under_review": {
-        "label": null,
-        "meaning": null
+        "label": "Ana kan dubawa",
+        "meaning": "Mai dubawa yana duba rahoton ka da duk wani fayil."
       },
       "verified_for_public_update": {
-        "label": null,
-        "meaning": null
+        "label": "An duba don yiwuwar sabuntawar jama'a",
+        "meaning": "Mai dubawa ya sami isasshen goyon baya don rubuta sabuntawar jama'a daban. Babu abin da ake wallafawa kai tsaye."
       },
       "referred": {
-        "label": null,
-        "meaning": null
+        "label": "An miƙa",
+        "meaning": "Mai dubawa ya lura da an miƙa shi ta hanyar da aka amince da ita. Wannan baya alkawarin amsa daga wani daban."
       },
       "closed": {
-        "label": null,
-        "meaning": null
+        "label": "A rufe",
+        "meaning": "Ba a tsara ƙarin bita ba sai idan mai dubawa ya sake buɗewa."
       }
     },
     "next": {
-      "wait_for_review": null,
-      "answer_follow_up": null,
-      "watch_public_updates": null,
-      "see_escalation_guidance": null,
-      "none": null
+      "wait_for_review": "Jira bitar. Bita na iya ɗaukar lokaci.",
+      "answer_follow_up": "Amsa tambayar da ke ƙasa.",
+      "watch_public_updates": "Sanya ido akan sabuntawar jama'a na aikin. Babu abin da ake wallafawa kai tsaye.",
+      "see_escalation_guidance": "Karanta inda wani wuri za a iya kai wata damuwa.",
+      "none": "Ba a buƙatar komai daga gare ka a yanzu."
     },
     "followUp": {
-      "heading": null,
-      "intro": null,
+      "heading": "Tambayoyi daga mai dubawa",
+      "intro": "Zaka iya amsawa, tsallakawa, ko cewa bai yi kyau a amsa wata tambaya ba. Kada ka sanya sunaye ko bayanan sadarwa.",
       "states": {
-        "open": null,
-        "answered": null,
-        "skipped": null,
-        "unsafe": null
+        "open": "Ana jiran amsar ka",
+        "answered": "Ka amsa",
+        "skipped": "Ka tsallake shi",
+        "unsafe": "Ka ce bai da tsaro a amsa"
       },
-      "answerLabel": null,
-      "counter": null,
-      "answer": null,
-      "skip": null,
-      "unsafe": null,
-      "sent": null,
-      "answerEmpty": null
+      "answerLabel": "Amsar ka",
+      "counter": "Haruffa {count} daga cikin {max}",
+      "answer": "Aika amsa",
+      "skip": "Tsallake wannan tambayar",
+      "unsafe": "Wannan bashi da tsaro a gare ni don in amsa",
+      "sent": "An aika da amsar ka.",
+      "answerEmpty": "Rubuta amsa, ko zaɓi don tsallakawa."
     },
     "failure": {
-      "title": null,
-      "still": null,
-      "wait": null
+      "title": "Ba a iya duba matsayin ba",
+      "still": "Babu abin da aka canza.",
+      "wait": "Sake gwadawa bayan kusan daƙiƙa {seconds}."
     },
-    "newReport": null
+    "newReport": "Aika sabon rahoto"
   },
   "handle": {
-    "title": null,
-    "lead": null,
-    "needsScript": null,
+    "title": "Sunayen masu rahoto (Reporter handles)",
+    "lead": "Wannan handle alama ce ta zaɓi wanda ke haɗa rahotannin ka ba tare da sunan ka, sadarwa, ko wani bayanin ainihin ka ba. Ba asusu ba ne, shiga, ko hujjar wane ne kai.",
+    "needsScript": "Ƙirƙira ko goge handle yana buƙatar JavaScript. Ba a aika komai har sai ka zaɓi yin haka.",
     "facts": {
-      "heading": null,
-      "benefit": null,
-      "risk": null,
-      "recovery": null
+      "heading": "Kafin ka ƙirƙiri guda ɗaya",
+      "benefit": "Amfani: zaka iya ganin matsayin rahotanni da yawa a wuri ɗaya.",
+      "risk": "Haɗari: masu dubawa zasu iya gane cewa rahotanni a ƙarƙashin handle ɗaya suna da alaƙa. Handle na iya rashin dacewa da rahoto mai matuƙar muhimmanci.",
+      "recovery": "Babu dawowa: idan ka rasa handle ko kalmar sirri, babu wanda zai iya maido su."
     },
     "create": {
-      "heading": null,
-      "button": null,
-      "creating": null,
-      "again": null
+      "heading": "Ƙirƙiri handle",
+      "button": "Ƙirƙiri handle",
+      "creating": "Ana ƙirƙirar handle ɗin ka.",
+      "again": "Idan ka sake loda ko fita daga wannan shafin, ba za a sake nuna handle da ka yi a nan ba. Zaka iya ƙirƙirar sabo, ba tare da alaƙa da na farkon ba."
     },
     "created": {
-      "heading": null,
-      "handle": null,
-      "passphrase": null,
-      "warning": null,
-      "use": null,
-      "copy": null,
-      "copied": null,
-      "copyFailed": null,
-      "print": null,
-      "download": null,
-      "fileText": null,
-      "done": null
+      "heading": "Handle ɗin ka da kalmar sirri",
+      "handle": "Handle",
+      "passphrase": "Kalmar sirri",
+      "warning": "Waɗannan ana nuna su sau ɗaya kawai. ShaidaGo ba za ta iya sake nuna su ba ko maido da su. Ajiye su a yanzu.",
+      "use": "Yi amfani da su lokacin da kake aika rahoto, ko a kan shafin matsayi.",
+      "copy": "Kwafi handle da kalmar sirri",
+      "copied": "An kwafa",
+      "copyFailed": "Ba a samun damar kwafa a nan. Zaɓi rubutun kuma ka kwafa da kanka.",
+      "print": "Buga",
+      "download": "Sauke a matsayin fayil ɗin rubutu",
+      "fileText": "ShaidaGo reporter handle: {handle}\nKalmar sirri: {passphrase}\nAn nuna sau ɗaya. Kula da wannan a asirce.\nWannan samfurin gwaji ne na ƙirƙira.",
+      "done": "Na ajiye su. Goge wannan shafin"
     },
     "delete": {
-      "heading": null,
-      "explain": null,
-      "handleLabel": null,
-      "passphraseLabel": null,
-      "confirm": null,
-      "needConfirm": null,
-      "submit": null,
-      "done": null,
-      "failedTitle": null
+      "heading": "Goge handle",
+      "explain": "Goge handle yana cire alaƙar sa da rahotannin ka. Baya goge rahotannin, kuma baya cire duk wani abin da aka riga aka wallafa. Bayan gogewa, ba za a sake amfani da handle ɗin ba.",
+      "handleLabel": "Handle",
+      "passphraseLabel": "Kalmar sirri",
+      "confirm": "Na fahimci cewa rahotanni zasu kasance kuma alaƙar kawai ake cirewa",
+      "needConfirm": "Yi alamar akwatin don tabbatarwa.",
+      "submit": "Goge wannan handle",
+      "done": "An goge handle ɗin. Ba a goge rahotannin ka ba.",
+      "failedTitle": "Ba a goge handle ɗin ba"
     },
-    "statusLink": null
+    "statusLink": "Duba matsayin wani rahoto"
   },
   "reviewer": {
     "common": {
-      "private": null,
-      "noindex": null,
-      "backToQueue": null,
-      "signedOut": null,
-      "language": null,
-      "signOut": null,
-      "signingOut": null
+      "private": "Wurin mai dubawa na sirri. Duk abin da ke nan bayanan gwaji ne na ƙirƙira kuma ba na jama'a ba ne.",
+      "noindex": "Ba don rabawa ba",
+      "backToQueue": "Koma baya zuwa jerin rahotanni",
+      "signedOut": "An fitar da kai daga tsarin.",
+      "language": "Wannan wurin mai dubawa an rubuta shi da Turanci ne kawai; sauran yarukan ba a duba su ba tukuna.",
+      "signOut": "Fita",
+      "signingOut": "Ana fita"
     },
     "signIn": {
-      "title": null,
-      "lead": null,
-      "needsScript": null,
-      "identifier": null,
-      "password": null,
-      "submit": null,
-      "pending": null,
-      "required": null,
-      "identifierRequired": null,
-      "passwordRequired": null,
-      "wait": null,
-      "waitDone": null,
-      "failureTitle": null,
+      "title": "Shigar mai dubawa",
+      "lead": "Don masu dubawa masu izini na ShaidaGo kawai. Masu bayar da rahoto ba sa buƙatar asusu.",
+      "needsScript": "Shiga yana buƙatar JavaScript. Kunnashi akan wannan rukunin yanar gizon ka sake loda shi.",
+      "identifier": "Shaidar mai dubawa",
+      "password": "Kalmar shiga",
+      "submit": "Shiga",
+      "pending": "Ana shiga",
+      "required": "Ana buƙata",
+      "identifierRequired": "Shigar da shaidar ka ta mai dubawa.",
+      "passwordRequired": "Shigar da kalmar shiga ɗin ka.",
+      "wait": "Yunkuri sun yi yawa. Zaka iya sake gwadawa a daƙiƙa {seconds}.",
+      "waitDone": "Zaka iya sake gwadawa a yanzu.",
+      "failureTitle": "Shiga bai yi aiki ba",
       "reasons": {
-        "expired": null,
-        "signed_out": null
+        "expired": "Taron ka ya kare. Sake shiga don ci gaba.",
+        "signed_out": "An fitar da kai."
       },
-      "note": null
+      "note": "Wannan shigar ba ya taɓa nuna wane ɓangare ne kuskure. Babu abin da ka rubuta da ake ajiyewa a cikin wannan masarrafar."
     },
     "queue": {
-      "title": null,
-      "lead": null,
+      "title": "Jerin rahotannin da ke jiran dubawa",
+      "lead": "Tsofaffi na farko. Wannan jerin yana nuna bayanan raba aiki (triage) kawai. Buɗe rahoto don karanta shi.",
       "filters": {
-        "label": null,
-        "status": null,
-        "risk": null,
-        "category": null,
-        "project": null,
-        "projectHelp": null,
-        "any": null,
-        "apply": null,
-        "clear": null
+        "label": "Tace jerin",
+        "status": "Matsayi",
+        "risk": "Matsayin haɗari",
+        "category": "Damuwa",
+        "project": "Sunan kundi (kamar yadda yake a adireshinsa)",
+        "projectHelp": "Ƙananan haruffa, lambobi, da layi-layi.",
+        "any": "Kowanne",
+        "apply": "Nemo",
+        "clear": "Cire duka matatun"
       },
       "statuses": {
-        "received": null,
-        "needs_information": null,
-        "under_review": null,
-        "verified_for_public_update": null,
-        "referred": null,
-        "closed": null
+        "received": "An karɓa",
+        "needs_information": "Ana jiran mai rahoto",
+        "under_review": "Ana kan dubawa",
+        "verified_for_public_update": "An tabbatar don sabuntawar jama'a",
+        "referred": "An miƙa",
+        "closed": "A rufe"
       },
       "risks": {
-        "standard": null,
-        "elevated": null,
-        "high": null
+        "standard": "Daidaici",
+        "elevated": "Ya daka",
+        "high": "Mai girma"
       },
       "categories": {
-        "no_visible_work": null,
-        "incomplete_work": null,
-        "unsafe_construction": null,
-        "suspected_incorrect_status": null,
-        "access_barrier": null,
-        "other_concern": null
+        "no_visible_work": "Babu wani aiki da ake gani",
+        "incomplete_work": "Aiki da bai kammala ba",
+        "unsafe_construction": "Ginin da ba shi da tsaro",
+        "suspected_incorrect_status": "Matsayi na iya zama kuskure",
+        "access_barrier": "Shinge na shiga",
+        "other_concern": "Wata damuwar"
       },
       "item": {
-        "riskLabel": null,
-        "statusLabel": null,
-        "received": null,
-        "updated": null,
-        "files": null,
-        "noFiles": null,
-        "questions": null,
-        "noQuestions": null,
-        "contact": null,
-        "noContact": null,
-        "open": null,
-        "openLabel": null
+        "riskLabel": "Haɗari",
+        "statusLabel": "Matsayi",
+        "received": "An karɓa {date}",
+        "updated": "Matsayi ya canza {date}",
+        "files": "{count, plural, one {Fayil #} other {Fayiloli #}}",
+        "noFiles": "Babu fayiloli",
+        "questions": "{count, plural, one {Tambaya buɗaɗɗiya #} other {Tambayoyi buɗaɗɗiya #}}",
+        "noQuestions": "Babu tambayoyi buɗaɗɗiya",
+        "contact": "An bada bayanan sadarwa",
+        "noContact": "Babu bayanan sadarwa",
+        "open": "Buɗe rahoto",
+        "openLabel": "Buɗe rahoto na {project}, an karɓa a {date}"
       },
       "results": {
-        "heading": null,
-        "count": null,
-        "paginationLabel": null,
-        "next": null,
-        "first": null
+        "heading": "Rahotanni",
+        "count": "{count, plural, one {Rahoto # akan wannan shafin} other {Rahotanni # akan wannan shafin}}",
+        "paginationLabel": "Shafukan layi",
+        "next": "Rahotanni na gaba",
+        "first": "Koma shafin farko"
       },
       "states": {
         "empty": {
-          "title": null,
-          "body": null
+          "title": "Babu abin da yake jira",
+          "body": "Babu rahotannin da ke buƙatar kulawa a yanzu."
         },
         "noMatches": {
-          "title": null,
-          "body": null
+          "title": "Babu rahotanni da suka dace da waɗannan matatun",
+          "body": "Cire matata don ganin ƙari."
         },
         "invalidCursor": {
-          "title": null,
-          "body": null
+          "title": "Wannan shafin ba ya aiki kuma",
+          "body": "Jerin ya canza. Koma shafin farko."
         },
         "forbidden": {
-          "title": null,
-          "body": null
+          "title": "Wannan asusun ba zai iya buɗe jerin ba",
+          "body": "Tambayi mai gudanarwa don ya duba aikin ka. Babu abin da aka loda."
         },
         "rateLimited": {
-          "title": null,
-          "body": null
+          "title": "Buƙatun sun yi yawa",
+          "body": "Jira kaɗan, sannan ka sake loda shafin."
         },
         "unavailable": {
-          "title": null,
-          "body": null,
-          "retry": null
+          "title": "Ba a iya loda jerin ba",
+          "body": "Sabis ɗin bai ba da amsa ba. Babu abin da ya canza. Sake gwadawa.",
+          "retry": "Sake gwadawa"
         }
       }
     },
     "detail": {
-      "title": null,
-      "back": null,
-      "jump": null,
+      "title": "Rahoto",
+      "back": "Koma baya zuwa jerin rahotanni",
+      "jump": "A kan wannan shafin",
       "demo": {
-        "title": null,
-        "body": null
+        "title": "Bayanan gwaji na ƙirƙira",
+        "body": "Kowane rahoto a cikin wannan gwajin an ƙirƙira shi ne. Bai kamata a shigar da rahotanni, sunaye, da bayanan sadarwa na gaskiya ba ko a buɗe su a nan."
       },
       "header": {
-        "status": null,
-        "risk": null,
-        "received": null,
-        "updated": null,
-        "version": null,
-        "project": null,
-        "publicRecord": null
+        "status": "Matsayi",
+        "risk": "Haɗari",
+        "received": "An karɓa {date}",
+        "updated": "Matsayi ya canza {date}",
+        "version": "Shafi na {version}",
+        "project": "Kundin aiki",
+        "publicRecord": "Buɗe kundin jama'a"
       },
       "sections": {
-        "status": null,
-        "observation": null,
-        "evidence": null,
-        "contact": null,
-        "history": null,
-        "questions": null,
-        "handle": null,
-        "scout": null,
-        "publication": null,
-        "notes": null
+        "status": "Matsayi da ayyuka",
+        "observation": "Abin da aka ruwaito",
+        "evidence": "Fayilolin shaida",
+        "contact": "Bayanan sadarwa",
+        "history": "Tarihin matsayi",
+        "questions": "Tambayoyi ga mai rahoto",
+        "handle": "Sunan mai rahoto (Handle)",
+        "scout": "Source Scout",
+        "publication": "Sabuntawar jama'a",
+        "notes": "Bayanan ciki"
       },
       "observation": {
-        "category": null,
-        "project": null,
-        "description": null,
-        "descriptionNote": null,
-        "received": null
+        "category": "Damuwa",
+        "project": "Kundin aiki",
+        "description": "Bayanin daga mai rahoto",
+        "descriptionNote": "An nuna azaman fayyacen rubutu kamar yadda aka aiko. Yana da sirri kuma ba a taɓa wallafa shi kai tsaye.",
+        "received": "An karɓa"
       },
       "evidence": {
-        "empty": null,
-        "name": null,
-        "type": null,
-        "size": null,
-        "sanitation": null,
-        "scan": null,
-        "added": null,
-        "note": null,
+        "empty": "Ba a saka fayiloli ba.",
+        "name": "Fayil",
+        "type": "Irin",
+        "size": "Girman",
+        "sanitation": "Tsaftacewa",
+        "scan": "Binciken ƙwayoyin cuta (Malware)",
+        "added": "An ƙara {date}",
+        "note": "Ana tsaftace fayiloli kafin adanawa. Ba a nuna komai a kan layi ba: ana sauke fayil ɗin ne kawai lokacin da kuka nema.",
         "sanitationStates": {
-          "pending": null,
-          "processing": null,
-          "sanitised": null,
-          "rejected": null,
-          "failed": null
+          "pending": "Ba a fara tsaftacewa ba",
+          "processing": "Ana tsaftacewa",
+          "sanitised": "An tsaftace",
+          "rejected": "An ƙi",
+          "failed": "Tsaftacewa ta gaza"
         },
         "scanStates": {
-          "pending": null,
-          "scanning": null,
-          "clean": null,
-          "malware_detected": null,
-          "scan_failed": null,
-          "not_scanned_demo": null
+          "pending": "Ba a fara bincike ba",
+          "scanning": "Ana bincike",
+          "clean": "Ba a sami ƙwayar cuta ba",
+          "malware_detected": "An gano ƙwayar cuta",
+          "scan_failed": "Bincike ya gaza",
+          "not_scanned_demo": "Ba a bincika ba (demo kawai)"
         },
-        "demoLimit": null,
-        "bytes": null,
-        "kilobytes": null,
-        "megabytes": null
+        "demoLimit": "Wannan demo ba shi da mai binciken malware, don haka ba a bincika wannan fayil ɗin ba. Kada ka buɗe shi a wajen muhalli mai tsaro.",
+        "bytes": "{count, plural, one {Byte #} other {Bytes #}}",
+        "kilobytes": "KB {count}",
+        "megabytes": "MB {count}"
       },
       "contact": {
-        "none": null,
-        "hidden": null,
-        "reveal": null,
-        "revealNote": null,
-        "shown": null,
-        "hide": null,
-        "denied": null,
-        "unavailable": null,
-        "auditNote": null
+        "none": "Mai rahoto bai bayar da bayanan sadarwa ba.",
+        "hidden": "Akwai bayanan sadarwa amma an ɓoye su.",
+        "reveal": "Nuna bayanan sadarwa",
+        "revealNote": "Nuna su yana shiga cikin tarihin duba asusu (audit log).",
+        "shown": "{channel}: {value}",
+        "hide": "Ɓoye bayanan sadarwa",
+        "denied": "Wannan asusun ba a yarda ya ga bayanan sadarwa ba.",
+        "unavailable": "Ba a iya nuna bayanan sadarwa a yanzu.",
+        "auditNote": "Wannan kallo an rubuta shi a cikin tarihin duba asusu."
       },
       "history": {
-        "empty": null,
-        "from": null,
-        "first": null,
-        "actor": null,
+        "empty": "Babu canje-canjen matsayi tukuna.",
+        "from": "Daga {from} zuwa {to}",
+        "first": "An saita zuwa {to}",
+        "actor": "Ta {actor}",
         "actors": {
-          "reporter": null,
-          "reviewer": null,
-          "admin": null,
-          "system": null
+          "reporter": "mai rahoto",
+          "reviewer": "mai dubawa",
+          "admin": "mai gudanarwa",
+          "system": "tsarin"
         },
-        "shownToReporter": null,
-        "internal": null,
-        "noMessage": null
+        "shownToReporter": "An nuna ga mai rahoto",
+        "internal": "Dalilin ciki (na sirri)",
+        "noMessage": "Babu saƙon da aka nuna wa mai rahoto."
       },
       "questions": {
-        "empty": null,
-        "asked": null,
-        "answered": null,
-        "private": null,
-        "noAnswer": null,
-        "withdrawn": null,
+        "empty": "Ba a yi tambayoyi ba tukuna.",
+        "asked": "An tambaya a {date}",
+        "answered": "Amsa ({kind})",
+        "private": "Amsar tana da sirri.",
+        "noAnswer": "Ba a amsa ba tukuna.",
+        "withdrawn": "An janye",
         "kinds": {
-          "answered": null,
-          "skipped": null,
-          "unsafe": null
+          "answered": "an amsa",
+          "skipped": "an tsallake",
+          "unsafe": "an yiwa alama da ba shi da tsaro"
         }
       },
       "handle": {
-        "none": null,
-        "note": null,
-        "name": null,
-        "total": null,
-        "verified": null,
-        "closed": null
+        "none": "Wannan rahoton ba shi da alaƙa da kowane handle na mai rahoto.",
+        "note": "Handle suna ne na bogi, ba hujjar asali ko daidaito ba. Ɗauki wannan a matsayin mahallin kawai.",
+        "name": "Handle",
+        "total": "Rahotannin dake da alaƙa",
+        "verified": "An tabbatar don sabuntawar jama'a",
+        "closed": "A rufe"
       },
       "scout": {
-        "body": null,
-        "private": null,
-        "concepts": null,
-        "conceptsHint": null,
-        "prepare": null,
-        "preparing": null,
-        "planTitle": null,
-        "query": null,
-        "queryHint": null,
-        "policy": null,
-        "included": null,
-        "excluded": null,
-        "noneExcluded": null,
-        "approve": null,
-        "discard": null,
-        "cancel": null,
-        "confirm": null,
-        "confirmTitle": null,
-        "confirmBody": null,
-        "started": null
+        "body": "Shirya binciken sirri da tsaro, duba shi daidai yadda za a aiko shi, sannan ka amince da shi kafin kowane binciken majiya ya fara.",
+        "private": "Wannan shafin ba ya karɓar rubutun rahoto, lambobin sadarwa, fayiloli, bayanan bi-biyi, ko takamaiman wuri. Kada ka shigar da kowannensu a ƙasa.",
+        "concepts": "Kalmomin bincike na jama'a na zaɓi",
+        "conceptsHint": "Yi amfani da wakafi (commas) har zuwa kalmomi na jama'a 20. Canza kalmomi yana zubar da tsarin yanzu kuma yana buƙatar sabon bita.",
+        "prepare": "Shirya bincike don bita",
+        "preparing": "Ana shiryawa bincike…",
+        "planTitle": "Duba ainihin binciken da za a aikawa",
+        "query": "Binciken da za a aikawa",
+        "queryHint": "Wannan ne kawai binciken da za a aika idan ka amince da shi.",
+        "policy": "Tsarin bincike",
+        "included": "Kalmomin da aka saka",
+        "excluded": "Abubuwan da aka cire daga wannan binciken",
+        "noneExcluded": "Babu kalmomin da aka cire.",
+        "approve": "Amince kuma ka fara bincike",
+        "discard": "Zubar da wannan tsarin",
+        "cancel": "Ci gaba da bitar",
+        "confirm": "Amince kuma fara",
+        "confirmTitle": "Fara wannan binciken majiya?",
+        "confirmBody": "Ainihin binciken da aka nuna a sama za a aika shi ga mai bayar da bincike (discovery provider). Gudanarwar tana ci gaba da zama ta sirri kuma kowane sakamako yana buƙatar bitar mutum.",
+        "started": "An fara binciken majiya. Sakamakon zai kasance na sirri kuma ba a duba shi ba har sai ka yanke shawara akan kowace majiya."
       },
       "states": {
         "notFound": {
-          "title": null,
-          "body": null
+          "title": "Wannan rahoton baya samuwa",
+          "body": "Duba adireshin ko komawa ga jerin. Wannan shafin baya cewa ko akwai rahoto ko a'a."
         },
         "forbidden": {
-          "title": null,
-          "body": null
+          "title": "Wannan asusun ba zai iya buɗe wannan rahoton ba",
+          "body": "Tambayi mai gudanarwa don ya duba aikin ka. Babu abin da aka loda."
         },
         "rateLimited": {
-          "title": null,
-          "body": null
+          "title": "Buƙatun sun yi yawa",
+          "body": "Jira kaɗan, sannan ka sake loda shafin."
         },
         "unavailable": {
-          "title": null,
-          "body": null,
-          "retry": null
+          "title": "Ba a iya loda rahoton ba",
+          "body": "Sabis ɗin bai ba da amsa ba. Babu abin da ya canza. Sake gwadawa.",
+          "retry": "Sake gwadawa"
         }
       }
     },
     "actions": {
-      "sessionEnded": null,
-      "signIn": null,
-      "pending": null,
-      "tryAgain": null
+      "sessionEnded": "Taron ka ya ƙare. Sake shiga don ci gaba. Duk abin da ka rubuta anan ba za a kiyaye shi ba.",
+      "signIn": "Sake shiga",
+      "pending": "Ana kan aiki",
+      "tryAgain": "Babu abin da buƙatar da ta gaza ta canza, sai idan an faɗi hakan. Zaka iya sake gwadawa."
     },
     "download": {
-      "button": null,
-      "buttonLabel": null,
-      "pending": null,
-      "done": null,
-      "failed": null,
-      "note": null
+      "button": "Sauke",
+      "buttonLabel": "Sauke {name}",
+      "pending": "Ana shirya saukewa",
+      "done": "Saukewa na {name} ya fara.",
+      "failed": "Ba a iya sauke fayil ɗin ba.",
+      "note": "Ana yin sabon buƙata kowane lokaci. Babu abin da ake ajiyewa a cikin wannan masarrafar."
     },
     "notes": {
-      "empty": null,
-      "intro": null,
-      "label": null,
-      "hint": null,
-      "counter": null,
-      "submit": null,
-      "required": null,
-      "tooLong": null,
-      "confirmTitle": null,
-      "confirmBody": null,
-      "confirm": null,
-      "cancel": null,
-      "added": null,
-      "by": null,
-      "gone": null,
-      "more": null,
-      "first": null,
-      "navLabel": null,
-      "unavailable": null,
-      "retry": null
+      "empty": "Babu rubutu (notes) tukuna.",
+      "intro": "Rubutu (Notes) suna da sirri kuma rubutu ne na fili. Ba za a iya gyarawa ko goge su ba; yin gyara sabon rubutu ne daban.",
+      "label": "Sabon rubutu",
+      "hint": "Rubutu na fili kawai, har zuwa haruffa {max}. Kada ka liƙa bayanan sadarwa ko duk wani abin da zai bayyana mai rahoto.",
+      "counter": "Haruffa {count} daga cikin {max}",
+      "submit": "Ƙara rubutu",
+      "required": "Ka fara yin rubutu.",
+      "tooLong": "Wannan rubutun yayi tsayi da yawa.",
+      "confirmTitle": "Ƙara wannan rubutun?",
+      "confirmBody": "Yana da sirri kuma na dindindin. Ba za a iya gyarawa ko goge shi ba a gaba.",
+      "confirm": "Ƙara rubutu",
+      "cancel": "Ci gaba da gyarawa",
+      "added": "An ƙara rubutun.",
+      "by": "Ta {author}",
+      "gone": "Rubutun wannan bayanin baya samuwa.",
+      "more": "Nuna rubutun baya",
+      "first": "Koma ga rubutun farko",
+      "navLabel": "Shafukan rubutu (Notes pages)",
+      "unavailable": "Ba a iya loda rubutun ba. Sauran ɓangaren rahoton ba su sami matsala ba.",
+      "retry": "Sake gwada loda rubutun"
     },
     "questionActions": {
-      "label": null,
-      "hint": null,
-      "counter": null,
-      "submit": null,
-      "tooShort": null,
-      "tooLong": null,
-      "confirmTitle": null,
-      "confirmBody": null,
-      "confirm": null,
-      "cancel": null,
-      "added": null,
-      "withdraw": null,
-      "withdrawLabel": null,
-      "withdrawTitle": null,
-      "withdrawBody": null,
-      "withdrawConfirm": null,
-      "withdrawn": null
+      "label": "Sabon tambaya ga mai rahoto",
+      "hint": "Mai rahoto zai ga wannan akan shafin matsayi. Haruffa 5 zuwa 500. Kada ka tambayi bayanan gane asali.",
+      "counter": "Haruffa {count} daga cikin {max}",
+      "submit": "Yi tambaya",
+      "tooShort": "Rubuta aƙalla haruffa 5.",
+      "tooLong": "Wannan tambayar tayi tsayi da yawa.",
+      "confirmTitle": "Aika wannan tambayar?",
+      "confirmBody": "Mai rahoto zai gan shi lokacin da suka duba matsayinsu. Baya canza matsayin rahoton.",
+      "confirm": "Aika tambaya",
+      "cancel": "Ci gaba da gyarawa",
+      "added": "An ƙara tambaya.",
+      "withdraw": "Janye",
+      "withdrawLabel": "Janye tambayar: {question}",
+      "withdrawTitle": "Janye wannan tambayar?",
+      "withdrawBody": "Mai rahoto ba zai ƙara ganinta ba. Amsar da aka riga aka bayar tana ci gaba da zama a cikin kundin.",
+      "withdrawConfirm": "Janye tambaya",
+      "withdrawn": "An janye tambaya."
     },
     "transition": {
-      "legend": null,
-      "command": null,
-      "commandHelp": null,
+      "legend": "Canza matsayin",
+      "command": "Aiki",
+      "commandHelp": "Yana matsar da rahoto daga {from} zuwa {to}.",
       "commands": {
-        "start_review": null,
-        "request_information": null,
-        "resume_review": null,
-        "verify_for_public_update": null,
-        "refer": null,
-        "close": null,
-        "reopen": null
+        "start_review": "Fara bita",
+        "request_information": "Tambayi mai rahoto don ƙarin bayani",
+        "resume_review": "Ci gaba da bita",
+        "verify_for_public_update": "Yi alamar an tabbatar don sabuntawar jama'a",
+        "refer": "Yi rikodin miƙawa (referral)",
+        "close": "Rufe rahoton",
+        "reopen": "Sake buɗe rahoton"
       },
-      "message": null,
-      "messageHint": null,
-      "messageRequired": null,
-      "messageTooLong": null,
-      "reason": null,
-      "reasonHint": null,
-      "reasonRequired": null,
-      "reasonTooLong": null,
-      "counter": null,
-      "submit": null,
-      "pending": null,
-      "confirmTitle": null,
-      "confirmBody": null,
-      "confirmCareful": null,
-      "confirm": null,
-      "cancel": null,
-      "done": null,
-      "conflict": null,
-      "reload": null,
-      "none": null,
-      "publishNote": null,
-      "reloading": null
+      "message": "Saƙon da mai rahoto zai gani",
+      "messageHint": "Za'a nuna akan shafin matsayin mai rahoto, ba a taɓa nuna shi akan kundin jama'a ba. Har zuwa haruffa {max}. Bar shi babu komai don amfani da saƙon da aka saba amfani dashi. Kada a haɗa sunaye ko lambobin sadarwa.",
+      "messageRequired": "Faɗi abin da kuke buƙata daga mai rahoto.",
+      "messageTooLong": "Wannan saƙon yayi tsayi da yawa.",
+      "reason": "Dalilin ciki (na sirri)",
+      "reasonHint": "Ba a taɓa nuna wa mai rahoto ba. Har zuwa haruffa {max}.",
+      "reasonRequired": "Bayar da dalilin sake buɗewa.",
+      "reasonTooLong": "Wannan dalilin yayi tsayi da yawa.",
+      "counter": "Haruffa {count} daga cikin {max}",
+      "submit": "Aiwatar da canji",
+      "pending": "Ana aiwatarwa",
+      "confirmTitle": "Canza matsayin zuwa {to}?",
+      "confirmBody": "Mai rahoto zai ga sabon matsayin da saƙon da ke sama. Wannan ba zai wallafa komai akan kundin jama'a ba.",
+      "confirmCareful": "Wannan yana canza abin da ake gaya wa mai rahoto da kuma yadda ake kula da ƙarar. Duba saƙon kafin ka tabbatar.",
+      "confirm": "Aiwatar da canji",
+      "cancel": "Ci gaba da gyarawa",
+      "done": "An canza matsayi daga {from} zuwa {to}. Babu abin da aka wallafa.",
+      "conflict": "Wannan rahoton ya canza lokacin da kake aiki, ko kuma wannan aikin baya samuwa yanzu. Sake loda don ganin sabon matsayi da tarihi, sannan ka sake zaɓa. Ana ajiye abin da ka rubuta.",
+      "reload": "Sake loda rahoton",
+      "none": "Babu canjin matsayin da ke samuwa daga wannan matsayin.",
+      "publishNote": "Canjin matsayi ba ya wallafa rubutu ta kowace hanya. Sabuntawar jama'a mataki ne daban na gaba akan wannan shafin.",
+      "reloading": "Ana sake loda"
     },
     "publication": {
-      "intro": null,
-      "guidance": null,
-      "needsVerified": null,
-      "noCitations": null,
-      "citationsUnavailable": null,
-      "statement": null,
-      "statementHint": null,
-      "counter": null,
-      "effectiveOn": null,
-      "effectiveHelp": null,
-      "lastChecked": null,
-      "lastCheckedHelp": null,
-      "verification": null,
-      "citations": null,
-      "citationsHint": null,
-      "citationLine": null,
-      "submit": null,
-      "creating": null,
+      "intro": "Sabuntawar jama'a kai ne ka ke rubuta ta, daban da kowane canjin matsayi ko bayanin sirri. Ana nuna ta a kan tsarin lokacin (timeline) jama'a na aikin ne kawai bayan ka duba siffar ta kuma ka tabbatar da ainihin wannan rubutun.",
+      "guidance": "Fadi kawai abin da majiyoyin da aka ambata suka ce. Kada a kwafi rubutu daga rahoton sirri, kuma kada ka kira kowa ko wani abu hanci-da-rashawa (corrupt), yaudara (fraudulent), mai laifi (guilty), watsi (abandoned), ko kammalaffe (complete) sai idan wata majiya da aka ambata ta ce haka a cikin waɗannan kalmomin.",
+      "needsVerified": "Ana iya rubuta daftarin sabuntawar jama'a ne kawai idan an sanya wa rahoton alamar An tabbatar don sabuntawar jama'a. Canza matsayin tukunna.",
+      "noCitations": "Babu wasu nassoshi da aka amince dasu da ake da su don wannan aikin, don haka ba za a iya rubuta daftarin sabuntawar jama'a ba.",
+      "citationsUnavailable": "Ba a iya loda nassoshin da aka amince da su na wannan aikin ba, don haka ba za a iya tsara daftarin sabuntawar jama'a yanzu ba. Sake loda shafin don sake gwadawa.",
+      "statement": "Bayanin jama'a",
+      "statementHint": "Rubutu ne kawai, haruffa 10 zuwa {max}. Kalmomi masu tsaka-tsaki kawai (neutral wording). Kowa yana ganinsa.",
+      "counter": "Haruffa {count} daga cikin {max}",
+      "effectiveOn": "Ranar da wannan zai fara aiki",
+      "effectiveHelp": "Ranar da majiyar da aka ambata ta ce hakan ya fara aiki.",
+      "lastChecked": "An duba ta ƙarshe (zaɓi)",
+      "lastCheckedHelp": "Ka bar shi wofi idan ba ka sake duba majiyar ba.",
+      "verification": "Matsayin tabbatarwa",
+      "citations": "Nassoshin da aka amince dasu",
+      "citationsHint": "Zaɓi 1 zuwa 5. An kwafi rubutun a ainihin yadda yake daga majiyar da aka amince da ita kuma ba za a iya gyarawa ba.",
+      "citationLine": "{title}, {publisher}, {location}",
+      "submit": "Ƙirƙiri siffa (preview)",
+      "creating": "Ana ƙirƙirar siffar",
       "errors": {
-        "statementRequired": null,
-        "statementShort": null,
-        "statementLong": null,
-        "dateRequired": null,
-        "citationsRequired": null,
-        "citationsTooMany": null
+        "statementRequired": "Rubuta bayanin jama'a.",
+        "statementShort": "Rubuta aƙalla haruffa 10.",
+        "statementLong": "Wannan bayanin yayi tsayi da yawa.",
+        "dateRequired": "Zaɓi ranar da wannan ya fara aiki daga ita.",
+        "citationsRequired": "Zaɓi aƙalla nassoshi ɗaya da aka amince da ita.",
+        "citationsTooMany": "Kada a zaɓi nassoshi sama da 5."
       },
       "preview": {
-        "heading": null,
-        "lead": null,
-        "status": null,
-        "issuesHeading": null,
-        "noIssues": null,
-        "citationsHeading": null,
-        "edit": null,
-        "discard": null,
-        "publish": null,
-        "publishing": null,
-        "cannot": null,
-        "stale": null,
-        "newPreview": null,
-        "viewPublic": null,
-        "publishedAt": null,
-        "publishedHeading": null,
-        "publishedBody": null,
-        "discarded": null,
-        "confirmTitle": null,
-        "confirmBody": null,
-        "confirm": null,
-        "cancel": null,
-        "discardTitle": null,
-        "discardBody": null,
-        "discardConfirm": null
+        "heading": "Cikakken Siffa",
+        "lead": "Wannan shine ainihin abin da tsarin lokacin (timeline) jama'a zai nuna, an zana da irin sashen (component). Babu abin da ke na jama'a tukuna.",
+        "status": "Matsayin rahoto lokacin da aka yi wannan siffar: {status} (Shafi na {version}).",
+        "issuesHeading": "Ba za a iya wallafa wannan ba tukuna",
+        "noIssues": "Ba a sami matsalolin da zasu toshewa ba.",
+        "citationsHeading": "Bayanan da aka ciro",
+        "edit": "Gyara rubutun",
+        "discard": "Yarda da wannan daftarin",
+        "publish": "Wallafa wannan sabuntawa",
+        "publishing": "Ana wallafawa",
+        "cannot": "Wallafawa baya samuwa don wannan siffar.",
+        "stale": "Rahoton ko siffar ta canza bayan an yi ta, don haka ba a wallafa ta ba. Ƙirƙiri sabuwar siffar sannan ka sake duba ta.",
+        "newPreview": "Koma baya zuwa gyarawa",
+        "viewPublic": "Ganin shi a kan kundin jama'a",
+        "publishedAt": "An wallafa {date}.",
+        "publishedHeading": "An wallafa",
+        "publishedBody": "Wannan sabuntawa yana yanzu akan tsarin lokacin jama'a na aikin daidai yadda aka siffata (preview).",
+        "discarded": "An zubar da daftarin. Babu abin da aka wallafa.",
+        "confirmTitle": "Wallafa wannan sabuntawar ga kowa?",
+        "confirmBody": "Bayanin, ranar sa, alamar tabbatarwa, da bayanan sa da aka ambata zasu bayyana akan tsarin lokacin jama'a na aikin daidai kamar yadda aka nuna a siffar (preview). Wannan ana nuna shi ga jama'a kuma ba za a iya canza shi a asirce ba.",
+        "confirm": "Wallafa",
+        "cancel": "Ajiye siffar",
+        "discardTitle": "Zubar da wannan daftarin?",
+        "discardBody": "An janye daftarin. Babu abin da aka wallafa.",
+        "discardConfirm": "Zubar da daftari"
       },
       "issues": {
-        "statement": null,
+        "statement": "Bayani",
         "known": {
-          "report_text": null,
-          "citations": null,
-          "effective_on": null,
-          "verification_state": null,
-          "statement": null,
-          "contact_detail": null,
-          "tracking_code": null
+          "report_text": "Bayanin yana maimaita kalmomi daga rahoton sirri, amsa, ko wani rubutu. Sake rubuta shi daga majiyar da aka ambata.",
+          "citations": "Ba a sami nassoshi ba ko ba ya goyan bayan wannan sabuntawar.",
+          "effective_on": "Ba a saka ranar wata ba ko ba a amince da shi ba.",
+          "verification_state": "Matsayin tabbatarwa bai yi daidai da majiyoyin da aka ambata ba.",
+          "statement": "Bayanin yana buƙatar kulawa.",
+          "contact_detail": "Bayanin yana ƙunshe da abin da ya yi kama da bayanin sadarwa. Cire shi.",
+          "tracking_code": "Bayanin yana ƙunshe da abin da ya yi kama da lambar bi-biyi. Cire shi."
         },
-        "term": null,
-        "other": null,
-        "field": null
+        "term": "An yi amfani da kalmar \"{term}\", amma babu wani rubutun da aka ambata wanda ya ƙunshi ta. Cire ta ko yi nassoshi ga wani rubutun da ya ƙunshi ta.",
+        "other": "Wata matsala da ba a gane ba ({code}) tana toshe wallafawa.",
+        "field": "Fili: {field}"
       },
       "drafts": {
-        "heading": null,
-        "empty": null,
-        "state": null,
+        "heading": "Daftarin baya",
+        "empty": "Babu daftarin tukuna.",
+        "state": "Matsayi: {state}",
         "states": {
-          "draft": null,
-          "published": null,
-          "withdrawn": null
+          "draft": "Daftari",
+          "published": "An wallafa",
+          "withdrawn": "An janye"
         },
-        "created": null,
-        "open": null,
-        "withdraw": null,
-        "loading": null,
-        "openFailed": null
+        "created": "An ƙirƙira {date}",
+        "open": "Buɗe siffa",
+        "withdraw": "Janye",
+        "loading": "Ana loda siffa",
+        "openFailed": "Ba a iya buɗe siffar ba."
       },
-      "guidanceTitle": null
+      "guidanceTitle": "Yi rubutu tsaka-tsaki (Write neutrally)"
     }
   },
   "discovery": {
-    "label": null,
-    "unreviewedNote": null,
+    "label": "an gano — ba a duba ba tukuna",
+    "unreviewedNote": "An samo daga shafukan intanet na jama'a. Babu abin da ke nan da aka tabbatar, aka amince da shi, ko aka wallafa, kuma fitowar majiya a nan ko maimaita shi ba ya sa ya zama gaskiya.",
     "results": {
-      "heading": null,
-      "count": null,
-      "none": null,
-      "cap": null
+      "heading": "Majiyoyin da aka gano",
+      "count": "Majiyoyin da aka nuna: {count}",
+      "none": "Babu majiyoyin da aka gano akan wannan binciken.",
+      "cap": "Ana nuna aƙalla majiyoyi 10 kawai."
     },
     "card": {
-      "untitled": null,
-      "publisher": null,
-      "type": null,
-      "published": null,
-      "publishedUnknown": null,
-      "dateConflict": null,
-      "discovered": null,
-      "retrieved": null,
-      "availability": null,
-      "open": null,
-      "noLink": null,
-      "injection": null,
-      "excerpt": null,
-      "repeatsHeading": null,
-      "repeats": null,
-      "decision": null
+      "untitled": "Shafin da ba shi da take",
+      "publisher": "Mawallafi",
+      "type": "Irin",
+      "published": "An wallafa a {date} ({provenance})",
+      "publishedUnknown": "Ranar wallafawa ba a sani ba",
+      "dateConflict": "Shafukan basu yarda akan wannan kwanan wata ba.",
+      "discovered": "An fara gano {date}",
+      "retrieved": "An duba ta ƙarshe {date}",
+      "availability": "Samuwa",
+      "open": "Buɗe ainihin shafin (sabon shafi)",
+      "noLink": "Ba a iya nuna adireshin cikin aminci ba, don haka babu hanyar haɗi (link).",
+      "injection": "Wannan shafin yana ɗauke da rubutu wanda ke ƙoƙarin bayar da umarni. An kula dashi azaman fayyacen rubutu (plain text) kuma an yi watsi da shi.",
+      "excerpt": "Guntun bayani da aka yarda",
+      "repeatsHeading": "Maimaita wannan shafin",
+      "repeats": "Maimaita: {title}",
+      "decision": "Shawara"
     },
     "availabilityStates": {
-      "unchecked": null,
-      "available": null,
-      "temporarily_unavailable": null,
-      "access_restricted": null,
-      "permanently_unavailable": null,
-      "stale": null
+      "unchecked": "Ba a duba ba",
+      "available": "Akwai",
+      "temporarily_unavailable": "Babu na ɗan lokaci",
+      "access_restricted": "An takaita damar shiga",
+      "permanently_unavailable": "Babu kuma",
+      "stale": "Wataƙila ya tsufa"
     },
     "analysis": {
-      "heading": null,
-      "unavailable": null,
-      "facts": null,
-      "claims": null,
-      "claimBy": null,
-      "contradictions": null,
-      "sides": null,
-      "gaps": null,
-      "none": null,
-      "safety": null,
-      "sourceRef": null,
-      "noScore": null
+      "heading": "Bincike (bayani ne, ba majiya ba)",
+      "unavailable": "Ba a nuna bincike ba: bai nan ko ba a iya duba shi akan majiyoyin. Karanta majiyoyin kai tsaye.",
+      "facts": "Bayanan gaskiya masu goyon baya",
+      "claims": "Bayanan da aka ruwaito (kamar yadda majiya ta faɗi su)",
+      "claimBy": "{publisher} yace: {claim}",
+      "contradictions": "Saɓani",
+      "sides": "Majiyoyi akan kowane ɓangare",
+      "gaps": "Gurbi a bayani",
+      "none": "Babu wanda aka ruwaito.",
+      "safety": "Bayanan tsaro da rufe ɓangare (coverage)",
+      "sourceRef": "Majiya {number}",
+      "noScore": "Ba a nuna martaba (ranking) ko amincewa da ƙididdiga. Tsarin bincike da amincewar ƙirar (model) ba hujja ba ne."
     },
     "status": {
-      "label": null,
+      "label": "Matsayin aiki",
       "states": {
-        "queued": null,
-        "searching": null,
-        "analysing": null,
-        "needs_review": null,
-        "complete": null,
-        "failed": null,
-        "cancelled": null
+        "queued": "An jera don jira",
+        "searching": "Ana bincike",
+        "analysing": "Ana nazari",
+        "needs_review": "Yana buƙatar shawarar mai dubawa",
+        "complete": "An kammala",
+        "failed": "Ya gaza",
+        "cancelled": "An soke"
       },
-      "counts": null,
-      "replay": null,
-      "live": null,
-      "started": null,
-      "finished": null,
+      "counts": "An gano {found}, an karanta {fetched}, an yi nazari {analysed}.",
+      "replay": "Ana nuna sakamakon gwaji (demo), ba ainihin bincike bane.",
+      "live": "Ainihin bincike kai tsaye.",
+      "started": "An fara a {date}",
+      "finished": "An kammala a {date}",
       "scope": {
-        "public": null,
-        "reviewer": null
+        "public": "An raba gudanarwa na jama'a don wannan aikin",
+        "reviewer": "Gudanarwa na sirri don wannan rahoton"
       }
     },
     "failure": {
-      "title": null,
+      "title": "Wannan binciken bai kammala ba",
       "codes": {
-        "provider_unavailable": null,
-        "fetch_blocked": null,
-        "unsafe_text": null,
-        "extraction_failed": null,
-        "analysis_invalid": null,
-        "budget_exhausted": null,
-        "rate_limited": null,
-        "dead_letter": null
+        "provider_unavailable": "Mai ba da binciken baya samuwa.",
+        "fetch_blocked": "Shafin bai iya fita lafiya ba kuma an tsallake shi.",
+        "unsafe_text": "Shafin yana ɗauke da rubutun da bashi da tsaro kuma ba a yi amfani da shi ba.",
+        "extraction_failed": "Ba a iya karanta rubutu daga wani shafi ba.",
+        "analysis_invalid": "Ba a iya duba binciken akan majiyoyin ba, don haka ba a nuna shi ba.",
+        "budget_exhausted": "An gama kasafin kuɗi na bincike na yau da kullun. Ana nuna binciken da aka kammala na baya-bayan nan a maimakon haka.",
+        "rate_limited": "Buƙatun sun yi yawa. Sake gwadawa daga baya.",
+        "dead_letter": "Aikin yaci gaba da gaza kuma an tsayar da shi. Mai dubawa zai iya fara sabon bincike."
       },
-      "generic": null,
-      "partial": null,
-      "empty": null
+      "generic": "Binciken ya ƙare ba tare da sakamakon da za a iya amfani dashi ba.",
+      "partial": "Majiyoyin da aka samo kafin ya tsaya ana nuna su a ƙasa kuma wataƙila ba su kammala ba.",
+      "empty": "Babu abin da aka gano kafin ya tsaya."
     },
     "states": {
-      "cancelledPartial": null,
-      "cancelledEmpty": null,
-      "needsReview": null,
-      "offline": null,
-      "stale": null,
-      "checking": null,
-      "paused": null
+      "cancelledPartial": "An soke. Duk abin da aka gano kafin soke ana nuna shi a ƙasa kuma bai kammala ba.",
+      "cancelledEmpty": "An soke kafin a gano wani abu.",
+      "needsReview": "Wannan aikin yana buƙatar shawarar mai dubawa kafin a iya dogaro akan binciken sa.",
+      "offline": "Ba ka kan layi. Abin da ya riga ya kasance akan wannan shafin zai kasance a gani, kuma bincike yana komawa lokacin da ka dawo kan layi.",
+      "stale": "Waɗannan sakamakon ƙila sun tsufa. Aikin ya ƙare a {date}.",
+      "checking": "Ana duba sabuntawa.",
+      "paused": "An dakatar da dubawa."
     },
     "controls": {
-      "cancel": null,
-      "cancelTitle": null,
-      "cancelBody": null,
-      "cancelConfirm": null,
-      "keep": null,
-      "cancelRequested": null,
-      "approve": null,
-      "reject": null,
-      "reviewTitle": null,
-      "approveBody": null,
-      "rejectBody": null,
-      "reviewConfirm": null,
-      "reviewed": null,
-      "retry": null,
-      "stopChecking": null,
-      "resumeChecking": null
+      "cancel": "Soke wannan aikin",
+      "cancelTitle": "Soke binciken majiyar nan?",
+      "cancelBody": "Aikin da ya rage za'a tsayar. Duk abin da aka riga aka gano za a ajiye.",
+      "cancelConfirm": "Soke aikin",
+      "keep": "Ci gaba da gudanar da shi",
+      "cancelRequested": "An buƙaci sokewa. Aikin da aka riga aka yi an kiyaye shi.",
+      "approve": "Amincewa da kammalawa",
+      "reject": "Ƙin yarda da wannan binciken",
+      "reviewTitle": "Yi rikodin wannan shawarar akan aikin?",
+      "approveBody": "Wannan yana tabbatar da cewa aikin ya gama da kyau. Ba ya tabbatar da kowace majiya ko wallafa komai.",
+      "rejectBody": "Wannan yana ƙin aikin. Majiyoyin sa zasu ci gaba da kasancewa ba a duba su ba.",
+      "reviewConfirm": "Rikodin shawara",
+      "reviewed": "An yi rikodin shawarar aiki.",
+      "retry": "Sake duba kuma",
+      "stopChecking": "Tsaya duba",
+      "resumeChecking": "Ci gaba da duba"
     },
     "followUps": {
-      "heading": null,
-      "cap": null,
-      "why": null,
-      "sensitivity": null,
-      "answerLabel": null,
-      "answerHint": null,
-      "send": null,
-      "skip": null,
-      "unsafe": null,
-      "sent": null,
-      "skipped": null,
-      "flagged": null,
-      "required": null,
-      "tooLong": null,
-      "none": null,
-      "stale": null
+      "heading": "Tambayoyi na gaba (Follow-up)",
+      "cap": "Aƙalla tambayoyi 5 kawai ake nunawa.",
+      "why": "Me yasa aka yi tambayar: {reason}",
+      "sensitivity": "Matsayin hankali (Sensitivity): {level}",
+      "answerLabel": "Amsar ka (ta sirri)",
+      "answerHint": "Ana kiyaye shi a ƙwaƙwalwar ajiya (memory) har sai ka aika dashi. Ba a taɓa sanyawa a cikin adireshin (address) ko ajiyewa a cikin wannan masarrafar (browser) ba.",
+      "send": "Aika amsa",
+      "skip": "Tsallake",
+      "unsafe": "Yi alamar cewa bai dace a yi tambaya ba (unsafe to ask)",
+      "sent": "An yi rikodin. Abin da ka rubuta ba za a sake nuna shi ba.",
+      "skipped": "An tsallake.",
+      "flagged": "An yi alamar bashi da tsaro.",
+      "required": "Rubuta amsa ko zaɓi Tsallake.",
+      "tooLong": "Wannan amsar ta yi tsayi da yawa.",
+      "none": "Babu tambayoyi na gaba.",
+      "stale": "Wannan tambayar ta wani aiki daban ne, don haka ba a aika da ita ba."
     },
     "decisions": {
-      "attach": null,
-      "reject": null,
-      "defer": null,
-      "reconsider": null,
-      "reason": null,
-      "reasonHint": null,
-      "reasonRequired": null,
-      "reasonTooLong": null,
-      "confirmTitle": null,
-      "attachBody": null,
-      "rejectBody": null,
-      "deferBody": null,
-      "reconsiderBody": null,
-      "confirm": null,
-      "cancel": null,
-      "recorded": null,
-      "conflict": null,
+      "attach": "Maƙalawa azaman majiyar da ke jiran aiki (pending source)",
+      "reject": "Ƙi yarda",
+      "defer": "Jinkirta (Defer)",
+      "reconsider": "Sake tunani",
+      "reason": "Dalili",
+      "reasonHint": "Ka ce dalili. Har zuwa haruffa 400. Ana ajiyewa a asirce.",
+      "reasonRequired": "Bayar da dalili.",
+      "reasonTooLong": "Wannan dalilin yayi tsayi da yawa.",
+      "confirmTitle": "Yi rikodin wannan shawara akan majiyar?",
+      "attachBody": "Wannan zai ƙirƙiri majiyar jiran aiki don majiyar da aka amince da ita (approved-source workflow). Ba ya amincewa da wata gaskiya ko wallafa komai.",
+      "rejectBody": "Wannan yana ƙin amincewa da majiyar don wannan rahoton. Zata kasance an jera ta kuma ana iya sake duba ta.",
+      "deferBody": "Wannan yana ajiye majiyar ba tare da yanke shawara ta ƙarshe ba.",
+      "reconsiderBody": "Wannan yana mayar da majiyar baya zuwa ga jinkirtawa.",
+      "confirm": "Rikodin shawara",
+      "cancel": "Ci gaba da gyara",
+      "recorded": "Shawarar da aka yanke: {disposition}.",
+      "conflict": "Wannan majiyar ta canza tun bayan da ka loda ta, ko kuma wannan shawarar ba ta samuwa yanzu. Sake loda sakamakon kuma sake gwadawa.",
       "dispositions": {
-        "not_reviewed": null,
-        "attached": null,
-        "rejected": null,
-        "deferred": null
+        "not_reviewed": "Ba a duba ba",
+        "attached": "An maƙala azaman majiyar dake jiran aiki (ba a tabbatar ba)",
+        "rejected": "An ƙi",
+        "deferred": "An jinkirta"
       }
     }
   },
   "offline": {
-    "title": null,
-    "lead": null,
-    "retry": null,
-    "savedHeading": null,
-    "savedNone": null,
-    "savedOn": null,
-    "savedNote": null,
-    "clear": null,
-    "cleared": null,
-    "privateNote": null,
-    "banner": null,
-    "bannerNoDate": null,
-    "backOnline": null,
-    "update": null,
-    "updateApply": null,
-    "updateLater": null,
+    "title": "Ba ka kan layi",
+    "lead": "ShaidaGo ba za ta iya samun intanet ba. Shafukan da ka buɗe kwanan nan ƙila an ajiye su akan wannan na'urar.",
+    "retry": "Sake gwadawa",
+    "savedHeading": "Shafukan da aka ajiye",
+    "savedNone": "Ba a ajiye wasu shafuka tukuna ba. Buɗe kundin aikin yayin da kake kan layi kuma za'a kiyaye shi anan har sati ɗaya.",
+    "savedOn": "An ajiye a {date}",
+    "savedNote": "Shafin da aka ajiye yana nuna ranar da aka duba ta ƙarshe da yake da shi lokacin da aka ajiye shi. Wataƙila ya wuce lokaci.",
+    "clear": "Manta shafukan da aka ajiye",
+    "cleared": "An cire shafukan da aka ajiye daga wannan na'urar.",
+    "privateNote": "Rahotanni, bibiya, da ayyukan mai dubawa suna buƙatar intanet (connection). Babu abin da ka shigar da aka aika, aka adana, ko aka sa a layi yayin da kake wajen layi (offline).",
+    "banner": "Ba ka kan layi. Wannan shafin kwafi ne da aka ajiye daga {date} kuma ƙila ya wuce lokaci.",
+    "bannerNoDate": "Ba ka kan layi. Kuna ganin kwafin da aka ajiye wanda ƙila ya wuce lokaci.",
+    "backOnline": "Ka dawo kan layi.",
+    "update": "Sabunta ShaidaGo a shirye yake.",
+    "updateApply": "Sake loda don amfani da shi",
+    "updateLater": "Zai yi aiki a gaba idan ka buɗe ShaidaGo. Bai shafi rahotonka ba.",
     "lowData": {
-      "suggest": null,
-      "on": null,
-      "off": null,
-      "turnOn": null,
-      "turnOff": null,
-      "label": null,
-      "note": null,
-      "dismiss": null
+      "suggest": "Masarrafar ka ta nemi a rage yawan bayanan data (data). Kunna tsarin data kaɗan?",
+      "on": "Tsarin data kaɗan yana kunne",
+      "off": "Tsarin data kaɗan a kashe yake",
+      "turnOn": "Kunna tsarin data kaɗan",
+      "turnOff": "Kashe tsarin data kaɗan",
+      "label": "Tsarin data kaɗan (Low-data mode)",
+      "note": "Ƙananan motsa-motsi (animations), babu sabunta baya ko loda abu kafin buƙata, gudanar da Source Scout a hankali. Dukkan gaskiya da ayyuka suna nan a yadda suke.",
+      "dismiss": "Ba yanzu ba"
     }
   }
 }

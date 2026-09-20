@@ -12,7 +12,7 @@ Delegated: use a modern, stable split stack with a TypeScript Next.js frontend/B
 
 ## Users
 
-- Community residents in Abuja who need to understand local public projects and compare promises with evidence.
+- Community residents who need to understand local public projects and compare promises with evidence. The initial judge dataset starts in Abuja.
 - Affected people and whistleblowers who may need to report concerns without exposing their identity.
 - Journalists and civic organisations that need traceable sources, structured histories, and reviewed evidence.
 - Authorised reviewers who validate private reports and approve only public-safe updates.
@@ -28,7 +28,7 @@ ShaidaGo connects three activities that are usually separated: understanding an 
 
 ## Operating Context
 
-- The pilot is Abuja and covers AMAC and Bwari Area Councils as two configurable localities within one product.
+- ShaidaGo is location-configurable and is not branded or architecturally tied to one council. The initial judge dataset uses Abuja's AMAC and Bwari Area Councils as two configured localities.
 - The public experience supports English (`en`), Hausa (`ha`), Igbo (`ig`), and Yoruba (`yo`).
 - The proof of concept should contain six to eight public projects across the two area councils, each backed by public, non-sensitive sources.
 - Core use is mobile-first and may happen on low-end devices or unreliable connections.
@@ -44,8 +44,8 @@ ShaidaGo connects three activities that are usually separated: understanding an 
 - Source Scout with a previewed privacy-safe query, at most ten results per run, provenance capture, safe fetching, deduplication, cited synthesis, contradiction and gap reporting, and focused follow-up questions.
 - Human review is required before a private report or discovered source can affect the public record.
 - The product is not an emergency service and must show appropriate escalation guidance.
-- No native mobile application, public allegation feed, autonomous publication, legal judgment, nationwide coverage, blockchain, or complex predictive analytics in the proof of concept.
-- Open decisions: human audit/approval of the six source-register candidates; reviewed translations; and remaining hosted-service evidence.
+- No native mobile application, public allegation feed, autonomous publication, legal judgment, nationwide data claim, blockchain, or complex predictive analytics in the proof of concept.
+- Open decisions: human audit/approval of the six source-register candidates and remaining hosted-service evidence.
 
 ## Brand Commitments
 
@@ -59,7 +59,7 @@ ShaidaGo connects three activities that are usually separated: understanding an 
 - [`docs/PRODUCT_BRIEF.md`](docs/PRODUCT_BRIEF.md) is the current product and technical source brief.
 - [`docs/SOURCE_REGISTER.md`](docs/SOURCE_REGISTER.md) records six AMAC/Bwari candidate projects, exact retrieved passages where available, source availability, seed eligibility, and unresolved gaps. It is not a completed human audit; facts marked ineligible or awaiting verification must not be presented as verified.
 - [`contracts/openapi.json`](contracts/openapi.json), [`contracts/frontend-fixtures.json`](contracts/frontend-fixtures.json), and [`docs/FRONTEND_BACKEND_CONTRACT.md`](docs/FRONTEND_BACKEND_CONTRACT.md) form the implemented frontend handoff.
-- No approved logo, visual system, or human-reviewed Hausa, Igbo, and Yoruba translation pack exists yet. Future work must not fabricate these assets, overstate source verification, or present fictional reports as real.
+- The Field Ledger visual system and complete English, Hausa, Igbo, and Yoruba interface catalogues are implemented. All four catalogues were maintainer-reviewed on 2026-09-20; the non-English copy has not received an independent second-language review. Future work must not overstate that review, overstate source verification, or present fictional reports as real.
 
 ## Product Principles
 
