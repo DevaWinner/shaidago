@@ -859,5 +859,433 @@
       "failedTitle": null
     },
     "statusLink": null
+  },
+  "reviewer": {
+    "common": {
+      "private": null,
+      "noindex": null,
+      "backToQueue": null,
+      "signedOut": null,
+      "language": null,
+      "signOut": null,
+      "signingOut": null
+    },
+    "signIn": {
+      "title": null,
+      "lead": null,
+      "needsScript": null,
+      "identifier": null,
+      "password": null,
+      "submit": null,
+      "pending": null,
+      "required": null,
+      "identifierRequired": null,
+      "passwordRequired": null,
+      "wait": null,
+      "waitDone": null,
+      "failureTitle": null,
+      "reasons": {
+        "expired": null,
+        "signed_out": null
+      },
+      "note": null
+    },
+    "queue": {
+      "title": null,
+      "lead": null,
+      "filters": {
+        "label": null,
+        "status": null,
+        "risk": null,
+        "category": null,
+        "project": null,
+        "projectHelp": null,
+        "any": null,
+        "apply": null,
+        "clear": null
+      },
+      "statuses": {
+        "received": null,
+        "needs_information": null,
+        "under_review": null,
+        "verified_for_public_update": null,
+        "referred": null,
+        "closed": null
+      },
+      "risks": {
+        "standard": null,
+        "elevated": null,
+        "high": null
+      },
+      "categories": {
+        "no_visible_work": null,
+        "incomplete_work": null,
+        "unsafe_construction": null,
+        "suspected_incorrect_status": null,
+        "access_barrier": null,
+        "other_concern": null
+      },
+      "item": {
+        "riskLabel": null,
+        "statusLabel": null,
+        "received": null,
+        "updated": null,
+        "files": null,
+        "noFiles": null,
+        "questions": null,
+        "noQuestions": null,
+        "contact": null,
+        "noContact": null,
+        "open": null,
+        "openLabel": null
+      },
+      "results": {
+        "heading": null,
+        "count": null,
+        "paginationLabel": null,
+        "next": null,
+        "first": null
+      },
+      "states": {
+        "empty": {
+          "title": null,
+          "body": null
+        },
+        "noMatches": {
+          "title": null,
+          "body": null
+        },
+        "invalidCursor": {
+          "title": null,
+          "body": null
+        },
+        "forbidden": {
+          "title": null,
+          "body": null
+        },
+        "rateLimited": {
+          "title": null,
+          "body": null
+        },
+        "unavailable": {
+          "title": null,
+          "body": null,
+          "retry": null
+        }
+      }
+    },
+    "detail": {
+      "title": null,
+      "back": null,
+      "jump": null,
+      "demo": {
+        "title": null,
+        "body": null
+      },
+      "header": {
+        "status": null,
+        "risk": null,
+        "received": null,
+        "updated": null,
+        "version": null,
+        "project": null,
+        "publicRecord": null
+      },
+      "sections": {
+        "status": null,
+        "observation": null,
+        "evidence": null,
+        "contact": null,
+        "history": null,
+        "questions": null,
+        "handle": null,
+        "scout": null,
+        "publication": null,
+        "notes": null
+      },
+      "observation": {
+        "category": null,
+        "project": null,
+        "description": null,
+        "descriptionNote": null,
+        "received": null
+      },
+      "evidence": {
+        "empty": null,
+        "name": null,
+        "type": null,
+        "size": null,
+        "sanitation": null,
+        "scan": null,
+        "added": null,
+        "note": null,
+        "sanitationStates": {
+          "pending": null,
+          "processing": null,
+          "sanitised": null,
+          "rejected": null,
+          "failed": null
+        },
+        "scanStates": {
+          "pending": null,
+          "scanning": null,
+          "clean": null,
+          "malware_detected": null,
+          "scan_failed": null,
+          "not_scanned_demo": null
+        },
+        "demoLimit": null,
+        "bytes": null,
+        "kilobytes": null,
+        "megabytes": null
+      },
+      "contact": {
+        "none": null,
+        "hidden": null,
+        "reveal": null,
+        "revealNote": null,
+        "shown": null,
+        "hide": null,
+        "denied": null,
+        "unavailable": null,
+        "auditNote": null
+      },
+      "history": {
+        "empty": null,
+        "from": null,
+        "first": null,
+        "actor": null,
+        "actors": {
+          "reporter": null,
+          "reviewer": null,
+          "admin": null,
+          "system": null
+        },
+        "shownToReporter": null,
+        "internal": null,
+        "noMessage": null
+      },
+      "questions": {
+        "empty": null,
+        "asked": null,
+        "answered": null,
+        "private": null,
+        "noAnswer": null,
+        "withdrawn": null,
+        "kinds": {
+          "answered": null,
+          "skipped": null,
+          "unsafe": null
+        }
+      },
+      "handle": {
+        "none": null,
+        "note": null,
+        "name": null,
+        "total": null,
+        "verified": null,
+        "closed": null
+      },
+      "scout": {
+        "body": null,
+        "private": null
+      },
+      "states": {
+        "notFound": {
+          "title": null,
+          "body": null
+        },
+        "forbidden": {
+          "title": null,
+          "body": null
+        },
+        "rateLimited": {
+          "title": null,
+          "body": null
+        },
+        "unavailable": {
+          "title": null,
+          "body": null,
+          "retry": null
+        }
+      }
+    },
+    "actions": {
+      "sessionEnded": null,
+      "signIn": null,
+      "pending": null,
+      "tryAgain": null
+    },
+    "download": {
+      "button": null,
+      "buttonLabel": null,
+      "pending": null,
+      "done": null,
+      "failed": null,
+      "note": null
+    },
+    "notes": {
+      "empty": null,
+      "intro": null,
+      "label": null,
+      "hint": null,
+      "counter": null,
+      "submit": null,
+      "required": null,
+      "tooLong": null,
+      "confirmTitle": null,
+      "confirmBody": null,
+      "confirm": null,
+      "cancel": null,
+      "added": null,
+      "by": null,
+      "gone": null,
+      "more": null,
+      "first": null,
+      "navLabel": null,
+      "unavailable": null,
+      "retry": null
+    },
+    "questionActions": {
+      "label": null,
+      "hint": null,
+      "counter": null,
+      "submit": null,
+      "tooShort": null,
+      "tooLong": null,
+      "confirmTitle": null,
+      "confirmBody": null,
+      "confirm": null,
+      "cancel": null,
+      "added": null,
+      "withdraw": null,
+      "withdrawLabel": null,
+      "withdrawTitle": null,
+      "withdrawBody": null,
+      "withdrawConfirm": null,
+      "withdrawn": null
+    },
+    "transition": {
+      "legend": null,
+      "command": null,
+      "commandHelp": null,
+      "commands": {
+        "start_review": null,
+        "request_information": null,
+        "resume_review": null,
+        "verify_for_public_update": null,
+        "refer": null,
+        "close": null,
+        "reopen": null
+      },
+      "message": null,
+      "messageHint": null,
+      "messageRequired": null,
+      "messageTooLong": null,
+      "reason": null,
+      "reasonHint": null,
+      "reasonRequired": null,
+      "reasonTooLong": null,
+      "counter": null,
+      "submit": null,
+      "pending": null,
+      "confirmTitle": null,
+      "confirmBody": null,
+      "confirmCareful": null,
+      "confirm": null,
+      "cancel": null,
+      "done": null,
+      "conflict": null,
+      "reload": null,
+      "none": null,
+      "publishNote": null,
+      "reloading": null
+    },
+    "publication": {
+      "intro": null,
+      "guidance": null,
+      "needsVerified": null,
+      "noCitations": null,
+      "citationsUnavailable": null,
+      "statement": null,
+      "statementHint": null,
+      "counter": null,
+      "effectiveOn": null,
+      "effectiveHelp": null,
+      "lastChecked": null,
+      "lastCheckedHelp": null,
+      "verification": null,
+      "citations": null,
+      "citationsHint": null,
+      "citationLine": null,
+      "submit": null,
+      "creating": null,
+      "errors": {
+        "statementRequired": null,
+        "statementShort": null,
+        "statementLong": null,
+        "dateRequired": null,
+        "citationsRequired": null,
+        "citationsTooMany": null
+      },
+      "preview": {
+        "heading": null,
+        "lead": null,
+        "status": null,
+        "issuesHeading": null,
+        "noIssues": null,
+        "citationsHeading": null,
+        "edit": null,
+        "discard": null,
+        "publish": null,
+        "publishing": null,
+        "cannot": null,
+        "stale": null,
+        "newPreview": null,
+        "viewPublic": null,
+        "publishedAt": null,
+        "publishedHeading": null,
+        "publishedBody": null,
+        "discarded": null,
+        "confirmTitle": null,
+        "confirmBody": null,
+        "confirm": null,
+        "cancel": null,
+        "discardTitle": null,
+        "discardBody": null,
+        "discardConfirm": null
+      },
+      "issues": {
+        "statement": null,
+        "known": {
+          "report_text": null,
+          "citations": null,
+          "effective_on": null,
+          "verification_state": null,
+          "statement": null,
+          "contact_detail": null,
+          "tracking_code": null
+        },
+        "term": null,
+        "other": null,
+        "field": null
+      },
+      "drafts": {
+        "heading": null,
+        "empty": null,
+        "state": null,
+        "states": {
+          "draft": null,
+          "published": null,
+          "withdrawn": null
+        },
+        "created": null,
+        "open": null,
+        "withdraw": null,
+        "loading": null,
+        "openFailed": null
+      },
+      "guidanceTitle": null
+    }
   }
 }

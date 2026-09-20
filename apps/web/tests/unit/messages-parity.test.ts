@@ -24,7 +24,8 @@ const PENDING_DOMAINS = [
   "qa",
   "report",
   "track",
-  "handle"
+  "handle",
+  "reviewer"
 ];
 const root = join(import.meta.dirname, "..", "..", "messages");
 const read = (name: string): Json =>
@@ -111,7 +112,8 @@ describe("real catalogues", () => {
           key.startsWith("qa.") ||
           key.startsWith("report.") ||
           key.startsWith("track.") ||
-          key.startsWith("handle.")
+          key.startsWith("handle.") ||
+          key.startsWith("reviewer.")
       )
     ).toBe(true);
     expect((read("status") as { pendingKeysAllowed?: boolean }).pendingKeysAllowed).toBe(true);

@@ -2173,3 +2173,143 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the pages, request helper, parsers, and mock scenarios; found the bundle regression and fixed it; wrote the tests.
 - **Prompt summary:** Unattended frontend/BFF build loop; maintainer directed the loop to continue through later circles.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-110 Reviewer sign-in and session recovery
+
+- **Task:** FE-110 — Reviewer sign-in and session recovery (Circle 11).
+- **User outcome delivered:** An authorised reviewer can sign in with a password manager, is told generically when a sign-in fails, sees how long to wait after a rate limit, and lands only on their own queue or one report, never an arbitrary address.
+- **Routes/components changed:** `apps/web/app/[locale]/reviewer/sign-in/page.tsx`, `src/components/reviewer/{frame,sign-in-form}.tsx`, `src/lib/reviewer/{safe-return,session}.ts`, `forwardedContextForHeaders` in `src/lib/bff/request-context.ts`, `messages/*` (new `reviewer` domain), `tests/support/mock-reviewer.mjs` and `mock-api.mjs`, unit, component and e2e tests.
+- **Backend operations/contract version:** `auth_sign_in` and `auth_sign_out` through the existing BFF session handler (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Reviewer credentials in one same-origin POST body and component memory only; the API's session and CSRF tokens go straight into HttpOnly cookies. Nothing in a URL, storage, log, or client bundle. Fictional demo credentials in the mock only.
+- **States implemented:** initial, field validation, submitting, generic credential failure, rate limit with countdown, unreachable service, ended session and signed-out reasons, no JavaScript.
+- **Accessibility evidence:** labelled fields with error association, `role="alert"` failure region, text (not colour) for the countdown; unit/component/e2e only. No axe run or screen reader run yet for this page (covered in FE-116).
+- **Locales reviewed:** English only. `ha`/`ig`/`yo` `reviewer` keys are `null` and pending; nothing was translated.
+- **Performance/cache impact:** Dynamic and no-store; one small client island. No public cache involvement.
+- **Commands run and results:** `make web-verify` exit 0; full Chromium and mobile WebKit e2e suite 225 passed, 3 skipped (existing WebKit Tab skips) before the record was written.
+- **Screenshots/traces/artifacts checked:** none captured; assertions only.
+- **Known limitations/open decisions:** Real API not run. A stale cookie is not cleared by a Server Component redirect (sign-in overwrites it). No axe run yet.
+- **Commit/PR:** `feat: add reviewer sign-in with safe return targets and session recovery`
+- **Next task may rely on:** `ReviewerFrame`, `reviewerOptionsFor`, `requireSession`, `signInPath`, `safeReviewerTarget`, and `mock-reviewer.mjs`.
+- **AI assistance used:** Designed and implemented the sign-in surface, allowlist, session helpers, mock endpoints and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-111 Minimal-data reviewer queue
+
+- **Task:** FE-111 — Minimal-data reviewer queue (Circle 11).
+- **User outcome delivered:** A reviewer sees the oldest reports first as scannable cards with status, risk, dates, and counts, can filter and page through them with shareable links, and never sees report text or contact values in the list.
+- **Routes/components changed:** `app/[locale]/reviewer/reports/page.tsx`, `app/[locale]/reviewer/loading.tsx`, `src/components/reviewer/queue.tsx`, `src/lib/reviewer/queue-filters.ts`, `messages/*` (`reviewer.queue`), `tests/support/{mock-reviewer.mjs,reviewer-session.ts}`, unit, component and e2e tests.
+- **Backend operations/contract version:** `reviewer_reports_queue` via `serverApi().listReviewerReports` (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Private triage projection only (identifiers, category, status, risk, dates, counts, contact-exists flag). The address holds only filters and an opaque cursor. The list is never cached, prefetched, or indexed. Fictional mock data.
+- **States implemented:** results, empty, filter-empty, stale cursor, forbidden, rate limited, unavailable with retry, signed out, ended session, loading boundary.
+- **Accessibility evidence:** semantic list, labelled filter controls, link names that state the report, status and risk as text with shapes, 320 px no horizontal scroll on Chromium and mobile WebKit. No axe or screen-reader run yet (FE-116).
+- **Locales reviewed:** English only; `ha`/`ig`/`yo` `reviewer` keys are `null` and pending.
+- **Performance/cache impact:** Server-rendered, no client JavaScript on this page beyond the shell's sign-out island; no-store.
+- **Commands run and results:** `make web-verify` exit 0 (473 unit, 124 component, bundle scan clean); targeted e2e `reviewer-queue` 20 passed (Chromium and mobile WebKit).
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** The API's queue does not include a handle marker, so none is shown. Real API not run. The queue is oldest first as the API returns it; there is no sort control.
+- **Commit/PR:** `feat: add the minimal-data reviewer report queue with URL-owned filters`
+- **Next task may rely on:** `parseQueueFilters`/`queueQuery`/`queueHref`, `QueueList`, the mock queue and `signInAs` helper, and the report links `/{locale}/reviewer/reports/{id}`.
+- **AI assistance used:** Designed and implemented the queue page, filters, components, mock data and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-112 Report detail information architecture
+
+- **Task:** FE-112 — Report detail information architecture (Circle 11).
+- **User outcome delivered:** A reviewer can read one private report in a fixed, scannable order, see file safety states honestly, and reveal contact details only by choice.
+- **Routes/components changed:** `app/[locale]/reviewer/reports/[reportId]/page.tsx`, `src/components/reviewer/report-detail.tsx`, `src/lib/reviewer/file-size.ts`, `messages/*` (`reviewer.detail`), mock detail endpoint in `tests/support/mock-reviewer.mjs`, component and e2e tests.
+- **Backend operations/contract version:** `reviewer_reports_get` via `serverApi().getReviewerReport`, with and without `include_contact` (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Private report text, evidence metadata, private internal reasons, follow-up answers, reviewer-only handle record, and (on request) contact. All server-rendered, no-store, never in a URL beyond the opaque report ID and the word `reveal=contact`. Fictional data only.
+- **States implemented:** loaded, not found (same for malformed and unknown), forbidden, rate limited, unavailable with retry, contact hidden/shown/denied/unavailable, no evidence, no questions, no history, no handle, ended session, signed out, loading boundary.
+- **Accessibility evidence:** landmarked sections with headings, an in-page jump list, definition lists, text plus shapes for status and risk, 320 px no sideways scroll on Chromium and mobile WebKit. No axe or screen-reader run yet (FE-116).
+- **Locales reviewed:** English only; `ha`/`ig`/`yo` `reviewer` keys are `null` and pending.
+- **Performance/cache impact:** No client JavaScript added; server-rendered and no-store.
+- **Commands run and results:** `make web-verify` exit 0 (473 unit, 134 component, bundle scan clean); targeted e2e `reviewer` 54 passed (sign-in, queue, detail on Chromium and mobile WebKit).
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** A contact reveal is a GET, so the browser history keeps a `reveal=contact` entry that re-requests (and re-audits) the reveal if revisited; a POST-only reveal would need a new BFF handler and is not in the operation map. Source Scout is a stated placeholder until Circle 12. Real API not run.
+- **Commit/PR:** `feat: add the reviewer report detail page with progressive contact reveal`
+- **Next task may rely on:** `Section`, `detailContext`, `EvidenceSection`'s `renderDownload` slot, the mock detail data (`REPORT_IDS[0]`), and the page's section order and anchors.
+- **AI assistance used:** Designed and implemented the detail page, section components, mock data and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-113 Evidence download and notes
+
+- **Task:** FE-113 — Evidence download and notes (Circle 11). It also delivers the reviewer follow-up question controls that FR-12 lists with the notes.
+- **User outcome delivered:** A reviewer can download a cleaned evidence file on request, read private notes, append a note or a reporter question only after confirming it, and withdraw a question, without any private value reaching an address or storage.
+- **Routes/components changed:** `src/components/reviewer/{evidence-download,note-form,question-controls,action-feedback}.tsx`, `NotesSection` and the `renderActions` slot in `report-detail.tsx`, the detail page, `messages/*` (`reviewer.actions`, `download`, `notes`, `questionActions`), mock notes, evidence and question endpoints, component and e2e tests.
+- **Backend operations/contract version:** `reviewer_notes_list` (server read), `reviewer_notes_create`, `reviewer_evidence_download`, `reviewer_decisions_ask_follow_up`, `reviewer_decisions_withdraw_follow_up` through existing handlers (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Private notes, question text, and evidence bytes. Notes and questions travel in same-origin POST bodies and component memory; evidence bytes are held in memory only for the save dialog. No storage, address, log, or cache. Fictional data only.
+- **States implemented:** note and question form initial, empty, too long or short, confirming, sending, saved, failed with text kept, session ended, markup refused, outage, may-have-completed; notes empty, paged, unavailable with retry, body gone; download idle, preparing, started, failed, session ended.
+- **Accessibility evidence:** labelled fields with error association, alertdialog confirmations (Cancel first), `role="status"` and `role="alert"` regions, buttons named for the file or question. Keyboard focus return after the dialogs is Base UI's default and is not yet asserted; axe and screen-reader runs are FE-116.
+- **Locales reviewed:** English only; `ha`/`ig`/`yo` keys are `null` and pending.
+- **Performance/cache impact:** Client islands are only on the reviewer detail page; no public page changed.
+- **Commands run and results:** `make web-verify` exit 0; targeted e2e `reviewer` 68 passed (Chromium and mobile WebKit).
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** The API's note limit is inconsistent in documentation (4,000 in `docs/API.md`, 4,500 in OpenAPI); the UI enforces 4,000, the stricter. Downloads are held in memory, which is fine for the 10 MiB per-file cap. A reload after a network failure re-shows the list, which is how a reviewer checks whether a note landed.
+- **Commit/PR:** `feat: add reviewer evidence download, append-only notes, and follow-up question controls`
+- **Next task may rely on:** `postJson`-based reviewer mutation pattern, `ActionFeedback`, the `reviewer.actions` copy, and the mock note/question/evidence endpoints.
+- **AI assistance used:** Designed and implemented the download, notes, and question components, mock endpoints, and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-114 Status transition controls
+
+- **Task:** FE-114 — Status transition controls (Circle 11).
+- **User outcome delivered:** A reviewer can move a report to another status through a confirmed, version-checked action, sees exactly what the reporter will see, and can recover from a stale view without losing their text; no status change ever publishes anything.
+- **Routes/components changed:** `src/components/reviewer/status-actions.tsx`, `src/lib/reviewer/transitions.ts`, the detail page's status section, `messages/*` (`reviewer.transition`), mock transition endpoint with a first-attempt race, unit, component and e2e tests.
+- **Backend operations/contract version:** `reviewer_decisions_transition` through the existing handler (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Reporter-visible message and private internal reason in a same-origin POST body and component memory only; neither is stored or placed in an address. The transition never changes the public record.
+- **States implemented:** initial, field validation, confirming, pending lock, success announced, stale/not-allowed conflict with reload, session ended, may-have-completed, unknown status (no controls).
+- **Accessibility evidence:** labelled fields with error association and required marking, alertdialog confirmation with Cancel first, result in a status region and failures in an alert region, keyboard Enter/Escape verified on Chromium. No axe or screen-reader run yet (FE-116).
+- **Locales reviewed:** English only; `ha`/`ig`/`yo` keys are `null` and pending.
+- **Performance/cache impact:** One client island on the reviewer detail only.
+- **Commands run and results:** `make web-verify` exit 0; targeted e2e `reviewer` 81 passed on Chromium and mobile WebKit before the final record.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** The frontend's copy of the allowed transitions is a usability aid and could lag a backend change until the parity test is run. iOS WebKit Tab-focus behaviour is skipped as elsewhere. The real API's problem payloads for `409` were not exercised.
+- **Commit/PR:** `feat: add version-checked, confirmed reviewer status transition controls`
+- **Next task may rely on:** `REVIEWER_TRANSITIONS`, `StatusActions`, and the mock `changes` state that makes a reload show the new status.
+- **AI assistance used:** Designed and implemented the controls, transition table, parity test, mock endpoint and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-115 Public-update composer and exact preview
+
+- **Task:** FE-115 — Public-update composer and exact preview (Circle 11).
+- **User outcome delivered:** A reviewer can write a neutral public update, choose only approved citations, see exactly what the public timeline would show, and publish that exact text after a confirmation, with stale or blocked previews refused.
+- **Routes/components changed:** `src/components/reviewer/public-update-panel.tsx`, `src/components/project/update-entry.tsx` (extracted; `project-detail.tsx` now uses it), `src/lib/reviewer/publication.ts`, the detail page's public-update section, `messages/*` (`reviewer.publication`), mock draft/preview/publish/withdraw endpoints that also add a published update to the mock public record, unit, component and e2e tests.
+- **Backend operations/contract version:** `reviewer_publication_list` (server read), `reviewer_publication_create_draft`, `reviewer_publication_preview`, `reviewer_publication_publish`, `reviewer_publication_withdraw` through the existing handlers (OpenAPI 0.0.0 unchanged); public project detail for citation options.
+- **Public/private data handled:** The statement is authored public text; citation passages are already-public approved text. Nothing from the private report is prefilled or sent to the composer. Digests and drafts live in component memory only. Publishing revalidates the public catalogue through the existing handler.
+- **States implemented:** blocked (not verified, no citations, citations unavailable), empty composer, validation, creating, preview with and without issues, publish confirmation, publishing, published, stale, discarded, draft list with reopen, malformed response, session ended, failure with may-have-completed.
+- **Accessibility evidence:** labelled fields with error association and required marking, fieldset and legend for citations with per-passage descriptions, alertdialog confirmations, status and alert regions, text (not colour) for issues. No axe or screen-reader run yet (FE-116).
+- **Locales reviewed:** English only; `ha`/`ig`/`yo` keys are `null` and pending. The preview itself uses the public `project`, `evidence` and `source` copy in the reviewer's language, with the usual original-language notice.
+- **Performance/cache impact:** Client JavaScript only on the reviewer detail page (the shared entry and citation components ride along). The public record page renders the same markup as before; its 9 component tests and 12 browser tests pass unchanged.
+- **Commands run and results:** `make web-verify` exit 0 (492 unit, 164 component, bundle scan clean); targeted e2e `reviewer project-evidence` 111 passed, three consecutive runs.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** The API contract has no re-authentication step for publishing, so none is offered; the maintainer should decide if one is required. The statement limit is 2,000 characters per `docs/API.md` (OpenAPI allows 2,100). Citations come from the public record's facts and updates only, so a source not yet shown publicly cannot be cited from here. Preview issue codes beyond those in `docs/API.md` show as an unrecognised issue with its code.
+- **Commit/PR:** `feat: add the public-update composer with exact preview and digest-confirmed publishing`
+- **Next task may rely on:** `PublicUpdateEntry`/`StatementClaim`/`citationView`, `parsePreview`, `citationOptions`, and the mock publication endpoints.
+- **AI assistance used:** Designed and implemented the composer, shared entry extraction, parser, mock endpoints and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-116 Reviewer security, accessibility, and E2E
+
+- **Task:** FE-116 — Reviewer security/accessibility/E2E (Circle 11).
+- **User outcome delivered:** The reviewer workspace is proven safe and usable end to end: unauthorised, cross-origin, and CSRF-less requests are refused, sign-out leaves nothing behind, and the pages pass axe, phone-width, 200% text, and keyboard checks in four languages.
+- **Routes/components changed:** `tests/e2e/reviewer-security.spec.ts`, `tests/a11y/reviewer.a11y.spec.ts`, the every-transition component test, and one fix: the report-detail failure and not-found states now have a page heading.
+- **Backend operations/contract version:** No operation added; OpenAPI 0.0.0 unchanged.
+- **Public/private data handled:** Fictional data only. Tests assert that no report text, contact, note, internal reason, or password reaches the console, storage, a URL, a public page, or a public cache.
+- **States implemented:** covered by earlier tasks; this task adds the session-without-CSRF, cross-origin, sign-out, back-navigation, and direct-URL states.
+- **Accessibility evidence:** `make web-a11y` 312 passed (Chromium and mobile WebKit): axe, 320 px reflow, and 200% text for the reviewer sign-in states, queue states, and detail states in en, ha, ig, and yo, and for the actions, note and status confirmations, composer, preview, and publish confirmation in English; a 44 px control check. One real violation fixed (no page heading on failure states). A narrow, documented exclusion of Base UI focus-guard spans on WebKit in dialog checks.
+- **Locales reviewed:** en, ha, ig, yo routes and shell audited. Reviewer body copy in ha/ig/yo is `null` (pending), so those pages show the English original with a notice; no translation was written or claimed.
+- **Performance/cache impact:** Reviewer routes are dynamic, no-store, and outside public caches; client JavaScript is only on reviewer pages; `bundle:check` clean (33 chunks).
+- **Commands run and results:** `make web-verify` exit 0 (492 unit and 179 component tests in total, message parity, contract drift, client-boundary scan); `make web-e2e` 320 passed and 6 skipped (iOS WebKit Tab-focus, three existing and three new; 110 of the runs are the reviewer's, 55 tests on two browsers); `make web-a11y` 312 passed (30 runs are the reviewer's); the five Circle 0 frontend validators and the workflow validator pass.
+- **Screenshots/traces/artifacts checked:** none captured (assertions only); traces are retained only on failure and contain fictional data.
+- **Known limitations/open decisions:** Real API not run against these flows; screen-reader output not tested; a contact reveal is a GET (history entry re-audits); the API contract has no re-authentication step for publishing; hidden Tab-focus behaviour on iOS WebKit is skipped; Source Scout for a report is a stated placeholder until Circle 12.
+- **Commit/PR:** `test: prove reviewer security, accessibility, and keyboard behaviour end to end`
+- **Next task may rely on:** the reviewer detail page's section slots (`scout`), `ReviewerFrame`, the mock reviewer API, `auditDialog`, and `signInAs`.
+- **AI assistance used:** Wrote the security, keyboard, and accessibility suites; diagnosed and fixed the missing-heading defect and test races.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

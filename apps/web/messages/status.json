@@ -45,6 +45,9 @@
     },
     "handle": {
       "critical": false
+    },
+    "reviewer": {
+      "critical": false
     }
   },
   "locales": {
@@ -123,6 +126,11 @@
         "status": "reviewed",
         "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
         "reviewedOn": "2026-09-20"
+      },
+      "reviewer": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: English source copy authored in an unattended build run; no independent review yet)",
+        "reviewedOn": "2026-09-20"
       }
     },
     "ha": {
@@ -177,6 +185,9 @@
         "status": "pending"
       },
       "handle": {
+        "status": "pending"
+      },
+      "reviewer": {
         "status": "pending"
       }
     },
@@ -233,6 +244,9 @@
       },
       "handle": {
         "status": "pending"
+      },
+      "reviewer": {
+        "status": "pending"
       }
     },
     "yo": {
@@ -287,6 +301,9 @@
         "status": "pending"
       },
       "handle": {
+        "status": "pending"
+      },
+      "reviewer": {
         "status": "pending"
       }
     }

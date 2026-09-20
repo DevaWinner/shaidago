@@ -859,5 +859,433 @@
       "failedTitle": "The handle was not deleted"
     },
     "statusLink": "Check the status of a report"
+  },
+  "reviewer": {
+    "common": {
+      "private": "Private reviewer area. Everything here is fictional demo data and is never public.",
+      "noindex": "Not for sharing",
+      "backToQueue": "Back to the report queue",
+      "signedOut": "You have been signed out.",
+      "language": "This reviewer area is written in English; the other languages are not reviewed yet.",
+      "signOut": "Sign out",
+      "signingOut": "Signing out"
+    },
+    "signIn": {
+      "title": "Reviewer sign-in",
+      "lead": "For authorised ShaidaGo reviewers only. Reporters do not need an account.",
+      "needsScript": "Sign-in needs JavaScript. Turn it on for this site and reload.",
+      "identifier": "Reviewer identifier",
+      "password": "Password",
+      "submit": "Sign in",
+      "pending": "Signing in",
+      "required": "Required",
+      "identifierRequired": "Enter your reviewer identifier.",
+      "passwordRequired": "Enter your password.",
+      "wait": "Too many attempts. You can try again in {seconds} seconds.",
+      "waitDone": "You can try again now.",
+      "failureTitle": "Sign-in did not work",
+      "reasons": {
+        "expired": "Your session ended. Sign in again to continue.",
+        "signed_out": "You have been signed out."
+      },
+      "note": "This sign-in never says which part was wrong. Nothing you type is stored in this browser."
+    },
+    "queue": {
+      "title": "Report queue",
+      "lead": "Oldest first. This list shows triage details only. Open a report to read it.",
+      "filters": {
+        "label": "Filter the queue",
+        "status": "Status",
+        "risk": "Risk level",
+        "category": "Concern",
+        "project": "Record name (as in its address)",
+        "projectHelp": "Lowercase letters, numbers and hyphens.",
+        "any": "Any",
+        "apply": "Apply filters",
+        "clear": "Clear filters"
+      },
+      "statuses": {
+        "received": "Received",
+        "needs_information": "Waiting for the reporter",
+        "under_review": "Under review",
+        "verified_for_public_update": "Verified for a public update",
+        "referred": "Referred",
+        "closed": "Closed"
+      },
+      "risks": {
+        "standard": "Standard",
+        "elevated": "Elevated",
+        "high": "High"
+      },
+      "categories": {
+        "no_visible_work": "No visible work",
+        "incomplete_work": "Incomplete work",
+        "unsafe_construction": "Unsafe construction",
+        "suspected_incorrect_status": "Status may be wrong",
+        "access_barrier": "Access barrier",
+        "other_concern": "Other concern"
+      },
+      "item": {
+        "riskLabel": "Risk",
+        "statusLabel": "Status",
+        "received": "Received {date}",
+        "updated": "Status changed {date}",
+        "files": "{count, plural, one {# file} other {# files}}",
+        "noFiles": "No files",
+        "questions": "{count, plural, one {# open question} other {# open questions}}",
+        "noQuestions": "No open questions",
+        "contact": "Contact details provided",
+        "noContact": "No contact details",
+        "open": "Open report",
+        "openLabel": "Open report for {project}, received {date}"
+      },
+      "results": {
+        "heading": "Reports",
+        "count": "{count, plural, one {# report on this page} other {# reports on this page}}",
+        "paginationLabel": "Queue pages",
+        "next": "Next reports",
+        "first": "Back to the first page"
+      },
+      "states": {
+        "empty": {
+          "title": "Nothing is waiting",
+          "body": "No reports need attention right now."
+        },
+        "noMatches": {
+          "title": "No reports match these filters",
+          "body": "Clear a filter to see more."
+        },
+        "invalidCursor": {
+          "title": "That page is no longer valid",
+          "body": "The queue changed. Go back to the first page."
+        },
+        "forbidden": {
+          "title": "This account cannot open the queue",
+          "body": "Ask an administrator to check your role. Nothing was loaded."
+        },
+        "rateLimited": {
+          "title": "Too many requests",
+          "body": "Wait a moment, then reload the page."
+        },
+        "unavailable": {
+          "title": "The queue could not be loaded",
+          "body": "The service did not answer. Nothing has changed. Try again.",
+          "retry": "Try again"
+        }
+      }
+    },
+    "detail": {
+      "title": "Report",
+      "back": "Back to the report queue",
+      "jump": "On this page",
+      "demo": {
+        "title": "Fictional demo data",
+        "body": "Every report in this demonstration is invented. Real reports, names, and contact details must never be entered or opened here."
+      },
+      "header": {
+        "status": "Status",
+        "risk": "Risk",
+        "received": "Received {date}",
+        "updated": "Status changed {date}",
+        "version": "Version {version}",
+        "project": "Project record",
+        "publicRecord": "Open the public record"
+      },
+      "sections": {
+        "status": "Status and actions",
+        "observation": "What was reported",
+        "evidence": "Evidence files",
+        "contact": "Contact details",
+        "history": "Status history",
+        "questions": "Questions to the reporter",
+        "handle": "Reporter handle",
+        "scout": "Source Scout",
+        "publication": "Public update",
+        "notes": "Internal notes"
+      },
+      "observation": {
+        "category": "Concern",
+        "project": "Project record",
+        "description": "Description from the reporter",
+        "descriptionNote": "Shown as plain text exactly as it was sent. It is private and is never published automatically.",
+        "received": "Received"
+      },
+      "evidence": {
+        "empty": "No files were attached.",
+        "name": "File",
+        "type": "Type",
+        "size": "Size",
+        "sanitation": "Cleaning",
+        "scan": "Malware scan",
+        "added": "Added {date}",
+        "note": "Files are cleaned before storage. Nothing is shown inline: a file is only downloaded when you ask for it.",
+        "sanitationStates": {
+          "pending": "Cleaning not started",
+          "processing": "Being cleaned",
+          "sanitised": "Cleaned",
+          "rejected": "Rejected",
+          "failed": "Cleaning failed"
+        },
+        "scanStates": {
+          "pending": "Scan not started",
+          "scanning": "Being scanned",
+          "clean": "No malware found",
+          "malware_detected": "Malware detected",
+          "scan_failed": "Scan failed",
+          "not_scanned_demo": "Not scanned (demo only)"
+        },
+        "demoLimit": "This demo has no malware scanner, so this file was not scanned. Do not open it outside a safe environment.",
+        "bytes": "{count, plural, one {# byte} other {# bytes}}",
+        "kilobytes": "{count} KB",
+        "megabytes": "{count} MB"
+      },
+      "contact": {
+        "none": "The reporter gave no contact details.",
+        "hidden": "Contact details exist but are hidden.",
+        "reveal": "Show contact details",
+        "revealNote": "Showing them is recorded in the audit log.",
+        "shown": "{channel}: {value}",
+        "hide": "Hide contact details",
+        "denied": "This account is not allowed to see contact details.",
+        "unavailable": "The contact details could not be shown right now.",
+        "auditNote": "This view was recorded in the audit log."
+      },
+      "history": {
+        "empty": "No status changes yet.",
+        "from": "From {from} to {to}",
+        "first": "Set to {to}",
+        "actor": "By {actor}",
+        "actors": {
+          "reporter": "the reporter",
+          "reviewer": "a reviewer",
+          "admin": "an administrator",
+          "system": "the system"
+        },
+        "shownToReporter": "Shown to the reporter",
+        "internal": "Internal reason (private)",
+        "noMessage": "No message shown to the reporter."
+      },
+      "questions": {
+        "empty": "No questions have been asked.",
+        "asked": "Asked {date}",
+        "answered": "Answer ({kind})",
+        "private": "The answer is private.",
+        "noAnswer": "Not answered yet.",
+        "withdrawn": "Withdrawn",
+        "kinds": {
+          "answered": "answered",
+          "skipped": "skipped",
+          "unsafe": "marked unsafe"
+        }
+      },
+      "handle": {
+        "none": "This report is not linked to a reporter handle.",
+        "note": "A handle is a pseudonym, not proof of identity or of accuracy. Treat this as context only.",
+        "name": "Handle",
+        "total": "Reports linked",
+        "verified": "Verified for a public update",
+        "closed": "Closed"
+      },
+      "scout": {
+        "body": "Report-scoped source discovery is not available in this workspace yet. Nothing is searched for this report.",
+        "private": "When it is available it will use only a privacy-safe query that you approve first."
+      },
+      "states": {
+        "notFound": {
+          "title": "This report is not available",
+          "body": "Check the address or return to the queue. This page does not say whether a report exists."
+        },
+        "forbidden": {
+          "title": "This account cannot open this report",
+          "body": "Ask an administrator to check your role. Nothing was loaded."
+        },
+        "rateLimited": {
+          "title": "Too many requests",
+          "body": "Wait a moment, then reload the page."
+        },
+        "unavailable": {
+          "title": "The report could not be loaded",
+          "body": "The service did not answer. Nothing has changed. Try again.",
+          "retry": "Try again"
+        }
+      }
+    },
+    "actions": {
+      "sessionEnded": "Your session ended. Sign in again to continue. Anything you typed here will not be kept.",
+      "signIn": "Sign in again",
+      "pending": "Working",
+      "tryAgain": "Nothing was changed by a failed request unless it says otherwise. You can try again."
+    },
+    "download": {
+      "button": "Download",
+      "buttonLabel": "Download {name}",
+      "pending": "Preparing the download",
+      "done": "The download of {name} started.",
+      "failed": "The file could not be downloaded.",
+      "note": "A fresh request is made each time. Nothing is kept in this browser."
+    },
+    "notes": {
+      "empty": "No notes yet.",
+      "intro": "Notes are private and plain text. They cannot be edited or deleted; a correction is a new note.",
+      "label": "New note",
+      "hint": "Plain text only, up to {max} characters. Do not paste contact details or anything that identifies the reporter.",
+      "counter": "{count} of {max}",
+      "submit": "Add note",
+      "required": "Write a note first.",
+      "tooLong": "This note is too long.",
+      "confirmTitle": "Add this note?",
+      "confirmBody": "It is private and permanent. It cannot be edited or deleted afterwards.",
+      "confirm": "Add note",
+      "cancel": "Keep editing",
+      "added": "Note added.",
+      "by": "By {author}",
+      "gone": "The text of this note is no longer available.",
+      "more": "Show later notes",
+      "first": "Back to the first notes",
+      "navLabel": "Notes pages",
+      "unavailable": "The notes could not be loaded. The rest of the report is unaffected.",
+      "retry": "Try loading the notes again"
+    },
+    "questionActions": {
+      "label": "New question for the reporter",
+      "hint": "The reporter sees this on the status page. 5 to 500 characters. Do not ask for identifying details.",
+      "counter": "{count} of {max}",
+      "submit": "Ask question",
+      "tooShort": "Write at least 5 characters.",
+      "tooLong": "This question is too long.",
+      "confirmTitle": "Send this question?",
+      "confirmBody": "The reporter will see it when they check their status. It does not change the report's status.",
+      "confirm": "Send question",
+      "cancel": "Keep editing",
+      "added": "Question added.",
+      "withdraw": "Withdraw",
+      "withdrawLabel": "Withdraw the question: {question}",
+      "withdrawTitle": "Withdraw this question?",
+      "withdrawBody": "The reporter will no longer see it. An answer already given stays in the record.",
+      "withdrawConfirm": "Withdraw question",
+      "withdrawn": "Question withdrawn."
+    },
+    "transition": {
+      "legend": "Change the status",
+      "command": "Action",
+      "commandHelp": "Moves the report from {from} to {to}.",
+      "commands": {
+        "start_review": "Start review",
+        "request_information": "Ask the reporter for more information",
+        "resume_review": "Resume review",
+        "verify_for_public_update": "Mark verified for a public update",
+        "refer": "Record a referral",
+        "close": "Close the report",
+        "reopen": "Reopen the report"
+      },
+      "message": "Message the reporter will see",
+      "messageHint": "Shown on the reporter's status page, never on the public record. Up to {max} characters. Leave it empty to use the standard message. Do not include names or contact details.",
+      "messageRequired": "Say what you need from the reporter.",
+      "messageTooLong": "This message is too long.",
+      "reason": "Internal reason (private)",
+      "reasonHint": "Never shown to the reporter. Up to {max} characters.",
+      "reasonRequired": "Give a reason for reopening.",
+      "reasonTooLong": "This reason is too long.",
+      "counter": "{count} of {max}",
+      "submit": "Apply change",
+      "pending": "Applying",
+      "confirmTitle": "Change the status to {to}?",
+      "confirmBody": "The reporter will see the new status and the message above. This does not publish anything on the public record.",
+      "confirmCareful": "This changes what the reporter is told and how the case is treated. Check the message before you confirm.",
+      "confirm": "Apply change",
+      "cancel": "Keep editing",
+      "done": "Status changed from {from} to {to}. Nothing was published.",
+      "conflict": "This report changed while you were working, or that action is no longer available. Reload to see the latest status and history, then choose again. What you typed is kept.",
+      "reload": "Reload the report",
+      "none": "No status change is available from this status.",
+      "publishNote": "A status change never publishes text. A public update is a separate step further down this page.",
+      "reloading": "Reloading"
+    },
+    "publication": {
+      "intro": "A public update is written by you, separately from any status change or private note. It is shown on the project's public timeline only after you preview it and confirm exactly that text.",
+      "guidance": "State only what the cited passages say. Do not copy text from the private report, and do not call anyone or anything corrupt, fraudulent, guilty, abandoned, or complete unless a cited passage says so in those words.",
+      "needsVerified": "A public update can be drafted only when the report is marked Verified for a public update. Change the status first.",
+      "noCitations": "No approved citations are available for this project, so a public update cannot be drafted.",
+      "citationsUnavailable": "The approved citations for this project could not be loaded, so a public update cannot be drafted now. Reload the page to try again.",
+      "statement": "Public statement",
+      "statementHint": "Plain text, 10 to {max} characters. Neutral wording only. It is shown to everyone.",
+      "counter": "{count} of {max}",
+      "effectiveOn": "Date this applies from",
+      "effectiveHelp": "The date the cited source says this took effect.",
+      "lastChecked": "Last checked on (optional)",
+      "lastCheckedHelp": "Leave empty if you have not rechecked the source.",
+      "verification": "Verification state",
+      "citations": "Approved citations",
+      "citationsHint": "Choose 1 to 5. The passage is copied exactly from the approved source and cannot be edited.",
+      "citationLine": "{title}, {publisher}, {location}",
+      "submit": "Create a preview",
+      "creating": "Creating the preview",
+      "errors": {
+        "statementRequired": "Write the public statement.",
+        "statementShort": "Write at least 10 characters.",
+        "statementLong": "This statement is too long.",
+        "dateRequired": "Choose the date this applies from.",
+        "citationsRequired": "Choose at least one approved citation.",
+        "citationsTooMany": "Choose no more than 5 citations."
+      },
+      "preview": {
+        "heading": "Exact preview",
+        "lead": "This is exactly what the public timeline will show, drawn with the same component. Nothing is public yet.",
+        "status": "Report status when this preview was made: {status} (version {version}).",
+        "issuesHeading": "This cannot be published yet",
+        "noIssues": "No blocking issues were found.",
+        "citationsHeading": "Cited passages",
+        "edit": "Edit the text",
+        "discard": "Discard this draft",
+        "publish": "Publish this update",
+        "publishing": "Publishing",
+        "cannot": "Publishing is not available for this preview.",
+        "stale": "The report or the preview changed after it was made, so it was not published. Create a new preview and check it again.",
+        "newPreview": "Back to editing",
+        "viewPublic": "See it on the public record",
+        "publishedAt": "Published {date}.",
+        "publishedHeading": "Published",
+        "publishedBody": "This update is now on the project's public timeline exactly as previewed.",
+        "discarded": "The draft was discarded. Nothing was published.",
+        "confirmTitle": "Publish this update to everyone?",
+        "confirmBody": "The statement, its date, its verification label, and its cited passages will appear on the project's public timeline exactly as shown in the preview. This is shown to the public and cannot be silently changed.",
+        "confirm": "Publish",
+        "cancel": "Keep the preview",
+        "discardTitle": "Discard this draft?",
+        "discardBody": "The draft is withdrawn. Nothing is published.",
+        "discardConfirm": "Discard draft"
+      },
+      "issues": {
+        "statement": "Statement",
+        "known": {
+          "report_text": "The statement repeats wording from the private report, an answer, or a note. Rewrite it from the cited source.",
+          "citations": "A citation is missing or does not support this update.",
+          "effective_on": "The date is missing or not allowed.",
+          "verification_state": "The verification state does not match the cited sources.",
+          "statement": "The statement needs attention.",
+          "contact_detail": "The statement contains something that looks like a contact detail. Remove it.",
+          "tracking_code": "The statement contains something that looks like a tracking code. Remove it."
+        },
+        "term": "The word “{term}” is used, but no cited passage contains it. Remove it or cite a passage that does.",
+        "other": "An unrecognised issue ({code}) blocks publishing.",
+        "field": "Field: {field}"
+      },
+      "drafts": {
+        "heading": "Earlier drafts",
+        "empty": "No drafts yet.",
+        "state": "State: {state}",
+        "states": {
+          "draft": "Draft",
+          "published": "Published",
+          "withdrawn": "Withdrawn"
+        },
+        "created": "Created {date}",
+        "open": "Open preview",
+        "withdraw": "Withdraw",
+        "loading": "Loading the preview",
+        "openFailed": "The preview could not be opened."
+      },
+      "guidanceTitle": "Write neutrally"
+    }
   }
 }
