@@ -1,0 +1,83 @@
+{
+  "$comment": "Translation status per locale and domain. A locale is served as its own language only when every critical domain is reviewed; otherwise pages serve the English original and say so. Never mark a domain reviewed or machine_assisted without a named reviewer and date.",
+  "domains": {
+    "shell": {
+      "critical": true
+    },
+    "evidence": {
+      "critical": true
+    },
+    "recovery": {
+      "critical": true
+    },
+    "landing": {
+      "critical": false
+    }
+  },
+  "locales": {
+    "en": {
+      "shell": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
+        "reviewedOn": "2026-09-20"
+      },
+      "evidence": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
+        "reviewedOn": "2026-09-20"
+      },
+      "recovery": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
+        "reviewedOn": "2026-09-20"
+      },
+      "landing": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
+        "reviewedOn": "2026-09-20"
+      }
+    },
+    "ha": {
+      "shell": {
+        "status": "pending"
+      },
+      "evidence": {
+        "status": "pending"
+      },
+      "recovery": {
+        "status": "pending"
+      },
+      "landing": {
+        "status": "pending"
+      }
+    },
+    "ig": {
+      "shell": {
+        "status": "pending"
+      },
+      "evidence": {
+        "status": "pending"
+      },
+      "recovery": {
+        "status": "pending"
+      },
+      "landing": {
+        "status": "pending"
+      }
+    },
+    "yo": {
+      "shell": {
+        "status": "pending"
+      },
+      "evidence": {
+        "status": "pending"
+      },
+      "recovery": {
+        "status": "pending"
+      },
+      "landing": {
+        "status": "pending"
+      }
+    }
+  }
+}

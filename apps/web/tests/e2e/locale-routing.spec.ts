@@ -82,7 +82,7 @@ test("an unknown path under a real locale is a 404 in that locale", async ({ pag
 
   // The remembered language brings the visitor back to the same locale.
   await page.getByRole("link", { name: "Return to ShaidaGo" }).click();
-  expect(new URL(page.url()).pathname).toBe("/ig");
+  await expect(page).toHaveURL(/\/ig$/);
 });
 
 test("open-redirect attempts never leave this origin", async ({ request, baseURL }) => {

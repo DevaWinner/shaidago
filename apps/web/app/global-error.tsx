@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 
+import en from "../messages/en.json";
 import { RecoveryPage } from "./_components/recovery-page";
 import { toSafeRequestReference } from "@/lib/support/request-reference";
 
@@ -21,16 +22,19 @@ export default function GlobalError({ error, reset }: GlobalErrorProperties): Re
     <html lang="en">
       <body>
         <RecoveryPage
-          title="ShaidaGo could not be opened"
-          reference={reference}
+          title={en.recovery.fatal.title}
+          referenceText={
+            reference === undefined
+              ? undefined
+              : en.recovery.error.reference.replace("{reference}", reference)
+          }
           action={
             <button type="button" onClick={reset}>
-              Try again
+              {en.recovery.error.retry}
             </button>
           }
         >
-          Try again. If the problem continues, share the support reference without sharing private
-          report details.
+          {en.recovery.error.body}
         </RecoveryPage>
       </body>
     </html>

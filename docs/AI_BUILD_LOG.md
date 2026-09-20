@@ -1985,3 +1985,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Configured next-intl, restructured the routes, and wrote the negotiation and open-redirect tests.
 - **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-051 Message structure and parity tooling
+
+- **Task:** FE-051 — Message structure and parity tooling.
+- **User outcome delivered:** Copy is now structured by domain in four catalogues with a machine-checked guarantee that no translation can drift from English, and a locale is served in its own language only when a named reviewer has approved it.
+- **Files changed:** `apps/web/messages/{en,ha,ig,yo,status}.json`, `apps/web/scripts/{messages-parity,check-messages}.mjs`, `apps/web/src/i18n/{catalogue,routing}.ts`, landing page and first-viewport component, recovery pages and `RecoveryPage`, the shell test, `apps/web/package.json` and lockfile (dev dependency `@formatjs/icu-messageformat-parser` 3.5.19, MIT, already in the tree via next-intl), tests (parity, catalogue, e2e link name), `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log. The old `src/content/en/*.ts` modules were removed.
+- **Backend operations/contract version:** None.
+- **Public/private data handled:** None; static public copy only.
+- **States implemented:** reviewed, machine-assisted, and pending domains; complete versus gapped catalogues; original-with-notice fallback.
+- **Accessibility evidence:** unchanged axe results (16 browser checks); the fallback keeps `lang` truthful and shows a visible notice. "Sources 1" became "Source 1" through an ICU `{number, number}` message.
+- **Locales reviewed:** English is marked reviewed with the maintainer as reviewer, self-reported on the basis that they reviewed and merged pull requests 17 to 22. `ha`, `ig`, and `yo` are `pending`, every value `null`. I did not write, machine-translate, or simulate any Hausa, Igbo, or Yoruba text, because a wrong safety or status string would mislead residents and CLAUDE.md forbids fabricated translations.
+- **Performance/cache impact:** No runtime dependency. The client `error` and `global-error` boundaries import `en.json` (about 5 KB of JSON); the client bundle scan is still clean. First-load JavaScript was not measured against the plan's budget.
+- **Failure behaviour verified:** the checker fails on a missing or extra key, a leaf/object mismatch, an empty or non-string leaf, invalid ICU in English or a translation, a renamed or retyped variable, missing `other` branches, unknown plural categories, differing select branches, translated text under `pending`, gaps under `reviewed`, missing reviewer or date, an invalid status value, mismatched domains, and an unreviewed English source. The loader falls back, flagged, when a domain is marked reviewed but still contains nulls.
+- **Commands run and results:** `make web-verify` exit 0 (300 unit, 47 component, contract drift plus message check, build, boundary scan clean); `make web-e2e` 35 passed and 1 skipped (iOS WebKit Tab-to-link) on three consecutive runs; `make web-a11y` 16 passed; lint 0 errors and 0 warnings; the frontend workflow validator passes.
+- **Screenshots/traces/artifacts checked:** None new; the rendered landing is unchanged apart from the "Source 1" label.
+- **Known limitations/open decisions:** Every non-English domain is pending, so the Circle 5 requirement for reviewed critical copy in three languages needs a fluent reviewer. Recovery pages are English-only because reading the locale would make them dynamic. Typed content records for evidence labels remain exhaustive by TypeScript and by the parity check.
+- **Commit/PR:** `feat: add domain message catalogues with parity checking and honest review status`
+- **Next task may rely on:** `resolveDomain`, `formatMessage`, the catalogue types, and `messages:check` for FE-052 to FE-054.
+- **AI assistance used:** Designed the catalogue structure, wrote the parity checker and loader, and migrated the existing copy.
+- **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
+- **Human review:** none yet; unattended run, pending maintainer review.

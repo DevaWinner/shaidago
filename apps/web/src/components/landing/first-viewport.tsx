@@ -9,10 +9,7 @@ import {
   type DateFormatter
 } from "@/components/evidence/evidence";
 import { ButtonLink } from "@/components/ui/button";
-import { dateGroupLabels, timelineOriginLabels, verificationLabels } from "@/content/en/evidence";
-import type { landingMessages } from "@/content/en/landing";
-
-type Messages = typeof landingMessages;
+import type { Messages } from "@/i18n/catalogue";
 
 /**
  * The first viewport from the Field ledger contract: a locality-tagged record in a reading field,
@@ -22,19 +19,26 @@ type Messages = typeof landingMessages;
  */
 export function FirstViewport({
   browseHref,
+  evidence,
   format,
   messages,
-  reportHref
+  reportHref,
+  sourceCountText,
+  sourceLabelText
 }: Readonly<{
   browseHref: string;
+  evidence: Messages["evidence"];
   format: DateFormatter;
-  messages: Messages;
+  messages: Messages["landing"];
   reportHref: string;
+  /** ICU-formatted in the page's language, e.g. "1 source". */
+  sourceCountText: string;
+  sourceLabelText: string;
 }>): ReactNode {
   const sample = messages.sample;
   const citation = {
     id: "example-1",
-    label: `${sample.sourceCountLabel} 1`,
+    label: sourceLabelText,
     ...sample.citation
   };
 
@@ -97,21 +101,21 @@ export function FirstViewport({
             citedLabel={messages.citedLabel}
             claimId="example"
             verification={
-              <VerificationLabel labels={verificationLabels} state="awaiting_verification" />
+              <VerificationLabel labels={evidence.verification} state="awaiting_verification" />
             }
           >
             <strong>{sample.stateLabel}:</strong> {sample.stateText}
           </ClaimWithCitations>
           <dl className="m-0 flex flex-wrap gap-x-6 gap-y-2 text-sm [&_dd]:m-0 [&_dd]:font-bold [&_dt]:text-muted-foreground">
             <div>
-              <dt>{sample.sourceCountLabel}</dt>
-              <dd>{sample.sourceCount}</dd>
+              <dt>{sourceLabelText}</dt>
+              <dd>{sourceCountText}</dd>
             </div>
           </dl>
           <DateGroup
             dates={{ lastCheckedOn: "2026-09-01" }}
             format={format}
-            labels={dateGroupLabels}
+            labels={evidence.dates}
           />
         </article>
       </div>
@@ -127,24 +131,24 @@ export function FirstViewport({
         <ol className="m-0 grid gap-3 p-0">
           <TimelineItem
             date="2026-09-01"
-            dateLabel={dateGroupLabels.lastChecked}
+            dateLabel={evidence.dates.lastChecked}
             format={format}
             origin="official"
-            originLabels={timelineOriginLabels}
+            originLabels={evidence.timeline}
             verification={
-              <VerificationLabel labels={verificationLabels} state="awaiting_verification" />
+              <VerificationLabel labels={evidence.verification} state="awaiting_verification" />
             }
           >
             {sample.railEntries.official}
           </TimelineItem>
           <TimelineItem
             date="2026-08-20"
-            dateLabel={dateGroupLabels.effective}
+            dateLabel={evidence.dates.effective}
             format={format}
             origin="community_reviewed"
-            originLabels={timelineOriginLabels}
+            originLabels={evidence.timeline}
             verification={
-              <VerificationLabel labels={verificationLabels} state="community_reviewed" />
+              <VerificationLabel labels={evidence.verification} state="community_reviewed" />
             }
           >
             {sample.railEntries.community}

@@ -4,7 +4,10 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { PublicShell, ReviewerShell } from "@/components/shell/shell";
 import { SignOutButton } from "@/components/shell/sign-out-button";
-import { publicShellMessages, reviewerShellMessages } from "@/content/en/shell";
+import en from "../../messages/en.json";
+
+const publicShellMessages = en.shell.public;
+const reviewerShellMessages = en.shell.reviewer;
 
 const links = {
   home: "/",

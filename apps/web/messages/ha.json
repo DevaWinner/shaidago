@@ -1,0 +1,127 @@
+{
+  "shell": {
+    "public": {
+      "footerLabel": null,
+      "footerSources": null,
+      "footerTrust": null,
+      "localeCurrentSuffix": null,
+      "localeLabel": null,
+      "localeNames": {
+        "en": null,
+        "ha": null,
+        "ig": null,
+        "yo": null
+      },
+      "localeUnavailable": null,
+      "navLabel": null,
+      "navLocalities": null,
+      "navReport": null,
+      "navTrust": null,
+      "notEmergency": null,
+      "productName": null,
+      "skipToContent": null,
+      "statusRegionLabel": null
+    },
+    "reviewer": {
+      "area": null,
+      "navLabel": null,
+      "productName": null,
+      "queue": null,
+      "skipToContent": null
+    }
+  },
+  "evidence": {
+    "verification": {
+      "awaiting_verification": null,
+      "verified_official": null,
+      "corroborated": null,
+      "community_reviewed": null,
+      "disputed": null,
+      "outdated": null
+    },
+    "informationClass": {
+      "official_source": null,
+      "independent_source": null,
+      "community_evidence_reviewed": null,
+      "community_report_unverified": null,
+      "ai_generated_explanation": null
+    },
+    "availability": {
+      "unchecked": null,
+      "available": null,
+      "temporarily_unavailable": null,
+      "access_restricted": null,
+      "permanently_unavailable": null
+    },
+    "dates": {
+      "effective": null,
+      "lastChecked": null,
+      "published": null,
+      "retrieved": null,
+      "unknown": null
+    },
+    "source": {
+      "availabilityHeading": null,
+      "externalNotice": null,
+      "publisherHeading": null
+    },
+    "translation": {
+      "reviewed": null,
+      "machine_assisted": null,
+      "unavailable": null
+    },
+    "timeline": {
+      "official": null,
+      "community_reviewed": null
+    }
+  },
+  "landing": {
+    "browse": null,
+    "citedLabel": null,
+    "citationBack": null,
+    "evidenceHeading": null,
+    "heading": null,
+    "lead": null,
+    "localityLabel": null,
+    "recordKind": null,
+    "report": null,
+    "reportNote": null,
+    "sample": {
+      "citation": {
+        "locationLabel": null,
+        "passage": null,
+        "publisher": null,
+        "sourceTitle": null
+      },
+      "heading": null,
+      "notice": null,
+      "noticeTitle": null,
+      "promised": null,
+      "railEntries": {
+        "community": null,
+        "official": null
+      },
+      "sourceCount": null,
+      "sourceLabel": null,
+      "stateLabel": null,
+      "stateText": null
+    }
+  },
+  "recovery": {
+    "notFound": {
+      "title": null,
+      "body": null,
+      "home": null
+    },
+    "error": {
+      "title": null,
+      "body": null,
+      "retry": null,
+      "reference": null
+    },
+    "loading": null,
+    "fatal": {
+      "title": null
+    }
+  }
+}

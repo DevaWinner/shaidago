@@ -2,23 +2,26 @@ import type { Route } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import en from "../../messages/en.json";
 import { RecoveryPage } from "../_components/recovery-page";
 
-// The link is `/`, not a locale path: the proxy sends it to the visitor's remembered language, and
-// avoiding a per-request locale lookup keeps this page static (no headers read at render time).
+const copy = en.recovery.notFound;
+
+// Static English for now: reading the request locale here would make the page dynamic. The layout
+// declares `lang="en"` for any locale without reviewed copy, and the link is `/`, which the proxy
+// sends to the visitor's remembered language.
 export default function NotFound(): ReactNode {
   return (
     <RecoveryPage
-      title="This page is not available"
+      title={copy.title}
       action={
         // `/` is no longer a page: the proxy redirects it, so it is not in the typed route table.
         <Link href={"/" as Route} rel="home">
-          Return to ShaidaGo
+          {copy.home}
         </Link>
       }
     >
-      Check the address or return to the main page. ShaidaGo does not confirm whether a private
-      record exists.
+      {copy.body}
     </RecoveryPage>
   );
 }

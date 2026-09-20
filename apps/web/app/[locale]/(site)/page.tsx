@@ -5,10 +5,8 @@ import type { ReactNode } from "react";
 import { TranslationNotice } from "@/components/evidence/evidence";
 import { FirstViewport } from "@/components/landing/first-viewport";
 import { PublicShell } from "@/components/shell/shell";
-import { translationStatusLabels } from "@/content/en/evidence";
-import { landingMessages } from "@/content/en/landing";
-import { publicShellMessages } from "@/content/en/shell";
-import { LOCALES, REVIEWED_LOCALES, contentLocale, isSupportedLocale } from "@/i18n/routing";
+import { formatMessage, resolveDomain } from "@/i18n/catalogue";
+import { LOCALES, REVIEWED_LOCALES, isSupportedLocale } from "@/i18n/routing";
 import { createDateFormatter } from "@/lib/format/date";
 
 type LandingProperties = Readonly<{ params: Promise<{ locale: string }> }>;
@@ -30,26 +28,34 @@ export default async function LandingPage({ params }: LandingProperties): Promis
     sources: `${base}/trust#sources`,
     trust: `${base}/trust`
   } as const;
-  const showsOriginal = contentLocale(locale) !== locale;
+  const shell = resolveDomain(locale, "shell");
+  const evidence = resolveDomain(locale, "evidence");
+  const landing = resolveDomain(locale, "landing");
+  // Any critical domain served as the English original must be announced, never silent.
+  const showsOriginal = shell.isOriginal || evidence.isOriginal || landing.isOriginal;
+  const sample = landing.messages.sample;
 
   return (
     <PublicShell
       currentLocale={locale}
       links={links}
       localeRoutes={{ en: "/en", ha: "/ha", ig: "/ig", yo: "/yo" }}
-      messages={publicShellMessages}
+      messages={shell.messages.public}
       unreviewedLocales={LOCALES.filter((code) => !REVIEWED_LOCALES.includes(code))}
     >
       {showsOriginal ? (
         <div className="mb-6">
-          <TranslationNotice labels={translationStatusLabels} status="unavailable" />
+          <TranslationNotice labels={evidence.messages.translation} status="unavailable" />
         </div>
       ) : null}
       <FirstViewport
         browseHref={`${base}/projects`}
-        format={createDateFormatter(contentLocale(locale))}
-        messages={landingMessages}
+        evidence={evidence.messages}
+        format={createDateFormatter(landing.language)}
+        messages={landing.messages}
         reportHref={links.report}
+        sourceCountText={formatMessage(landing.language, sample.sourceCount, { count: 1 })}
+        sourceLabelText={formatMessage(landing.language, sample.sourceLabel, { number: 1 })}
       />
     </PublicShell>
   );
