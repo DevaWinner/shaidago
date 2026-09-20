@@ -2006,3 +2006,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the catalogue structure, wrote the parity checker and loader, and migrated the existing copy.
 - **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-052 Locale-aware formatting
+
+- **Task:** FE-052 — Locale-aware formatting.
+- **User outcome delivered:** Dates, times, numbers, lists, and (once the API has one) naira amounts display consistently in the page language without altering the facts they carry.
+- **Files changed:** `apps/web/src/lib/format/formatters.ts` (replaces `date.ts`), the landing page, `apps/web/tests/unit/formatters.test.ts`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None. No API field carries money today; `naira` is ready for one.
+- **Public/private data handled:** None.
+- **States implemented:** instant, calendar date, date-time, relative-with-exact, plain and NGN numbers, lists, language names, unformattable input.
+- **Accessibility evidence:** Not applicable to the formatters themselves; consumers should render dates in `<time datetime>` (the evidence components already do).
+- **Locales reviewed:** English output is asserted exactly. For `ha`, `ig`, and `yo` the tests assert only invariants (same digits, same order, same year and day), because I cannot verify their CLDR wording and did not want to enshrine possibly wrong text.
+- **Performance/cache impact:** Standard `Intl` only; no dependency.
+- **Failure behaviour verified:** a UTC instant near midnight lands on the correct Lagos day; a date-only value never shifts; malformed dates come back unchanged; malformed or over-precise amounts, exponent notation, thousands separators, and non-finite numbers throw; a large amount keeps every digit.
+- **Commands run and results:** `make web-verify` exit 0 with the new tests included in the unit run. Browser suites are unaffected by this change and were not re-run for this task.
+- **Screenshots/traces/artifacts checked:** None.
+- **Known limitations/open decisions:** Igbo and Yorùbá CLDR data has visible gaps in the runtime's ICU (relative times, one time format), so their formatted output needs review before those languages are served. Relative months and years are approximate (30 and 365 days), which is why the exact time is always paired with them.
+- **Commit/PR:** `feat: add locale-aware formatters that never change the underlying value`
+- **AI assistance used:** Designed the formatters and wrote the boundary tests.
+- **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
+- **Human review:** none yet; unattended run, pending maintainer review.

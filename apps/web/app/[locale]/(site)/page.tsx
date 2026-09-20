@@ -7,7 +7,7 @@ import { FirstViewport } from "@/components/landing/first-viewport";
 import { PublicShell } from "@/components/shell/shell";
 import { formatMessage, resolveDomain } from "@/i18n/catalogue";
 import { LOCALES, REVIEWED_LOCALES, isSupportedLocale } from "@/i18n/routing";
-import { createDateFormatter } from "@/lib/format/date";
+import { createFormatters } from "@/lib/format/formatters";
 
 type LandingProperties = Readonly<{ params: Promise<{ locale: string }> }>;
 
@@ -51,7 +51,7 @@ export default async function LandingPage({ params }: LandingProperties): Promis
       <FirstViewport
         browseHref={`${base}/projects`}
         evidence={evidence.messages}
-        format={createDateFormatter(landing.language)}
+        format={createFormatters(landing.language).date}
         messages={landing.messages}
         reportHref={links.report}
         sourceCountText={formatMessage(landing.language, sample.sourceCount, { count: 1 })}
