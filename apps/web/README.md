@@ -1,8 +1,9 @@
 # ShaidaGo web
 
-This is the independently tooled Next.js presentation/BFF stack. It is intentionally a
-non-visual, API-free foundation until the approved frontend build order enables each route and
-surface.
+This is the independently tooled Next.js presentation/BFF stack. Its foundation provides a
+semantic English-source shell, safe root/route recovery surfaces, metadata, and robots policy;
+product routes, the Field Ledger design system, locale routing, and BFF handlers arrive only in
+their owning build-order tasks.
 
 ## Quality commands
 
@@ -24,8 +25,9 @@ make web-verify
 ```
 
 `web-unit`, `web-component`, `web-e2e`, and `web-a11y` fail when their respective test layer has
-no test files. They do not pass silently. Browser checks use Chromium and a mobile WebKit project;
-before running them in a new local or CI environment, install the pinned browsers explicitly:
+no test files. They do not pass silently. Browser checks exercise the standalone production output
+in Chromium and a mobile WebKit project; before running them in a new local or CI environment,
+install the pinned browsers explicitly:
 
 ```text
 pnpm --dir apps/web exec playwright install chromium webkit
@@ -44,3 +46,8 @@ the ESLint import path.
 `next build` must work when `API_INTERNAL_URL` is unreachable. Server Components later call the
 private API through a server-only generated client; browsers call only purpose-built same-origin
 Route Handlers. Do not add direct browser API, database, provider, or storage access.
+
+The root document uses English source copy temporarily. FE-050 owns `en`, `ha`, `ig`, and `yo`
+locale routing, message parity, and human review status; do not add a second locale layout or a
+silent fallback before then. Recovery views accept only a canonical UUID request ID, never raw
+error text or backend detail, and unknown routes disclose nothing about a private record.

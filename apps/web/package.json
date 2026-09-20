@@ -19,7 +19,7 @@
     "component": "vitest run --project component",
     "coverage": "vitest run --coverage",
     "contract": "python3 ../../scripts/render_frontend_contract.py --check",
-    "e2e": "pnpm run build && playwright test",
+    "e2e": "pnpm run build && playwright test --config tests/playwright.config.ts",
     "a11y": "pnpm run build && playwright test --config tests/playwright.a11y.config.ts"
   },
   "dependencies": {

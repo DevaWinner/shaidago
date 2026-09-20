@@ -5,7 +5,7 @@
 - **Primary runtime:** Node.js 24 LTS, Next.js 16 App Router, React 19.3, strict TypeScript, Tailwind CSS 4.3, Base UI/shadcn, `next-intl`
 - **Pilot:** Abuja — AMAC and Bwari Area Councils
 - **Public locales:** English (`en`), Hausa (`ha`), Igbo (`ig`), Yoruba (`yo`)
-- **Last updated:** 19 September 2026
+- **Last updated:** 20 September 2026
 
 This document starts after the backend execution plan has produced a stable contract package. It converts the frontend architecture in [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) into dependency-ordered, closed implementation circles. It covers the Next.js presentation layer and thin BFF only; FastAPI remains the sole domain, authorisation, verification, and publication authority.
 
@@ -352,7 +352,9 @@ Create package scripts and root targets: `web-format`, `web-format-check`, `web-
 
 ### FE-022 — Base App Router error boundaries and metadata
 
-Implement root and locale layouts, global error, route error/loading/not-found components, metadata base, viewport/theme metadata, robots policy, and one safe request-ID display path for support. Error boundaries never display stack traces, backend detail, private values, or raw provider errors. Public not-found and hidden-resource responses look equivalent.
+Implement the root layout, global error, route error/loading/not-found components, metadata base, viewport/theme metadata, robots policy, and one safe request-ID display path for support. FE-050 owns the locale layout, route negotiation, and message provider; do not introduce a partial locale boundary here. Error boundaries never display stack traces, backend detail, private values, or raw provider errors. Public not-found and hidden-resource responses look equivalent.
+
+> **Execution status (2026-09-20): complete.** The root metadata/viewport/robots policy, semantic foundation shell, safe root and route recovery boundaries, loading/not-found surfaces, and UUID-only support reference are implemented and tested. The route error path ignores raw error data; unknown routes are checked in Chromium and mobile WebKit. Locale routing remains deliberately owned by FE-050, which will replace the temporary root `en` document language with the negotiated locale layout and reviewed messages.
 
 ### FE-023 — Environment and server/client boundary
 
