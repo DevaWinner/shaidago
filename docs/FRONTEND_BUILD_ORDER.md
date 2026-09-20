@@ -364,6 +364,8 @@ Implement the root layout, global error, route error/loading/not-found component
 4. Use runtime lookup for the Railway private API URL; no route fetches it during `next build`.
 5. Document `.env.example` variables and which service owns each one.
 
+> **Execution status (2026-09-20): complete.** `instrumentation.ts` validates the private Node-runtime settings through a `server-only` Zod module, while a separate public schema permits only an optional public application origin and rejects secret-like `NEXT_PUBLIC_*` names. The root template documents the web-owned runtime URL/public origin alongside the shared BFF credential. `web-boundary` builds with synthetic private canaries and verifies that 13 client JavaScript chunks contain neither internal/service/provider/storage values nor server-only configuration markers; normal builds remain independent of a reachable API.
+
 ### FE-024 — Frontend CI foundation
 
 Create least-privilege, SHA-pinned workflow jobs for frozen install, format/lint/types, unit/component tests, OpenAPI client drift, production build with API unreachable, and artifact-safe E2E when available. Do not upload traces/screenshots containing one-time secrets or private content; tests use synthetic values and redact artifacts.

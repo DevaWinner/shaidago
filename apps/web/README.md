@@ -18,6 +18,7 @@ pnpm --dir apps/web typecheck
 make web-unit
 make web-component
 make web-contract
+make web-boundary
 make web-e2e
 make web-a11y
 pnpm --dir apps/web build
@@ -46,6 +47,14 @@ the ESLint import path.
 `next build` must work when `API_INTERNAL_URL` is unreachable. Server Components later call the
 private API through a server-only generated client; browsers call only purpose-built same-origin
 Route Handlers. Do not add direct browser API, database, provider, or storage access.
+
+At Node runtime, `instrumentation.ts` fails closed unless `APP_ENV`, `API_INTERNAL_URL`, and
+`INTERNAL_WEB_CREDENTIAL_CURRENT` pass the server-only Zod schema. The URL and credential are read
+at runtime, not build time. `NEXT_PUBLIC_APP_ORIGIN` is the sole optional browser setting; the
+explicit public schema rejects every other `NEXT_PUBLIC_*` name and names that look secret-like.
+`make web-boundary` builds with synthetic private canaries and scans every client JavaScript chunk
+for the internal URL, service credentials, provider keys, storage keys, and server-only module
+markers.
 
 The root document uses English source copy temporarily. FE-050 owns `en`, `ha`, `ig`, and `yo`
 locale routing, message parity, and human review status; do not add a second locale layout or a

@@ -5,7 +5,8 @@ import { defineProject } from "vitest/config";
 export default defineProject({
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url))
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "server-only": fileURLToPath(new URL("./tests/stubs/server-only.ts", import.meta.url))
     }
   },
   test: {
