@@ -47,9 +47,19 @@ test("a cached page never keeps another visitor's private data, because none is 
   const stats = (await (await request.get(`${MOCK}/__stats`)).json()) as Record<string, number>;
   const paths = Object.keys(stats).map((key) => key.split("?")[0]);
 
-  // Public pages only ever call the two public catalogue endpoints.
+  // Public pages only ever call the public catalogue endpoints (list, localities, record, source).
+  const isPublic = (path: string): boolean => {
+    const parts = path.split("/").filter(Boolean);
+
+    return (
+      parts[0] === "v1" &&
+      ((parts.length === 2 && ["localities", "projects"].includes(parts[1] ?? "")) ||
+        (parts.length === 3 && parts[1] === "projects") ||
+        (parts.length === 5 && parts[1] === "projects" && parts[3] === "sources"))
+    );
+  };
   for (const path of paths) {
-    expect(["/v1/projects", "/v1/localities"], path).toContain(path);
+    expect(isPublic(path ?? ""), path).toBe(true);
   }
 });
 

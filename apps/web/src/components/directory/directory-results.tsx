@@ -58,7 +58,7 @@ export function DirectoryResults({
   let body: ReactNode;
   let announcement = "";
 
-  if (read.state === "unavailable") {
+  if (read.state === "unavailable" || read.state === "not_found") {
     body = (
       <StateMessage
         action={

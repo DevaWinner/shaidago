@@ -23,3 +23,18 @@ export function isStale(lastChecked: string | null, now: Date): boolean {
 
   return days !== undefined && days > STALE_AFTER_DAYS;
 }
+
+const LAGOS_DAY = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Africa/Lagos",
+  dateStyle: "short"
+});
+
+/** Today's calendar date in Africa/Lagos as YYYY-MM-DD, for comparing with calendar-date fields. */
+export function lagosToday(now: Date): string {
+  return LAGOS_DAY.format(now);
+}
+
+/** True when a calendar date (YYYY-MM-DD) is after today in Lagos. Dates compare as strings. */
+export function isFutureDate(date: string | null, now: Date): boolean {
+  return date !== null && /^\d{4}-\d{2}-\d{2}$/.test(date) && date > lagosToday(now);
+}

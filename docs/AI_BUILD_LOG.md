@@ -2093,3 +2093,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the filters, directory, landing, caching, and mock API; found and fixed the defects above; measured the budget; wrote the tests.
 - **Prompt summary:** Unattended frontend/BFF build loop; maintainer directed the loop to continue through Circle 6 and later circles.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-070 Project detail hierarchy, FE-071 Citation and source interaction, FE-072 Timeline and uncertainty states, FE-073 Trust page, FE-074 Project detail proof
+
+- **Task:** FE-070 to FE-074 (Circle 7), delivered as one commit because they share the catalogue keys, the mock API, and the evidence components.
+- **User outcome delivered:** A resident can open a record, see each sourced statement with its own verification label, open the exact cited passage on a source page, understand what is unknown or stale, read how records work, and start a report that keeps the project.
+- **Files changed:** `apps/web/app/[locale]/(site)/{projects/[slug]/page,projects/[slug]/sources/[sourceId]/page,trust/page}.tsx`, `apps/web/src/components/project/*`, `apps/web/src/components/evidence/evidence.tsx`, `apps/web/src/lib/{identifiers,directory/freshness,api/public-data,bff/public-schemas}.ts`, `apps/web/messages/*` (domains `project`, `source`, `trust`), `apps/web/tests/**` including `support/mock-api.mjs`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** `projects_get` and `projects_get_source` (OpenAPI 0.0.0 unchanged), read from Server Components through the server-only client with 60 s tagged caching; failures and 404s are never cached.
+- **Public/private data handled:** Public record and source data only. Slugs and source ids are validated before a call; unknown, hidden, and malformed are the same not-found. No reviewer, internal, or private field is rendered.
+- **States implemented:** typical, minimal, and maximal records; no promise; no sourced statements; no updates; awaiting/disputed/outdated statements; stale and never-checked; future-dated update; unavailable, restricted, permanently unavailable, and unchecked sources; long passage; not found; outage with retry.
+- **Accessibility evidence:** axe clean, 320 px and 200% reflow for five page states in four languages on Chromium and mobile WebKit; Base UI popovers and native disclosures; 44 px targets; statement-named citation triggers; status in text.
+- **Locales reviewed:** `project`, `source`, and `trust` are `null` in ha/ig/yo (pending, non-critical), so those pages show the English original with `lang="en"` and a notice. I wrote no translation. 223 pending keys per language.
+- **Performance/cache impact:** No new client JavaScript beyond the existing citation control; budget tests still pass.
+- **Failure behaviour verified:** hostile and malformed slugs and source ids, unknown record and source, an outage, JavaScript disabled, and the public-cache test that every server call is a public catalogue endpoint.
+- **Defects found and fixed:** a nested-quantifier regex flagged by the security lint in a test (replaced with segment checks); the mock lacked `source_version_id` required by the contract.
+- **Commands run and results:** `make web-verify` exit 0 (355 unit, 82 component, bundle scan clean); `make web-e2e` 107 passed and 1 skipped; `make web-a11y` 124 passed; `pnpm audit --prod --audit-level high` clean.
+- **Known limitations/open decisions:** No funding, institution, or contractor fields exist in the contract, so they appear only as sourced statements. No publication date on source pages (not returned). Question and Source Scout panels belong to Circles 8 and 9. The real API was not run for this circle; browser suites use a fictional mock.
+- **Commit/PR:** `feat: add the project record, source, and trust pages with explicit uncertainty`
+- **AI assistance used:** Designed and implemented the pages, components, mock endpoints, and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop; maintainer directed the loop to continue through later circles.
+- **Human review:** none yet; unattended run, pending maintainer review.

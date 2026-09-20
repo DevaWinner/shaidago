@@ -24,6 +24,15 @@
     },
     "home": {
       "critical": false
+    },
+    "project": {
+      "critical": false
+    },
+    "source": {
+      "critical": false
+    },
+    "trust": {
+      "critical": false
     }
   },
   "locales": {
@@ -67,6 +76,21 @@
         "status": "reviewed",
         "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
         "reviewedOn": "2026-09-20"
+      },
+      "project": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
+        "reviewedOn": "2026-09-20"
+      },
+      "source": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
+        "reviewedOn": "2026-09-20"
+      },
+      "trust": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
+        "reviewedOn": "2026-09-20"
       }
     },
     "ha": {
@@ -100,6 +124,15 @@
         "status": "pending"
       },
       "home": {
+        "status": "pending"
+      },
+      "project": {
+        "status": "pending"
+      },
+      "source": {
+        "status": "pending"
+      },
+      "trust": {
         "status": "pending"
       }
     },
@@ -135,6 +168,15 @@
       },
       "home": {
         "status": "pending"
+      },
+      "project": {
+        "status": "pending"
+      },
+      "source": {
+        "status": "pending"
+      },
+      "trust": {
+        "status": "pending"
       }
     },
     "yo": {
@@ -168,6 +210,15 @@
         "status": "pending"
       },
       "home": {
+        "status": "pending"
+      },
+      "project": {
+        "status": "pending"
+      },
+      "source": {
+        "status": "pending"
+      },
+      "trust": {
         "status": "pending"
       }
     }

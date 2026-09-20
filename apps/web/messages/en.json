@@ -296,5 +296,166 @@
       }
     },
     "limitation": "ShaidaGo is a prototype. It is not an emergency service. If someone is in danger, contact local emergency services first."
+  },
+  "project": {
+    "breadcrumb": {
+      "label": "You are here",
+      "directory": "Project records"
+    },
+    "promised": {
+      "heading": "What was promised",
+      "notRecorded": "The promise has not been recorded for this record."
+    },
+    "state": {
+      "heading": "Current recorded state",
+      "status": "Recorded status",
+      "lastChecked": "Last checked",
+      "notChecked": "Not yet checked",
+      "caveat": "The recorded status is what this record says. It is not a verdict. Each statement below shows how well it is supported.",
+      "stale": "This record was last checked more than {days, plural, one {# day} other {# days}} ago."
+    },
+    "facts": {
+      "heading": "What the sources say",
+      "empty": "No sourced statements have been published for this record yet.",
+      "sourceCount": "{count, plural, one {# source} other {# sources}}",
+      "sourceLabel": "Source {number, number}",
+      "citedLabel": "Sources for this statement",
+      "evidenceHeading": "Evidence",
+      "openSource": "Open the source page",
+      "back": "Back to the statement",
+      "triggerName": "{label}: supports the statement \"{statement}\""
+    },
+    "timeline": {
+      "heading": "Updates over time",
+      "empty": "No updates have been published for this record.",
+      "scheduled": "Scheduled",
+      "date": "Date"
+    },
+    "unknown": {
+      "heading": "What is not known",
+      "none": "Nothing is marked as unverified, disputed, or out of date for the statements shown. That does not mean the record is complete.",
+      "awaiting": "Not yet verified: {statement}",
+      "disputed": "Sources disagree: {statement}",
+      "outdated": "May be out of date: {statement}"
+    },
+    "actions": {
+      "heading": "Next steps",
+      "report": "Report a concern about this project",
+      "note": "Reports are private and are never published automatically."
+    },
+    "notFound": {
+      "title": "This record is not available",
+      "body": "Check the address or return to the project records. ShaidaGo does not confirm whether a private record exists.",
+      "back": "Back to project records"
+    },
+    "unavailable": {
+      "title": "This record could not be loaded",
+      "body": "The service is not responding right now. Nothing has been lost. Try again in a moment.",
+      "retry": "Try again"
+    }
+  },
+  "source": {
+    "heading": "Source",
+    "back": "Back to the record",
+    "facts": {
+      "publisher": "Publisher",
+      "type": "Type of source",
+      "availability": "Availability",
+      "checked": "Availability last checked",
+      "unchecked": "Not yet checked"
+    },
+    "types": {
+      "government_publication": "Government publication",
+      "budget_document": "Budget document",
+      "procurement_record": "Procurement record",
+      "audit_oversight_report": "Audit or oversight report",
+      "independent_media": "Independent media",
+      "civic_research": "Civic research",
+      "community_evidence": "Community evidence",
+      "other_public_source": "Other public source"
+    },
+    "availabilityNote": {
+      "unchecked": "The original page has not been checked yet. The passages below were saved when the source was approved.",
+      "available": "The original page was reachable when last checked.",
+      "temporarily_unavailable": "The original page could not be reached when last checked. The passages below were saved when the source was approved and remain valid.",
+      "access_restricted": "The original page restricts access, so it may not open for you. The passages below were saved when the source was approved.",
+      "permanently_unavailable": "The original page is no longer available. The passages below were saved when the source was approved."
+    },
+    "excerpts": {
+      "heading": "Passages used in this record",
+      "quoteNote": "Quoted from the source in its original wording. It is not ShaidaGo's own text.",
+      "location": "Location in the source",
+      "supportsFact": "Supports a statement",
+      "supportsUpdate": "Supports an update",
+      "seeUse": "See where it is used",
+      "showFull": "Show the full passage",
+      "empty": "No passages from this source are published for this record."
+    },
+    "original": {
+      "link": "Open the original source",
+      "note": "Opens the publisher's page in a new tab. ShaidaGo does not tell that page where you came from and cannot control its content.",
+      "newTab": "opens in a new tab"
+    },
+    "notFound": {
+      "title": "This source is not available",
+      "body": "Check the address or return to the record.",
+      "back": "Back to the record"
+    },
+    "unavailable": {
+      "title": "This source could not be loaded",
+      "body": "The service is not responding right now. Try again in a moment.",
+      "retry": "Try again"
+    }
+  },
+  "trust": {
+    "title": "How records work",
+    "lead": "ShaidaGo shows public records about projects, each with the sources it came from. This page explains how to read them and what they do not tell you.",
+    "toc": "On this page",
+    "classes": {
+      "heading": "Kinds of information",
+      "intro": "Every statement is labelled with the kind of information it comes from.",
+      "official_source": "Published by a public body, such as a government publication, budget, or procurement record.",
+      "independent_source": "Published by someone independent of the project, such as a newspaper or a research group.",
+      "community_evidence_reviewed": "Sent by a community member and checked by a person before it was added.",
+      "community_report_unverified": "Sent by a community member and not checked. It is never part of a public record until a person reviews it.",
+      "ai_generated_explanation": "Written by an automated tool to explain something. It is not a source and is always labelled."
+    },
+    "states": {
+      "heading": "How well a statement is supported",
+      "intro": "A label describes support, not a verdict about any person or organisation.",
+      "awaiting_verification": "The statement has a source but has not yet been checked against a second one.",
+      "verified_official": "An official source states it directly.",
+      "corroborated": "More than one source supports it.",
+      "community_reviewed": "A person reviewed community evidence for it.",
+      "disputed": "Sources disagree. Both sides are shown.",
+      "outdated": "It may no longer be true. The date it was last checked is shown."
+    },
+    "citations": {
+      "heading": "Citations and dates",
+      "body": "Every statement links to the source it came from, with the exact passage, where it appears in the source, and the date it was last checked. If a source can no longer be opened, the saved passage stays so you can still see what was relied on."
+    },
+    "ai": {
+      "heading": "What automated tools do and do not do",
+      "body": "Automated tools may search for sources and answer questions using only approved passages. They cannot verify a claim, decide who is at fault, change a status, or publish anything. Their answers are explanations, not sources, and always show the sources they used. If the sources do not answer a question, the answer says so."
+    },
+    "scout": {
+      "heading": "Newly found sources",
+      "body": "Sources found by search are marked \"discovered — not yet reviewed\". They are not part of the record. A person decides whether one is added, and adding a source does not by itself make a statement true."
+    },
+    "review": {
+      "heading": "Human review",
+      "body": "A person reviews evidence before it changes a public record, and publishing is always a separate step from reviewing a report. Automated tools never publish."
+    },
+    "reporting": {
+      "heading": "Reporting a concern",
+      "body": "You can send a report without an account, email address, or phone number. Reports are private by default and are never published automatically. Only a reviewer can read them. Photos and files are cleaned of embedded details such as location before they are stored, and you may choose whether to leave contact details.",
+      "limit": "This is a prototype. It is not an emergency service, it cannot promise a response or protection, and it should not be used to report danger. If someone is in danger, contact local emergency services first."
+    },
+    "correct": {
+      "heading": "If something looks wrong",
+      "body": "If you think a record is incorrect, out of date, or missing a source, you can report it privately from that record. A reviewer decides what, if anything, changes. ShaidaGo cannot promise a particular outcome or timing.",
+      "report": "Report a concern privately"
+    },
+    "back": "Back to project records"
   }
 }

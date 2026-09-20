@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { isProjectSlug } from "@/lib/identifiers";
 import type { components } from "@/lib/api/generated/schema";
 
 /**
@@ -7,16 +8,6 @@ import type { components } from "@/lib/api/generated/schema";
  * request never reaches the API; FastAPI still owns every domain rule. `.strict()` refuses
  * unknown fields rather than forwarding them.
  */
-
-/** Same rule as the API path pattern `^[a-z0-9]+(-[a-z0-9]+)*$`, written without a nested quantifier. */
-export function isProjectSlug(value: string): boolean {
-  return (
-    /^[a-z0-9-]{1,80}$/.test(value) &&
-    !value.startsWith("-") &&
-    !value.endsWith("-") &&
-    !value.includes("--")
-  );
-}
 
 const slug = z.string().refine(isProjectSlug, { message: "slug" });
 

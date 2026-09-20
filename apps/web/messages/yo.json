@@ -296,5 +296,166 @@
       }
     },
     "limitation": null
+  },
+  "project": {
+    "breadcrumb": {
+      "label": null,
+      "directory": null
+    },
+    "promised": {
+      "heading": null,
+      "notRecorded": null
+    },
+    "state": {
+      "heading": null,
+      "status": null,
+      "lastChecked": null,
+      "notChecked": null,
+      "caveat": null,
+      "stale": null
+    },
+    "facts": {
+      "heading": null,
+      "empty": null,
+      "sourceCount": null,
+      "sourceLabel": null,
+      "citedLabel": null,
+      "evidenceHeading": null,
+      "openSource": null,
+      "back": null,
+      "triggerName": null
+    },
+    "timeline": {
+      "heading": null,
+      "empty": null,
+      "scheduled": null,
+      "date": null
+    },
+    "unknown": {
+      "heading": null,
+      "none": null,
+      "awaiting": null,
+      "disputed": null,
+      "outdated": null
+    },
+    "actions": {
+      "heading": null,
+      "report": null,
+      "note": null
+    },
+    "notFound": {
+      "title": null,
+      "body": null,
+      "back": null
+    },
+    "unavailable": {
+      "title": null,
+      "body": null,
+      "retry": null
+    }
+  },
+  "source": {
+    "heading": null,
+    "back": null,
+    "facts": {
+      "publisher": null,
+      "type": null,
+      "availability": null,
+      "checked": null,
+      "unchecked": null
+    },
+    "types": {
+      "government_publication": null,
+      "budget_document": null,
+      "procurement_record": null,
+      "audit_oversight_report": null,
+      "independent_media": null,
+      "civic_research": null,
+      "community_evidence": null,
+      "other_public_source": null
+    },
+    "availabilityNote": {
+      "unchecked": null,
+      "available": null,
+      "temporarily_unavailable": null,
+      "access_restricted": null,
+      "permanently_unavailable": null
+    },
+    "excerpts": {
+      "heading": null,
+      "quoteNote": null,
+      "location": null,
+      "supportsFact": null,
+      "supportsUpdate": null,
+      "seeUse": null,
+      "showFull": null,
+      "empty": null
+    },
+    "original": {
+      "link": null,
+      "note": null,
+      "newTab": null
+    },
+    "notFound": {
+      "title": null,
+      "body": null,
+      "back": null
+    },
+    "unavailable": {
+      "title": null,
+      "body": null,
+      "retry": null
+    }
+  },
+  "trust": {
+    "title": null,
+    "lead": null,
+    "toc": null,
+    "classes": {
+      "heading": null,
+      "intro": null,
+      "official_source": null,
+      "independent_source": null,
+      "community_evidence_reviewed": null,
+      "community_report_unverified": null,
+      "ai_generated_explanation": null
+    },
+    "states": {
+      "heading": null,
+      "intro": null,
+      "awaiting_verification": null,
+      "verified_official": null,
+      "corroborated": null,
+      "community_reviewed": null,
+      "disputed": null,
+      "outdated": null
+    },
+    "citations": {
+      "heading": null,
+      "body": null
+    },
+    "ai": {
+      "heading": null,
+      "body": null
+    },
+    "scout": {
+      "heading": null,
+      "body": null
+    },
+    "review": {
+      "heading": null,
+      "body": null
+    },
+    "reporting": {
+      "heading": null,
+      "body": null,
+      "limit": null
+    },
+    "correct": {
+      "heading": null,
+      "body": null,
+      "report": null
+    },
+    "back": null
   }
 }

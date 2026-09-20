@@ -81,6 +81,263 @@ function makeProjects(count) {
   });
 }
 
+// --- Record and source pages (fictional) ------------------------------------------------------
+
+const uuid = (n) => `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
+const LONG_PASSAGE = `${"This is a deliberately long fictional passage used to test collapsing. ".repeat(9)}End of the long passage.`;
+
+const SOURCES = {
+  [uuid(1)]: [
+    "available",
+    "official_source",
+    "government_publication",
+    "Synthetic Works Ministry",
+    "Synthetic works bulletin"
+  ],
+  [uuid(2)]: [
+    "temporarily_unavailable",
+    "independent_source",
+    "independent_media",
+    "Synthetic Daily",
+    "Synthetic daily report"
+  ],
+  [uuid(3)]: [
+    "access_restricted",
+    "community_evidence_reviewed",
+    "community_evidence",
+    "Synthetic Residents Group",
+    "Synthetic residents note"
+  ],
+  [uuid(4)]: [
+    "permanently_unavailable",
+    "official_source",
+    "budget_document",
+    "Synthetic Budget Office",
+    "Synthetic budget line"
+  ],
+  [uuid(5)]: [
+    "unchecked",
+    "independent_source",
+    "civic_research",
+    "Synthetic Research Lab",
+    "Synthetic research brief"
+  ]
+};
+
+function citation(sourceId, label, passage) {
+  const [, klass, type, publisher, title] = SOURCES[sourceId];
+
+  return {
+    canonical_url: `https://example.org/synthetic/${sourceId}`,
+    information_class: klass,
+    location_label: label,
+    passage,
+    publisher,
+    retrieved_at: `${iso(20)}T09:00:00Z`,
+    source_id: sourceId,
+    source_version_id: uuid(900),
+    source_title: title,
+    source_type: type
+  };
+}
+
+function fact(n, state, klass, statement, citations, extra = {}) {
+  return {
+    ai_generated: false,
+    citations,
+    effective_on: null,
+    id: uuid(100 + n),
+    information_class: klass,
+    kind: `synthetic_kind_${n}`,
+    last_checked_on: iso(5),
+    statement,
+    verification_state: state,
+    ...extra
+  };
+}
+
+function update(n, statement, klass, state, citations, effective) {
+  return {
+    ai_generated: false,
+    citations,
+    effective_on: effective,
+    id: uuid(200 + n),
+    information_class: klass,
+    last_checked_on: iso(3),
+    statement,
+    verification_state: state
+  };
+}
+
+function detailFor(slug) {
+  const base = projects.find((project) => project.slug === slug);
+  const text = (title, summary, promised) => ({
+    is_fallback: false,
+    promised_deliverable: promised,
+    requested_locale: "en",
+    reviewed_at: null,
+    served_locale: "en",
+    summary,
+    title,
+    translation_status: "reviewed"
+  });
+
+  if (slug === "synthetic-record-minimal") {
+    return {
+      category: "other_public_service",
+      facts: [],
+      last_checked_on: null,
+      locality_slug: "amac",
+      public_status: "unknown",
+      slug,
+      text: text("Synthetic minimal record", "A fictional record with no sourced statements.", ""),
+      updated_at: `${iso(1)}T09:00:00Z`,
+      updates: []
+    };
+  }
+  if (slug === "synthetic-record-full") {
+    return {
+      category: "roads_public_works",
+      facts: [
+        fact(
+          1,
+          "verified_official",
+          "official_source",
+          "A fictional bulletin lists this work as planned.",
+          [citation(uuid(1), "Page 2", "The works are planned for the synthetic council.")]
+        ),
+        fact(2, "corroborated", "independent_source", "A fictional newspaper repeats the plan.", [
+          citation(uuid(2), "Paragraph 3", LONG_PASSAGE),
+          citation(uuid(1), "Page 2", "The works are planned for the synthetic council.")
+        ]),
+        fact(
+          3,
+          "community_reviewed",
+          "community_evidence_reviewed",
+          "Residents note the site was visited (fictional).",
+          [citation(uuid(3), "Note 1", "Residents visited the synthetic site.")]
+        ),
+        fact(
+          4,
+          "awaiting_verification",
+          "independent_source",
+          "A research brief mentions a cost figure (fictional).",
+          [citation(uuid(5), "Table 1", "The synthetic cost figure was NGN 1,000,000.")]
+        ),
+        fact(5, "disputed", "official_source", "A budget line and a bulletin differ (fictional).", [
+          citation(uuid(4), "Line 7", "The synthetic budget line reads NGN 2,000,000.")
+        ]),
+        fact(6, "outdated", "official_source", "An older bulletin gave a start date (fictional).", [
+          citation(uuid(1), "Page 9", "The older synthetic start date was recorded.")
+        ]),
+        fact(
+          7,
+          "awaiting_verification",
+          "official_source",
+          "A statement without any citation must never show.",
+          []
+        )
+      ],
+      last_checked_on: iso(200),
+      locality_slug: "bwari",
+      public_status: "in_progress",
+      slug,
+      text: text(
+        "Synthetic full record",
+        "A fictional record with every kind of evidence.",
+        "A fictional road segment was promised."
+      ),
+      updated_at: `${iso(1)}T09:00:00Z`,
+      updates: [
+        update(
+          1,
+          "Works were recorded as started (fictional).",
+          "official_source",
+          "verified_official",
+          [citation(uuid(1), "Page 4", "Works were recorded as started.")],
+          iso(30)
+        ),
+        update(
+          2,
+          "A reviewed resident note (fictional).",
+          "community_evidence_reviewed",
+          "community_reviewed",
+          [citation(uuid(3), "Note 1", "Residents visited the synthetic site.")],
+          iso(10)
+        ),
+        update(
+          3,
+          "Completion is scheduled (fictional).",
+          "official_source",
+          "verified_official",
+          [citation(uuid(1), "Page 5", "Completion is scheduled.")],
+          iso(-60)
+        )
+      ]
+    };
+  }
+  if (base === undefined) {
+    return undefined;
+  }
+  return {
+    category: base.category,
+    facts: [
+      fact(1, base.verification, "official_source", `A fictional statement about ${base.title}.`, [
+        citation(uuid(1), "Page 2", "A synthetic passage supporting the statement.")
+      ]),
+      fact(2, "awaiting_verification", "independent_source", "A second fictional statement.", [
+        citation(uuid(2), "Paragraph 1", "A second synthetic passage.")
+      ])
+    ],
+    last_checked_on: base.last_checked_on,
+    locality_slug: base.locality_slug,
+    public_status: base.public_status,
+    slug,
+    text: text(base.title, base.summary, ""),
+    updated_at: base.updated_at,
+    updates: []
+  };
+}
+
+function excerptsFor(detail, sourceId) {
+  const excerpts = [];
+  const scan = (items, kind) => {
+    for (const item of items) {
+      for (const cited of item.citations) {
+        if (cited.source_id === sourceId) {
+          excerpts.push({
+            cited_by: kind,
+            item_id: item.id,
+            location_label: cited.location_label,
+            passage: cited.passage
+          });
+        }
+      }
+    }
+  };
+  scan(detail.facts, "fact");
+  scan(detail.updates, "update");
+
+  if (excerpts.length === 0) {
+    return undefined;
+  }
+  const [availability, klass, type, publisher, title] = SOURCES[sourceId];
+
+  return {
+    excerpts,
+    source: {
+      availability,
+      availability_checked_at: availability === "unchecked" ? null : `${iso(2)}T09:00:00Z`,
+      canonical_url: `https://example.org/synthetic/${sourceId}`,
+      id: sourceId,
+      information_class: klass,
+      publisher,
+      source_type: type,
+      title
+    }
+  };
+}
+
 let mode = "ok";
 let projects = makeProjects(30);
 const stats = {};
@@ -246,6 +503,33 @@ createServer((request, response) => {
       },
       locale
     );
+    return;
+  }
+
+  const sourceMatch = /^\/v1\/projects\/([^/]+)\/sources\/([^/]+)$/.exec(path);
+
+  if (sourceMatch !== null) {
+    const detail = detailFor(sourceMatch[1]);
+    const found = detail === undefined ? undefined : excerptsFor(detail, sourceMatch[2]);
+
+    if (found === undefined) {
+      problem(response, 404, "not_found");
+    } else {
+      json(response, found, locale);
+    }
+    return;
+  }
+
+  const detailMatch = /^\/v1\/projects\/([^/]+)$/.exec(path);
+
+  if (detailMatch !== null) {
+    const detail = detailFor(detailMatch[1]);
+
+    if (detail === undefined) {
+      problem(response, 404, "not_found");
+    } else {
+      json(response, detail, locale);
+    }
     return;
   }
 

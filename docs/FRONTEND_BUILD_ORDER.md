@@ -697,23 +697,33 @@ Build server-rendered `/{locale}/projects/{slug}` in this order:
 
 Do not collapse facts into one uncited summary or imply all source claims are verified equally.
 
+> **Execution status (2026-09-20): complete.** Server-rendered `/{locale}/projects/{slug}` (`app/[locale]/(site)/projects/[slug]/page.tsx`, `src/components/project/project-detail.tsx`) shows identity, locality and category, the promise (an explicit gap when the API has none, as in every seeded record), the recorded status with its last-checked date and a not-a-verdict caveat, and one list of sourced statements, each with its own verification label, information-class marker, source count, date group, and citation controls. A statement with no citation is never shown; facts are never grouped by their opaque `kind` or merged into one summary. Funding, institution, and contractor are shown only if they exist as sourced facts: the detail contract has no separate fields for them. The grounded question and Source Scout panels belong to Circles 8 and 9, so the page carries only the report action, which keeps the project (`/report?project={slug}`). Slug is validated before any call; unknown, hidden, or malformed is one `notFound()`; an outage is a retryable state and not cached.
+
 ### FE-071 — Citation and source interaction
 
 Citation triggers have accessible names tied to the fact, visible source count, keyboard behaviour, and direct fallback link. Use a responsive disclosure/dialog only when it improves context; URL source page remains canonical and no-JS reachable.
 
 Build `/{locale}/projects/{slug}/sources/{id}` with publisher/type, publication/last-checked/availability, permitted excerpt, exact source location, original link, translation notice, and relationship to facts. External links indicate destination safely and do not leak private referrers where policy requires.
 
+> **Execution status (2026-09-20): complete.** Citation triggers name the statement they support (`aria-label`), show the visible source count, and open a popover with a direct link; the evidence column lists every citation, long passages (over 420 characters) collapse behind a native `<details>`, and each entry links to the canonical source page `/{locale}/projects/{slug}/sources/{id}`, which works without JavaScript. The source page shows publisher, type, information class, availability and its check date (availability and the saved passage are kept apart, with a plain note per state), only the passages this record cites with their location and a link back to the statement that uses them, the original link (`target=_blank`, `rel=noopener noreferrer`, `referrerpolicy=no-referrer`, new-tab text), and the translation notice. Not built: publication date, because the source endpoint does not return one.
+
 ### FE-072 — Timeline and uncertainty states
 
 Render official and reviewed-community events with distinct text/icon treatment, exact dates, citations, and public-safe author/source class—not reviewer identity. Provide honest states for no updates, disputed, outdated, source unavailable, partial data, and future scheduled date. Timeline order and responsive reading order match.
+
+> **Execution status (2026-09-20): complete.** Updates render with `TimelineItem` (origin text from the information class, exact Lagos dates, citations; no reviewer identity), a text 'Scheduled' label for a future date (Lagos calendar comparison), and an updates-only-with-citations rule. Explicit states: no updates, awaiting verification, disputed, outdated, stale record (over 90 days), never checked, source unavailable (source page), and no sourced statements. Timeline order and reading order are the same DOM order. Real seeded records have no updates, so the populated timeline is proven against the fictional mock.
 
 ### FE-073 — Trust page
 
 Build `/{locale}/trust` explaining information classes, verification states, citations, AI limits, Source Scout labels, human publication review, anonymous reporting boundaries, metadata stripping, prototype/non-emergency limitation, and how to challenge/correct information. Use concrete UI examples drawn from actual labels; do not make legal or protection guarantees.
 
+> **Execution status (2026-09-20): complete.** `/{locale}/trust` (`src/components/project/trust-content.tsx`) explains the five information classes and six verification states using the same label components as the record pages, plus citations (the `#sources` anchor), AI limits, Source Scout labels, human review, anonymous reporting and the non-emergency limit, and one correction route (a private report). It makes no legal or protection promise. Metadata stripping is not stated because no upload flow exists yet; add it with the evidence circle.
+
 ### FE-074 — Project detail proof
 
 Component/E2E tests prove every fact opens at least one correct source, unavailable sources stay explained, no private field appears, long excerpts do not overwhelm, Q&A/report actions retain project context, and all content works at mobile/desktop/200% zoom/four locales/no-JS for read paths.
+
+> **Execution status (2026-09-20): complete.** Proof: 7 component tests; 9 Chromium and mobile-WebKit e2e tests (every source link resolves to a 200 source page, unreachable source explained and long passage collapsed, external-link attributes, identical not-found for unknown/malformed slugs and unknown source, report link keeps the project, no private field names in the page, minimal record, trust page, no JavaScript, all four languages); axe clean, 320 px and 200% reflow for five page states in four languages (20 cases, both engines). The public-cache test now allows the four public endpoints by shape. Browser suites use a fictional mock; the real API was not run for this circle.
 
 ### Circle 7 exit gate
 
@@ -722,6 +732,8 @@ Component/E2E tests prove every fact opens at least one correct source, unavaila
 - Unknown/disputed/stale/unavailable states are explicit.
 - Source and trust pages are accessible, locale-complete, and no-JS readable.
 - No public surface exposes reviewer/private metadata.
+
+> **Gate status (2026-09-20): closed with caveats.** Met: promise, status, date and source are identifiable and every displayed statement and update opens its cited source page (proved in the browser); unknown, disputed, outdated, stale, never-checked, and unavailable states are explicit; record, source, and trust pages pass axe, 320 px and 200% reflow in four languages and read without JavaScript; no private or reviewer field is rendered. Open: responsible body, funding, and contractor show only as sourced statements (the API has no fields for them and seeded promises are empty); the new `project`, `source`, and `trust` domains are `null` in ha/ig/yo pending the end-of-build translation, so those languages show the flagged English original; question and Source Scout panels arrive in Circles 8 and 9; the real API was not exercised for this circle.
 
 ## 11. Circle 8 — grounded project Q&A
 
