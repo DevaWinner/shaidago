@@ -32,12 +32,13 @@ jobs:
         with:
           persist-credentials: false
       - run: python3 scripts/validate_frontend_workflow.py --self-test
+      # pnpm must exist before setup-node can resolve its store for `cache: pnpm`.
+      - run: corepack enable
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version-file: .nvmrc
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
-      - run: corepack enable
       - run: pnpm install --frozen-lockfile
       - run: make web-format-check
       - run: make web-lint
@@ -59,12 +60,13 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      # pnpm must exist before setup-node can resolve its store for `cache: pnpm`.
+      - run: corepack enable
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version-file: .nvmrc
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
-      - run: corepack enable
       - run: pnpm install --frozen-lockfile
       - run: pnpm --dir apps/web exec playwright install --with-deps chromium webkit
       - run: make web-e2e
