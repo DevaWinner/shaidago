@@ -5,7 +5,7 @@
 - **Primary runtime:** Node.js 24 LTS, Next.js 16 App Router, React 19.3, strict TypeScript, Tailwind CSS 4.3, Base UI/shadcn, `next-intl`
 - **Pilot:** Abuja — AMAC and Bwari Area Councils
 - **Public locales:** English (`en`), Hausa (`ha`), Igbo (`ig`), Yoruba (`yo`)
-- **Last updated:** 19 September 2026
+- **Last updated:** 20 September 2026
 
 This document starts after the backend execution plan has produced a stable contract package. It converts the frontend architecture in [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) into dependency-ordered, closed implementation circles. It covers the Next.js presentation layer and thin BFF only; FastAPI remains the sole domain, authorisation, verification, and publication authority.
 
@@ -261,6 +261,8 @@ This circle must pause for human choice. It may run in parallel with non-visual 
 
 ### FE-010 — One-round design discovery
 
+> **Execution status (2026-09-20): blocked.** This unattended loop cannot choose ShaidaGo's visual world. It needs the maintainer's answers to the three questions below and an explicit direction/build-path selection; no visible component, comp, direction contract, or `DESIGN.md` may be created until then. Circle 2 non-visual scaffolding may continue.
+
 Ask no more than three questions that materially change the work:
 
 1. What should a resident feel and understand in the first viewport, and what would make the product feel untrustworthy or wrong even if polished?
@@ -308,6 +310,8 @@ Plan for this contract to survive as the first emitted body comment in the root 
 
 ### Circle 1 exit gate
 
+> **Gate status (2026-09-20): open.** Awaiting maintainer-approved visual direction and build path from FE-010. FE-011 through FE-013 and all visible Circle 4+ surfaces remain ineligible; Circle 2/3 work whose dependencies are otherwise met may proceed.
+
 - Human has selected one direction and build path.
 - Direction handles public, report, reviewer, and source-reading modes within one world.
 - First viewport and signature interaction are concrete, not mood adjectives.
@@ -322,6 +326,8 @@ Plan for this contract to survive as the first emitted body comment in the root 
 
 ### FE-020 — Scaffold the pnpm workspace and Next.js app
 
+> **Execution status (2026-09-20): complete.** Root pnpm workspace configuration and the strict `apps/web` Next.js 16.3.5/React 19.3.0 package are pinned in `pnpm-lock.yaml`. A clean frozen install, `tsc --noEmit`, and `next build` all pass with `API_INTERNAL_URL=http://127.0.0.1:1`; the non-visual scaffold performs no API fetch.
+
 1. Create root `package.json`, `pnpm-workspace.yaml`, pinned `packageManager`, `.nvmrc`, and `apps/web` package.
 2. Pin Node 24 LTS and Next.js/React/TypeScript lines from the accepted plan; commit `pnpm-lock.yaml`.
 3. Configure strict TypeScript including no unchecked indexed access, exact optional properties where compatible, and no emitted JS from typecheck.
@@ -330,6 +336,8 @@ Plan for this contract to survive as the first emitted body comment in the root 
 6. Verify frozen installation from an empty `node_modules` and build with `API_INTERNAL_URL` unreachable.
 
 ### FE-021 — Quality toolchain and commands
+
+> **Execution status (2026-09-20): complete.** `apps/web` now has pinned ESLint, Prettier, Vitest, Testing Library, MSW, Playwright, and axe-core foundations, with named package scripts and root `make web-*` targets. Empty unit/component/browser layers fail explicitly; their first meaningful tests arrive with their owning feature tasks. The frozen install, format, lint, type, and frontend-contract checks pass.
 
 Configure:
 
@@ -344,7 +352,9 @@ Create package scripts and root targets: `web-format`, `web-format-check`, `web-
 
 ### FE-022 — Base App Router error boundaries and metadata
 
-Implement root and locale layouts, global error, route error/loading/not-found components, metadata base, viewport/theme metadata, robots policy, and one safe request-ID display path for support. Error boundaries never display stack traces, backend detail, private values, or raw provider errors. Public not-found and hidden-resource responses look equivalent.
+Implement the root layout, global error, route error/loading/not-found components, metadata base, viewport/theme metadata, robots policy, and one safe request-ID display path for support. FE-050 owns the locale layout, route negotiation, and message provider; do not introduce a partial locale boundary here. Error boundaries never display stack traces, backend detail, private values, or raw provider errors. Public not-found and hidden-resource responses look equivalent.
+
+> **Execution status (2026-09-20): complete.** The root metadata/viewport/robots policy, semantic foundation shell, safe root and route recovery boundaries, loading/not-found surfaces, and UUID-only support reference are implemented and tested. The route error path ignores raw error data; unknown routes are checked in Chromium and mobile WebKit. Locale routing remains deliberately owned by FE-050, which will replace the temporary root `en` document language with the negotiated locale layout and reviewed messages.
 
 ### FE-023 — Environment and server/client boundary
 
@@ -354,11 +364,17 @@ Implement root and locale layouts, global error, route error/loading/not-found c
 4. Use runtime lookup for the Railway private API URL; no route fetches it during `next build`.
 5. Document `.env.example` variables and which service owns each one.
 
+> **Execution status (2026-09-20): complete.** `instrumentation.ts` validates the private Node-runtime settings through a `server-only` Zod module, while a separate public schema permits only an optional public application origin and rejects secret-like `NEXT_PUBLIC_*` names. The root template documents the web-owned runtime URL/public origin alongside the shared BFF credential. `web-boundary` builds with synthetic private canaries and verifies that 13 client JavaScript chunks contain neither internal/service/provider/storage values nor server-only configuration markers; normal builds remain independent of a reachable API.
+
 ### FE-024 — Frontend CI foundation
 
 Create least-privilege, SHA-pinned workflow jobs for frozen install, format/lint/types, unit/component tests, OpenAPI client drift, production build with API unreachable, and artifact-safe E2E when available. Do not upload traces/screenshots containing one-time secrets or private content; tests use synthetic values and redact artifacts.
 
+> **Implementation status (2026-09-20): ready for hosted proof.** `.github/workflows/frontend.yml` has read-only permissions, pinned `checkout`/`setup-node` action SHAs, frozen pnpm install, deterministic foundation checks, private-canary client-bundle inspection, and standalone Chromium/mobile-WebKit E2E plus axe jobs. It neither uses secrets nor uploads artifacts. `web-ci-check` validates these invariants with negative cases locally. The workflow has not yet run on GitHub because this branch has not been published; do not mark the Circle 2 CI exit condition complete until its first hosted execution succeeds.
+
 ### Circle 2 exit gate
+
+> **Gate status (2026-09-20): awaiting hosted CI.** Local foundation, boundary, browser, and accessibility proof pass, but the newly committed workflow has no GitHub run yet.
 
 - Frozen pnpm install and strict typecheck pass.
 - Production build succeeds with the API deliberately unreachable.

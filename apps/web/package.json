@@ -1,0 +1,60 @@
+{
+  "name": "@shaidago/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.20.0",
+    "pnpm": "12.4.2"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "unit": "vitest run --project unit",
+    "component": "vitest run --project component",
+    "coverage": "vitest run --coverage",
+    "contract": "python3 ../../scripts/render_frontend_contract.py --check",
+    "bundle:check": "node scripts/verify-client-boundary.mjs",
+    "build:boundary": "API_INTERNAL_URL=http://api.internal-canary.invalid INTERNAL_WEB_CREDENTIAL_CURRENT=shaida-go-client-boundary-canary-credential INTERNAL_WEB_CREDENTIAL_PREVIOUS=shaida-go-client-boundary-previous-credential SEARCH_API_KEY=shaida-go-client-boundary-search-canary GROQ_API_KEY=shaida-go-client-boundary-provider-canary EMBEDDING_API_KEY=shaida-go-client-boundary-embedding-canary OBJECT_STORE_ACCESS_KEY_ID=shaida-go-client-boundary-storage-access-canary OBJECT_STORE_SECRET_ACCESS_KEY=shaida-go-client-boundary-storage-secret-canary sh -c 'pnpm run build && pnpm run bundle:check'",
+    "e2e": "pnpm run build && playwright test --config tests/playwright.config.ts",
+    "a11y": "pnpm run build && playwright test --config tests/playwright.a11y.config.ts"
+  },
+  "dependencies": {
+    "next": "16.3.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@eslint/js": "9.39.5",
+    "@playwright/test": "1.63.0",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.7",
+    "@types/node": "24.12.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "@vitest/coverage-v8": "5.0.0",
+    "axe-core": "4.13.0",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.5",
+    "eslint-config-prettier": "9.1.2",
+    "eslint-plugin-import": "2.32.0",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-security": "4.0.1",
+    "globals": "17.12.0",
+    "jsdom": "30.0.1",
+    "msw": "2.15.0",
+    "prettier": "3.9.6",
+    "typescript": "5.9.3",
+    "vitest": "5.0.0"
+  }
+}

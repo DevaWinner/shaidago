@@ -1509,3 +1509,130 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Reconciled OpenAPI, route ownership, state rules, and backend handoff into one validator-backed BFF ledger; explicitly excluded unsafe generic forwarding and frontend policy decisions.
 - **Prompt summary:** Use the frontend loop and continue the next eligible frontend task.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+
+
+## 2026-09-20 — FE-010 visual-direction discovery
+
+- **Task:** FE-010 — One-round design discovery.
+- **User outcome delivered:** The required human decision is recorded precisely rather than replaced with a generic component-library visual style or an AI-selected identity.
+- **Routes/components changed:** No runtime route, component, comp, token, direction contract, or design document changed.
+- **Backend operations/contract version:** No backend operation or contract changed.
+- **Public/private data handled:** No data flow changed.
+- **States implemented:** No UI state changed.
+- **Accessibility evidence:** No visual direction was selected; the future direction must state mobile, low-data, reduced-motion, contrast, and keyboard implications before visible implementation begins.
+- **Locales reviewed:** No message copy or translation changed.
+- **Performance/cache impact:** No runtime bundle or cache changed. The future decision must define a low-data fallback before visual assets/interactions are introduced.
+- **Commands run and results:** Confirmed Circle 0 is closed and Circle 1 explicitly requires a human choice. No design-generation, image-generation, external asset, or runtime command was run.
+- **Screenshots/traces/artifacts checked:** Reviewed the visual-circle entry/exit criteria. No existing visual surface, design authority, token set, logo, or approved comp exists to inspect.
+- **Known limitations/open decisions:** The maintainer must answer: (1) what a resident should feel/understand in the first viewport and what would feel untrustworthy; (2) which Abuja/Nigerian civic, documentary, publication, wayfinding, public-record, or community artifacts the product should sit beside and avoid copying; and (3) whether the standing workflow is comp-led or code-led. Then the maintainer must select one direction. FE-011–FE-013, Circle 4, and visible product surfaces remain blocked.
+- **Commit/PR:** `docs: record pending visual direction`
+- **Next task may rely on:** Circle 2/3 non-visual work may proceed from the closed Circle 0 contracts; no visual implementation may rely on this blocked task.
+- **AI assistance used:** Refused to invent a visual identity and recorded the exact human inputs required by the accepted build order.
+- **Prompt summary:** Use the frontend loop and continue after the Circle 0 gate.
+- **Human review:** required; maintainer visual-direction decision pending.
+
+## 2026-09-20 — FE-020 deterministic web foundation
+
+- **Task:** FE-020 — Scaffold the pnpm workspace and Next.js app.
+- **User outcome delivered:** A clean clone can install a separately managed, strict Next.js foundation and build it while the private API URL is deliberately unreachable; no product UI or BFF route is implied by the scaffold.
+- **Routes/components changed:** Added the root pnpm workspace/runtime pin and a non-visual `apps/web` App Router root layout/page, strict TypeScript configuration, standalone Next output, package scripts, and web README.
+- **Backend operations/contract version:** No backend operation or generated contract changed. The scaffold has no API fetch, client API configuration, BFF route, or browser-to-backend path.
+- **Public/private data handled:** No runtime data flow exists. The `server-only` package is installed for future server modules; the foundation exposes no private URL, credential, provider, storage detail, report, or fixture in a client graph.
+- **States implemented:** No product UI state changed. The placeholder page returns no visible product surface until human visual direction and later route tasks are complete.
+- **Accessibility evidence:** No visible interactive component was introduced. The root document has semantic `html`/`body`; landmarks, errors, locale routing, and visible surfaces remain later tasks.
+- **Locales reviewed:** No locale route, catalog, or translated copy was added. The root document uses `en` only as a temporary scaffold and does not claim language support.
+- **Performance/cache impact:** Standalone output is enabled; the scaffold makes no build-time/network API call, has no images/fonts/analytics, and introduces no product cache. The production build succeeds with an unreachable internal API URL.
+- **Dependencies:** Added Next 16.3.5 (MIT; App Router/BFF runtime), React/React DOM 19.3.0 (MIT; rendering runtime), TypeScript 5.9.3 (Apache-2.0; strict checking), `server-only` 0.0.1 (MIT; future client-import boundary), and matching MIT DefinitelyTyped packages. Exact versions are locked by pnpm; no dependency is added for a capability the accepted stack does not require.
+- **Commands run and results:** `pnpm clean --lockfile`; `pnpm install --lockfile-only`; `pnpm install --frozen-lockfile` from empty `node_modules`; `API_INTERNAL_URL=http://127.0.0.1:1 pnpm --dir apps/web typecheck`; `API_INTERNAL_URL=http://127.0.0.1:1 pnpm --dir apps/web build`; and `pnpm audit --prod --audit-level high` all passed (no known production dependency vulnerability). The first candidate `@types/node@24.13.6` failed pnpm's release-age policy and was replaced with compatible `24.12.0`; no policy exemption was committed.
+- **Screenshots/traces/artifacts checked:** Inspected the standalone build output and generated Next types; `.next` and `node_modules` remain ignored. No visual surface exists to screenshot.
+- **Known limitations/open decisions:** FE-021 adds lint/test/E2E/a11y tooling and root `make web-*` targets. FE-022–FE-024 add error boundaries, environment validation/bundle proof, and CI. Human visual direction remains required before visible product UI.
+- **Commit/PR:** `build: scaffold the strict Next.js web foundation`
+- **Next task may rely on:** Node 24.20.0, pnpm 12.4.2, the committed lockfile, `apps/web` package scripts, strict compiler settings, standalone output, and proof that the base build does not require the private API.
+- **AI assistance used:** Selected/pinned the accepted stack versions, created the minimal non-visual foundation, diagnosed the supply-chain age-policy failure, and refused to retain the tool-added policy exemption.
+- **Prompt summary:** Use the frontend loop and continue with the eligible web foundation task.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-021 quality toolchain and commands
+
+- **Task:** FE-021 — Quality toolchain and commands.
+- **User outcome delivered:** The web stack has deterministic, named quality gates before product routes or BFF handlers begin: formatting, linting, strict types, unit/component tests, contract drift, production build, browser smoke, and axe accessibility smoke.
+- **Routes/components changed:** No product route or visible component changed. Tooling configuration, root `make web-*` targets, and an empty-by-default MSW server were added.
+- **Backend operations/contract version:** No operation changed. `web-contract` delegates to the existing generated frontend-contract drift check.
+- **Public/private data handled:** No runtime data flow changed. MSW starts with no handlers so later tests must declare safe fixtures explicitly; unhandled requests are not silently accepted.
+- **States implemented:** No product state changed. Empty unit/component/browser test layers exit non-zero rather than claiming coverage they do not have.
+- **Accessibility evidence:** axe-core and browser configuration are installed, but no product accessibility result is claimed before FE-022 supplies an accessible rendered surface and tests.
+- **Locales reviewed:** No message copy or translation changed.
+- **Performance/cache impact:** All additions are development dependencies; they add no production client bundle, browser API, cache, analytics, or provider call.
+- **Dependencies:** ESLint/Prettier/Vitest/Testing Library/MSW/Playwright and their adapters are maintained upstream testing or linting tools; all selected direct packages are MIT or Apache-2.0 except `axe-core` and `@axe-core/playwright` (MPL-2.0). They are used unmodified and are licence-compatible with the MIT repository. `pnpm audit` found no known production or full-dependency vulnerabilities. Only `msw` (copies a worker only if a later task explicitly configures one) and `unrs-resolver` (prepares ESLint's platform resolver) may run reviewed install hooks; all other transitive hooks remain denied.
+- **Commands run and results:** `pnpm install --lockfile-only` and `pnpm install --frozen-lockfile` passed after explicitly approving two reviewed install hooks. `pnpm --dir apps/web format:check`, `lint`, `typecheck`, and `contract` passed. Empty `unit`, `component`, `e2e`, and `a11y` layers each failed non-zero as designed; `make web-verify` correctly stopped at the empty unit layer. No browser installation or browser test was run. The initial ESLint 10 attempt was incompatible with Next's pinned React lint plugin, so the toolchain uses compatible ESLint 9.39.5 rather than disabling rules.
+- **Screenshots/traces/artifacts checked:** No product screenshot, trace, or browser artifact exists. Build output remains ignored.
+- **Known limitations/open decisions:** ESLint 9.39.5 is the newest compatible line but is upstream-deprecated in favour of ESLint 10; upgrading requires a compatible Next/React lint-plugin stack and a separate review. The first unit/component/browser/axe tests, browser-install evidence, CI, and coverage proof belong to later tasks.
+- **Commit/PR:** `build: add the frontend quality toolchain`
+- **Next task may rely on:** FE-022 can add base error/metadata behaviour with component, browser, and axe tests using these exact commands.
+- **AI assistance used:** Selected and configured development-only quality tools, identified the ESLint compatibility failure, inspected the two allowed install hooks, and recorded their bounded purpose.
+- **Prompt summary:** Use the frontend loop and keep working without stopping.
+- **Human review:** none yet; unattended loop, pending maintainer review.
+
+## 2026-09-20 — FE-022 safe app recovery and metadata boundary
+
+- **Task:** FE-022 — Base App Router error boundaries and metadata.
+- **User outcome delivered:** A resident or judge sees a calm, recoverable, non-disclosing response when a base route fails or is unavailable, and can share only a safe operational reference with support.
+- **Files changed:** `apps/web/app/{layout,page,error,global-error,loading,not-found,robots}.tsx`, `apps/web/app/_components/recovery-page.tsx`, `apps/web/src/lib/support/request-reference.ts`, the Vitest/Playwright resolver and standalone-server configuration, recovery unit/component/browser/axe tests, `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** No backend operation, BFF handler, generated client, or OpenAPI contract changed. The root page makes no API request, including during a production build with `API_INTERNAL_URL=http://127.0.0.1:1`.
+- **Public/private data handled:** Request IDs are rendered only after strict canonical UUID validation and normalisation. Route and root error components intentionally ignore `Error.message`, stack data, provider values, and backend details. The generic unavailable surface gives no private-record existence signal; it has no client persistence, cache, analytics, credential, signed URL, report, contact, or attachment flow.
+- **States implemented:** Semantic initial shell; polite loading; route/root retry error; generic unavailable/not-found; and safe support-reference present/absent states. A root `main` and `h1` were added after the real axe scan found the empty scaffold lacked required page landmarks.
+- **Accessibility evidence:** The recovery surfaces use a named `main`, `h1`, native retry button, native link, text-only status/recovery meaning, and `aria-busy`/`aria-live` loading feedback. `@axe-core/playwright` passes against Chromium and mobile WebKit. Keyboard-operable retry is verified in the component test.
+- **Locales reviewed:** English source copy only. The root document remains temporary `en`; FE-050 explicitly owns the `en`/`ha`/`ig`/`yo` route layout, negotiation, message parity, and translation review. This task corrects the earlier overlapping task wording rather than creating a partial locale boundary or claiming translations exist.
+- **Performance/cache impact:** No API, image, font, third-party asset, analytics, or client data library was added. Browser tests run the standalone production artifact. `robots.ts` disallows API, reporting, tracking, handle, and reviewer paths; cache directives for implemented BFF/private responses remain the responsibility of their owning tasks.
+- **Failure behaviour verified:** Invalid/non-string/noncanonical request IDs, unsupported UUID version/variant, and newline-tainted values do not render. Tests inject a private-looking database/provider error message and assert it is absent from both route and root recovery UIs. Unknown routes return `404` with the same generic unavailable wording.
+- **Commands run and results:** `pnpm --dir apps/web format:check`, `lint`, `typecheck`, `unit` (9 passed), `component` (4 passed), `coverage` (13 passed; 100% over the exercised module graph), `contract`, and `API_INTERNAL_URL=http://127.0.0.1:1 pnpm --dir apps/web build` all passed. `pnpm --dir apps/web exec playwright install chromium webkit` completed; `e2e` passed 4 desktop/mobile checks; `a11y` passed 2 desktop/mobile axe checks; and `make web-verify` passed. The Impeccable detector returned no anti-pattern findings for the changed app/tests.
+- **Screenshots/traces/artifacts checked:** Browser smoke and axe runs exercised the standalone app in desktop Chromium and mobile WebKit. No screenshot artifact is recorded because this is intentionally an unstyled semantic/error boundary; Playwright failure traces remain ignored and no private synthetic value is retained in a committed artifact.
+- **Known limitations/open decisions:** FE-023 still owns startup environment validation and client-bundle secret proof; FE-024 owns CI. FE-040 will apply the maintainer-selected Field Ledger tokens and primitives. The recovery copy requires FE-050 message parity and translation review before public locale routes are enabled.
+- **Commit/PR:** `feat: add safe app recovery boundaries`
+- **Next task may rely on:** Root metadata/viewport/robots behavior; safe generic unavailable/retry semantics; `toSafeRequestReference`; standalone browser-test configuration; and a real passing test layer.
+- **AI assistance used:** Implemented the minimal safety boundary, corrected resolver/standalone test-harness defects revealed by actual tests, and kept locale/design-system scope with their designated tasks.
+- **Prompt summary:** Use the frontend loop and keep working without stopping.
+- **Human review:** none yet; unattended loop, pending maintainer review.
+
+## 2026-09-20 — FE-023 server/client environment boundary
+
+- **Task:** FE-023 — Environment and server/client boundary.
+- **User outcome delivered:** The web process refuses to start in the Node runtime without valid private API settings, while browser code has one explicit optional public setting and a repeatable proof that internal configuration cannot cross into client chunks.
+- **Files changed:** `apps/web/instrumentation.ts`; `apps/web/src/lib/config/{server,public}.ts`; `apps/web/scripts/verify-client-boundary.mjs`; configuration tests and the server-only Vitest shim; browser runtime test configuration; `apps/web/package.json`; root `Makefile`, `.env.example`, and `pnpm-lock.yaml`; `apps/web/README.md`; `docs/FRONTEND_BUILD_ORDER.md`; and this log.
+- **Backend operations/contract version:** No FastAPI operation, BFF handler, generated client, database schema, or OpenAPI contract changed. `API_INTERNAL_URL` is read only at Node runtime; no route makes an API request during `next build`.
+- **Public/private data handled:** The private schema requires `APP_ENV`, an HTTP(S) `API_INTERNAL_URL`, and a minimum-length `INTERNAL_WEB_CREDENTIAL_CURRENT`; staging/production reject a placeholder credential. Errors report variable names only, never values. The client schema permits only optional `NEXT_PUBLIC_APP_ORIGIN`, rejects unknown public names and secret-like public names, and never returns the private schema. The bundle scan uses synthetic, non-secret canaries for the internal URL, current/previous service credentials, search/provider/embedding keys, and object-storage access/secret keys.
+- **States implemented:** Node startup either validates configuration or fails closed before serving requests. Public configuration has valid, absent, unexpected-name, secret-like-name, and invalid-value outcomes. There is no product UI state or new browser storage/cache.
+- **Accessibility evidence:** No visible interactive surface changed. The existing semantic shell and accessibility suite remain intact; this task adds no client-side announcement, focus, or motion behavior.
+- **Locales reviewed:** No locale message, route, or translation changed. The public origin schema is locale-neutral; `en`, `ha`, `ig`, and `yo` routing remains owned by FE-050.
+- **Performance/cache impact:** Zod 4.6.5 (MIT) is the single added production dependency for explicit runtime schemas; it is server-only in current execution and does not enter the verified client chunks. The scanner reads only generated client JavaScript; it makes no provider/API request and stores no sensitive artifact. Browser tests supply fixed synthetic runtime values to the standalone process only.
+- **Failure behaviour verified:** Unit tests prove missing Node settings fail closed, valid Node startup succeeds, private values never enter configuration errors, production placeholders fail, and unexpected/unsafe/invalid public values fail without value disclosure. The production-boundary build sets eight private canaries; the scan passes only when every one and the server-only markers are absent from all client chunks.
+- **Commands run and results:** `pnpm --dir apps/web format:check`, `lint`, `typecheck`, `unit` (17 passed), `coverage` (21 passed; 96.72% statements, 86.48% branches, 94.44% functions, 96.61% lines), `build:boundary` (13 client chunks verified), `API_INTERNAL_URL=http://127.0.0.1:1 pnpm --dir apps/web build`, `pnpm install --frozen-lockfile`, `pnpm audit --prod --audit-level high`, and full `pnpm audit --audit-level high` passed. Browser/a11y and canonical-gate rechecks are recorded with the final task verification.
+- **Screenshots/traces/artifacts checked:** Inspected the generated standalone instrumentation artifact and completed client bundle scan. No screenshot is applicable to a configuration-only change; no trace or generated bundle is committed.
+- **Known limitations/open decisions:** FE-024 still owns CI execution. FE-030/FE-031 will consume the validated server settings through a generated private API client; no generic proxy or direct browser API path is introduced here.
+- **Commit/PR:** `build: enforce the web environment boundary`
+- **Next task may rely on:** Validated runtime/private configuration, the explicit public environment allowlist, `web-boundary`, canary scanning, and stable standalone test-process environment setup.
+- **AI assistance used:** Implemented separate runtime/public schemas, added a production-artifact canary scan, and fixed test-runner-only handling of Next's server-only import without altering the production barrier.
+- **Prompt summary:** Use the frontend loop and keep working without stopping.
+- **Human review:** none yet; unattended loop, pending maintainer review.
+
+## 2026-09-20 — FE-024 least-privilege frontend CI
+
+- **Task:** FE-024 — Frontend CI foundation.
+- **User outcome delivered:** The repository now contains a reviewable frontend CI workflow that reproduces the deterministic web foundation and isolated browser/axe gates without write permission, real secrets, or exported test artifacts.
+- **Files changed:** `.github/workflows/frontend.yml`, `scripts/validate_frontend_workflow.py`, root `Makefile`, `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** No API operation, BFF handler, generated client, schema, or OpenAPI content changed. The workflow runs the existing contract drift check and private-canary boundary build; it does not contact the private API.
+- **Public/private data handled:** Workflow permissions are `contents: read`; each checkout disables persisted credentials. It references no `secrets` context, no live provider, no service credential, and no external artifact upload/download action. The boundary build supplies only synthetic canaries. Browser traces, screenshots, video, coverage, and reports are never uploaded.
+- **States implemented:** Foundation failures block browser execution; the required aggregate fails for failed, skipped, cancelled, or otherwise non-successful prerequisite jobs. Browser checks start a standalone app only with synthetic test configuration. No product UI state changed.
+- **Accessibility evidence:** CI installs Chromium and WebKit and runs the existing real-browser E2E and axe tests. No visible component changed; the test gate continues to cover the semantic shell and generic unavailable state at desktop/mobile viewports.
+- **Locales reviewed:** No locale routing, message, or translation changed. CI preserves the existing English-source-only foundation status; FE-050 remains responsible for `en`, `ha`, `ig`, and `yo` parity.
+- **Performance/cache impact:** `setup-node` caches only the pnpm package store keyed by `pnpm-lock.yaml`, not application output or private test data. Browser engines install only in the browser job. The workflow validator is standard-library Python and performs no network request.
+- **Failure behaviour verified:** `web-ci-check --self-test` rejects a missing boundary command and an unpinned action reference. Structural checks require exactly four full-SHA action uses, the expected frozen/install/check commands, read-only permissions, disabled checkout credentials, and no artifact, secrets-context, `pull_request_target`, or write-permission use. YAML parsing passed. `actionlint` is not installed locally, so no actionlint result is claimed.
+- **Commands run and results:** `git ls-remote` verified `actions/setup-node` v7.0.0 SHA `820762786026740c76f36085b0efc47a31fe5020`; the checked-in `actions/checkout` v7.0.1 SHA was reused. `make web-ci-check`, Ruby YAML parsing, Python compilation, `git diff --check`, and Prettier format checking passed. The existing local foundation/browser/axe gates were passing before workflow creation; the final task gate re-runs them before commit.
+- **Screenshots/traces/artifacts checked:** Reviewed the workflow itself and confirmed no artifact action appears. No screenshots/traces are produced or committed by this configuration-only task.
+- **Known limitations/open decisions:** The first hosted run is pending because this local branch has not been pushed, and this task does not authorise a push. Circle 2 remains open until GitHub reports the workflow green. A later CI policy change should update the validator in the same commit.
+- **Commit/PR:** `feat: implement frontend CI workflow with validation and checks`
+- **Next task may rely on:** A SHA-pinned, read-only workflow and local workflow-invariant validator; not on a claimed hosted green result.
+- **AI assistance used:** Implemented the workflow and its negative-path validator, resolved the setup action revision, and kept browser data artifacts out of pull-request visibility.
+- **Prompt summary:** Use the frontend loop and keep working without stopping.
+- **Human review:** none yet; unattended loop, pending maintainer review.
