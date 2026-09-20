@@ -466,13 +466,13 @@ export function HandleSection({
   );
 }
 
-export function ScoutSection({ context }: Readonly<{ context: DetailContext }>): ReactNode {
-  const words = context.copy.scout;
-
+export function ScoutSection({
+  children,
+  context
+}: Readonly<{ children?: ReactNode; context: DetailContext }>): ReactNode {
   return (
     <Section id="scout" title={context.copy.sections.scout}>
-      <p className="m-0">{words.body}</p>
-      <small className="text-muted-foreground">{words.private}</small>
+      {children}
     </Section>
   );
 }

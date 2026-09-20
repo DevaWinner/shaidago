@@ -1022,6 +1022,8 @@ Integrate into project detail as a task panel. Explain scope and unverified stat
 
 On private report detail, show the exact privacy-safe outbound query and why each public term is included. Explicitly state excluded private categories. Reviewer can approve, edit only through allowlisted controls, cancel, or return to report. Any material change requires backend revalidation/new preview. Never render hidden private report text beside a copyable external query if it increases accidental disclosure risk.
 
+> **Execution status (2026-09-20): complete.** The reviewer Source Scout island receives only an opaque report ID and uses the same-origin BFF to ask the backend for a plan. It displays the bounded exact query, policy version, included terms, and explicit excluded private categories before an alertdialog confirmation can create a run. Optional comma-separated public concepts are the sole editable control; any edit discards the in-memory plan and requires a fresh backend preview. No report payload, contact, attachment, handle, tracking value, URL state, persistent storage, or client cache crosses into the island. Focused component and Chromium/mobile-WebKit E2E coverage prove approval happens before creation and a deliberately private canary is absent from outgoing browser bodies, URLs, and storage.
+
 ### FE-123 — Results, provenance, and analysis
 
 Render at most ten result cards with publisher/type, publication/discovery/last-checked date, permitted excerpt, availability/retrieval state, original link, and duplicate grouping. Label every result `discovered — not yet reviewed`.

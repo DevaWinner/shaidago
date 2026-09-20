@@ -1114,8 +1114,26 @@
         "closed": "Closed"
       },
       "scout": {
-        "body": "Report-scoped source discovery is not available in this workspace yet. Nothing is searched for this report.",
-        "private": "When it is available it will use only a privacy-safe query that you approve first."
+        "body": "Prepare a privacy-safe query, inspect it exactly as it would be sent, then approve it before any source search begins.",
+        "private": "This panel does not receive report text, contacts, files, tracking credentials, or a precise location. Do not enter any of them below.",
+        "concepts": "Optional public search terms",
+        "conceptsHint": "Use commas for up to 20 public terms. Changing terms discards the current plan and requires a new review.",
+        "prepare": "Prepare query for review",
+        "preparing": "Preparing query…",
+        "planTitle": "Review the exact outbound query",
+        "query": "Outbound query",
+        "queryHint": "This is the only query that will be sent if you approve it.",
+        "policy": "Query policy",
+        "included": "Included terms",
+        "excluded": "Excluded from this query",
+        "noneExcluded": "No terms were excluded.",
+        "approve": "Approve and start search",
+        "discard": "Discard this plan",
+        "cancel": "Keep reviewing",
+        "confirm": "Approve and start",
+        "confirmTitle": "Start this source search?",
+        "confirmBody": "The exact query shown above will be sent to the discovery provider. The run remains private and every result needs human review.",
+        "started": "Source search started. Results remain private and unreviewed until you decide on each source."
       },
       "states": {
         "notFound": {

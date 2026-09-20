@@ -1111,7 +1111,25 @@
       },
       "scout": {
         "body": null,
-        "private": null
+        "private": null,
+        "concepts": null,
+        "conceptsHint": null,
+        "prepare": null,
+        "preparing": null,
+        "planTitle": null,
+        "query": null,
+        "queryHint": null,
+        "policy": null,
+        "included": null,
+        "excluded": null,
+        "noneExcluded": null,
+        "approve": null,
+        "discard": null,
+        "cancel": null,
+        "confirm": null,
+        "confirmTitle": null,
+        "confirmBody": null,
+        "started": null
       },
       "states": {
         "notFound": {

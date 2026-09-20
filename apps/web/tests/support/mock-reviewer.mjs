@@ -87,6 +87,8 @@ const changes = new Map();
 // Reports where another reviewer "acts first": the first attempt is refused as stale.
 const RACE_IDS = new Set([REPORT_IDS[24], REPORT_IDS[30]]);
 const raced = new Set();
+const discoveryRuns = new Map();
+const DISCOVERY_DIGEST = "a".repeat(64);
 const MACHINE = {
   received: {
     start_review: "under_review",
@@ -331,6 +333,53 @@ export function handleReviewer({ request, response, url, problem, readBody }) {
 
   if (!authorised(request)) {
     problem(response, 401, "unauthenticated");
+    return true;
+  }
+
+  const discoveryPlan = /^\/v1\/reviewer\/reports\/([^/]+)\/discovery-runs:plan$/.exec(path);
+
+  if (discoveryPlan !== null && method === "POST") {
+    if (!hasCsrf(request)) {
+      problem(response, 403, "csrf_invalid");
+      return true;
+    }
+    readBody(request, (body) => {
+      const concepts = Array.isArray(body?.concepts) ? body.concepts : [];
+      log.push({ op: "discovery_plan", concepts });
+      json(response, 200, {
+        plan_digest: DISCOVERY_DIGEST,
+        policy_version: "fictional-policy-v1",
+        query: "Abuja AMAC public works official source",
+        terms: [
+          { text: "Abuja", source: "project locality", suggested_by: "policy" },
+          { text: "AMAC", source: "project area council", suggested_by: "policy" }
+        ],
+        rejected: [
+          { source: "report description", reason: "private report text is never searched" },
+          { source: "contact details", reason: "identity and contact data are never searched" }
+        ]
+      });
+    });
+    return true;
+  }
+
+  const discoveryCreate = /^\/v1\/reviewer\/reports\/([^/]+)\/discovery-runs$/.exec(path);
+
+  if (discoveryCreate !== null && method === "POST") {
+    if (!hasCsrf(request)) {
+      problem(response, 403, "csrf_invalid");
+      return true;
+    }
+    readBody(request, (body) => {
+      if (body?.approved_digest !== DISCOVERY_DIGEST) {
+        problem(response, 409, "stale_plan");
+        return;
+      }
+      const run_id = "0198f1a2-7b3c-4d4e-8f5a-d00000000001";
+      discoveryRuns.set(run_id, { report_id: discoveryCreate[1], status: "searching", version: 1 });
+      log.push({ op: "discovery_create", concepts: body?.concepts ?? [] });
+      json(response, 201, { run_id, status: "searching", version: 1 });
+    });
     return true;
   }
 

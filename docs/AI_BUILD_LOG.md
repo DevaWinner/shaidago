@@ -2353,3 +2353,21 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Implemented the Field Ledger panel, safe response parsing, fixtures, and browser/component coverage from the accepted contract.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-122 Reviewer query preview and approval
+
+- **Task:** FE-122 — Reviewer query preview and approval (Circle 12).
+- **User outcome delivered:** A reviewer can prepare, inspect, discard, or explicitly approve the exact privacy-safe outbound discovery query before a private search run starts.
+- **Routes/components changed:** Added `src/components/reviewer/discovery-preview.tsx` inside the existing report-detail Scout section, matching `reviewer.detail.scout` locale keys, reviewer discovery mock fixtures, and focused component/E2E tests.
+- **Backend operations/contract version:** Existing `reviewer_discovery_plan` and `reviewer_discovery_create` BFF operations only; OpenAPI 0.0.0 and generated client remain unchanged.
+- **Public/private data handled:** The client island receives an opaque report ID only. It sends reviewer-entered public concepts and the backend-issued plan digest through same-origin no-store requests. It never receives or stores report text, contacts, evidence, tracking data, or a precise location.
+- **States implemented:** idle, plan preparation, exact plan review, revision requiring a new plan, discard, approval confirmation, create pending, started acknowledgement, malformed response, session-ended, and retryable failure.
+- **Accessibility evidence:** Labels and help text bind to the only editable field and read-only query; exact-query approval uses a named alertdialog; success is a status region and failures an alert region; native controls retain keyboard operation.
+- **Locales reviewed:** English source keys added; matching `null` keys for Hausa, Igbo, and Yoruba remain pending and receive the established English-original notice.
+- **Performance/cache impact:** One reviewer-only client island; no new dependency, provider request, browser storage, query-string state, analytics, or cache.
+- **Commands run and results:** focused component test passed (2); targeted Chromium/mobile-WebKit E2E passed (2); `make web-verify` passed (498 unit, 184 component, message parity, contract drift, production build, and client-boundary scan).
+- **Known limitations/open decisions:** The backend remains authoritative for rejecting unsafe concepts and deciding query construction. Results, cancellation, provenance, analysis, and source decisions are intentionally implemented by FE-123 through FE-126.
+- **Commit/PR:** `feat: add reviewer discovery query approval`.
+- **AI assistance used:** Implemented the review flow, narrow parser, fictional boundary fixture, and tests.
+- **Prompt summary:** Complete Circle 12 unattended.
+- **Human review:** none yet; unattended run, pending maintainer review.
