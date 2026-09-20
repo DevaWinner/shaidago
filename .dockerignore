@@ -23,3 +23,6 @@ scripts
 !scripts/validate_source_register.py
 services/platform/tests
 services/platform/scripts
+
+# The embedding model is baked into the image by its own build stage, never copied from here.
+.models

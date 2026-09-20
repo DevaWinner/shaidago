@@ -68,8 +68,12 @@ def reviewer_headers(session):
 def main():
     status, _, body = call("GET", "/health/ready")
     step("readiness is ready", status == 200 and body.get("status") == "ready", body)
-    status, headers, body = call("GET", f"/v1/projects/{SLUG}")
+    status, headers, project = call("GET", f"/v1/projects/{SLUG}")
     step("public project read is cacheable and cited-only", status == 200 and headers.get("Cache-Control", "").startswith("public"), status)
+    # The version a reviewer would cite is published with the fact that already relies on it
+    # (migration 0026), so the journey needs no id passed in by hand.
+    cited = [c for f in (project or {}).get("facts", []) for c in f.get("citations", [])]
+    discovered_version = cited[0]["source_version_id"] if cited else ""
     status, headers, listing = call("GET", "/v1/projects")
     step("public list is paginated", status == 200 and "items" in listing and "next_cursor" in listing)
 
@@ -111,7 +115,7 @@ def main():
 
     status, _, verified = call("POST", f"/v1/reviewer/reports/{report['report_id']}/status-transitions", {"command": "verify_for_public_update", "expected_status": "under_review", "expected_version": moved["version"], "internal_reason": "Smoke test verification."}, headers=auth)
     step("reviewer verifies the report for a public update", status == 200 and verified.get("status") == "verified_for_public_update")
-    version_id = os.environ.get("SMOKE_VERSION_ID", "")
+    version_id = os.environ.get("SMOKE_VERSION_ID") or discovered_version
     draft = {"statement": "The clinic's opening on 1 March is recorded in the cited source.", "effective_on": "2026-03-01", "verification_state": "verified_official", "citations": [{"source_version_id": version_id, "passage": "The synthetic clinic opened on 1 March.", "location_label": "section 1"}]}
     status, _, preview = call("POST", f"/v1/reviewer/reports/{report['report_id']}/public-updates", draft, headers=auth)
     step("a separately authored update previews exactly and blocks nothing", status == 201 and preview.get("can_publish") is True and not preview.get("issues"), preview and preview.get("issues"))

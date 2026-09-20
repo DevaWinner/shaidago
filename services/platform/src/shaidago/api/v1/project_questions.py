@@ -123,6 +123,7 @@ async def ask_project_question(  # noqa: PLR0913,PLR0917 - a route names its col
         dependencies.clock,
         dependencies.ids,
         elapsed=dependencies.monotonic,
+        query_embedder=dependencies.query_embedder,
     )
     try:
         result = await service.ask(

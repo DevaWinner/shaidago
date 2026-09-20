@@ -2,17 +2,16 @@ import hashlib
 from collections.abc import Sequence
 from pathlib import Path
 
-import httpx
 import pytest
 
 from shaidago.retrieval.embeddings import (
     EMBEDDINGS_ROOT,
     EmbeddingRecord,
+    embedding_path,
     generate_records,
     read_embedding_file,
     write_embedding_file,
 )
-from shaidago.retrieval.generate_embeddings import CompatibleEmbeddingModel
 from shaidago.retrieval.search import EMBEDDING_DIMENSIONS
 
 
@@ -71,26 +70,25 @@ def test_reader_rejects_unknown_fields_duplicate_hashes_and_wrong_dimensions(
         read_embedding_file(path, expected_model="fixture-model")
 
 
-async def test_openai_embedding_adapter_sends_only_bounded_explicit_inputs() -> None:
-    captured: dict[str, object] = {}
+def test_a_hub_model_id_maps_to_one_flat_file_and_never_a_folder() -> None:
+    path = embedding_path("intfloat/multilingual-e5-small")
+    assert path == EMBEDDINGS_ROOT / "intfloat__multilingual-e5-small.jsonl"
+    assert path.parent == EMBEDDINGS_ROOT
 
-    def respond(request: httpx.Request) -> httpx.Response:
-        captured["authorization"] = request.headers.get("Authorization")
-        captured["body"] = request.content.decode()
-        return httpx.Response(
-            200,
-            json={"data": [{"index": 0, "embedding": [1.0] + [0.0] * (EMBEDDING_DIMENSIONS - 1)}]},
-        )
 
-    client = httpx.AsyncClient(transport=httpx.MockTransport(respond), base_url="https://api.test")
-    provider = CompatibleEmbeddingModel(
-        api_key="secret-canary", model_id="fixture-model", client=client
-    )
-    try:
-        vectors = await provider.embed(["approved public chunk"])
-    finally:
-        await client.aclose()
+@pytest.mark.parametrize(
+    "model", ["", "../escape", "a/../b", "with space", "semi;colon", "x" * 200]
+)
+def test_an_unsafe_model_id_is_refused_as_a_file_name(model: str) -> None:
+    with pytest.raises(ValueError, match="not safe as a file name"):
+        embedding_path(model)
 
-    assert len(vectors[0]) == EMBEDDING_DIMENSIONS
-    assert captured["authorization"] == "Bearer secret-canary"
-    assert "approved public chunk" in str(captured["body"])
+
+def test_the_checked_in_local_model_vectors_match_the_column_width() -> None:
+    """The vectors `make seed-demo` loads must fit the vector(384) column exactly."""
+    path = embedding_path("intfloat/multilingual-e5-small")
+    records = read_embedding_file(path, expected_model="intfloat/multilingual-e5-small")
+    assert records, "run `make embeddings` after changing approved chunks"
+    for record in records:
+        assert len(record.embedding) == EMBEDDING_DIMENSIONS
+        assert abs(sum(v * v for v in record.embedding) - 1.0) < 1e-3, "vectors are unit length"

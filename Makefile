@@ -26,12 +26,12 @@ COMPOSE := docker compose --project-name shaidago --env-file $(INFRA_ENV) -f inf
 .DEFAULT_GOAL := help
 .PHONY: help backend-sync backend-format backend-format-check backend-lint backend-typecheck \
 	backend-unit backend-integration backend-contract backend-security backend-test backend-verify \
-	openapi-generate openapi-check frontend-contract-generate frontend-contract-check migrate db-roles seed-demo embeddings reviewer-bootstrap kek-rotate retention-purge worker container-verify infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
+	openapi-generate openapi-check frontend-contract-generate frontend-contract-check migrate db-roles seed-demo embedding-model embeddings reviewer-bootstrap kek-rotate retention-purge worker container-verify infra-up infra-up-core infra-down infra-logs infra-clean infra-check-env
 
 help:
 	@echo "Backend targets: backend-sync backend-format backend-format-check backend-lint"
 	@echo "  backend-typecheck backend-unit backend-integration backend-contract"
-	@echo "  backend-security backend-test backend-verify openapi-generate openapi-check embeddings"
+	@echo "  backend-security backend-test backend-verify openapi-generate openapi-check embedding-model embeddings"
 	@echo "Database targets: migrate db-roles reviewer-bootstrap (need make infra-up-core first)"
 	@echo "Infrastructure targets: infra-up infra-up-core infra-down infra-logs infra-clean"
 	@echo "  (need $(INFRA_ENV); copy .env.example first)"
@@ -108,7 +108,13 @@ seed-demo:
 reviewer-bootstrap:
 	$(RUN_WITH_ENV) python -m shaidago.auth.bootstrap
 
-# Explicit and credentialed: this is the only ordinary workflow that calls the embedding provider.
+# Downloads the 129 MB embedding model (one pinned revision, every file checked against its SHA-256)
+# into .models/, which is git-ignored. Needed once, and only for `make embeddings` and hybrid mode.
+embedding-model:
+	$(UV) run --frozen python -m shaidago.retrieval.fetch_embedding_model --dest ../../.models/multilingual-e5-small
+
+# Embeds every approved public chunk locally (no key, no network) and writes the checked-in vector
+# file that `make seed-demo` loads. Run `make embedding-model` first. Explicit, never run by seed.
 embeddings:
 	$(RUN_WITH_ENV) python -m shaidago.retrieval.generate_embeddings
 

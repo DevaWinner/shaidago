@@ -1,5 +1,7 @@
 # Operational runbooks
 
+**Two Railway behaviours learned the hard way (2026-09-20).** `railway redeploy` re-runs the latest deployment with the configuration it was *created* with, so a start command, build argument or variable you changed since then is **not** picked up: use `railway up --service SVC` (a new deployment) for that. And a service's memory limit is enforced by the platform, not the app: on this plan it is 1,024 MB, and a process that exceeds it is killed and restarted in a loop until the deploy fails (the log shows the server starting and the container restarting every few seconds, with "leaked semaphore objects" on shutdown). Check `railway metrics --service SVC` for `memory.limit_mb` before shipping anything that loads a model.
+
 Each runbook gives the trigger, immediate containment, safe diagnostics, the decision owner, recovery, verification, and follow-up. Commands are read-only unless marked **change**. None of them prints a secret or a private row: they read counts, states, and identifiers. `SVC` means the Railway service name (`api`, `worker`, `migrate`), and every command assumes `railway link` to the right project and environment (check `railway status`). **Decision owner** is the maintainer unless a named role is given.
 
 ## 1. API not ready

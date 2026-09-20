@@ -56,11 +56,22 @@ def test_locale_drafts_keep_machine_checkable_names_amounts_dates_and_review_sta
         assert "2026" in pack.date_statement
         assert "2" in pack.changed_statement
         assert "2027" in pack.changed_statement
+        # The maintainer recorded a self-reported fluent review on 2026-09-19
+        # (docs/evidence/BE-085-live-evaluation.md). It names its reviewer and date and marks every
+        # dimension, which the model validator requires; it is not claimed to be independent.
         review = corpus.human_reviews[locale]
-        assert review.status == "pending"
-        assert review.reviewer is None
-        assert review.reviewed_on is None
-    assert evaluate(corpus).human_review_status == dict.fromkeys(LOCALES, "pending")
+        assert review.status == "reviewed"
+        assert review.reviewer is not None
+        assert review.reviewed_on is not None
+        assert {
+            review.meaning,
+            review.names,
+            review.amounts,
+            review.dates,
+            review.uncertainty,
+            review.safety_wording,
+        } == {"preserved"}
+    assert evaluate(corpus).human_review_status == dict.fromkeys(LOCALES, "reviewed")
 
 
 @pytest.mark.parametrize("mutation", ["version", "locale", "review", "duplicate"])
@@ -73,7 +84,8 @@ def test_corpus_rejects_version_locale_review_and_scenario_claim_drift(
     elif mutation == "locale":
         del payload["locales"]["yo"]
     elif mutation == "review":
-        payload["human_reviews"]["ha"]["status"] = "reviewed"
+        # A review claim with no reviewer behind it is refused, whichever way it is written.
+        payload["human_reviews"]["ha"]["reviewer"] = None
     else:
         payload["scenarios"].append(payload["scenarios"][0])
     path = tmp_path / "invalid.json"
@@ -89,7 +101,7 @@ def test_command_reports_safe_aggregate_without_a_live_provider(
     assert main([]) == 0
     body = json.loads(capsys.readouterr().out)
     assert body["deterministic"] == {"passed": 44, "total": 44}
-    assert body["human_review_status"] == dict.fromkeys(LOCALES, "pending")
+    assert body["human_review_status"] == dict.fromkeys(LOCALES, "reviewed")
     assert body["live_provider_called"] is False
     rendered = json.dumps(body)
     for forbidden in ("question", "passage", "GROQ_API_KEY", "Synthetic Clinic"):
@@ -130,3 +142,13 @@ async def test_live_runner_is_injected_and_records_only_versions_and_outcomes() 
     assert summary.prompt_versions == ("grounded-qa-v1",)
     assert summary.schema_versions == ("grounded-answer-v2",)
     assert all(len(case) == 3 for case in summary.cases)
+
+
+def test_a_pending_review_cannot_claim_a_reviewer(tmp_path: Path) -> None:
+    """The other direction of the same rule: `pending` must not carry a name or findings."""
+    payload = json.loads(GOLDEN_CORPUS.read_text(encoding="utf-8"))
+    payload["human_reviews"]["ig"]["status"] = "pending"
+    path = tmp_path / "invalid.json"
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(ValueError, match="corpus is invalid"):
+        load_corpus(path)
