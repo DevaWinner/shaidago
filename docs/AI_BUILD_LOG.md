@@ -1449,3 +1449,63 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Mirrored the proven backend loop structure, then adapted it to the frontend's Server Component/BFF boundary, state-matrix proof, four-locale requirements, and mandatory human visual-direction gate.
 - **Prompt summary:** Create a frontend loop equivalent to the backend loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — Frontend circle branch and commit naming rule
+
+- **Task:** Repository developer workflow — frontend circle isolation and naming.
+- **User outcome delivered:** Every frontend build-order circle now receives an outcome-named branch in the form `frontend/<circle-goal>`, while commits continue to describe their delivered outcome without roadmap labels, circle numbers, or task IDs.
+- **Routes/components changed:** No runtime route, component, BFF handler, or client bundle changed. The active Circle 0 branch is `frontend/contract-inventory`.
+- **Backend operations/contract version:** No backend operation or contract changed.
+- **Public/private data handled:** No data flow changed.
+- **States implemented:** No product UI state changed.
+- **Accessibility evidence:** No UI changed.
+- **Locales reviewed:** No message or translation changed.
+- **Performance/cache impact:** No runtime cache or bundle changed.
+- **Commands run and results:** Confirmed the previous branch was clean and created `frontend/contract-inventory` from its committed frontend baseline; no remote branch was modified.
+- **Screenshots/traces/artifacts checked:** Reviewed the frontend loop's branch creation, task commit, and circle-transition rules; no rendered surface exists to inspect.
+- **Known limitations/open decisions:** Existing `frontend-build` history remains preserved and unchanged. The frontend loop creates later circle branches only after the previous circle's recorded baseline exists.
+- **Commit/PR:** `docs: standardise frontend work branches`
+- **Next task may rely on:** Outcome-named, circle-isolated frontend branches and concise outcome-based commit subjects.
+- **AI assistance used:** Added the requested branch/commit convention and moved the active Circle 0 checkout to its compliant branch without rewriting or deleting history.
+- **Prompt summary:** Require a frontend branch per circle and exclude roadmap names from branch names and commits.
+- **Human review:** none yet; pending maintainer review.
+
+## 2026-09-20 — FE-003 content and range inventory
+
+- **Task:** FE-003 — Content and range inventory.
+- **User outcome delivered:** A deterministic, validated minimum/typical/maximum content contract now gives later frontend work safe layout fixtures for public projects/sources, four-language labels, private reporting, tracking, reviewer work, and Source Scout.
+- **Routes/components changed:** No runtime route or component changed. Added `data/frontend-content-range-fixtures.json`, `docs/FRONTEND_CONTENT_RANGE_INVENTORY.md`, and `scripts/validate_frontend_content_ranges.py` for future directory, detail, source, report, tracking, reviewer, and discovery tests.
+- **Backend operations/contract version:** No generated API contract changed; the inventory is constrained by OpenAPI `0.0.0`, frontend fixture schema `1`, and the documented handoff. It marks currency and reporter-visible tracking history as not exposed by the current public/tracking contracts rather than creating fields.
+- **Public/private data handled:** Every fixture is marked synthetic and contains no source-register project/source/fact, report, allegation, identifier, contact value, tracking code, passphrase, session token, CSRF token, signed URL, or file bytes. Private form/reviewer entries are metadata-only local test inputs and never cacheable.
+- **States implemented:** Size fixtures complement, but do not replace, the 304 stable UI state fixtures. The registry names minimum/typical/maximum cases for each shared surface and preserves distinct unavailable, validation, offline, and recovery states for later tests.
+- **Accessibility evidence:** The inventory specifies long-label wrapping, explicit unknown/omitted values, text status, keyboard/error association, 200% zoom, reduced motion, mobile, and desktop evidence required when components consume a fixture.
+- **Locales reviewed:** English is source-locale layout copy; Hausa, Igbo, and Yoruba long labels are explicitly marked machine-assisted and unreviewed. No fluent review or production safety copy is claimed.
+- **Performance/cache impact:** No runtime bundle/cache changed. Recipes are deterministic metadata, avoid file bytes, and must be loaded only by local test code once the web package exists; private fixture cases are prohibited from browser/service-worker/persistent caches and artifacts.
+- **Commands run and results:** `make frontend-contract-check`; `python3 scripts/validate_frontend_content_ranges.py --self-test`; `python3 scripts/validate_frontend_traceability.py --self-test`; `python3 scripts/validate_frontend_route_matrix.py --self-test`; `python3 scripts/validate_frontend_state_matrix.py --self-test`; and the six existing Circle 0 validators all passed. No planned web command was run because `apps/web` does not exist yet.
+- **Screenshots/traces/artifacts checked:** Reviewed the JSON fixture source, generated-free inventory, source-register title separation, documented API field boundaries, and final diff. No rendered frontend exists yet.
+- **Known limitations/open decisions:** Fixture recipes are not generated client data and need a future test-factory adapter. Currency UI and reporter-visible status history remain prohibited until an approved contract adds them. Circle 1 visual direction and fluent-language review remain human decisions.
+- **Commit/PR:** `docs: define frontend content range fixtures`
+- **Next task may rely on:** Stable `content.<surface>.<tier>` names, explicit safe data classifications, contract-absence markers, and three layout-density targets for every requested content family.
+- **AI assistance used:** Derived a contract-safe fixture taxonomy from the frontend handoff and task requirements; added an adversarial validator rather than using source-register data as plausible-looking UI content.
+- **Prompt summary:** Use the frontend loop and work the next frontend task.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-004 BFF operation map
+
+- **Task:** FE-004 — BFF operation map.
+- **User outcome delivered:** Every 35 implemented non-health API operation now has one named direct Server Component read or exact purpose-built same-origin BFF route, with a complete implementation profile before the web app is scaffolded.
+- **Routes/components changed:** No runtime route/component changed. Added `docs/FRONTEND_BFF_OPERATION_MAP.md` and `scripts/validate_frontend_bff_operation_map.py`; documented future `app/api/` ownership only.
+- **Backend operations/contract version:** No generated contract changed. The map validates exact coverage of OpenAPI `0.0.0` operation IDs excluding health endpoints and preserves generated types as the future source of request/response shapes.
+- **Public/private data handled:** Profiles permit only safe request ID, locale, and client-HMAC forwarding; service credentials are added server-side. They block browser cookies/authorisation/arbitrary headers, internal hostnames, report content, contacts, tracking/handle credentials, session/CSRF values, object keys, signed URLs, and evidence bytes from logs/caches/client bundles.
+- **States implemented:** No UI state changed. The map defines safe problem mapping, `304` retain-body polling/read behaviour, timeout/cancellation propagation, idempotency replay/conflict handling, session-expiry recovery, and distinct public/private cache rules for later state-matrix consumers.
+- **Accessibility evidence:** No UI changed. Future BFF errors use stable localisable codes and request IDs so FE-053 can associate accessible field/status recovery without raw backend detail.
+- **Locales reviewed:** No message copy changed. Safe locale forwarding covers `en`, `ha`, `ig`, and `yo`; human translation review remains pending.
+- **Performance/cache impact:** Public Server Component reads retain only the documented `ETag`/public response policy. Every mutation, tracking, Q&A, discovery, reviewer, auth, and evidence route is no-store; timeouts are bounded and streaming upload/download avoids full-body buffering.
+- **Commands run and results:** `make frontend-contract-check`; `python3 scripts/validate_frontend_bff_operation_map.py --self-test`; the four frontend Circle 0 validators; and the six repository Circle 0 validators passed. No planned web build/test command was run because `apps/web` does not exist yet.
+- **Screenshots/traces/artifacts checked:** Reviewed every generated non-health operation, route-matrix ownership, handoff cache/session semantics, and final diff. No runtime BFF/UI exists yet to screenshot or trace.
+- **Known limitations/open decisions:** The map is a design/implementation contract, not a Route Handler implementation. Concrete headers, schemas, generated client imports, CSRF token lifecycle, and bundle tests begin in Circle 2/3. Circle 1 visual direction remains human-gated.
+- **Commit/PR:** `docs: map frontend BFF operations`
+- **Next task may rely on:** Exact BFF path ownership, profile-based guard/caching/redaction rules, and complete operation coverage without a generic proxy.
+- **AI assistance used:** Reconciled OpenAPI, route ownership, state rules, and backend handoff into one validator-backed BFF ledger; explicitly excluded unsafe generic forwarding and frontend policy decisions.
+- **Prompt summary:** Use the frontend loop and continue the next eligible frontend task.
+- **Human review:** none yet; unattended run, pending maintainer review.

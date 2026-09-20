@@ -27,6 +27,8 @@ If implementation reveals a conflict, do not silently choose one version. Correc
 | [`FRONTEND_REQUIREMENTS_TRACEABILITY.md`](FRONTEND_REQUIREMENTS_TRACEABILITY.md) | Active control | Which frontend task, route, operation, data class, cache rule, and proof owns every user-facing requirement? |
 | [`FRONTEND_ROUTE_MATRIX.md`](FRONTEND_ROUTE_MATRIX.md) | Active control | What does each route do, how is it rendered/cached/localised, which operations does it call, and where does it hand off? |
 | [`FRONTEND_STATE_MATRIX.md`](FRONTEND_STATE_MATRIX.md) | Active control | Which stable fixtures and recovery behavior must every async public, report, tracking, reviewer, and discovery surface implement? |
+| [`FRONTEND_CONTENT_RANGE_INVENTORY.md`](FRONTEND_CONTENT_RANGE_INVENTORY.md) | Active control | Which safe minimum, typical, and maximum content fixtures must frontend surfaces survive before component implementation? |
+| [`FRONTEND_BFF_OPERATION_MAP.md`](FRONTEND_BFF_OPERATION_MAP.md) | Active control | Which typed server read or exact same-origin BFF route owns each frontend operation and its security/cache boundary? |
 | [`decisions/`](decisions/README.md) | Accepted decision records | Which hard-to-reverse backend choices are binding, what was rejected, and which tasks enforce them? |
 | [`THREAT_MODEL.md`](THREAT_MODEL.md) | Design contract | Which data is private or secret, where may it flow, how is it deleted, and which task proves each control? |
 | [`PRIVACY_AND_SAFETY.md`](PRIVACY_AND_SAFETY.md) | Implemented prototype controls | Which privacy controls exist, what evidence proves them, and what still blocks production? |

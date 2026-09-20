@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "kind": "synthetic_frontend_layout_fixtures",
+  "fixture_label": "SYNTHETIC LAYOUT FIXTURE — NOT A PROJECT, SOURCE, REPORT, OR CREDENTIAL",
+  "purpose": "Deterministic minimum, typical, and maximum content for frontend layout, accessibility, and end-to-end tests before apps/web exists.",
+  "source_register_boundary": {
+    "real_project_record_count": 6,
+    "rule": "Do not copy, derive, or present any source-register project, source, fact, report, allegation, identifier, or credential from these fixtures."
+  },
+  "assembly_rules": {
+    "text_recipe": "A test factory repeats seed text to target_characters, then truncates exactly at the target. It must not add factual claims, names, URLs, or credentials.",
+    "file_recipe": "A test factory creates metadata only; it never creates, persists, uploads, or scans a real file.",
+    "date_rule": "All values are fixed synthetic UTC examples. Rendered public dates use Africa/Lagos in later frontend tasks."
+  },
+  "fixtures": [
+    {
+      "id": "content.project.minimum",
+      "surface": "public_project",
+      "tier": "minimum",
+      "data": {
+        "title": "Synthetic works record",
+        "locality": "AMAC",
+        "institution": null,
+        "contractor": null,
+        "fact_count": 0,
+        "source_count": 0,
+        "timeline_items": 0,
+        "currency": { "amount_ngn": null, "contract_status": "not_exposed_by_current_public_contract" },
+        "dates": { "last_checked_on": "2026-09-20", "timeline_dates": [] }
+      }
+    },
+    {
+      "id": "content.project.typical",
+      "surface": "public_project",
+      "tier": "typical",
+      "data": {
+        "title": "Fictional neighbourhood drainage access works",
+        "locality": "Bwari",
+        "institution": "Synthetic public works office",
+        "contractor": "Synthetic delivery partner",
+        "fact_count": 3,
+        "source_count": 2,
+        "timeline_items": 4,
+        "currency": { "amount_ngn": 12500000, "contract_status": "not_exposed_by_current_public_contract" },
+        "dates": { "last_checked_on": "2026-09-20", "timeline_dates": ["2025-10-03", "2026-01-12", "2026-06-18", "2026-09-20"] }
+      }
+    },
+    {
+      "id": "content.project.maximum",
+      "surface": "public_project",
+      "tier": "maximum",
+      "data": {
+        "title_recipe": { "seed": "Fictional multi-neighbourhood public-works access and drainage improvement record ", "target_characters": 160 },
+        "locality": "AMAC",
+        "institution_recipe": { "seed": "Synthetic public institution with a deliberately extended departmental title ", "target_characters": 120 },
+        "contractor_recipe": { "seed": "Synthetic contractor name for layout stress only ", "target_characters": 120 },
+        "fact_count": 12,
+        "source_count": 12,
+        "timeline_items": 12,
+        "currency": { "amount_ngn": 987654321012, "contract_status": "not_exposed_by_current_public_contract" },
+        "dates": { "last_checked_on": "2026-09-20", "timeline_dates": { "count": 12, "start": "2024-01-15", "end": "2026-09-20" } }
+      }
+    },
+    {
+      "id": "content.locale.minimum",
+      "surface": "locale_copy",
+      "tier": "minimum",
+      "data": {
+        "locale": "en",
+        "review_status": "source_locale",
+        "label": "Report safely"
+      }
+    },
+    {
+      "id": "content.locale.typical",
+      "surface": "locale_copy",
+      "tier": "typical",
+      "data": {
+        "locale": "ha",
+        "review_status": "machine_assisted_unreviewed",
+        "label": "Duba bayanan da aka tabbatar game da aikin jama'a a yankinku kafin ku ba da rahoto"
+      }
+    },
+    {
+      "id": "content.locale.maximum",
+      "surface": "locale_copy",
+      "tier": "maximum",
+      "data": {
+        "labels": [
+          { "locale": "ha", "review_status": "machine_assisted_unreviewed", "label": "Duba bayanan da aka tabbatar game da aikin jama'a a yankinku kafin ku ba da rahoto" },
+          { "locale": "ig", "review_status": "machine_assisted_unreviewed", "label": "Lelee ozi e kwadoro gbasara ọrụ ọha dị n'obodo unu tupu unu ziga akụkọ" },
+          { "locale": "yo", "review_status": "machine_assisted_unreviewed", "label": "Wo ìwífún tí a ti ṣàyẹ̀wò nípa iṣẹ́ ìjọba ní àgbègbè yín kí ẹ tó fi ìròyìn ránṣẹ́" }
+        ]
+      }
+    },
+    {
+      "id": "content.source.minimum",
+      "surface": "approved_source",
+      "tier": "minimum",
+      "data": {
+        "title": "Synthetic source notice",
+        "publisher": "Synthetic publisher",
+        "excerpt_recipe": { "seed": "Fictional quoted passage for layout only. ", "target_characters": 80 },
+        "availability": "available",
+        "unavailable_message": null
+      }
+    },
+    {
+      "id": "content.source.typical",
+      "surface": "approved_source",
+      "tier": "typical",
+      "data": {
+        "title": "Synthetic public works update with a deliberately descriptive title",
+        "publisher": "Synthetic independent publication",
+        "excerpt_recipe": { "seed": "Fictional exact-passage layout text. It carries no claim about a real project or institution. ", "target_characters": 320 },
+        "availability": "available",
+        "unavailable_message": null
+      }
+    },
+    {
+      "id": "content.source.maximum",
+      "surface": "approved_source",
+      "tier": "maximum",
+      "data": {
+        "title_recipe": { "seed": "Synthetic source title for a long evidence-reading layout case ", "target_characters": 180 },
+        "publisher_recipe": { "seed": "Synthetic publisher identity for wrapping and truncation checks ", "target_characters": 120 },
+        "excerpt_recipe": { "seed": "Fictional exact-passage layout text with no real-world claim, source, person, or institution. ", "target_characters": 1000 },
+        "availability": "access_restricted",
+        "unavailable_message": "This synthetic source cannot be opened right now. Its approved citation metadata remains visible; availability does not prove or disprove the statement."
+      }
+    },
+    {
+      "id": "content.report.minimum",
+      "surface": "private_report",
+      "tier": "minimum",
+      "data": {
+        "description_recipe": { "seed": "Fictional report layout text. ", "target_characters": 10 },
+        "concern_categories": ["incomplete_work"],
+        "contact_option": "anonymous",
+        "attachments": [],
+        "validation_error_fields": ["description"]
+      }
+    },
+    {
+      "id": "content.report.typical",
+      "surface": "private_report",
+      "tier": "typical",
+      "data": {
+        "description_recipe": { "seed": "Fictional report text used only to exercise private-form layout and error association. ", "target_characters": 900 },
+        "concern_categories": ["access_barrier", "incomplete_work", "other_concern"],
+        "contact_option": "chosen_channel_without_value",
+        "attachments": [
+          { "name": "synthetic-photo-01.jpg", "type": "image/jpeg", "size_bytes": 1835000, "storage": "metadata_only" },
+          { "name": "synthetic-note.pdf", "type": "application/pdf", "size_bytes": 926000, "storage": "metadata_only" }
+        ],
+        "validation_error_fields": ["description", "attachments.1"]
+      }
+    },
+    {
+      "id": "content.report.maximum",
+      "surface": "private_report",
+      "tier": "maximum",
+      "data": {
+        "description_recipe": { "seed": "Fictional report layout text only; it contains no real report, contact, allegation, or identifying detail. ", "target_characters": 8000 },
+        "concern_categories": ["access_barrier", "incomplete_work", "unsafe_construction", "suspected_incorrect_status", "other_concern"],
+        "contact_options": ["anonymous", "email_without_value", "phone_without_value", "messaging_app_without_value"],
+        "attachments": [
+          { "name": "synthetic-image-a.png", "type": "image/png", "size_bytes": 10485760, "storage": "metadata_only" },
+          { "name": "synthetic-image-b.webp", "type": "image/webp", "size_bytes": 10485760, "storage": "metadata_only" },
+          { "name": "synthetic-document.pdf", "type": "application/pdf", "size_bytes": 10485760, "storage": "metadata_only" }
+        ],
+        "validation_error_fields": ["project_slug", "concern_category", "description", "contact_channel", "contact_value", "attachments.0", "attachments.1", "attachments.2"]
+      }
+    },
+    {
+      "id": "content.tracking.minimum",
+      "surface": "tracking",
+      "tier": "minimum",
+      "data": {
+        "status": "received",
+        "message_recipe": { "seed": "Synthetic reviewer-safe status message. ", "target_characters": 60 },
+        "follow_up_count": 0,
+        "history": "not_exposed_by_current_tracking_contract"
+      }
+    },
+    {
+      "id": "content.tracking.typical",
+      "surface": "tracking",
+      "tier": "typical",
+      "data": {
+        "status": "needs_information",
+        "message_recipe": { "seed": "Synthetic reviewer-safe status message with an actionable but non-identifying next step. ", "target_characters": 220 },
+        "follow_up_count": 2,
+        "history": "not_exposed_by_current_tracking_contract"
+      }
+    },
+    {
+      "id": "content.tracking.maximum",
+      "surface": "tracking",
+      "tier": "maximum",
+      "data": {
+        "status": "closed",
+        "message_recipe": { "seed": "Synthetic reviewer-safe status message for line wrapping and accessible reading checks. ", "target_characters": 400 },
+        "follow_up_count": 10,
+        "history": "not_exposed_by_current_tracking_contract"
+      }
+    },
+    {
+      "id": "content.reviewer.minimum",
+      "surface": "reviewer_workspace",
+      "tier": "minimum",
+      "data": {
+        "queue_rows": 1,
+        "internal_notes": 0,
+        "evidence_items": 0,
+        "status_events": 1
+      }
+    },
+    {
+      "id": "content.reviewer.typical",
+      "surface": "reviewer_workspace",
+      "tier": "typical",
+      "data": {
+        "queue_rows": 20,
+        "internal_notes": 4,
+        "evidence_items": 2,
+        "status_events": 4,
+        "note_recipe": { "seed": "Fictional reviewer-only note for dense-reading layout tests. ", "target_characters": 600 }
+      }
+    },
+    {
+      "id": "content.reviewer.maximum",
+      "surface": "reviewer_workspace",
+      "tier": "maximum",
+      "data": {
+        "queue_rows": 50,
+        "internal_notes": 50,
+        "evidence_items": 3,
+        "status_events": 12,
+        "note_recipe": { "seed": "Fictional reviewer-only note for private layout tests; no real report, person, or contact appears here. ", "target_characters": 4000 },
+        "status_event_rule": "layout_stress_target_not_a_backend_event_cap"
+      }
+    },
+    {
+      "id": "content.discovery.minimum",
+      "surface": "source_scout",
+      "tier": "minimum",
+      "data": {
+        "result_cards": 0,
+        "citation_count": 0,
+        "contradictions": 0,
+        "information_gaps": 0,
+        "follow_up_questions": 0
+      }
+    },
+    {
+      "id": "content.discovery.typical",
+      "surface": "source_scout",
+      "tier": "typical",
+      "data": {
+        "result_cards": 4,
+        "citation_count": 8,
+        "contradictions": 2,
+        "information_gaps": 3,
+        "follow_up_questions": 3,
+        "card_title_recipe": { "seed": "Synthetic discovered-source title — not reviewed evidence ", "target_characters": 110 }
+      }
+    },
+    {
+      "id": "content.discovery.maximum",
+      "surface": "source_scout",
+      "tier": "maximum",
+      "data": {
+        "result_cards": 10,
+        "citation_count": 24,
+        "contradictions": 5,
+        "information_gaps": 8,
+        "follow_up_questions": 5,
+        "card_title_recipe": { "seed": "Synthetic discovered-source title — not reviewed evidence and never an approved fact ", "target_characters": 180 },
+        "label": "discovered — not yet reviewed"
+      }
+    }
+  ]
+}
