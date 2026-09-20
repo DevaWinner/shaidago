@@ -1,11 +1,11 @@
-# Gitleaks configuration. The default rules apply; the allowlist below covers exactly two synthetic
-# values that look like keys. Adding a value here needs a reason in the same change.
+# Gitleaks configuration. The default rules apply; the allowlists below cover two synthetic values and one file of pinned public digests, all
+# looking like keys. Adding a value here needs a reason in the same change.
 title = "ShaidaGo gitleaks"
 
 [extend]
 useDefault = true
 
-[allowlist]
+[[allowlists]]
 description = "Documented synthetic placeholders"
 regexes = [
   # base64 of the ASCII text "change-me-change-me-change-me-32": the placeholder used in
@@ -13,4 +13,13 @@ regexes = [
   '''Y2hhbmdlLW1lLWNoYW5nZS1tZS1jaGFuZ2UtbWUtMzI=''',
   # Two fixed UUIDs used as example Idempotency-Key values in tests.
   '''3f2b8c1e-9d4a-4b6e-8a1c-2d5e7f9a0b3[cd]''',
+]
+
+# The embedding-model fetcher pins the SHA-256 digest of each public model file and a public Hugging
+# Face git revision so downloads are verified. They are content hashes, not credentials; scoping
+# the exception to this one file keeps every other generic-api-key match live.
+[[allowlists]]
+description = "Pinned public model digests and revision"
+paths = [
+  '''services/platform/src/shaidago/retrieval/fetch_embedding_model\.py''',
 ]
