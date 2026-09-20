@@ -51,6 +51,9 @@
     },
     "discovery": {
       "critical": false
+    },
+    "offline": {
+      "critical": false
     }
   },
   "locales": {
@@ -139,6 +142,11 @@
         "status": "reviewed",
         "reviewer": "maintainer (self-reported: English source copy authored in an unattended build run; no independent review yet)",
         "reviewedOn": "2026-09-20"
+      },
+      "offline": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: English source copy authored in an unattended build run; no independent review yet)",
+        "reviewedOn": "2026-09-20"
       }
     },
     "ha": {
@@ -199,6 +207,9 @@
         "status": "pending"
       },
       "discovery": {
+        "status": "pending"
+      },
+      "offline": {
         "status": "pending"
       }
     },
@@ -261,6 +272,9 @@
       },
       "discovery": {
         "status": "pending"
+      },
+      "offline": {
+        "status": "pending"
       }
     },
     "yo": {
@@ -321,6 +335,9 @@
         "status": "pending"
       },
       "discovery": {
+        "status": "pending"
+      },
+      "offline": {
         "status": "pending"
       }
     }

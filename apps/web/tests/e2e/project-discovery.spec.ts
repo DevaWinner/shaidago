@@ -1,3 +1,4 @@
+import { progressSlug } from "../support/progress-slug";
 import { expect, test } from "@playwright/test";
 
 test("a resident starts a bounded public discovery replay without putting state in the address", async ({
@@ -74,7 +75,7 @@ test("a spent budget shows the latest run with its failure, and a cancelled run 
 
 test("an unverifiable analysis is not shown, and progress stops polling when the run finishes", async ({
   page
-}) => {
+}, info) => {
   await start(page, "synthetic-project-05");
   await expect(panel(page)).toContainText("No analysis is shown");
   await expect(panel(page).locator("[data-slot=discovery-analysis]")).toHaveCount(0);
@@ -84,7 +85,7 @@ test("an unverifiable analysis is not shown, and progress stops polling when the
   page.on("request", (request) => {
     if (request.url().includes("/api/public/discovery/")) reads.push(request.url());
   });
-  await start(page, "synthetic-project-04");
+  await start(page, progressSlug(info));
   await expect(panel(page)).toContainText("Search completed", { timeout: 14000 });
   const settled = reads.length;
 

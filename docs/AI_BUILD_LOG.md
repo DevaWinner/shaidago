@@ -2451,3 +2451,103 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the scenario switches in `mock-discovery.mjs`, `mock-reviewer.mjs`, and `mock-api.mjs`.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-130 Manifest and installability
+
+- **Task:** FE-130 — Manifest and installability (Circle 13). Initially recorded blocked for lack of an approved icon; the maintainer then asked for a simple letter icon and logo, which were made and the task completed.
+- **User outcome delivered:** The app has a valid web app manifest, a simple letter-mark icon set (any, maskable, Apple touch) and a logo, so it can be installed.
+- **Routes/components changed:** `apps/web/app/manifest.ts`, icon metadata in the locale layout, `public/icons/*` (SVG and PNG), `scripts/render-icons.mjs`, unit and e2e tests.
+- **Backend operations/contract version:** none.
+- **Public/private data handled:** none; the manifest is static and public.
+- **States implemented:** served, linked, start address resolves to a locale.
+- **Accessibility evidence:** not applicable to a manifest.
+- **Locales reviewed:** English manifest strings; the start address resolves to any of the four locales.
+- **Performance/cache impact:** one small static JSON file.
+- **Commands run and results:** `make web-verify` exit 0 (512 unit tests in total); targeted e2e `pwa-manifest` 4 passed (Chromium and mobile WebKit).
+- **Screenshots/traces/artifacts checked:** none.
+- **Known limitations/open decisions:** The mark is a plain letter S with a double rule, made on the maintainer's instruction; it has had no other visual review. No real install prompt was exercised. The wordmark in `logo.svg` is live text in a generic serif stack, not outlined.
+- **Commit/PR:** `feat: add the ShaidaGo letter-mark icons and logo to the manifest`
+- **Next task may rely on:** `/manifest.webmanifest` and the approved colours.
+- **AI assistance used:** Wrote the manifest and tests; declined to invent an icon.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-131 Explicit service-worker allowlist
+
+- **Task:** FE-131 — Explicit service-worker allowlist (Circle 13). Delivered in one commit with the other service-worker task because they share the worker and the offline page.
+- **User outcome delivered:** Recently viewed public pages and framework files are saved for weak connections, and nothing private is ever stored.
+- **Routes/components changed:** `public/sw.js`, `public/sw-policy.js`, `next.config.ts` headers, `src/components/pwa/pwa-support.tsx`, unit and e2e tests.
+- **Backend operations/contract version:** none (public pages and static files only).
+- **Public/private data handled:** Only public catalogue HTML and framework files are stored; cache inspection proves no private URL, body, header, or canary.
+- **States implemented:** stored, refused (no-store/private/cookie/redirect/opaque/oversize), stale-while-revalidate, network-first with timeout, error fallback
+- **Accessibility evidence:** not applicable to the worker itself
+- **Locales reviewed:** English only; the `offline` domain is `null` in ha/ig/yo (pending), so those pages show the English original with a notice.
+- **Performance/cache impact:** One small client island on public pages (registration and banner); the worker file is `no-cache`; public pages are revalidated on every request.
+- **Commands run and results:** `make web-verify` exit 0 (551 unit tests in total); `make web-e2e` 373 passed and 7 skipped; targeted a11y `offline` 8 passed. (Test count in the FE-131 note: 39 policy unit tests.)
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** Production CDN behaviour not tested; caching relies on Next honouring the `headers()` override for the public routes.
+- **Commit/PR:** `feat: add the explicit-allowlist service worker, offline page, and update notice`
+- **Next task may rely on:** `SG_POLICY`, the `sg-*-v1` caches, `PwaSupport`, and the `offline` copy domain.
+- **AI assistance used:** Wrote the worker, policy, components, and the cache-inspection tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-132 Offline and update UX
+
+- **Task:** FE-132 — Offline and update UX (Circle 13). Delivered in one commit with the other service-worker task because they share the worker and the offline page.
+- **User outcome delivered:** A reader can revisit a saved public record offline with its saved time, gets a useful offline page otherwise, and is never told a private action succeeded offline.
+- **Routes/components changed:** `app/[locale]/(site)/offline/page.tsx`, `src/components/pwa/*`, `messages/*` (`offline`), unit, e2e and a11y tests.
+- **Backend operations/contract version:** none.
+- **Public/private data handled:** Saved public pages only, in this browser's Cache Storage; no private data.
+- **States implemented:** saved copy with date, unsaved offline page, private routes unavailable, update waiting, back online, cleared saved pages
+- **Accessibility evidence:** 8 axe runs (four languages) at 320 px and 200% text for the offline page
+- **Locales reviewed:** English only; the `offline` domain is `null` in ha/ig/yo (pending), so those pages show the English original with a notice.
+- **Performance/cache impact:** One small client island on public pages (registration and banner); the worker file is `no-cache`; public pages are revalidated on every request.
+- **Commands run and results:** `make web-verify` exit 0 (551 unit tests in total); `make web-e2e` 373 passed and 7 skipped; targeted a11y `offline` 8 passed. (Test count in the FE-131 note: 39 policy unit tests.)
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** WebKit offline with a service worker is not testable in Playwright; the update prompt is not driven end to end; ha/ig/yo copy pending.
+- **Commit/PR:** `feat: add the explicit-allowlist service worker, offline page, and update notice`
+- **Next task may rely on:** `SG_POLICY`, the `sg-*-v1` caches, `PwaSupport`, and the `offline` copy domain.
+- **AI assistance used:** Wrote the worker, policy, components, and the cache-inspection tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-133 Low-data mode
+
+- **Task:** FE-133 — Low-data mode (Circle 13).
+- **User outcome delivered:** A reader on a costly connection can turn on a low-data mode that removes motion and slows background refreshing and polling, keeping every fact and action, and the browser's saved-data hint is only a suggestion.
+- **Routes/components changed:** `src/lib/low-data.ts`, `src/components/pwa/low-data-control.tsx`, the locale layout head script, `app/globals.css`, polling in the two Source Scout panels, `messages/*` (`offline.lowData`), unit, component and e2e tests.
+- **Backend operations/contract version:** none.
+- **Public/private data handled:** One functional preference cookie holding `1` or `0`; no identifier, never sent to an API.
+- **States implemented:** off, on, suggested by the browser, dismissed, explicit off respected.
+- **Accessibility evidence:** the switch is a button with `aria-pressed` and a polite status; motion is fully off. Covered by the public-page axe suites.
+- **Locales reviewed:** English only; `offline.lowData` is `null` in ha/ig/yo (pending).
+- **Performance/cache impact:** A four-line inline head script and one small client island; the mode saves little today because the app ships no images or web fonts.
+- **Commands run and results:** `make web-verify` exit 0; targeted e2e `low-data` 12 passed (Chromium and mobile WebKit).
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** Nothing to remove yet (no images or web fonts). The cookie is set from JavaScript, so it does not exist for visitors who never turn the mode on. A hydration mismatch it caused was fixed with a server-safe external-store read.
+- **Commit/PR:** `feat: add low-data mode with a plain preference cookie`
+- **Next task may rely on:** `applyLowData`, `scaleDelay`, and `data-low-data` on `<html>`.
+- **AI assistance used:** Designed and implemented the mode, and diagnosed the hydration mismatch.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-134 Network resilience
+
+- **Task:** FE-134 — Network resilience (Circle 13).
+- **User outcome delivered:** On a poor or flapping connection, Source Scout checking keeps going or stops cleanly, a stuck read is abandoned and can be retried, and pressing a button twice or losing the connection never makes duplicate work or silently loses what was typed.
+- **Routes/components changed:** `src/lib/net/timeout.ts`, polling in `project-discovery.tsx` and `discovery-run.tsx`, mock scenarios (a second progressing public run), unit and e2e tests.
+- **Backend operations/contract version:** `discovery_start_public_run`, `discovery_get_public_run`, `reviewer_discovery_get`, `projects_ask_question` (unchanged).
+- **Public/private data handled:** none new; nothing stored.
+- **States implemented:** offline mid-read, flapping, reconnect, not modified, stuck read, retry, offline before a mutation, back online.
+- **Accessibility evidence:** status and alert regions announce state changes; covered by the existing axe suites (`make web-a11y` 338 passed).
+- **Locales reviewed:** no new copy.
+- **Performance/cache impact:** Polling is bounded and scheduled per attempt; reads time out at ten seconds.
+- **Commands run and results:** `make web-verify` exit 0 (558 unit and 201 component tests in total); `make web-e2e` 395 passed and 9 skipped; `make web-a11y` 338 passed.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** No throttled slow-3G profile; the stuck-read test and the offline-with-service-worker tests are Chromium-only because of Playwright WebKit limitations (stated in the tests).
+- **Commit/PR:** `fix: keep Source Scout checking through flapping connections and bound browser reads`
+- **Next task may rely on:** `withTimeout`, `CLIENT_READ_TIMEOUT_MS`, the per-attempt polling pattern, and `progressSlug`.
+- **AI assistance used:** Found the stopped-polling defect while writing the resilience tests and fixed it.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

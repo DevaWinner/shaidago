@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 
 import { TranslationNotice } from "@/components/evidence/evidence";
+import { LowDataControl } from "@/components/pwa/low-data-control";
+import { PwaSupport } from "@/components/pwa/pwa-support";
 import { PublicShell } from "@/components/shell/shell";
 import { resolveDomain } from "@/i18n/catalogue";
 import { localeHref, type RouteState } from "@/i18n/locale-href";
@@ -19,6 +21,7 @@ export function SiteShell({
   const shell = resolveDomain(locale, "shell");
   const evidence = resolveDomain(locale, "evidence");
   const language = resolveDomain(locale, "language");
+  const offline = resolveDomain(locale, "offline");
   const base = `/${locale}`;
 
   return (
@@ -45,6 +48,10 @@ export function SiteShell({
       messages={shell.messages.public}
       unreviewedLocales={LOCALES.filter((code) => !REVIEWED_LOCALES.includes(code))}
     >
+      <div className="mb-4">
+        <PwaSupport copy={offline.messages} language={offline.language} />
+        <LowDataControl copy={offline.messages.lowData} />
+      </div>
       {shell.isOriginal || evidence.isOriginal ? (
         <div className="mb-6">
           <TranslationNotice labels={evidence.messages.translation} status="unavailable" />

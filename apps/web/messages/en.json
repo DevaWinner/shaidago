@@ -1489,5 +1489,33 @@
         "deferred": "Deferred"
       }
     }
+  },
+  "offline": {
+    "title": "You are offline",
+    "lead": "ShaidaGo could not reach the network. Pages you opened recently may be saved on this device.",
+    "retry": "Try again",
+    "savedHeading": "Saved pages",
+    "savedNone": "No pages are saved yet. Open a project record while you are online and it will be kept here for a week.",
+    "savedOn": "Saved {date}",
+    "savedNote": "A saved page shows the last-checked date it had when it was saved. It may be out of date.",
+    "clear": "Forget saved pages",
+    "cleared": "Saved pages were removed from this device.",
+    "privateNote": "Reports, tracking, and reviewer actions need a connection. Nothing you enter is sent, saved, or queued while you are offline.",
+    "banner": "You are offline. This page is a saved copy from {date} and may be out of date.",
+    "bannerNoDate": "You are offline. You are seeing a saved copy that may be out of date.",
+    "backOnline": "You are back online.",
+    "update": "An update to ShaidaGo is ready.",
+    "updateApply": "Reload to use it",
+    "updateLater": "It will apply the next time you open ShaidaGo. Your report is not affected.",
+    "lowData": {
+      "suggest": "Your browser asks to save data. Turn on low-data mode?",
+      "on": "Low-data mode is on",
+      "off": "Low-data mode is off",
+      "turnOn": "Turn on low-data mode",
+      "turnOff": "Turn off low-data mode",
+      "label": "Low-data mode",
+      "note": "Fewer animations, no background refreshing or prefetching, slower checking of Source Scout. All facts and actions stay available.",
+      "dismiss": "Not now"
+    }
   }
 }

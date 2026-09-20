@@ -308,7 +308,9 @@ const PUBLIC_SCENARIOS = {
   "synthetic-project-02": { n: 802, status: "failed", failure: "budget_exhausted", partial: true },
   "synthetic-project-03": { n: 803, status: "cancelled", partial: true },
   "synthetic-project-04": { n: 804, status: "searching", progress: true, action: "create" },
-  "synthetic-project-05": { n: 805, status: "complete", invalid: true }
+  "synthetic-project-05": { n: 805, status: "complete", invalid: true },
+  // A second progressing run, so the two parallel browser projects never share a read counter.
+  "synthetic-project-06": { n: 806, status: "searching", progress: true, action: "create" }
 };
 const publicReads = {};
 
@@ -980,6 +982,9 @@ createServer((request, response) => {
       );
     } else {
       const scenario = PUBLIC_SCENARIOS[slug];
+
+      // Starting a progressing run begins its stages again.
+      if (scenario?.progress) publicReads[scenario.n] = 0;
       noStoreJson(
         response,
         {

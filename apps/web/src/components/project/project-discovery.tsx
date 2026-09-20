@@ -16,7 +16,9 @@ import { formatMessageLite } from "@/lib/directory/format-lite";
 import { networkProblem, readBrowserProblem } from "@/lib/problems/browser-problem";
 import { describeProblem, type SafeProblem } from "@/lib/problems/problem-messages";
 import { parseRun as parseSharedRun, type RunView } from "@/lib/discovery/parse";
+import { scaleDelay } from "@/lib/low-data";
 import { nextPollDelayMs, shouldPoll } from "@/lib/discovery/run-state";
+import { withTimeout } from "@/lib/net/timeout";
 import { createFormatters } from "@/lib/format/formatters";
 
 type Copy = Readonly<{
@@ -185,7 +187,7 @@ export function ProjectDiscovery({
             cache: "no-store",
             credentials: "same-origin",
             headers: { Accept: "application/json", "X-Shaidago-Locale": locale },
-            signal: controller.signal
+            signal: withTimeout(controller.signal)
           }
         );
         if (response.status === 304) return;
@@ -230,7 +232,7 @@ export function ProjectDiscovery({
           "X-Shaidago-Locale": locale
         },
         method: "POST",
-        signal: controller.signal
+        signal: withTimeout(controller.signal)
       });
       if (!response.ok) {
         setPhase({ name: "failed", problem: await readBrowserProblem(response) });
@@ -251,18 +253,29 @@ export function ProjectDiscovery({
     }
   }
 
+  const [tick, setTick] = useState(0);
+
+  // Poll only while the run is active, the tab is visible, and the browser reports a connection.
+  // Each attempt schedules the next (even when the answer was "not modified" or the attempt was
+  // skipped), and coming back online restarts the schedule at once rather than waiting.
   useEffect(() => {
     if (phase.name !== "viewing" || phase.paused || !shouldPoll("public", phase.run.status)) return;
     const runId = phase.run.runId;
-    const poll = (): void => {
-      if (!document.hidden && navigator.onLine) {
-        attempts.current += 1;
-        void load(runId);
-      }
-    };
-    const timer = window.setTimeout(poll, nextPollDelayMs(attempts.current));
+    const timer = window.setTimeout(
+      () => {
+        void (async (): Promise<void> => {
+          if (!document.hidden && online) {
+            attempts.current += 1;
+            await load(runId);
+          }
+          setTick((value) => value + 1);
+        })();
+      },
+      online ? scaleDelay(nextPollDelayMs(attempts.current)) : 1_000
+    );
+
     return () => window.clearTimeout(timer);
-  }, [load, phase]);
+  }, [load, online, phase, tick]);
 
   const failure =
     phase.name === "failed" ? describeProblem(phase.problem, problems, (x) => x) : undefined;

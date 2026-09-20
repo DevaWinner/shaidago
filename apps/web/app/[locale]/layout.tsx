@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import "../globals.css";
 
+import { LOW_DATA_HEAD_SCRIPT } from "@/lib/low-data";
 import { LOCALES, contentLocale, isSupportedLocale } from "@/i18n/routing";
 
 export const metadata: Metadata = {
@@ -13,6 +14,13 @@ export const metadata: Metadata = {
     template: "%s | ShaidaGo"
   },
   description: "Source-backed project records and safer next actions for Abuja communities.",
+  icons: {
+    icon: [
+      { url: "/icons/icon.svg", type: "image/svg+xml" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }]
+  },
   formatDetection: {
     address: false,
     email: false,
@@ -54,7 +62,10 @@ export default async function LocaleLayout({
   }
 
   return (
-    <html lang={supported ? contentLocale(locale) : "en"}>
+    <html lang={supported ? contentLocale(locale) : "en"} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: LOW_DATA_HEAD_SCRIPT }} />
+      </head>
       <body>{children}</body>
     </html>
   );
