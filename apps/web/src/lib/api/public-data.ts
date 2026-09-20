@@ -9,10 +9,16 @@ import type { ApiLocale } from "@/lib/api/forwarded-context";
 
 export type ProjectSummary = components["schemas"]["ProjectSummaryOut"];
 export type Locality = components["schemas"]["LocalityOut"];
+export type ProjectDetail = components["schemas"]["ProjectDetailOut"];
+export type Fact = components["schemas"]["FactOut"];
+export type ProjectUpdate = components["schemas"]["UpdateOut"];
+export type Citation = components["schemas"]["CitationOut"];
+export type SourceExcerpts = components["schemas"]["SourceExcerptsOut"];
 
 export type PublicRead<T> =
   | { readonly state: "ok"; readonly data: T }
   | { readonly state: "invalid_cursor" }
+  | { readonly state: "not_found" }
   | { readonly state: "unavailable"; readonly requestId: string | undefined };
 
 export type ProjectPage = Readonly<{ items: readonly ProjectSummary[]; nextCursor: string | null }>;
@@ -20,7 +26,7 @@ export type ProjectPage = Readonly<{ items: readonly ProjectSummary[]; nextCurso
 /** Thrown inside a cached function so that a failure is never stored as if it were data. */
 class PublicReadFailure extends Error {
   public constructor(
-    public readonly kind: "invalid_cursor" | "unavailable",
+    public readonly kind: "invalid_cursor" | "not_found" | "unavailable",
     public readonly requestId: string | undefined
   ) {
     super(kind);
@@ -75,13 +81,47 @@ const cachedProjectPage = unstable_cache(
   { revalidate: FRESH_SECONDS, tags: [PUBLIC_CACHE_TAG] }
 );
 
+const cachedProject = unstable_cache(
+  async (slug: string, language: ApiLocale) => {
+    const result = await serverApi().getProject(slug, { locale: language });
+
+    if (result.kind === "problem" && result.problem.code === "not_found") {
+      throw new PublicReadFailure("not_found", result.problem.requestId);
+    }
+    if (result.kind !== "ok") {
+      throw new PublicReadFailure("unavailable", requestIdOf(result));
+    }
+
+    return result.data;
+  },
+  ["public-project"],
+  { revalidate: FRESH_SECONDS, tags: [PUBLIC_CACHE_TAG] }
+);
+
+const cachedSource = unstable_cache(
+  async (slug: string, sourceId: string, language: ApiLocale) => {
+    const result = await serverApi().getProjectSource(slug, sourceId, { locale: language });
+
+    if (result.kind === "problem" && result.problem.code === "not_found") {
+      throw new PublicReadFailure("not_found", result.problem.requestId);
+    }
+    if (result.kind !== "ok") {
+      throw new PublicReadFailure("unavailable", requestIdOf(result));
+    }
+
+    return result.data;
+  },
+  ["public-source"],
+  { revalidate: FRESH_SECONDS, tags: [PUBLIC_CACHE_TAG] }
+);
+
 async function guarded<T>(read: () => Promise<T>): Promise<PublicRead<T>> {
   try {
     return { state: "ok", data: await read() };
   } catch (error) {
     if (error instanceof PublicReadFailure) {
-      return error.kind === "invalid_cursor"
-        ? { state: "invalid_cursor" }
+      return error.kind === "invalid_cursor" || error.kind === "not_found"
+        ? { state: error.kind }
         : { state: "unavailable", requestId: error.requestId };
     }
 
@@ -104,4 +144,17 @@ export function loadProjectPage(
   limit?: number
 ): Promise<PublicRead<ProjectPage>> {
   return guarded(() => cachedProjectPage(filters, language, limit));
+}
+
+/** A record by its slug. An unknown, hidden, or unpublished record is the same `not_found`. */
+export function loadProject(slug: string, language: ApiLocale): Promise<PublicRead<ProjectDetail>> {
+  return guarded(() => cachedProject(slug, language));
+}
+
+export function loadSource(
+  slug: string,
+  sourceId: string,
+  language: ApiLocale
+): Promise<PublicRead<SourceExcerpts>> {
+  return guarded(() => cachedSource(slug, sourceId, language));
 }

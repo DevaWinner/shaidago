@@ -240,12 +240,15 @@ export function ClaimWithCitations({
   citedLabel,
   claimId,
   children,
+  triggerName,
   verification
 }: Readonly<{
   children: ReactNode;
   citations: readonly CitationView[];
   citedLabel: string;
   claimId: string;
+  /** Gives each trigger an accessible name tied to its statement (the visible label stays short). */
+  triggerName?: (citation: CitationView) => string;
   verification?: ReactNode;
 }>): ReactNode {
   if (citations.length === 0) {
@@ -265,6 +268,7 @@ export function ClaimWithCitations({
           <li key={citation.id}>
             <a
               aria-describedby={`citation-${citation.id}`}
+              {...(triggerName === undefined ? {} : { "aria-label": triggerName(citation) })}
               className={cn(buttonVariants({ variant: "secondary" }), "text-sm")}
               data-slot="citation-trigger"
               href={`#citation-${citation.id}`}
@@ -279,11 +283,33 @@ export function ClaimWithCitations({
 }
 
 /** The other end of the stitch: a quoted passage in the documentary face, with its location. */
+const LONG_PASSAGE_CHARACTERS = 420;
+
+/**
+ * The other end of the stitch: a quoted passage in the documentary face, with its location and, when
+ * given, a link to the source page. A long passage shows its start and the rest in a native
+ * disclosure, so it never overwhelms the page and needs no JavaScript.
+ */
 export function CitationEntry({
   backHref,
   backLabel,
-  citation
-}: Readonly<{ backHref: string; backLabel: string; citation: CitationView }>): ReactNode {
+  citation,
+  showFullLabel,
+  sourceHref,
+  sourceLinkLabel
+}: Readonly<{
+  backHref: string;
+  backLabel: string;
+  citation: CitationView;
+  showFullLabel?: string;
+  sourceHref?: string;
+  sourceLinkLabel?: string;
+}>): ReactNode {
+  const long = showFullLabel !== undefined && citation.passage.length > LONG_PASSAGE_CHARACTERS;
+  const preview = long
+    ? `${citation.passage.slice(0, LONG_PASSAGE_CHARACTERS).trimEnd()}…`
+    : citation.passage;
+
   return (
     <li
       className="grid list-none gap-1 border border-border border-s-[0.375rem] border-s-border bg-card p-3 [overflow-wrap:anywhere] target:border-s-primary target:outline-[length:var(--focus-width)] target:outline-offset-[var(--focus-offset)] target:outline-ring target:outline-solid"
@@ -293,12 +319,25 @@ export function CitationEntry({
     >
       <span className="font-extrabold">{citation.label}</span>
       <blockquote className="m-0 max-w-[68ch] font-ledger-documentary leading-[1.7]">
-        {citation.passage}
+        {preview}
       </blockquote>
+      {long ? (
+        <details className="max-w-[68ch]">
+          <summary className="min-h-11 cursor-pointer py-2 font-semibold">{showFullLabel}</summary>
+          <blockquote className="m-0 font-ledger-documentary leading-[1.7]">
+            {citation.passage}
+          </blockquote>
+        </details>
+      ) : null}
       <p className="m-0 text-sm text-muted-foreground">
         {citation.sourceTitle}, {citation.publisher}, {citation.locationLabel}
       </p>
-      <a href={backHref}>{backLabel}</a>
+      <p className="m-0 flex flex-wrap gap-x-4">
+        <a href={backHref}>{backLabel}</a>
+        {sourceHref === undefined || sourceLinkLabel === undefined ? null : (
+          <a href={sourceHref}>{sourceLinkLabel}</a>
+        )}
+      </p>
     </li>
   );
 }
