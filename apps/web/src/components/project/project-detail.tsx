@@ -1,51 +1,26 @@
 import type { ReactNode } from "react";
 
+import { CitationEntry, DateGroup, EvidenceGap } from "@/components/evidence/evidence";
 import {
-  CitationEntry,
-  ClaimWithCitations,
-  DateGroup,
-  EvidenceGap,
-  InformationClassMarker,
-  TimelineItem,
-  VerificationLabel,
-  type CitationView
-} from "@/components/evidence/evidence";
+  PublicUpdateEntry,
+  StatementClaim,
+  citationView,
+  type EntryCopy
+} from "@/components/project/update-entry";
 import { ButtonLink } from "@/components/ui/button";
-import { formatMessage, type Messages } from "@/i18n/catalogue";
+import { formatMessage } from "@/i18n/catalogue";
 import type { ApiLocale } from "@/lib/api/forwarded-context";
-import type { Citation, Fact, ProjectDetail, ProjectUpdate } from "@/lib/api/public-data";
-import { STALE_AFTER_DAYS, isFutureDate, isStale } from "@/lib/directory/freshness";
+import type { ProjectDetail } from "@/lib/api/public-data";
+import { STALE_AFTER_DAYS, isStale } from "@/lib/directory/freshness";
 import { formatMessageLite } from "@/lib/directory/format-lite";
 import type { Formatters } from "@/lib/format/formatters";
 
-type Copy = Readonly<{
-  directory: Messages["directory"];
-  evidence: Messages["evidence"];
-  project: Messages["project"];
-  source: Messages["source"];
-}>;
+type Copy = EntryCopy;
+
+type FactOrUpdate = ProjectDetail["facts"][number] | ProjectDetail["updates"][number];
 
 const section = "grid gap-4 border-t border-border pt-8";
 const heading = "m-0 text-ledger-xl leading-tight";
-
-type Statement = Fact | ProjectUpdate;
-
-function citationView(
-  claimId: string,
-  citation: Citation,
-  index: number,
-  copy: Copy,
-  language: ApiLocale
-): CitationView {
-  return {
-    id: `${claimId}-${index + 1}`,
-    label: formatMessage(language, copy.project.facts.sourceLabel, { number: index + 1 }),
-    locationLabel: citation.location_label,
-    passage: citation.passage,
-    publisher: citation.publisher,
-    sourceTitle: citation.source_title
-  };
-}
 
 /**
  * The record, in the order a resident needs it: what was promised, the current recorded state, what
@@ -93,44 +68,9 @@ export function ProjectDetailView({
     }))
   );
 
-  const claim = (statement: Statement, claimId: string): ReactNode => {
-    const views = statement.citations.map((citation, index) =>
-      citationView(claimId, citation, index, copy, language)
-    );
-
-    return (
-      <ClaimWithCitations
-        citations={views}
-        citedLabel={text.facts.citedLabel}
-        claimId={claimId}
-        triggerName={(view) =>
-          formatMessageLite(text.facts.triggerName, {
-            label: view.label,
-            statement: statement.statement
-          })
-        }
-        verification={
-          <div className="flex flex-wrap items-start gap-3">
-            <VerificationLabel
-              labels={copy.evidence.verification}
-              state={statement.verification_state}
-            />
-            <InformationClassMarker
-              labels={copy.evidence.informationClass}
-              value={statement.information_class}
-            />
-            <span className="text-sm text-muted-foreground">
-              {formatMessage(language, text.facts.sourceCount, {
-                count: statement.citations.length
-              })}
-            </span>
-          </div>
-        }
-      >
-        {statement.statement}
-      </ClaimWithCitations>
-    );
-  };
+  const claim = (statement: FactOrUpdate, claimId: string): ReactNode => (
+    <StatementClaim claimId={claimId} copy={copy} language={language} statement={statement} />
+  );
 
   return (
     <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8">
@@ -227,25 +167,15 @@ export function ProjectDetailView({
           ) : (
             <ol className="m-0 grid gap-4 p-0">
               {updates.map((update) => (
-                <TimelineItem
-                  date={update.effective_on}
-                  dateLabel={
-                    isFutureDate(update.effective_on, now)
-                      ? text.timeline.scheduled
-                      : text.timeline.date
-                  }
-                  format={format.date}
+                <PublicUpdateEntry
+                  claimId={`update-${update.id}`}
+                  copy={copy}
+                  format={format}
                   key={update.id}
-                  origin={
-                    update.information_class === "community_evidence_reviewed"
-                      ? "community_reviewed"
-                      : "official"
-                  }
-                  originLabels={copy.evidence.timeline}
-                  verification={null}
-                >
-                  {claim(update, `update-${update.id}`)}
-                </TimelineItem>
+                  language={language}
+                  now={now}
+                  update={update}
+                />
               ))}
             </ol>
           )}

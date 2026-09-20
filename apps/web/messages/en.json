@@ -1198,7 +1198,94 @@
       "conflict": "This report changed while you were working, or that action is no longer available. Reload to see the latest status and history, then choose again. What you typed is kept.",
       "reload": "Reload the report",
       "none": "No status change is available from this status.",
-      "publishNote": "A status change never publishes text. A public update is a separate step further down this page."
+      "publishNote": "A status change never publishes text. A public update is a separate step further down this page.",
+      "reloading": "Reloading"
+    },
+    "publication": {
+      "intro": "A public update is written by you, separately from any status change or private note. It is shown on the project's public timeline only after you preview it and confirm exactly that text.",
+      "guidance": "State only what the cited passages say. Do not copy text from the private report, and do not call anyone or anything corrupt, fraudulent, guilty, abandoned, or complete unless a cited passage says so in those words.",
+      "needsVerified": "A public update can be drafted only when the report is marked Verified for a public update. Change the status first.",
+      "noCitations": "No approved citations are available for this project, so a public update cannot be drafted.",
+      "citationsUnavailable": "The approved citations for this project could not be loaded, so a public update cannot be drafted now. Reload the page to try again.",
+      "statement": "Public statement",
+      "statementHint": "Plain text, 10 to {max} characters. Neutral wording only. It is shown to everyone.",
+      "counter": "{count} of {max}",
+      "effectiveOn": "Date this applies from",
+      "effectiveHelp": "The date the cited source says this took effect.",
+      "lastChecked": "Last checked on (optional)",
+      "lastCheckedHelp": "Leave empty if you have not rechecked the source.",
+      "verification": "Verification state",
+      "citations": "Approved citations",
+      "citationsHint": "Choose 1 to 5. The passage is copied exactly from the approved source and cannot be edited.",
+      "citationLine": "{title}, {publisher}, {location}",
+      "submit": "Create a preview",
+      "creating": "Creating the preview",
+      "errors": {
+        "statementRequired": "Write the public statement.",
+        "statementShort": "Write at least 10 characters.",
+        "statementLong": "This statement is too long.",
+        "dateRequired": "Choose the date this applies from.",
+        "citationsRequired": "Choose at least one approved citation.",
+        "citationsTooMany": "Choose no more than 5 citations."
+      },
+      "preview": {
+        "heading": "Exact preview",
+        "lead": "This is exactly what the public timeline will show, drawn with the same component. Nothing is public yet.",
+        "status": "Report status when this preview was made: {status} (version {version}).",
+        "issuesHeading": "This cannot be published yet",
+        "noIssues": "No blocking issues were found.",
+        "citationsHeading": "Cited passages",
+        "edit": "Edit the text",
+        "discard": "Discard this draft",
+        "publish": "Publish this update",
+        "publishing": "Publishing",
+        "cannot": "Publishing is not available for this preview.",
+        "stale": "The report or the preview changed after it was made, so it was not published. Create a new preview and check it again.",
+        "newPreview": "Back to editing",
+        "viewPublic": "See it on the public record",
+        "publishedAt": "Published {date}.",
+        "publishedHeading": "Published",
+        "publishedBody": "This update is now on the project's public timeline exactly as previewed.",
+        "discarded": "The draft was discarded. Nothing was published.",
+        "confirmTitle": "Publish this update to everyone?",
+        "confirmBody": "The statement, its date, its verification label, and its cited passages will appear on the project's public timeline exactly as shown in the preview. This is shown to the public and cannot be silently changed.",
+        "confirm": "Publish",
+        "cancel": "Keep the preview",
+        "discardTitle": "Discard this draft?",
+        "discardBody": "The draft is withdrawn. Nothing is published.",
+        "discardConfirm": "Discard draft"
+      },
+      "issues": {
+        "statement": "Statement",
+        "known": {
+          "report_text": "The statement repeats wording from the private report, an answer, or a note. Rewrite it from the cited source.",
+          "citations": "A citation is missing or does not support this update.",
+          "effective_on": "The date is missing or not allowed.",
+          "verification_state": "The verification state does not match the cited sources.",
+          "statement": "The statement needs attention.",
+          "contact_detail": "The statement contains something that looks like a contact detail. Remove it.",
+          "tracking_code": "The statement contains something that looks like a tracking code. Remove it."
+        },
+        "term": "The word “{term}” is used, but no cited passage contains it. Remove it or cite a passage that does.",
+        "other": "An unrecognised issue ({code}) blocks publishing.",
+        "field": "Field: {field}"
+      },
+      "drafts": {
+        "heading": "Earlier drafts",
+        "empty": "No drafts yet.",
+        "state": "State: {state}",
+        "states": {
+          "draft": "Draft",
+          "published": "Published",
+          "withdrawn": "Withdrawn"
+        },
+        "created": "Created {date}",
+        "open": "Open preview",
+        "withdraw": "Withdraw",
+        "loading": "Loading the preview",
+        "openFailed": "The preview could not be opened."
+      },
+      "guidanceTitle": "Write neutrally"
     }
   }
 }

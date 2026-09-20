@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+
 /**
  * Fictional reviewer endpoints for the browser test servers. Everything returned is synthetic.
  * It enforces the same header contract as the real API (`X-Shaidago-Session`, and
@@ -40,7 +42,11 @@ const queue = Array.from({ length: 45 }, (_, index) => {
 
   return {
     report_id,
-    project_slug: PROJECTS[index % PROJECTS.length],
+    // Verified reports belong to a generated synthetic record so a public update has citations to use.
+    project_slug:
+      STATUSES[index % STATUSES.length] === "verified_for_public_update"
+        ? "synthetic-project-20"
+        : PROJECTS[index % PROJECTS.length],
     concern_category: CATEGORIES[index % CATEGORIES.length],
     risk_level: RISKS[index % RISKS.length],
     status: STATUSES[index % STATUSES.length],
@@ -98,6 +104,47 @@ const MACHINE = {
   referred: { resume_review: "under_review", close: "closed" },
   closed: { reopen: "under_review" }
 };
+
+// Public updates: drafts per report, and the ones that were published, per project.
+const drafts = new Map();
+const published = new Map();
+
+export function publishedFor(slug) {
+  return published.get(slug) ?? [];
+}
+
+function digestOf(draft, version) {
+  return createHash("sha256")
+    .update(JSON.stringify([draft.update, version]))
+    .digest("hex");
+}
+
+function previewOf(draft, item) {
+  const status = current(item);
+  const issues = [];
+
+  if (/corrupt|fraud/i.test(draft.update.statement)) {
+    issues.push({ field: "statement", code: "unsupported_term_corrupt" });
+  }
+  if (draft.update.statement.includes("SECRET-REPORT-TEXT")) {
+    issues.push({ field: "statement", code: "report_text" });
+  }
+
+  return {
+    public_update_id: draft.id,
+    state: draft.state,
+    project_slug: item.project_slug,
+    report_status: status.status,
+    report_version: status.version,
+    update: draft.update,
+    issues,
+    can_publish:
+      issues.length === 0 &&
+      draft.state === "draft" &&
+      status.status === "verified_for_public_update",
+    preview_digest: digestOf(draft, status.version)
+  };
+}
 
 function current(item) {
   const change = changes.get(item.report_id);
@@ -540,6 +587,135 @@ export function handleReviewer({ request, response, url, problem, readBody }) {
       });
     });
     return true;
+  }
+
+  const draftsMatch = /^\/v1\/reviewer\/reports\/([^/]+)\/public-updates$/.exec(path);
+
+  if (draftsMatch !== null) {
+    const source = queue.find((entry) => entry.report_id === draftsMatch[1]);
+
+    if (source === undefined) {
+      problem(response, 404, "not_found");
+      return true;
+    }
+    if (method === "GET") {
+      json(response, 200, {
+        items: (drafts.get(source.report_id) ?? []).map((draft) => ({
+          public_update_id: draft.id,
+          state: draft.state,
+          created_at: draft.created_at
+        }))
+      });
+      return true;
+    }
+    if (method === "POST") {
+      if (!hasCsrf(request)) {
+        problem(response, 403, "csrf_invalid");
+        return true;
+      }
+      readBody(request, (body) => {
+        log.push({ op: "draft_create" });
+        if (current(source).status !== "verified_for_public_update") {
+          problem(response, 409, "public_update_report_not_verified");
+          return;
+        }
+        if (
+          typeof body?.statement !== "string" ||
+          body.statement.length < 10 ||
+          !Array.isArray(body.citations) ||
+          body.citations.length < 1 ||
+          body.citations.length > 5
+        ) {
+          problem(response, 422, "validation_failed");
+          return;
+        }
+
+        const draft = {
+          id: nextId("f"),
+          state: "draft",
+          created_at: "2026-09-20T09:00:00Z",
+          update: {
+            id: nextId("9"),
+            statement: body.statement,
+            effective_on: body.effective_on,
+            last_checked_on: body.last_checked_on ?? null,
+            verification_state: body.verification_state,
+            information_class: "official_source",
+            ai_generated: false,
+            citations: body.citations.map((entry, index) => ({
+              canonical_url: "https://example.org/synthetic/published",
+              information_class: "official_source",
+              location_label: entry.location_label,
+              passage: entry.passage,
+              publisher: "Synthetic Publisher",
+              retrieved_at: "2026-09-01T09:00:00Z",
+              source_id: `0198f1a2-7b3c-4d4e-8f5a-50000000000${index + 1}`,
+              source_version_id: entry.source_version_id,
+              source_title: "Synthetic bulletin",
+              source_type: "government_publication"
+            }))
+          }
+        };
+
+        drafts.set(source.report_id, [...(drafts.get(source.report_id) ?? []), draft]);
+        json(response, 201, previewOf(draft, source));
+      });
+      return true;
+    }
+  }
+
+  const draftMatch =
+    /^\/v1\/reviewer\/reports\/([^/]+)\/public-updates\/([^/:]+)(?::(publish|withdraw))?$/.exec(
+      path
+    );
+
+  if (draftMatch !== null) {
+    const source = queue.find((entry) => entry.report_id === draftMatch[1]);
+    const draft = (drafts.get(draftMatch[1]) ?? []).find((entry) => entry.id === draftMatch[2]);
+
+    if (source === undefined || draft === undefined) {
+      problem(response, 404, "not_found");
+      return true;
+    }
+    if (method === "GET" && draftMatch[3] === undefined) {
+      json(response, 200, previewOf(draft, source));
+      return true;
+    }
+    if (method === "POST" && !hasCsrf(request)) {
+      problem(response, 403, "csrf_invalid");
+      return true;
+    }
+    if (method === "POST" && draftMatch[3] === "withdraw") {
+      log.push({ op: "draft_withdraw" });
+      draft.state = "withdrawn";
+      response.writeHead(204, { "Cache-Control": "no-store" }).end();
+      return true;
+    }
+    if (method === "POST" && draftMatch[3] === "publish") {
+      readBody(request, (body) => {
+        const preview = previewOf(draft, source);
+
+        log.push({ op: "publish", digest: typeof body?.preview_digest });
+        if (draft.state !== "draft") {
+          problem(response, 409, "public_update_not_draft");
+        } else if (current(source).status !== "verified_for_public_update") {
+          problem(response, 409, "public_update_report_not_verified");
+        } else if (body?.preview_digest !== preview.preview_digest) {
+          problem(response, 409, "preview_stale");
+        } else if (!preview.can_publish) {
+          problem(response, 422, "publication_incomplete");
+        } else {
+          draft.state = "published";
+          published.set(source.project_slug, [...publishedFor(source.project_slug), draft.update]);
+          json(response, 200, {
+            public_update_id: draft.id,
+            project_slug: source.project_slug,
+            published_at: "2026-09-20T10:00:00Z"
+          });
+        }
+      });
+      return true;
+    }
   }
 
   return false;

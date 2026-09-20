@@ -2273,3 +2273,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the controls, transition table, parity test, mock endpoint and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-115 Public-update composer and exact preview
+
+- **Task:** FE-115 — Public-update composer and exact preview (Circle 11).
+- **User outcome delivered:** A reviewer can write a neutral public update, choose only approved citations, see exactly what the public timeline would show, and publish that exact text after a confirmation, with stale or blocked previews refused.
+- **Routes/components changed:** `src/components/reviewer/public-update-panel.tsx`, `src/components/project/update-entry.tsx` (extracted; `project-detail.tsx` now uses it), `src/lib/reviewer/publication.ts`, the detail page's public-update section, `messages/*` (`reviewer.publication`), mock draft/preview/publish/withdraw endpoints that also add a published update to the mock public record, unit, component and e2e tests.
+- **Backend operations/contract version:** `reviewer_publication_list` (server read), `reviewer_publication_create_draft`, `reviewer_publication_preview`, `reviewer_publication_publish`, `reviewer_publication_withdraw` through the existing handlers (OpenAPI 0.0.0 unchanged); public project detail for citation options.
+- **Public/private data handled:** The statement is authored public text; citation passages are already-public approved text. Nothing from the private report is prefilled or sent to the composer. Digests and drafts live in component memory only. Publishing revalidates the public catalogue through the existing handler.
+- **States implemented:** blocked (not verified, no citations, citations unavailable), empty composer, validation, creating, preview with and without issues, publish confirmation, publishing, published, stale, discarded, draft list with reopen, malformed response, session ended, failure with may-have-completed.
+- **Accessibility evidence:** labelled fields with error association and required marking, fieldset and legend for citations with per-passage descriptions, alertdialog confirmations, status and alert regions, text (not colour) for issues. No axe or screen-reader run yet (FE-116).
+- **Locales reviewed:** English only; `ha`/`ig`/`yo` keys are `null` and pending. The preview itself uses the public `project`, `evidence` and `source` copy in the reviewer's language, with the usual original-language notice.
+- **Performance/cache impact:** Client JavaScript only on the reviewer detail page (the shared entry and citation components ride along). The public record page renders the same markup as before; its 9 component tests and 12 browser tests pass unchanged.
+- **Commands run and results:** `make web-verify` exit 0 (492 unit, 164 component, bundle scan clean); targeted e2e `reviewer project-evidence` 111 passed, three consecutive runs.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** The API contract has no re-authentication step for publishing, so none is offered; the maintainer should decide if one is required. The statement limit is 2,000 characters per `docs/API.md` (OpenAPI allows 2,100). Citations come from the public record's facts and updates only, so a source not yet shown publicly cannot be cited from here. Preview issue codes beyond those in `docs/API.md` show as an unrecognised issue with its code.
+- **Commit/PR:** `feat: add the public-update composer with exact preview and digest-confirmed publishing`
+- **Next task may rely on:** `PublicUpdateEntry`/`StatementClaim`/`citationView`, `parsePreview`, `citationOptions`, and the mock publication endpoints.
+- **AI assistance used:** Designed and implemented the composer, shared entry extraction, parser, mock endpoints and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

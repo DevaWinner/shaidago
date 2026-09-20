@@ -7,6 +7,7 @@ import { QueueNotice } from "@/components/reviewer/queue";
 import { ReviewerFrame } from "@/components/reviewer/frame";
 import { AskQuestionForm, WithdrawQuestionButton } from "@/components/reviewer/question-controls";
 import { EvidenceDownload } from "@/components/reviewer/evidence-download";
+import { PublicUpdatePanel } from "@/components/reviewer/public-update-panel";
 import { StatusActions } from "@/components/reviewer/status-actions";
 import { NoteForm } from "@/components/reviewer/note-form";
 import {
@@ -29,7 +30,9 @@ import { ButtonLink, Link } from "@/components/ui/button";
 import { resolveDomain } from "@/i18n/catalogue";
 import { isSupportedLocale } from "@/i18n/routing";
 import { idParam } from "@/lib/bff/reviewer-schemas";
+import { loadProject } from "@/lib/api/public-data";
 import { serverApi } from "@/lib/api/server";
+import { citationOptions } from "@/lib/reviewer/publication";
 import { queuePath, signInPath } from "@/lib/reviewer/safe-return";
 import { redirectToSignIn, requireSession, reviewerOptionsFor } from "@/lib/reviewer/session";
 
@@ -177,7 +180,18 @@ export default async function ReviewerReportPage({
           firstHref: notesCursor === undefined ? undefined : `${self}#notes`
         }
       : { state: "unavailable", retryHref: `${self}#notes` };
+  const [draftsResult, projectResult] = await Promise.all([
+    api.listPublicationDrafts(reportId, options),
+    loadProject(report.project_slug, reviewer.language)
+  ]);
+  const drafts = requireSession(draftsResult, locale, self);
   const signInHref = signInPath(locale, { reason: "expired", next: self });
+  const entryCopy = {
+    directory: resolveDomain(locale, "directory").messages,
+    evidence: resolveDomain(locale, "evidence").messages,
+    project: resolveDomain(locale, "project").messages,
+    source: resolveDomain(locale, "source").messages
+  };
   const shared = {
     actions: reviewer.messages.actions,
     locale,
@@ -193,8 +207,10 @@ export default async function ReviewerReportPage({
     "contact",
     "history",
     "questions",
+    "notes",
     "handle",
-    "scout"
+    "scout",
+    "publication"
   ] as const;
 
   return (
@@ -270,6 +286,31 @@ export default async function ReviewerReportPage({
       />
       <HandleSection context={context} report={report} />
       <ScoutSection context={context} />
+      <Section id="publication" title={copy.sections.publication}>
+        <PublicUpdatePanel
+          actions={shared.actions}
+          copy={reviewer.messages.publication}
+          drafts={
+            drafts.kind === "ok"
+              ? drafts.data.items.map((item) => ({
+                  id: item.public_update_id,
+                  state: item.state,
+                  createdAt: item.created_at
+                }))
+              : []
+          }
+          entryCopy={entryCopy}
+          language={reviewer.language}
+          locale={locale}
+          now={new Date().toISOString()}
+          options={projectResult.state === "ok" ? citationOptions(projectResult.data) : undefined}
+          problems={shared.problems}
+          projectHref={`/${locale}/projects/${encodeURIComponent(report.project_slug)}`}
+          reportId={reportId}
+          reportVerified={report.status === "verified_for_public_update"}
+          signInHref={signInHref}
+        />
+      </Section>
     </ReviewerFrame>
   );
 }

@@ -56,7 +56,8 @@ test("the detail page is no-store, unindexed, and ordered as the reviewer works"
     "questions",
     "notes",
     "handle",
-    "scout"
+    "scout",
+    "publication"
   ]);
   await expect(
     page.locator("[data-slot=callout]").filter({ hasText: "Fictional demo data" })

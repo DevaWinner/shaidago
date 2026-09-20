@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useId, useState, type ReactNode } from "react";
+import { useId, useState, useTransition, type ReactNode } from "react";
 
 import { ActionFeedback } from "@/components/reviewer/action-feedback";
 import { Button } from "@/components/ui/button";
@@ -61,6 +61,7 @@ export function StatusActions({
 }>): ReactNode {
   const id = useId();
   const router = useRouter();
+  const [reloading, startReload] = useTransition();
   const options = transitionsFrom(status);
   const [command, setCommand] = useState<ReviewerCommand | "">(options[0]?.command ?? "");
   const [message, setMessage] = useState("");
@@ -157,7 +158,7 @@ export function StatusActions({
         review();
       }}
     >
-      <fieldset className="m-0 grid gap-3 border-0 p-0" disabled={pending}>
+      <fieldset className="m-0 grid gap-3 border-0 p-0" disabled={pending || reloading}>
         <legend className="mb-2 font-semibold">{copy.legend}</legend>
         <Field
           controlId={`${id}-command`}
@@ -239,13 +240,22 @@ export function StatusActions({
           <p className="m-0">{copy.conflict}</p>
           <div>
             <Button
+              aria-disabled={reloading}
               onClick={() => {
+                if (reloading) {
+                  return;
+                }
+
                 setProblem(undefined);
-                router.refresh();
+                // A transition keeps the form locked until the fresh status and version arrive, so
+                // the next attempt is made against the reloaded state, not the stale one.
+                startReload(() => {
+                  router.refresh();
+                });
               }}
               variant="secondary"
             >
-              {copy.reload}
+              {reloading ? copy.reloading : copy.reload}
             </Button>
           </div>
         </div>

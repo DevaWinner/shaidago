@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 
-import { handleReviewer, resetReviewer, reviewerLog } from "./mock-reviewer.mjs";
+import { handleReviewer, publishedFor, resetReviewer, reviewerLog } from "./mock-reviewer.mjs";
 
 /**
  * A fictional stand-in for the two public catalogue endpoints, used only by the browser test
@@ -297,7 +297,8 @@ function detailFor(slug) {
     slug,
     text: text(base.title, base.summary, ""),
     updated_at: base.updated_at,
-    updates: []
+    // Only updates a reviewer published through the mock reviewer endpoints.
+    updates: publishedFor(slug)
   };
 }
 
