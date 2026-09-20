@@ -1,5 +1,6 @@
 import os
 from collections.abc import Iterator
+from pathlib import Path
 
 import psycopg
 import pytest
@@ -30,6 +31,10 @@ def configure(monkeypatch: pytest.MonkeyPatch, url: URL) -> None:
     monkeypatch.setenv("DATABASE_URL_PUBLIC", url.render_as_string(hide_password=False))
     monkeypatch.setenv("DATABASE_URL_REVIEWER", url.render_as_string(hide_password=False))
     monkeypatch.setenv("DATABASE_CONNECT_TIMEOUT_SECONDS", "1")
+    # Explicit, never inherited: a developer's .env may turn on the 2.2 GB local model, and these
+    # tests are about the database, not about loading a model on every app start.
+    monkeypatch.setenv("EMBEDDING_BACKEND", "off")
+    monkeypatch.delenv("EMBEDDING_MODEL_PATH", raising=False)
     # Point every other dependency at the Compose services so only the database varies.
     password = os.environ.get("REDIS_PASSWORD", "")
     auth = f":{password}@" if password else ""
@@ -85,3 +90,30 @@ def test_api_starts_with_the_database_down_and_reports_unavailable(
         "status": "unavailable",
         "components": {**DEPENDENCIES_OK, "database": "unavailable", "migrations": "unavailable"},
     }
+
+
+def test_a_configured_but_missing_model_degrades_readiness_and_never_stops_startup(
+    monkeypatch: pytest.MonkeyPatch, migrated_url: URL, tmp_path: Path
+) -> None:
+    """The embedding model is optional: readiness says degraded, the API still serves."""
+    configure(monkeypatch, migrated_url)
+    monkeypatch.setenv("EMBEDDING_BACKEND", "fastembed")
+    monkeypatch.setenv("EMBEDDING_MODEL_PATH", str(tmp_path / "no-model-here"))
+    with TestClient(create_configured_app(), headers=AUTH) as client:
+        response = client.get("/health/ready")
+        projects = client.get("/v1/projects", params={"limit": "1"})
+
+    assert response.status_code == 200, "an optional component never makes the API unavailable"
+    assert response.json() == {
+        "status": "degraded",
+        "components": {**DEPENDENCIES_OK, "migrations": "ok", "embedding": "unavailable"},
+    }
+    assert str(tmp_path) not in response.text, "the readiness body never names a path"
+    assert projects.status_code == 200, "and everything else keeps working"
+
+
+def test_the_embedding_component_is_absent_when_the_backend_is_off(
+    monkeypatch: pytest.MonkeyPatch, migrated_url: URL
+) -> None:
+    _status, body = ready(monkeypatch, migrated_url)
+    assert "embedding" not in body["components"]  # type: ignore[operator]

@@ -12,7 +12,9 @@ from uuid import UUID
 from sqlalchemy import TextClause, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-EMBEDDING_DIMENSIONS = 1536
+# multilingual-e5-large (ADR-0010). The column type, the checked-in vectors and every adapter
+# must agree on this one number; migration 0027 moved the column from 1536 to 1024.
+EMBEDDING_DIMENSIONS = 1024
 MAX_QUERY_CHARS = 300
 MAX_RESULTS = 10
 RRF_K = 60

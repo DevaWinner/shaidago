@@ -16,6 +16,7 @@ from sqlalchemy.exc import IntegrityError
 
 from shaidago.api.app import create_app
 from shaidago.api.dependencies import Dependencies
+from shaidago.seed import __main__ as seed_command
 from shaidago.seed.__main__ import run
 from shaidago.seed.apply import SeedRefusedError, apply_plan
 from shaidago.seed.plan import RegisterInvalidError, build_plan, load_register
@@ -208,19 +209,58 @@ async def test_an_invalid_register_writes_nothing(
     assert await snapshot(owner) == before
 
 
-async def test_seed_command_uses_keyword_fallback_without_a_provider_key(
-    role_urls: dict[str, URL],
+async def test_seed_command_uses_keyword_fallback_when_no_vector_file_exists(
+    role_urls: dict[str, URL], monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
+    # The model is fixed (ADR-0010), so the file is absent by pointing the seed at an empty folder.
+    def absent(model: str) -> Path:
+        del model
+        return tmp_path / "absent.jsonl"
+
+    monkeypatch.setattr(seed_command, "embedding_path", absent)
     output = await run(
         {
             "APP_ENV": "development",
             "DATABASE_URL": role_urls["owner"].render_as_string(hide_password=False),
-            "EMBEDDING_MODEL": "no-checked-in-fixture",
         }
     )
 
     assert "chunks: inserted" in output
     assert "keyword fallback enabled" in output
+
+
+async def test_seed_command_loads_the_checked_in_local_model_vectors(
+    role_urls: dict[str, URL],
+) -> None:
+    """No model and no key are needed: the vectors are data, matched to chunks by text hash."""
+    output = await run(
+        {
+            "APP_ENV": "development",
+            "DATABASE_URL": role_urls["owner"].render_as_string(hide_password=False),
+        }
+    )
+
+    assert "embeddings: loaded" in output
+    assert "keyword fallback" not in output
+    engine = build_engine(
+        role_urls["owner"], application_name="seed-check", statement_timeout_ms=8000
+    )
+    try:
+        async with Database(engine).unit_of_work() as session:
+            models = (
+                (
+                    await session.execute(
+                        text(
+                            "SELECT DISTINCT embedding_model FROM app.source_chunks WHERE embedding IS NOT NULL"
+                        )
+                    )
+                )
+                .scalars()
+                .all()
+            )
+    finally:
+        await engine.dispose()
+    assert models == ["intfloat/multilingual-e5-large"]
 
 
 async def test_the_command_refuses_production_and_remote_targets_before_touching_anything(

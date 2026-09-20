@@ -10,6 +10,7 @@ import base64
 import binascii
 import re
 from collections.abc import Mapping
+from pathlib import Path
 from typing import Annotated, Literal, Self
 from urllib.parse import urlsplit
 
@@ -28,6 +29,7 @@ from sqlalchemy.exc import ArgumentError
 
 Environment = Literal["development", "test", "staging", "production"]
 ProviderMode = Literal["live", "replay"]
+EmbeddingBackend = Literal["off", "fastembed"]
 ScannerMode = Literal["clamd", "not_deployed"]
 LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR"]
 
@@ -283,22 +285,21 @@ class ProviderSettings(_Section):
     discovery_model: str = Field(
         default="openai/gpt-oss-120b", min_length=1, validation_alias="GROQ_DISCOVERY_MODEL"
     )
-    # Groq serves no embedding model. Without an OpenAI-compatible embeddings key, retrieval runs
-    # in keyword mode and says so in `retrieval_mode`.
-    embedding_api_key: SecretStr | None = Field(default=None, validation_alias="EMBEDDING_API_KEY")
-    embedding_base_url: str = Field(
-        default="https://api.openai.com", min_length=1, validation_alias="EMBEDDING_BASE_URL"
-    )
-    embedding_model: str = Field(
-        default="text-embedding-3-small", min_length=1, validation_alias="EMBEDDING_MODEL"
+    # Embeddings run in this process with FastEmbed and multilingual-e5-large, so they need no
+    # provider key, send nothing off the machine and cost nothing per request (ADR-0010). `off`
+    # keeps retrieval keyword-only, and the answer says so in `retrieval_mode`.
+    embedding_backend: EmbeddingBackend = Field(default="off", validation_alias="EMBEDDING_BACKEND")
+    embedding_model_path: Path | None = Field(default=None, validation_alias="EMBEDDING_MODEL_PATH")
+    embedding_threads: Annotated[int, Field(ge=1, le=16)] = Field(
+        default=2, validation_alias="EMBEDDING_THREADS"
     )
     discovery_public_daily_runs: Annotated[int, Field(ge=0, le=1000)] = Field(
         default=20, validation_alias="DISCOVERY_PUBLIC_DAILY_RUNS"
     )
 
-    @field_validator("language_api_key", "search_api_key", "embedding_api_key", mode="before")
+    @field_validator("language_api_key", "search_api_key", "embedding_model_path", mode="before")
     @classmethod
-    def _blank_key_is_absent(cls, value: object) -> object:
+    def _blank_is_absent(cls, value: object) -> object:
         return None if value == "" else value
 
 
@@ -399,7 +400,6 @@ def _secret_values(settings: Settings) -> dict[str, str]:
         "INTERNAL_WEB_CREDENTIAL_PREVIOUS": settings.auth.web_credential_previous,
         "GROQ_API_KEY": settings.providers.language_api_key,
         "SEARCH_API_KEY": settings.providers.search_api_key,
-        "EMBEDDING_API_KEY": settings.providers.embedding_api_key,
     }
     values = {
         "DATABASE_URL": settings.database.url,
@@ -444,6 +444,8 @@ def _consistency_problems(settings: Settings) -> list[str]:
             problems.append("GROQ_API_KEY: required when PROVIDER_MODE=live")
         if providers.search_api_key is None:
             problems.append("SEARCH_API_KEY: required when PROVIDER_MODE=live")
+    if providers.embedding_backend == "fastembed" and providers.embedding_model_path is None:
+        problems.append("EMBEDDING_MODEL_PATH: required when EMBEDDING_BACKEND=fastembed")
     return problems
 
 

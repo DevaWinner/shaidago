@@ -6,6 +6,9 @@
 #     -t shaidago-platform:$(git rev-parse --short HEAD) .
 
 ARG PYTHON_IMAGE=python:3.14-slim@sha256:caaf356f40667c496d405780745b9ac25771c189a51dfcc42430d531ea09f8a2
+# 1 bakes the 2.2 GB local embedding model into the image (ADR-0010). Only the API needs it; the
+# worker and the migration job share this image and build with the default, keeping it small.
+ARG WITH_EMBEDDING_MODEL=0
 
 # ---- build stage: compilers and uv live here and never reach the final image ------------------
 FROM ${PYTHON_IMAGE} AS build
@@ -22,6 +25,17 @@ RUN uv sync --frozen --no-dev --no-install-project
 COPY services/platform/README.md ./
 COPY services/platform/src ./src
 RUN uv sync --frozen --no-dev
+
+# ---- embedding model: pinned, checksum-verified, or an empty directory -----------------------------
+# The project's own command downloads one exact Hugging Face revision as real files and refuses to
+# finish unless every file matches its SHA-256 pin. Real files matter: ONNX Runtime rejects the
+# symlinked layout of the default Hugging Face cache.
+FROM build AS model-1
+RUN .venv/bin/python -m shaidago.retrieval.fetch_embedding_model --dest /models/multilingual-e5-large \
+ && rm -rf /models/multilingual-e5-large/.cache
+FROM ${PYTHON_IMAGE} AS model-0
+RUN mkdir -p /models/multilingual-e5-large
+FROM model-${WITH_EMBEDDING_MODEL} AS model
 
 # ---- final stage -------------------------------------------------------------------------------
 FROM ${PYTHON_IMAGE} AS final
@@ -53,8 +67,14 @@ COPY data /app/data
 # The seed validates the source register with the repository's own validator, so the image
 # needs that one script. Nothing else from scripts/ is copied.
 COPY scripts/validate_source_register.py /app/scripts/validate_source_register.py
+# Empty unless built with WITH_EMBEDDING_MODEL=1. Readable by the unprivileged user, never writable.
+COPY --from=model /models /models
 
+# HF_HUB_OFFLINE: the model is read from disk only. Nothing in the running container may reach out
+# to Hugging Face, whatever a library tries.
 ENV PATH="/app/services/platform/.venv/bin:${PATH}" \
+    EMBEDDING_MODEL_PATH=/models/multilingual-e5-large \
+    HF_HUB_OFFLINE=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONFAULTHANDLER=1 \
