@@ -80,3 +80,12 @@ error text or backend detail, and unknown routes disclose nothing about a privat
 `contracts/openapi.json` with pinned `openapi-typescript` 7.13.0 and `openapi-fetch` 0.17.0 (both
 MIT). Never edit those files; `pnpm run contract` (`make web-contract`) fails on drift. The
 generated client is a transport factory only: FE-031 wraps it in a server-only module.
+
+## Server-only API client
+
+`src/lib/api/server.ts` (`serverApi()`) is the only Server Component path to the private API. It
+reads runtime configuration on first call, sends `Authorization: Bearer web.<credential>`, forwards
+only validated `X-Request-Id`, `X-Shaidago-Locale`, `X-Shaidago-Client-Hmac`, and `If-None-Match`, and
+returns `ok`, `not_modified`, `problem` (stable `code`, never backend text), or `unavailable`.
+Reads retry once for a transient 503 or network error; there is no mutation retry and no logging. A
+unit test fails if a client component imports it.

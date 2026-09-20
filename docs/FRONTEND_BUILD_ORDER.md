@@ -406,6 +406,8 @@ Create least-privilege, SHA-pinned workflow jobs for frozen install, format/lint
 
 ### FE-031 — Server-only private API client
 
+> **Execution status (2026-09-20): complete.** `apps/web/src/lib/api/server.ts` is a `server-only` transport built on the generated client: runtime-loaded URL and `web.<credential>` bearer, validated request-ID/locale/client-HMAC/`If-None-Match` forwarding, 5 s timeout, one bounded retry only for a transient 503 or network failure on reads, and a typed `ok`/`not_modified`/`problem`/`unavailable` result that never carries backend title or detail. It contains no logging and no mutation path. Unit tests cover headers, injection, 304, problems, retry bounds, timeout, malformed bodies, and a source-scan boundary test that fails on a client component importing a server module. Public reads (`getLocalities`, `listProjects`, `getProject`, `getProjectSource`) exist; reviewer reads wait for FE-034's session extraction. Public revalidation is set to the API's 60 s policy and is verified end to end by FE-063.
+
 Build a server-only wrapper that:
 
 - reads runtime internal URL and credential;

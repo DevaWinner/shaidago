@@ -17,9 +17,8 @@ const serverEnvironmentSchema = z
     appEnvironment: z.enum(["development", "test", "staging", "production"]),
     apiInternalUrl: z.url().refine(
       (value) => {
-        const url = new URL(value);
-
-        return url.protocol === "http:" || url.protocol === "https:";
+        // Zod still runs refinements after the URL check fails, so parse defensively.
+        return URL.canParse(value) && /^https?:$/.test(new URL(value).protocol);
       },
       { message: "must use http or https" }
     ),

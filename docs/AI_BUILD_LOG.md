@@ -1757,3 +1757,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the deterministic generator with drift check and compile-time contract assertions.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-031 Server-only private API client
+
+- **Task:** FE-031 — Server-only private API client.
+- **User outcome delivered:** Server Components can read public localities, projects, project detail, and approved sources through one typed, bounded, non-logging path that cannot leak the private URL or credential to the browser.
+- **Files changed:** `apps/web/src/lib/api/{server,forwarded-context}.ts`, `apps/web/src/lib/config/server.ts`, `apps/web/tests/unit/{server-api,config-environment}.test.ts`, `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** `projects_list_localities`, `projects_list`, `projects_get`, `projects_get_source` (SR-PUBLIC profile); OpenAPI 0.0.0 unchanged.
+- **Public/private data handled:** Public catalogue reads only. The bearer credential, internal URL, and client HMAC stay in server execution; nothing is logged. Problem results expose only stable code, status, field paths and codes, request ID, and Retry-After.
+- **States implemented:** ok, not_modified (distinct from empty), problem, unavailable (timeout, network, malformed_response) as typed results for later surfaces.
+- **Accessibility evidence:** Not applicable; no visible surface.
+- **Locales reviewed:** Only `en`, `ha`, `ig`, `yo` are forwarded; anything else is dropped rather than mapped.
+- **Performance/cache impact:** No new dependency. Reads pass `next.revalidate: 60` to match the API's public policy; FE-063 must verify this against the Vary/Authorization behaviour of the Next data cache. No client bundle change (boundary scan: 13 chunks clean).
+- **Failure behaviour verified:** Header injection attempts, invalid locale/HMAC/ETag, 304, 429 with Retry-After, 404, 422 field errors, 503 retry once, 503 with long Retry-After not retried, network and timeout, HTML gateway errors, invalid JSON, and invalid runtime environment. A test caught a latent FE-023 defect: an empty `API_INTERNAL_URL` raised a raw `Invalid URL` instead of `ServerEnvironmentError`; fixed with a regression test.
+- **Commands run and results:** `make web-verify` exit 0 (format, lint, typecheck, unit, component, coverage, contract drift, boundary build). Coverage 94.18% statements, 89.9% branches, 88.4% functions. Lint has 0 errors and one pre-existing unused-import warning in `tests/component/primitives.test.tsx`. Browser E2E/a11y were not separately re-inspected.
+- **Screenshots/traces/artifacts checked:** None; non-visual.
+- **Known limitations/open decisions:** Reviewer reads are deferred to FE-034 (session extraction). The 60 s Next data-cache behaviour with an Authorization header is unproven until FE-063. The backend `request_id` is ignored in favour of the one we sent.
+- **Commit/PR:** `feat: add the server-only private API client`
+- **Next task may rely on:** `serverApi()` public reads, `buildForwardedHeaders`, and the typed `ApiResult` for FE-032/FE-033.
+- **AI assistance used:** Designed and implemented the transport, its tests, and the boundary test; found and fixed the environment parse defect.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
