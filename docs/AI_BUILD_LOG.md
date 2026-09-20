@@ -1510,8 +1510,6 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Prompt summary:** Use the frontend loop and continue the next eligible frontend task.
 - **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
-
-
 ## 2026-09-20 — FE-010 visual-direction discovery
 
 - **Task:** FE-010 — One-round design discovery.
@@ -1636,6 +1634,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Implemented the workflow and its negative-path validator, resolved the setup action revision, and kept browser data artifacts out of pull-request visibility.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
 - **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
+
 ## 2026-09-20 — FE-010 visual-direction discovery (resolved)
 
 - **Task:** FE-010 — One-round design discovery.
@@ -1925,28 +1924,6 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Implemented the shells, first viewport, migration to Tailwind/shadcn, client HMAC, and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop; maintainer asked me to finish Circle 4 myself and to use Tailwind and shadcn.
 - **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
-
-## 2026-09-20 — Maintainer review of the merged frontend and backend work
-
-- **What happened:** The maintainer merged pull requests #16 to #22 into `main` and stated that they had reviewed the open items in them. This entry records that statement; the reviewer is the maintainer alone, and no independent review is claimed.
-- **Reviewed and accepted by the maintainer (per their statement):**
-  - the backend open-item closure in #16;
-  - the frontend contracts, BFF operation map, and branch convention (#17, #18);
-  - the web foundation and CI (#19), including moving `corepack enable` before `setup-node`;
-  - the Field ledger direction, tokens, and first primitives (#20);
-  - the typed API client and the 26 BFF handlers (#21), including the decision to hold the reviewer CSRF token in an `HttpOnly` cookie and forward it server-side;
-  - the primitives, evidence components, shells, and first viewport, the move to Tailwind CSS and shadcn structure, the client HMAC design (`CLIENT_HMAC_KEY`, `TRUSTED_PROXY_HOPS`), and the operation-map correction for public-update withdraw (#22);
-  - the secret-scan allowlist changes in `.gitleaks.toml` for the pinned model digests and the synthetic test UUIDs.
-- **Still open (reviewing them did not close them):**
-  - no handler has run against a live FastAPI: the local database was at migration `0027_embedding_384`, which was not on the branch at the time, so `make migrate` failed and nothing was reset;
-  - `ha`, `ig`, and `yo` critical copy has no fluent human review for the frontend, and the language control marks those languages "not yet reviewed";
-  - no screen-reader run, and 200% browser zoom was emulated rather than tested;
-  - navigation links to routes later work builds (localities, trust, report, projects) resolve to the safe not-found page;
-  - the landing page shows a fictional, labelled example record until the directory work uses API data;
-  - `SourceCardLabels.unknownDate` is unused and should be used or removed;
-  - the keyboard skip-link browser test is scoped to Chromium because iOS WebKit does not Tab to links by default.
-- **Commit/PR:** `docs: record the maintainer review of the merged work`
-- **Human review:** Stated by the maintainer on 2026-09-20; this entry itself has not been reviewed by anyone else.
 
 ## 2026-09-20 — Open-item closure before locale work
 
