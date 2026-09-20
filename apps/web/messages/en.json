@@ -457,5 +457,58 @@
       "report": "Report a concern privately"
     },
     "back": "Back to project records"
+  },
+  "qa": {
+    "heading": "Ask about this record",
+    "intro": "Answers use only the approved sources for this record. An AI drafts the wording. It is an explanation, not a source, and it cannot verify a claim or decide a status.",
+    "privacy": "Do not type your name, contact details, or private information here. To tell us something privately, use the report form.",
+    "reportLink": "Report a concern privately",
+    "label": "Your question",
+    "hint": "Ask about what the sources say. Up to {max} characters.",
+    "counter": "{count} of {max} characters",
+    "submit": "Ask the sources",
+    "cancel": "Cancel",
+    "retry": "Try again",
+    "loading": "Looking through the approved sources for this record.",
+    "cancelled": "The question was cancelled. It is still in the box if you want to ask again.",
+    "empty": "Type a question first.",
+    "tooLong": "The question is too long. Shorten it to {max} characters or fewer.",
+    "result": {
+      "heading": "Answer",
+      "ready": "An answer is ready below.",
+      "aiLabel": "Written by an AI from the approved sources. It is an explanation, not a source. Check each statement against its sources.",
+      "generated": "Generated {time}",
+      "retrievalKeyword": "Search method: keywords",
+      "retrievalHybrid": "Search method: keywords and meaning",
+      "considered": "Passages considered: {count}",
+      "keywordCaution": "Keyword search can miss passages that use different words.",
+      "noteLabel": "System note",
+      "statementsHeading": "Statements",
+      "sourcesHeading": "Sources for this answer",
+      "sourceLabel": "Source {number}",
+      "cites": "Sources for this statement",
+      "openSourcePage": "Open the source page",
+      "openOriginal": "Open the original source",
+      "newTab": "opens in a new tab",
+      "location": "Location in the source",
+      "retrieved": "Saved {date}",
+      "showFull": "Show the full passage",
+      "backToStatement": "Back to the answer"
+    },
+    "insufficient": {
+      "title": "The approved sources do not answer this",
+      "body": "ShaidaGo does not guess. It can only answer from the approved sources for this record.",
+      "read": "Read what the sources say"
+    },
+    "rejected": {
+      "title": "This answer could not be checked",
+      "body": "Its citations did not match the sources returned with it, so it is not shown. Try again, or read the sources on this record."
+    },
+    "failure": {
+      "title": "The question could not be answered",
+      "still": "The record and its sources are still available on this page.",
+      "wait": "Try again in about {seconds} seconds."
+    },
+    "needsScript": "Asking a question needs JavaScript. You can still read every source on this page."
   }
 }

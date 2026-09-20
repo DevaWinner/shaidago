@@ -4,6 +4,7 @@ import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { TranslationNotice } from "@/components/evidence/evidence";
+import { ProjectQuestion } from "@/components/project/project-question";
 import { PageState } from "@/components/project/page-state";
 import { ProjectDetailView } from "@/components/project/project-detail";
 import { SiteShell } from "@/components/shell/site-shell";
@@ -55,6 +56,8 @@ export default async function ProjectPage({ params }: Properties): Promise<React
   const directory = resolveDomain(locale, "directory");
   const evidence = resolveDomain(locale, "evidence");
   const source = resolveDomain(locale, "source");
+  const qa = resolveDomain(locale, "qa");
+  const problems = resolveDomain(locale, "problems");
   const [read, localityRead] = await Promise.all([
     loadProject(slug, locale),
     loadLocalities(locale)
@@ -91,7 +94,7 @@ export default async function ProjectPage({ params }: Properties): Promise<React
   return (
     <SiteShell locale={locale} route={shell}>
       <div className="grid gap-6" lang={project.language}>
-        {project.isOriginal || directory.isOriginal || source.isOriginal ? (
+        {project.isOriginal || directory.isOriginal || source.isOriginal || qa.isOriginal ? (
           <TranslationNotice labels={evidence.messages.translation} status="unavailable" />
         ) : null}
         <nav aria-label={project.messages.breadcrumb.label}>
@@ -115,6 +118,21 @@ export default async function ProjectPage({ params }: Properties): Promise<React
           localityName={localityName}
           now={new Date()}
           project={read.data}
+          questionPanel={
+            <div lang={qa.language}>
+              <ProjectQuestion
+                base={`/${locale}/projects/${encodeURIComponent(slug)}`}
+                copy={qa.messages}
+                evidence={evidence.messages}
+                factsHref="#facts-heading"
+                language={qa.language}
+                locale={locale}
+                problems={problems.messages}
+                reportHref={`/${locale}/report?project=${encodeURIComponent(slug)}`}
+                slug={slug}
+              />
+            </div>
+          }
         />
       </div>
     </SiteShell>

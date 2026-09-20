@@ -745,17 +745,25 @@ Component/E2E tests prove every fact opens at least one correct source, unavaila
 
 Create the smallest client component containing question field, submit, response region, and retry. Bound length before submit, retain the question during retry but do not persist it, generate/forward request ID, prevent accidental duplicate submit, and allow cancellation/navigation abort. Do not prefetch or ask automatically.
 
+> **Execution status (2026-09-20): complete.** `src/components/project/project-question.tsx` is the one client island on a record page: a labelled question box (300-character bound with a live count and a privacy caution that links to the private report), Ask, Cancel, and Try again. The question lives only in component memory: it is sent in a same-origin POST body to the existing `/api/public/questions` handler with the locale header and is never put in a URL, storage, or cookie (asserted in the browser). A second submit while one is in flight is ignored; Cancel and leaving the page abort the request; the question survives every failure and cancellation. Nothing is asked automatically or on prefetch. Before hydration the button is disabled and a visible note explains that asking needs JavaScript, so no native form submit can put the question in the address bar. The request ID is created by the BFF handler (it already generates and returns `X-Request-Id`), so the browser does not mint one. No TanStack Query or React Hook Form: one form and one request do not justify either dependency, and a schema library would have added about 90 KB to the record page, so the response and problem bodies are checked by hand.
+
 ### FE-081 — Answer and citation rendering
 
 Render AI label, generation time, retrieval mode, confidence/coverage note, statement-linked citations, and open-source actions. Citations must be navigable from each statement, not a detached generic bibliography. Preserve source titles/names/amounts/dates exactly.
+
+> **Execution status (2026-09-20): complete.** `src/components/project/question-answer.tsx` renders a supported answer as its statements (each linked to its own numbered sources) followed by the sources used (title, publisher, location, saved date, passage collapsed when long, link to the canonical source page, original link with `noopener noreferrer` and `no-referrer`, and a link back to the statement). The AI label, generation time, retrieval mode, passages considered, a keyword-only caution, and the system note are always shown; an answer in a language other than requested carries the translation notice. Sources are numbered by first use and unused sources are dropped. `src/lib/qa/answer.ts` re-checks the response: every statement needs at least one citation and every citation must resolve within the same response, otherwise nothing is shown. Passages and titles render as inert text.
 
 ### FE-082 — Insufficient and degraded behaviour
 
 Create distinct states for insufficient evidence, provider unavailable, keyword-only retrieval, rate limit, backend timeout, invalid server response, offline, and retry success. Never replace insufficient evidence with speculative prose. On provider outage, project facts and sources remain fully usable.
 
+> **Execution status (2026-09-20): complete.** Distinct states: insufficient evidence (approved refusal from reviewed copy, plus the backend's wording and note if present, never generated statements, with a link to the record's sources), citation rejected, rate limited (only `Retry-After` is used), outage, timeout, offline, unreadable response, cancelled, and retry success (the failure is replaced once). The record, its sources, and the report link are untouched by any failure. Limitation: the API returns one `dependency_unavailable` code for both a provider outage and an API outage, so the two cannot be told apart in the interface; the wording says the service is unavailable and that the record is still available.
+
 ### FE-083 — Q&A tests
 
 Use MSW fixtures for four-language supported answers, conflicts, multiple citations, insufficient evidence, injected source text, provider outage, slow/cancelled request, malformed response, and long strings. E2E verifies keyboard submit, focus/announcement, citation navigation, no question in URL/log/storage, and no private cache entry.
+
+> **Execution status (2026-09-20): complete.** Proof: 15 unit tests for answer interpretation (numbering, unused sources, insufficient, fail-closed cases, invalid responses); 8 component tests (same-origin POST body and locale header, no URL/storage/cookie, empty question, insufficient, rejected citation, rate limit with kept question and retry, outage/offline/unreadable, in-flight duplicate and cancel, inert source text); 12 Chromium and mobile-WebKit e2e tests through the real BFF handler against the fictional mock (supported, several sources, insufficient, unresolved citation, malformed, outage, rate limit, slow and cancelled, offline, no question in URL/storage/cookies and a `no-store` response, injected and long text, foreign-language answer, keyboard, no JavaScript); axe clean, 320 px and 200% reflow for eight question states in four languages (32 cases). MSW was not used because the browser suites already run the real BFF against the mock API, which exercises the actual route handler. The record page's first-load JavaScript is 163.6 KB gzip (budget 170 KB), now asserted by the budget test.
 
 ### Circle 8 exit gate
 
@@ -764,6 +772,8 @@ Use MSW fixtures for four-language supported answers, conflicts, multiple citati
 - AI identity/limits and generation/retrieval metadata are visible.
 - Question text stays out of URL, analytics, logs, and persistence.
 - Provider failure never breaks the project evidence page.
+
+> **Gate status (2026-09-20): closed with caveats.** Met: supported statements show only citations that resolve inside the response; unsupported and unresolved answers fail closed with no generated text; the AI label, generation time, retrieval mode, and passages considered are always visible; the question stays out of the URL, storage, cookies, and caches (asserted in the browser); a provider or service failure leaves the record page fully usable. Open: the answer language of `qa` is the English original in ha/ig/yo until the end-of-build translation (pending keys per language); provider and API outages share one code and cannot be told apart; the browser suites use a fictional mock, and the real API and provider were not called for this circle; no screen-reader run.
 
 ## 12. Circle 9 — privacy-first report wizard and one-time confirmation
 

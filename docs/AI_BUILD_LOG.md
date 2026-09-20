@@ -2113,3 +2113,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the pages, components, mock endpoints, and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop; maintainer directed the loop to continue through later circles.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-080 Question client island, FE-081 Answer and citation rendering, FE-082 Insufficient and degraded behaviour, FE-083 Q&A tests
+
+- **Task:** FE-080 to FE-083 (Circle 8), delivered as one commit because they share the catalogue keys, the mock API, and one component tree.
+- **User outcome delivered:** A resident can ask a question about one record and get either statements that each point to a numbered, checkable source, or a plain statement that the approved sources do not answer it, with the AI's role and limits stated and the record still usable when anything fails.
+- **Files changed:** `apps/web/src/components/project/{project-question,question-answer,project-detail}.tsx`, `apps/web/src/lib/qa/answer.ts`, `apps/web/src/lib/problems/browser-problem.ts` (schema library removed), `apps/web/app/[locale]/(site)/projects/[slug]/page.tsx`, `apps/web/messages/*` (domain `qa`), `apps/web/tests/**` including `support/mock-api.mjs`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** `projects_ask_question` (OpenAPI 0.0.0 unchanged) through the existing `/api/public/questions` handler; no new route or contract change.
+- **Public/private data handled:** The question is browser memory and a same-origin POST body only; it is never in a URL, storage, cookie, cache, or log, and the response is `no-store`. The page never sends private report data. Source text is rendered as inert text.
+- **States implemented:** idle, loading, cancelled, supported (keyword and hybrid), several sources, insufficient, citation rejected, unreadable, rate limited, outage, offline, foreign-language answer, long text, retry success, and no JavaScript.
+- **Accessibility evidence:** axe clean, 320 px and 200% reflow for eight question states in four languages on Chromium and mobile WebKit; a programmatic label and description; a polite status region; 44 px controls; no animation; keyboard submission on Chromium.
+- **Locales reviewed:** `qa` is `null` in ha/ig/yo (pending, non-critical), so the panel shows the English original with `lang="en"` and a notice. I wrote no translation.
+- **Performance/cache impact:** The record page's first-load JavaScript is 163.6 KB gzip against the 170 KB budget, now enforced for the record and trust pages. A first version was 252 KB because two browser modules imported a schema library; both are now hand-checked.
+- **Failure behaviour verified:** malformed and unresolvable answers, uncited statements, an outage, a rate limit, offline, cancellation, duplicate submit, injected and very long text, and a hostile source link scheme.
+- **Defects found and fixed:** the schema library in the browser bundle (see above); a state update inside an effect for hydration detection (replaced with `useSyncExternalStore`); the no-JavaScript message was not visible inside `<noscript>` and is now a paragraph hidden after hydration; the shared mock stats test needed to accept the question endpoint.
+- **Commands run and results:** `make web-verify` exit 0 (370 unit, 90 component, bundle scan clean); `make web-e2e` 134 passed and 2 skipped (iOS WebKit Tab-to-focus); `make web-a11y` 190 passed; `pnpm audit --prod --audit-level high` clean.
+- **Known limitations/open decisions:** Provider and API outages are one code. The real API and provider were not run for this circle. Client-side citation checking repeats but does not replace the backend validator.
+- **Commit/PR:** `feat: add the grounded project question flow with fail-closed citations`
+- **AI assistance used:** Designed and implemented the island, renderer, checker, mock scenarios, and tests; diagnosed and fixed the bundle overrun.
+- **Prompt summary:** Unattended frontend/BFF build loop; maintainer directed the loop to continue through later circles.
+- **Human review:** none yet; unattended run, pending maintainer review.

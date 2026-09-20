@@ -457,5 +457,58 @@
       "report": null
     },
     "back": null
+  },
+  "qa": {
+    "heading": null,
+    "intro": null,
+    "privacy": null,
+    "reportLink": null,
+    "label": null,
+    "hint": null,
+    "counter": null,
+    "submit": null,
+    "cancel": null,
+    "retry": null,
+    "loading": null,
+    "cancelled": null,
+    "empty": null,
+    "tooLong": null,
+    "result": {
+      "heading": null,
+      "ready": null,
+      "aiLabel": null,
+      "generated": null,
+      "retrievalKeyword": null,
+      "retrievalHybrid": null,
+      "considered": null,
+      "keywordCaution": null,
+      "noteLabel": null,
+      "statementsHeading": null,
+      "sourcesHeading": null,
+      "sourceLabel": null,
+      "cites": null,
+      "openSourcePage": null,
+      "openOriginal": null,
+      "newTab": null,
+      "location": null,
+      "retrieved": null,
+      "showFull": null,
+      "backToStatement": null
+    },
+    "insufficient": {
+      "title": null,
+      "body": null,
+      "read": null
+    },
+    "rejected": {
+      "title": null,
+      "body": null
+    },
+    "failure": {
+      "title": null,
+      "still": null,
+      "wait": null
+    },
+    "needsScript": null
   }
 }
