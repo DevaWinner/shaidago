@@ -1947,3 +1947,20 @@ For each entry, record the task, prompt summary, material suggestion, human revi
   - the keyboard skip-link browser test is scoped to Chromium because iOS WebKit does not Tab to links by default.
 - **Commit/PR:** `docs: record the maintainer review of the merged work`
 - **Human review:** Stated by the maintainer on 2026-09-20; this entry itself has not been reviewed by anyone else.
+
+## 2026-09-20 — Open-item closure before locale work
+
+- **Task:** Close the earlier circles' open items that were waiting only on CI or review, before starting Circle 5.
+- **User outcome delivered:** The hosted CI gate and the live-API gap are closed with evidence, and two real bugs that only a live run could expose are fixed.
+- **Files changed:** `apps/web/src/lib/bff/{guard,origin,public-handler}.ts`, `apps/web/src/components/evidence/evidence.tsx`, `apps/web/src/content/en/evidence.ts`, unit tests, `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** No contract change. Exercised through the BFF: question, tracking lookup and follow-up answer, report submission, reporter-handle create/list/delete, public discovery start and poll, and reviewer sign-in, note, transition, conflict, evidence download, follow-up ask, publication-draft refusal, and sign-out.
+- **Public/private data handled:** Fictional reports, a 1x1 fictional image, and the local development reviewer only. Tokens, cookies, and tracking codes were read within one shell process, never printed, and the scratch files were deleted.
+- **Closed items:** hosted CI for the web workflow (green on PRs #19 to #22 and on `main` at `fe14bf7`); the live-API run; the unused `unknownDate` label.
+- **Failure behaviour verified:** a foreign Origin is refused; a session-less reviewer call is 401; a stale transition is a stable conflict code; a used-up follow-up question and a deleted handle return the generic failure; a same-key retry replays.
+- **Defects found and fixed:** (1) empty-body POSTs (reporter-handle create, sign-out, cancel, withdraw) returned 413 because the framework always supplies a body stream; the guard now rejects only a declared or chunked body, since these handlers never read or forward one; regression tests added. (2) In development the browser's own `Host` (for example `127.0.0.1`) was refused because the framework reports `localhost`; development and test now also accept it, deployed stages never do.
+- **Commands run and results:** `make web-verify` exit 0 (271 unit, 46 component, contract drift, build, boundary scan clean), `make web-e2e` 17 passed and 1 skipped (iOS WebKit Tab-to-link, as before), `make web-a11y` 16 passed. The live run started the API (replay provider mode, so no live provider call) and the built web app on local ports, and both were stopped afterwards.
+- **Known limitations/open decisions:** publish, reviewer discovery, and source decisions were not exercised live. The local ClamAV container's mapped port does not match the API's scanner setting, so real scanning was not exercised (demo scanner mode used). Still open and not closable by me: fluent Hausa, Igbo, and Yoruba review; screen-reader testing; real browser zoom; links to routes later work builds; the fictional landing example.
+- **Commit/PR:** `fix: accept runtime empty bodies and the browser host locally, and record the open-item closures`
+- **AI assistance used:** Ran the live integration, diagnosed the two defects, fixed them with regression tests, and recorded the closures.
+- **Prompt summary:** Unattended frontend/BFF build loop for Circle 5; first close any open items that only needed CI or review.
+- **Human review:** The maintainer stated that all CI has run and passed and that the earlier work is reviewed; the two bug fixes and this entry have not been reviewed by anyone else.

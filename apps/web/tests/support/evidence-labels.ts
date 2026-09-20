@@ -47,8 +47,7 @@ export const sourceLabels: SourceCardLabels = {
   availabilityHeading: "Availability",
   classes: classLabels,
   externalNotice: "opens the source in a new tab",
-  publisherHeading: "Publisher",
-  unknownDate: "Not recorded"
+  publisherHeading: "Publisher"
 };
 
 export const translationLabels: Readonly<Record<TranslationStatus, string>> = {

@@ -94,7 +94,7 @@ unit test fails if a client component imports it.
 
 `src/lib/bff/` holds the shared, domain-free guards every Route Handler composes: `resolveOriginPolicy`
 and `checkOrigin` (exact Origin; deployed stages need `NEXT_PUBLIC_APP_ORIGIN` or every browser
-mutation is refused; `X-Forwarded-*` is never trusted), `verifyCsrfToken`, `guardMutation` (Origin,
+mutation is refused; `X-Forwarded-*` is never trusted; development and test also accept the browser's own `Host`), `verifyCsrfToken`, `guardMutation` (Origin,
 CSRF, header-only body preflight, idempotency key, in that order), `readBoundedJson`/`limitBodyStream`
 (streamed byte caps), `buildBackendHeaders` (allowlist only), `backendSignal` (abort and timeout), and
 `problemResponse` (stable code, no backend text, `no-store`). Idempotency keys are lower-case

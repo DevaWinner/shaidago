@@ -103,6 +103,10 @@ function request(
 
   if (init.body !== undefined) {
     headers["Content-Type"] ??= "application/json";
+    // Browsers declare the length; the framework's Request object does not surface it in tests.
+    headers["Content-Length"] ??= String(
+      new TextEncoder().encode(JSON.stringify(init.body)).length
+    );
   }
 
   return new Request(`${origin}${path}`, {

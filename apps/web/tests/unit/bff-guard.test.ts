@@ -46,6 +46,36 @@ describe("origin policy", () => {
     expect(checkOrigin(new Headers({ Origin: origin }), policy).ok).toBe(true);
   });
 
+  it("also accepts the Host the browser used in development and test, never in deployed stages", () => {
+    const dev = resolveOriginPolicy({
+      appEnvironment: "development",
+      publicOrigin: undefined,
+      requestUrl: "http://localhost:3000/api/x",
+      requestHost: "127.0.0.1:3000"
+    });
+    expect(checkOrigin(new Headers({ Origin: "http://127.0.0.1:3000" }), dev).ok).toBe(true);
+    expect(checkOrigin(new Headers({ Origin: "http://localhost:3000" }), dev).ok).toBe(true);
+    expect(checkOrigin(new Headers({ Origin: "http://evil.example" }), dev).ok).toBe(false);
+
+    const deployed = resolveOriginPolicy({
+      appEnvironment: "production",
+      publicOrigin: origin,
+      requestUrl: "http://10.0.0.5:3000/api/x",
+      requestHost: "evil.example"
+    });
+    expect(deployed.allowedOrigins).toEqual([origin]);
+
+    for (const host of ["", null, undefined, "not a host name"]) {
+      const policy = resolveOriginPolicy({
+        appEnvironment: "test",
+        publicOrigin: undefined,
+        requestUrl: "http://localhost:3000/x",
+        requestHost: host
+      });
+      expect(policy.allowedOrigins).toEqual(["http://localhost:3000"]);
+    }
+  });
+
   it("refuses everything in a deployed stage with no configured origin", () => {
     const unconfigured = resolveOriginPolicy({
       appEnvironment: "staging",
@@ -277,6 +307,24 @@ describe("guardMutation", () => {
     expect(
       guardMutation(post({ ...jsonHeaders, "Idempotency-Key": requestId }, "{}"), options)
     ).toEqual({ ok: true, idempotencyKey: requestId });
+  });
+
+  it("accepts an empty-body operation whose runtime request still carries an empty body stream", () => {
+    const options = { policy, requestId, body: { rule: "empty", maxBytes: 0 } } as const;
+    const emptyStream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.close();
+      }
+    });
+    const request = new Request("http://10.0.0.5:3000/api/x", {
+      method: "POST",
+      headers: { Origin: origin },
+      body: emptyStream,
+      duplex: "half"
+    } as RequestInit);
+
+    expect(request.body).not.toBeNull();
+    expect(guardMutation(request, options).ok).toBe(true);
   });
 
   it("enforces an empty body for empty-body operations", () => {

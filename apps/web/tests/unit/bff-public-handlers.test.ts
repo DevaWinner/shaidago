@@ -348,7 +348,9 @@ describe("idempotent handlers", () => {
       });
 
     expect((await createHandle(empty({}))).status).toBe(400);
-    expect((await createHandle(empty({ "Idempotency-Key": key }, "{}"))).status).toBe(413);
+    expect(
+      (await createHandle(empty({ "Idempotency-Key": key, "Content-Length": "2" }, "{}"))).status
+    ).toBe(413);
     expect(backend).not.toHaveBeenCalled();
 
     backend.mockResolvedValueOnce(okJson({ handle: "SG-H-AAAA-BBBB", recoverable: false }, 201));

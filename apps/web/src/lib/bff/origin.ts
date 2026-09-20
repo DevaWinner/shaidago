@@ -9,6 +9,12 @@ export type OriginPolicyInput = {
   readonly publicOrigin: string | undefined;
   /** The URL the runtime received; only its own origin is used, and only outside deployed stages. */
   readonly requestUrl: string;
+  /**
+   * The `Host` the browser used. The framework may report a different host name than the address
+   * a developer typed (`localhost` versus `127.0.0.1`), so development and test also accept it.
+   * It is never consulted in staging or production, where the configured public origin decides.
+   */
+  readonly requestHost?: string | null | undefined;
 };
 
 function normaliseOrigin(value: string): string | undefined {
@@ -34,13 +40,17 @@ function normaliseOrigin(value: string): string | undefined {
 export function resolveOriginPolicy(input: OriginPolicyInput): OriginPolicy {
   const configured =
     input.publicOrigin === undefined ? undefined : normaliseOrigin(input.publicOrigin);
-  const local =
-    input.appEnvironment === "development" || input.appEnvironment === "test"
-      ? normaliseOrigin(input.requestUrl)
+  const isLocalStage = input.appEnvironment === "development" || input.appEnvironment === "test";
+  const local = isLocalStage ? normaliseOrigin(input.requestUrl) : undefined;
+  const host =
+    isLocalStage && typeof input.requestHost === "string" && input.requestHost !== ""
+      ? normaliseOrigin(`http://${input.requestHost}`)
       : undefined;
 
   return {
-    allowedOrigins: [...new Set([configured, local].filter((o): o is string => o !== undefined))]
+    allowedOrigins: [
+      ...new Set([configured, local, host].filter((o): o is string => o !== undefined))
+    ]
   };
 }
 
