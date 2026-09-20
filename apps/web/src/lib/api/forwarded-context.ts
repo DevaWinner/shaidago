@@ -49,3 +49,10 @@ export function buildForwardedHeaders(
 
   return { headers, requestId };
 }
+
+const OPAQUE_SECRET_PATTERN = /^[\x21-\x7e]{16,512}$/;
+
+/** A session or CSRF token as a header value: printable ASCII, no whitespace, bounded length. */
+export function toOpaqueSecret(value: unknown): string | undefined {
+  return typeof value === "string" && OPAQUE_SECRET_PATTERN.test(value) ? value : undefined;
+}

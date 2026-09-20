@@ -5,6 +5,7 @@ import { z } from "zod";
 import {
   buildForwardedHeaders,
   toEntityTag,
+  toOpaqueSecret,
   type ForwardedContext
 } from "@/lib/api/forwarded-context";
 import { createGeneratedClient } from "@/lib/api/generated/client";
@@ -153,10 +154,28 @@ export type MutationOptions = {
   readonly idempotencyKey?: string | undefined;
 };
 
+/** Reviewer calls carry the session (and, for mutations, CSRF) token resolved from HttpOnly cookies. */
+export type ReviewerOptions = {
+  readonly context: ForwardedContext;
+  readonly signal?: AbortSignal | undefined;
+  readonly session: string;
+  readonly csrf?: string | undefined;
+};
+
+export type EvidenceStream = {
+  readonly body: ReadableStream<Uint8Array>;
+  readonly headers: Headers;
+};
+
 // Transport budgets from the BFF operation map (connect is folded into the total).
 const PUBLIC_JSON_TIMEOUT_MS = 8_000;
 const PUBLIC_POLL_TIMEOUT_MS = 3_000;
 const REPORT_SUBMIT_TIMEOUT_MS = 65_000;
+const REVIEWER_READ_TIMEOUT_MS = 5_000;
+const REVIEWER_MUTATION_TIMEOUT_MS = 10_000;
+const REVIEWER_POLL_TIMEOUT_MS = 3_000;
+const AUTH_TIMEOUT_MS = 8_000;
+const EVIDENCE_STREAM_TIMEOUT_MS = 30_000;
 
 export function createServerApi(dependencies: ServerApiDependencies) {
   const baseUrl = dependencies.environment.apiInternalUrl;
@@ -286,6 +305,47 @@ export function createServerApi(dependencies: ServerApiDependencies) {
           ? undefined
           : { "Idempotency-Key": options.idempotencyKey }
     });
+
+  function reviewerHeaders(options: ReviewerOptions): Record<string, string> {
+    const session = toOpaqueSecret(options.session);
+    const csrf = toOpaqueSecret(options.csrf);
+    const headers: Record<string, string> = {};
+
+    if (session !== undefined) {
+      headers["X-Shaidago-Session"] = session;
+    }
+
+    if (csrf !== undefined) {
+      headers["X-Shaidago-Csrf"] = csrf;
+    }
+
+    return headers;
+  }
+
+  const reviewerCall = <TData>(
+    send: (init: SendInit) => Promise<RawResult<TData>>,
+    options: ReviewerOptions,
+    policy: { readonly timeoutMs: number; readonly retry: boolean }
+  ): Promise<ApiResult<TData>> =>
+    execute(send, {
+      context: options.context,
+      timeoutMs: policy.timeoutMs,
+      retry: policy.retry,
+      cache: "no-store",
+      signal: options.signal,
+      headers: reviewerHeaders(options)
+    });
+
+  const reviewerRead = <TData>(
+    send: (init: SendInit) => Promise<RawResult<TData>>,
+    options: ReviewerOptions,
+    timeoutMs: number = REVIEWER_READ_TIMEOUT_MS
+  ) => reviewerCall(send, options, { timeoutMs, retry: true });
+
+  const reviewerMutate = <TData>(
+    send: (init: SendInit) => Promise<RawResult<TData>>,
+    options: ReviewerOptions
+  ) => reviewerCall(send, options, { timeoutMs: REVIEWER_MUTATION_TIMEOUT_MS, retry: false });
 
   const client = createGeneratedClient(baseUrl);
 
@@ -421,6 +481,293 @@ export function createServerApi(dependencies: ServerApiDependencies) {
     deleteReporterHandle: (body: components["schemas"]["Credentials"], options: MutationOptions) =>
       mutate<undefined>(
         (init) => client.POST("/v1/reporter-handles:delete", { ...init, body }),
+        options
+      ),
+
+    // Reviewer authentication. The one-time session response never leaves server execution.
+    signIn: (body: components["schemas"]["SignInRequest"], options: MutationOptions) =>
+      mutate<components["schemas"]["SessionOut"]>(
+        (init) => client.POST("/v1/auth/sessions", { ...init, body }),
+        options,
+        AUTH_TIMEOUT_MS
+      ),
+
+    signOut: (options: ReviewerOptions) =>
+      reviewerCall<undefined>((init) => client.DELETE("/v1/auth/sessions/current", init), options, {
+        timeoutMs: AUTH_TIMEOUT_MS,
+        retry: false
+      }),
+
+    // Reviewer reads (SR-REVIEWER / BFF-REVIEWER-GET): session forwarded, never cached.
+    listReviewerReports: (
+      query: NonNullable<operations["reviewer_reports_queue"]["parameters"]["query"]>,
+      options: ReviewerOptions
+    ) =>
+      reviewerRead<components["schemas"]["QueuePageOut"]>(
+        (init) => client.GET("/v1/reviewer/reports", { ...init, params: { query } }),
+        options
+      ),
+
+    getReviewerReport: (reportId: string, includeContact: boolean, options: ReviewerOptions) =>
+      reviewerRead<components["schemas"]["ReportDetailOut"]>(
+        (init) =>
+          client.GET("/v1/reviewer/reports/{report_id}", {
+            ...init,
+            params: { path: { report_id: reportId }, query: { include_contact: includeContact } }
+          }),
+        options
+      ),
+
+    listReviewerNotes: (
+      reportId: string,
+      query: NonNullable<operations["reviewer_notes_list"]["parameters"]["query"]>,
+      options: ReviewerOptions
+    ) =>
+      reviewerRead<components["schemas"]["NotePageOut"]>(
+        (init) =>
+          client.GET("/v1/reviewer/reports/{report_id}/notes", {
+            ...init,
+            params: { path: { report_id: reportId }, query }
+          }),
+        options
+      ),
+
+    listPublicationDrafts: (reportId: string, options: ReviewerOptions) =>
+      reviewerRead<components["schemas"]["DraftListOut"]>(
+        (init) =>
+          client.GET("/v1/reviewer/reports/{report_id}/public-updates", {
+            ...init,
+            params: { path: { report_id: reportId } }
+          }),
+        options
+      ),
+
+    getPublicationPreview: (reportId: string, updateId: string, options: ReviewerOptions) =>
+      reviewerRead<components["schemas"]["PreviewOut"]>(
+        (init) =>
+          client.GET("/v1/reviewer/reports/{report_id}/public-updates/{update_id}", {
+            ...init,
+            params: { path: { report_id: reportId, update_id: updateId } }
+          }),
+        options
+      ),
+
+    getReviewerDiscoveryRun: (runId: string, options: ReviewerOptions) =>
+      reviewerRead<components["schemas"]["ReviewerRunOut"]>(
+        (init) =>
+          client.GET("/v1/reviewer/discovery-runs/{run_id}", {
+            ...init,
+            params: { path: { run_id: runId } }
+          }),
+        options,
+        REVIEWER_POLL_TIMEOUT_MS
+      ),
+
+    /** Streams one sanitised attachment; the caller decides which backend headers to expose. */
+    downloadEvidence: (reportId: string, evidenceId: string, options: ReviewerOptions) =>
+      reviewerCall<EvidenceStream>(
+        async (init) => {
+          const raw = await client.GET(
+            "/v1/reviewer/reports/{report_id}/evidence/{evidence_id}/content",
+            {
+              ...init,
+              params: { path: { report_id: reportId, evidence_id: evidenceId } },
+              parseAs: "stream"
+            }
+          );
+
+          return {
+            data:
+              raw.data === undefined || raw.data === null
+                ? undefined
+                : { body: raw.data, headers: raw.response.headers },
+            error: raw.error,
+            response: raw.response
+          };
+        },
+        options,
+        { timeoutMs: EVIDENCE_STREAM_TIMEOUT_MS, retry: false }
+      ),
+
+    // Reviewer mutations: Origin/CSRF are enforced by the BFF first; the API re-checks the token.
+    createNote: (
+      reportId: string,
+      body: components["schemas"]["NoteRequest"],
+      options: ReviewerOptions
+    ) =>
+      reviewerMutate<components["schemas"]["NoteCreatedOut"]>(
+        (init) =>
+          client.POST("/v1/reviewer/reports/{report_id}/notes", {
+            ...init,
+            params: { path: { report_id: reportId } },
+            body
+          }),
+        options
+      ),
+
+    askReviewerFollowUp: (
+      reportId: string,
+      body: components["schemas"]["QuestionRequest"],
+      options: ReviewerOptions
+    ) =>
+      reviewerMutate<components["schemas"]["QuestionOut"]>(
+        (init) =>
+          client.POST("/v1/reviewer/reports/{report_id}/follow-up-questions", {
+            ...init,
+            params: { path: { report_id: reportId } },
+            body
+          }),
+        options
+      ),
+
+    withdrawReviewerFollowUp: (reportId: string, questionId: string, options: ReviewerOptions) =>
+      reviewerMutate<undefined>(
+        (init) =>
+          client.POST(
+            "/v1/reviewer/reports/{report_id}/follow-up-questions/{question_id}:withdraw",
+            { ...init, params: { path: { report_id: reportId, question_id: questionId } } }
+          ),
+        options
+      ),
+
+    transitionReport: (
+      reportId: string,
+      body: components["schemas"]["TransitionRequest"],
+      options: ReviewerOptions
+    ) =>
+      reviewerMutate<components["schemas"]["TransitionOut"]>(
+        (init) =>
+          client.POST("/v1/reviewer/reports/{report_id}/status-transitions", {
+            ...init,
+            params: { path: { report_id: reportId } },
+            body
+          }),
+        options
+      ),
+
+    createPublicationDraft: (
+      reportId: string,
+      body: components["schemas"]["DraftIn"],
+      options: ReviewerOptions
+    ) =>
+      reviewerMutate<components["schemas"]["PreviewOut"]>(
+        (init) =>
+          client.POST("/v1/reviewer/reports/{report_id}/public-updates", {
+            ...init,
+            params: { path: { report_id: reportId } },
+            body
+          }),
+        options
+      ),
+
+    publishUpdate: (
+      reportId: string,
+      updateId: string,
+      body: components["schemas"]["PublishIn"],
+      options: ReviewerOptions
+    ) =>
+      reviewerMutate<components["schemas"]["PublishedOut"]>(
+        (init) =>
+          client.POST("/v1/reviewer/reports/{report_id}/public-updates/{update_id}:publish", {
+            ...init,
+            params: { path: { report_id: reportId, update_id: updateId } },
+            body
+          }),
+        options
+      ),
+
+    withdrawUpdate: (reportId: string, updateId: string, options: ReviewerOptions) =>
+      reviewerMutate<undefined>(
+        (init) =>
+          client.POST("/v1/reviewer/reports/{report_id}/public-updates/{update_id}:withdraw", {
+            ...init,
+            params: { path: { report_id: reportId, update_id: updateId } }
+          }),
+        options
+      ),
+
+    planDiscovery: (
+      reportId: string,
+      body: components["schemas"]["PlanIn"],
+      options: ReviewerOptions
+    ) =>
+      reviewerMutate<components["schemas"]["PlanOut"]>(
+        (init) =>
+          client.POST("/v1/reviewer/reports/{report_id}/discovery-runs:plan", {
+            ...init,
+            params: { path: { report_id: reportId } },
+            body
+          }),
+        options
+      ),
+
+    createDiscoveryRun: (
+      reportId: string,
+      body: components["schemas"]["RunCreateIn"],
+      options: ReviewerOptions
+    ) =>
+      reviewerMutate<components["schemas"]["RunCreatedOut"]>(
+        (init) =>
+          client.POST("/v1/reviewer/reports/{report_id}/discovery-runs", {
+            ...init,
+            params: { path: { report_id: reportId } },
+            body
+          }),
+        options
+      ),
+
+    cancelDiscoveryRun: (runId: string, options: ReviewerOptions) =>
+      reviewerMutate<components["schemas"]["CancelOut"]>(
+        (init) =>
+          client.POST("/v1/reviewer/discovery-runs/{run_id}:cancel", {
+            ...init,
+            params: { path: { run_id: runId } }
+          }),
+        options
+      ),
+
+    reviewDiscoveryRun: (
+      runId: string,
+      body: components["schemas"]["ReviewIn"],
+      options: ReviewerOptions
+    ) =>
+      reviewerMutate<components["schemas"]["ReviewOut"]>(
+        (init) =>
+          client.POST("/v1/reviewer/discovery-runs/{run_id}:review", {
+            ...init,
+            params: { path: { run_id: runId } },
+            body
+          }),
+        options
+      ),
+
+    answerDiscoveryFollowUp: (
+      runId: string,
+      body: components["schemas"]["AnswerIn"],
+      options: ReviewerOptions
+    ) =>
+      reviewerMutate<undefined>(
+        (init) =>
+          client.POST("/v1/reviewer/discovery-runs/{run_id}/follow-up-answers", {
+            ...init,
+            params: { path: { run_id: runId } },
+            body
+          }),
+        options
+      ),
+
+    decideDiscoveredSource: (
+      sourceId: string,
+      body: components["schemas"]["DecisionIn"],
+      options: ReviewerOptions
+    ) =>
+      reviewerMutate<components["schemas"]["DecisionOut"]>(
+        (init) =>
+          client.POST("/v1/reviewer/discovered-sources/{source_id}/decision", {
+            ...init,
+            params: { path: { source_id: sourceId } },
+            body
+          }),
         options
       )
   };

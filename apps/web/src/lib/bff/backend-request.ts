@@ -1,4 +1,8 @@
-import { buildForwardedHeaders, type ForwardedContext } from "@/lib/api/forwarded-context";
+import {
+  buildForwardedHeaders,
+  toOpaqueSecret,
+  type ForwardedContext
+} from "@/lib/api/forwarded-context";
 import { toIdempotencyKey } from "@/lib/bff/idempotency";
 
 /**
@@ -16,8 +20,6 @@ export const BACKEND_HEADER_ALLOWLIST = [
   "x-shaidago-session",
   "x-shaidago-csrf"
 ] as const;
-
-const OPAQUE_SECRET_PATTERN = /^[\x21-\x7e]{16,512}$/;
 
 export type BackendRequestInput = {
   readonly context: ForwardedContext;
@@ -61,12 +63,16 @@ export function buildBackendHeaders(
     headers["Idempotency-Key"] = key;
   }
 
-  if (typeof input.session === "string" && OPAQUE_SECRET_PATTERN.test(input.session)) {
-    headers["X-Shaidago-Session"] = input.session;
+  const session = toOpaqueSecret(input.session);
+
+  if (session !== undefined) {
+    headers["X-Shaidago-Session"] = session;
   }
 
-  if (typeof input.csrf === "string" && OPAQUE_SECRET_PATTERN.test(input.csrf)) {
-    headers["X-Shaidago-Csrf"] = input.csrf;
+  const csrf = toOpaqueSecret(input.csrf);
+
+  if (csrf !== undefined) {
+    headers["X-Shaidago-Csrf"] = csrf;
   }
 
   return { headers, requestId };
