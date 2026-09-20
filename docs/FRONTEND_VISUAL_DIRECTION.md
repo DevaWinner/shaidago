@@ -104,3 +104,7 @@ On small screens, navigation retains the name, locale, and safe report access; t
 ### Implementation and review boundaries
 
 No logo, raster, external font request, icon library, chart, or decorative asset is authorised by this document. Circle 4 owns the actual design primitives and must keep this direction's values semantic. Every visual surface must test keyboard access, focus restoration, 200% zoom, four-locale expansion, reduced motion, forced colours, narrow mobile, low-data mode, and public/private cache boundaries. The visual review in Circle 15 is the first point at which a finished render may update `DESIGN.md`.
+
+## Implemented reality
+
+The approved direction was built as described here with these recorded corrections: the pale rule colour was found on form-field edges (1.43:1) and replaced with the muted colour (5.75:1) in the finish round; the low-data switch moved from the top of every public page to its footer so it does not compete with the first viewport; and the reviewer filter form is two columns from 360 px. The shipped system, with measured values, is described in [`../DESIGN.md`](../DESIGN.md).

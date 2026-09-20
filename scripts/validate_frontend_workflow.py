@@ -40,6 +40,7 @@ def validate(workflow: str) -> list[str]:
         "make web-typecheck",
         "make web-unit",
         "make web-component",
+        "make web-coverage",
         "make web-contract",
         "make web-boundary",
         "make web-e2e",

@@ -7,6 +7,15 @@ import en from "../../messages/en.json";
 
 const copy = en.offline.lowData;
 
+function Both() {
+  return (
+    <>
+      <LowDataControl copy={copy} part="suggestion" />
+      <LowDataControl copy={copy} part="switch" />
+    </>
+  );
+}
+
 function saveData(value: boolean) {
   Object.defineProperty(navigator, "connection", {
     configurable: true,
@@ -27,7 +36,7 @@ afterEach(() => {
 
 describe("LowDataControl", () => {
   it("starts off, and turning it on sets one plain cookie and the page attribute", async () => {
-    render(<LowDataControl copy={copy} />);
+    render(<Both />);
     expect(screen.getByText(copy.off)).toBeTruthy();
     await userEvent.setup().click(screen.getByRole("button", { name: copy.turnOn }));
 
@@ -41,7 +50,7 @@ describe("LowDataControl", () => {
 
   it("only suggests low-data when the browser asks to save data and no choice was made, and never turns it on itself", async () => {
     saveData(true);
-    render(<LowDataControl copy={copy} />);
+    render(<Both />);
 
     expect(screen.getByText(copy.suggest)).toBeTruthy();
     expect(document.documentElement.dataset["lowData"]).toBe("false");
@@ -53,13 +62,13 @@ describe("LowDataControl", () => {
   it("does not override an explicit choice: an explicit off is never suggested against", () => {
     saveData(true);
     document.cookie = "sg_low_data=0; Path=/";
-    render(<LowDataControl copy={copy} />);
+    render(<Both />);
     expect(screen.queryByText(copy.suggest)).toBeNull();
     expect(screen.getByText(copy.off)).toBeTruthy();
   });
 
   it("stores nothing but the one preference cookie", async () => {
-    render(<LowDataControl copy={copy} />);
+    render(<Both />);
     await userEvent.setup().click(screen.getByRole("button", { name: copy.turnOn }));
     expect(JSON.stringify({ ...window.localStorage, ...window.sessionStorage })).toBe("{}");
   });

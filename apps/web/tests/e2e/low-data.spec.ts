@@ -102,16 +102,16 @@ test("nothing is prefetched, and no data-saving signal turns the mode on by itse
   await page.goto("/en/projects");
   await page.waitForLoadState("networkidle");
   await expect(page.locator("html")).toHaveAttribute("data-low-data", "false");
-  await expect(toggle(page)).toContainText(
-    "Your browser asks to save data. Turn on low-data mode?"
-  );
+  const suggestion = page.locator("[data-slot=low-data-suggestion]");
+
+  await expect(suggestion).toContainText("Your browser asks to save data. Turn on low-data mode?");
   expect(await page.locator('link[rel="prefetch"], link[rel="prerender"]').count()).toBe(0);
   expect(requests.filter((url) => url.includes("_rsc=") || url.includes("/_next/data/"))).toEqual(
     []
   );
 
-  await toggle(page).getByRole("button", { name: "Not now" }).click();
-  await expect(toggle(page)).not.toContainText("asks to save data");
+  await suggestion.getByRole("button", { name: "Not now" }).click();
+  await expect(suggestion).toHaveCount(0);
   await expect(page.locator("html")).toHaveAttribute("data-low-data", "false");
 });
 
@@ -132,7 +132,7 @@ test("an explicit off is respected even when the browser asks to save data", asy
   await page.goto("/en");
   await page.waitForLoadState("networkidle");
   await expect(toggle(page)).toContainText("Low-data mode is off");
-  await expect(toggle(page)).not.toContainText("asks to save data");
+  await expect(page.locator("[data-slot=low-data-suggestion]")).toHaveCount(0);
 });
 
 test("low-data mode slows Source Scout polling instead of dropping it", async ({

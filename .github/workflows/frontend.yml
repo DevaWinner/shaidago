@@ -45,6 +45,7 @@ jobs:
       - run: make web-typecheck
       - run: make web-unit
       - run: make web-component
+      - run: make web-coverage
       - run: make web-contract
       # Builds with synthetic private canaries and inspects client chunks; it never contacts the
       # private API or uses a real credential.

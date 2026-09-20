@@ -24,7 +24,7 @@ const FieldContext = createContext<FieldState | undefined>(undefined);
 // `:read-only` also matches a <select>, which is never editable in that sense, so it is limited to
 // text inputs and textareas.
 const controlClasses =
-  "box-border min-h-11 w-full min-w-0 max-w-full rounded-ledger-control border border-border bg-card px-3 py-2 text-foreground [overflow-wrap:anywhere] [&:is(input,textarea):read-only]:border-dashed [&:is(input,textarea):read-only]:bg-[var(--state-read-only-background)] [&:is(input,textarea):read-only]:text-[var(--state-read-only-text)] aria-invalid:border-2 aria-invalid:border-destructive";
+  "box-border min-h-11 w-full min-w-0 max-w-full rounded-ledger-control border border-input bg-card px-3 py-2 text-foreground [overflow-wrap:anywhere] [&:is(input,textarea):read-only]:border-dashed [&:is(input,textarea):read-only]:bg-[var(--state-read-only-background)] [&:is(input,textarea):read-only]:text-[var(--state-read-only-text)] aria-invalid:border-2 aria-invalid:border-destructive";
 
 type ControlProperties = {
   id?: string | undefined;

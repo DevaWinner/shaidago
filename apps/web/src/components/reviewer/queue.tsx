@@ -44,7 +44,7 @@ export function QueueFilterForm({
       data-slot="queue-filters"
       method="get"
     >
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid items-start gap-4 min-[360px]:grid-cols-2 lg:grid-cols-4">
         <Field controlId="queue-status" label={form.status}>
           <Select defaultValue={filters.status ?? ""} name="status">
             <option value="">{form.any}</option>
