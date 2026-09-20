@@ -156,4 +156,3 @@ reviewer and date. `pnpm run messages:check` (also part of `make web-contract`) 
 keys, valid ICU, the same variables and types, identical `select` branches, and consistent status.
 `resolveDomain` in `src/i18n/catalogue.ts` serves a locale's text only when its domain is reviewed
 and complete; otherwise it returns the flagged English original and the page says so.
-
