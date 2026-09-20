@@ -18,5 +18,11 @@ apps
 docs
 infra
 scripts
+# The seed validates the source register with this one dependency-free validator at
+# runtime, so it must reach the image; nothing else under scripts/ does.
+!scripts/validate_source_register.py
 services/platform/tests
 services/platform/scripts
+
+# The embedding model is baked into the image by its own build stage, never copied from here.
+.models

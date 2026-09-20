@@ -50,7 +50,14 @@ PublicStatus = Literal[
     "unknown", "planned", "procurement", "in_progress", "on_hold", "completed", "cancelled"
 ]
 VerificationState = Literal[
-    "verified_official", "corroborated", "community_reviewed", "disputed", "outdated"
+    # A cited fact may be public while it is still awaiting verification: the brief requires the
+    # interface to show that a claim is unconfirmed rather than hide it (migration 0025).
+    "awaiting_verification",
+    "verified_official",
+    "corroborated",
+    "community_reviewed",
+    "disputed",
+    "outdated",
 ]
 SourceClass = Literal["official_source", "independent_source", "community_evidence_reviewed"]
 CACHE_CONTROL = "public, max-age=60"
@@ -151,6 +158,8 @@ class ProjectTextOut(SummaryTextOut):
 
 
 class CitationOut(BaseModel):
+    # The approved version a reviewer cites when composing a public update (migration 0026).
+    source_version_id: UUID
     source_id: UUID
     source_title: str
     publisher: str

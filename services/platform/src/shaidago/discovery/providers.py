@@ -8,12 +8,12 @@ from typing import Final
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from shaidago.discovery.analysis import AnalysisProvider, FixtureAnalyser, OpenAIAnalyser
+from shaidago.discovery.analysis import AnalysisProvider, FixtureAnalyser, LiveAnalyser
 from shaidago.discovery.fetcher import SafeFetcher
 from shaidago.discovery.netguard import SystemResolver
 from shaidago.discovery.pages import FIXTURE_ROOT, FixturePageFetcher, PageFetcher
 from shaidago.discovery.search import BraveSearchProvider, FixtureSearchProvider, SearchProvider
-from shaidago.retrieval.openai import OpenAILanguageModel
+from shaidago.retrieval.groq import GroqLanguageModel
 from shaidago.shared.config import Settings
 
 
@@ -71,14 +71,16 @@ def build_providers(settings: Settings) -> Providers:
     config = settings.providers
     if config.mode == "replay":
         return replay_providers()
-    if config.search_api_key is None or config.openai_api_key is None:
-        raise ValueError("live discovery needs SEARCH_API_KEY and OPENAI_API_KEY")
-    transport = OpenAILanguageModel(
-        api_key=config.openai_api_key.get_secret_value(), model_id=config.qa_model
+    if config.search_api_key is None or config.language_api_key is None:
+        raise ValueError("live discovery needs SEARCH_API_KEY and GROQ_API_KEY")
+    transport = GroqLanguageModel(
+        api_key=config.language_api_key.get_secret_value(),
+        base_url=config.language_base_url,
+        model_id=config.qa_model,
     )
     # Public runs use the smaller model; only reviewer (report-scoped) runs use synthesis.
-    public = OpenAIAnalyser(transport, config.qa_model)
-    private = OpenAIAnalyser(transport, config.discovery_model)
+    public = LiveAnalyser(transport, config.qa_model)
+    private = LiveAnalyser(transport, config.discovery_model)
     return Providers(
         BraveSearchProvider(
             config.search_api_key.get_secret_value(), client=httpx.AsyncClient(timeout=10.0)

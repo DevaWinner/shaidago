@@ -275,9 +275,15 @@
           "source_type": {
             "title": "Source Type",
             "type": "string"
+          },
+          "source_version_id": {
+            "format": "uuid",
+            "title": "Source Version Id",
+            "type": "string"
           }
         },
         "required": [
+          "source_version_id",
           "source_id",
           "source_title",
           "publisher",
@@ -666,6 +672,7 @@
           },
           "verification_state": {
             "enum": [
+              "awaiting_verification",
               "verified_official",
               "corroborated",
               "community_reviewed",
@@ -3287,6 +3294,7 @@
           },
           "verification_state": {
             "enum": [
+              "awaiting_verification",
               "verified_official",
               "corroborated",
               "community_reviewed",
@@ -3774,6 +3782,7 @@
               "anyOf": [
                 {
                   "enum": [
+                    "awaiting_verification",
                     "verified_official",
                     "corroborated",
                     "community_reviewed",

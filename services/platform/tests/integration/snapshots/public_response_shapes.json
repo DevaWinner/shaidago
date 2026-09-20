@@ -27,7 +27,8 @@
             "retrieved_at": "str",
             "source_id": "str",
             "source_title": "str",
-            "source_type": "str"
+            "source_type": "str",
+            "source_version_id": "str"
           }
         ],
         "effective_on": "str",
@@ -67,7 +68,8 @@
             "retrieved_at": "str",
             "source_id": "str",
             "source_title": "str",
-            "source_type": "str"
+            "source_type": "str",
+            "source_version_id": "str"
           }
         ],
         "effective_on": "str",

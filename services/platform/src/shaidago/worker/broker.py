@@ -13,6 +13,7 @@ from typing import Any, Final
 from uuid import UUID, uuid4
 
 import dramatiq
+import structlog
 from dramatiq.brokers.redis import RedisBroker
 from dramatiq.brokers.stub import StubBroker
 
@@ -73,7 +74,14 @@ def register_actors(  # noqa: PLR0913 - retry limits are tunable for tests, not 
             envelope = parse_envelope(payload)
         except InvalidEnvelopeError:
             return "invalid_envelope"  # never retried: the same bytes can never become valid
-        outcome: Outcome = asyncio.run(handle(envelope.run_id, f"worker-{uuid4().hex[:12]}"))
+        # One request ID spans BFF, API, worker, and audit rows; a message without one still runs.
+        structlog.contextvars.bind_contextvars(
+            request_id=envelope.request_id, run_id=str(envelope.run_id)
+        )
+        try:
+            outcome: Outcome = asyncio.run(handle(envelope.run_id, f"worker-{uuid4().hex[:12]}"))
+        finally:
+            structlog.contextvars.clear_contextvars()
         return outcome.value
 
     def run_discovery_exhausted(message_data: dict[str, Any], _exception: dict[str, Any]) -> None:
@@ -82,7 +90,13 @@ def register_actors(  # noqa: PLR0913 - retry limits are tunable for tests, not 
             envelope = parse_envelope(kwargs.get("payload"))
         except InvalidEnvelopeError:
             return
-        asyncio.run(exhausted(envelope.run_id, EXHAUSTED))
+        structlog.contextvars.bind_contextvars(
+            request_id=envelope.request_id, run_id=str(envelope.run_id)
+        )
+        try:
+            asyncio.run(exhausted(envelope.run_id, EXHAUSTED))
+        finally:
+            structlog.contextvars.clear_contextvars()
 
     define: Any = dramatiq.actor  # its stubs do not describe the options we pass
     exhausted_actor = define(

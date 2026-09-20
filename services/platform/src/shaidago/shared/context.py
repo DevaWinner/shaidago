@@ -21,7 +21,8 @@ CLIENT_HMAC_HEADER: Final = b"x-shaidago-client-hmac"
 LOCALES: Final[frozenset[str]] = frozenset({"en", "ha", "ig", "yo"})
 DEFAULT_LOCALE: Final = "en"
 
-_REQUEST_ID = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
+REQUEST_ID_PATTERN: Final = r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+_REQUEST_ID = re.compile(REQUEST_ID_PATTERN)
 # HMAC-SHA-256 of the client address, lower-case hex. Never logged: the key is on the denylist.
 _CLIENT_HMAC = re.compile(r"^[0-9a-f]{64}$")
 

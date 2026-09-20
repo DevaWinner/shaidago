@@ -86,12 +86,33 @@ def test_an_invalid_register_is_refused_before_any_plan_exists(tmp_path: Path) -
     assert any("source candidate" in p for p in raised.value.problems)
 
 
-@pytest.mark.parametrize("environment", ["production", "staging", "", "prod"])
+@pytest.mark.parametrize("environment", ["production", "", "prod"])
 def test_the_seed_refuses_non_development_environments(environment: str) -> None:
-    with pytest.raises(SeedRefusedError, match="development or test"):
+    with pytest.raises(SeedRefusedError, match="no production seed mode"):
         assert_safe_target(
             {"APP_ENV": environment}, make_url("postgresql+psycopg://u:p@localhost/db")
         )
+
+
+@pytest.mark.parametrize("environment", ["production", "prod", "PRODUCTION"])
+def test_production_is_refused_even_with_the_deployed_flag(environment: str) -> None:
+    with pytest.raises(SeedRefusedError):
+        assert_safe_target(
+            {"APP_ENV": environment, "SEED_ALLOW_DEPLOYED": "1"},
+            make_url("postgresql+psycopg://u:s3cret@db.internal/db"),
+        )
+
+
+def test_staging_needs_the_flag_and_then_allows_its_private_host() -> None:
+    remote = make_url("postgresql+psycopg://u:s3cret@postgres.railway.internal/db")
+    with pytest.raises(SeedRefusedError) as raised:
+        assert_safe_target({"APP_ENV": "staging"}, remote)
+    assert "SEED_ALLOW_DEPLOYED=1" in str(raised.value)
+    assert "s3cret" not in str(raised.value)
+    for flag in ("", "0", "true", "yes"):
+        with pytest.raises(SeedRefusedError):
+            assert_safe_target({"APP_ENV": "staging", "SEED_ALLOW_DEPLOYED": flag}, remote)
+    assert_safe_target({"APP_ENV": "staging", "SEED_ALLOW_DEPLOYED": "1"}, remote)
 
 
 def test_the_seed_refuses_a_missing_environment_and_remote_hosts_without_echoing_secrets() -> None:

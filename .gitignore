@@ -54,3 +54,6 @@ Thumbs.db
 
 # Codex/local agent logs
 .codex-log/
+
+# Local embedding model (129 MB, fetched by `make embedding-model`; ADR-0010)
+.models/

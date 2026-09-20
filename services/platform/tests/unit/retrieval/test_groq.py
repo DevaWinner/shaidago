@@ -5,6 +5,12 @@ from typing import cast
 import httpx
 import pytest
 
+from shaidago.retrieval.groq import (
+    CHAT_COMPLETIONS_PATH,
+    MAX_RESPONSE_BYTES,
+    GroqLanguageModel,
+    wire_schema,
+)
 from shaidago.retrieval.language import (
     EvidencePassage,
     GroundedAnswerRequest,
@@ -12,7 +18,6 @@ from shaidago.retrieval.language import (
     RetryClass,
     generated_at_text,
 )
-from shaidago.retrieval.openai import MAX_RESPONSE_BYTES, OpenAILanguageModel
 
 NOW = datetime(2026, 9, 19, 17, 0, tzinfo=UTC)
 
@@ -51,32 +56,32 @@ def answer_text(*, generated_at: str | None = None, locale: str = "en") -> str:
 
 def response_body(text: str | None = None) -> dict[str, object]:
     return {
-        "status": "completed",
-        "output": [
-            {"type": "reasoning"},
+        "choices": [
             {
-                "type": "message",
-                "content": [{"type": "output_text", "text": text or answer_text()}],
-            },
-        ],
+                "finish_reason": "stop",
+                "index": 0,
+                "message": {"content": text or answer_text(), "role": "assistant"},
+            }
+        ]
     }
 
 
-async def call_with(handler: httpx.MockTransport) -> tuple[OpenAILanguageModel, httpx.AsyncClient]:
+async def call_with(handler: httpx.MockTransport) -> tuple[GroqLanguageModel, httpx.AsyncClient]:
     client = httpx.AsyncClient(transport=handler, base_url="https://api.test")
     return (
-        OpenAILanguageModel(api_key="secret-canary", model_id="configured-model", client=client),
+        GroqLanguageModel(api_key="secret-canary", model_id="configured-model", client=client),
         client,
     )
 
 
-async def test_request_uses_responses_strict_schema_no_tools_and_no_storage(
+async def test_request_uses_a_strict_schema_deterministic_decoding_and_no_tools(
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     captured: dict[str, object] = {}
 
     def respond(http_request: httpx.Request) -> httpx.Response:
         captured["authorization"] = http_request.headers.get("Authorization")
+        captured["path"] = http_request.url.path
         captured["body"] = json.loads(http_request.content)
         return httpx.Response(200, json=response_body())
 
@@ -90,26 +95,30 @@ async def test_request_uses_responses_strict_schema_no_tools_and_no_storage(
     assert isinstance(captured_body, dict)
     body = cast(dict[str, object], captured_body)
     assert captured["authorization"] == "Bearer secret-canary"
+    assert captured["path"] == CHAT_COMPLETIONS_PATH
     assert set(body) == {
-        "input",
-        "instructions",
-        "max_output_tokens",
+        "max_completion_tokens",
+        "messages",
         "model",
-        "parallel_tool_calls",
-        "store",
-        "text",
-        "tools",
+        "response_format",
+        "stream",
+        "temperature",
     }
     assert body["model"] == "configured-model"
-    assert body["store"] is False
-    assert body["tools"] == []
-    assert body["parallel_tool_calls"] is False
-    assert body["max_output_tokens"] == 1200
-    text_config = cast(dict[str, object], body["text"])
-    output_format = cast(dict[str, object], text_config["format"])
-    assert output_format["type"] == "json_schema"
-    assert output_format["strict"] is True
-    provider_input_value = body["input"]
+    assert body["stream"] is False
+    assert body["temperature"] == 0
+    assert "tools" not in body  # the model is never offered an action
+    assert body["max_completion_tokens"] == 1200
+    response_format = cast(dict[str, object], body["response_format"])
+    assert response_format["type"] == "json_schema"
+    schema_config = cast(dict[str, object], response_format["json_schema"])
+    assert schema_config["strict"] is True
+    assert schema_config["name"] == "grounded_answer"
+    messages = cast(list[object], body["messages"])
+    system, user = (cast(dict[str, object], message) for message in messages)
+    assert system["role"] == "system"
+    assert user["role"] == "user"
+    provider_input_value = user["content"]
     assert isinstance(provider_input_value, str)
     provider_payload = json.loads(provider_input_value)
     assert set(provider_payload) == {"generated_at", "locale", "passages", "question"}
@@ -180,14 +189,29 @@ async def test_timeout_is_retryable_but_not_retried_in_the_adapter() -> None:
     [
         (
             {
-                "status": "completed",
-                "output": [{"type": "message", "content": [{"type": "refusal"}]}],
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "message": {"content": None, "refusal": "I cannot help with that"},
+                    }
+                ]
             },
             "provider_refusal",
         ),
         (
-            {"status": "completed", "output": [{"type": "function_call"}]},
+            {
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "message": {"content": None, "tool_calls": [{"id": "call_1"}]},
+                    }
+                ]
+            },
             "provider_added_action",
+        ),
+        (
+            {"choices": [{"finish_reason": "tool_calls", "message": {"content": None}}]},
+            "provider_incomplete",
         ),
     ],
 )
@@ -246,4 +270,57 @@ async def test_response_body_is_bounded_before_json_parsing() -> None:
 
 def test_timeout_is_bounded() -> None:
     with pytest.raises(ValueError, match="timeout"):
-        OpenAILanguageModel(api_key="key", model_id="model", timeout_seconds=61)
+        GroqLanguageModel(api_key="key", model_id="model", timeout_seconds=61)
+
+
+async def test_a_truncated_answer_is_not_retried() -> None:
+    body = {"choices": [{"finish_reason": "length", "message": {"content": '{"answ'}}]}
+    provider, client = await call_with(
+        httpx.MockTransport(lambda _request: httpx.Response(200, json=body))
+    )
+    try:
+        with pytest.raises(LanguageModelError) as raised:
+            await provider.answer(request())
+    finally:
+        await client.aclose()
+    assert raised.value.code == "provider_incomplete"
+    assert raised.value.retry_class is RetryClass.NON_RETRYABLE
+
+
+def test_the_wire_schema_drops_only_the_keyword_the_decoder_rejects() -> None:
+    schema = {
+        "$defs": {"Item": {"properties": {"id": {"pattern": "^c_[a-z0-9]+$", "type": "string"}}}},
+        "additionalProperties": False,
+        "properties": {
+            "items": {"items": {"$ref": "#/$defs/Item"}, "maxItems": 8, "type": "array"},
+            "note": {"maxLength": 500, "minLength": 1, "pattern": "^.+$", "type": "string"},
+        },
+    }
+    wire = cast(dict[str, object], wire_schema(schema))
+    assert "pattern" not in json.dumps(wire)
+    properties = cast(dict[str, object], wire["properties"])
+    note = cast(dict[str, object], properties["note"])
+    assert note["maxLength"] == 500  # bounds the decoder accepts are kept
+    assert note["minLength"] == 1
+    definitions = cast(dict[str, object], wire["$defs"])
+    item = cast(dict[str, object], definitions["Item"])
+    item_properties = cast(dict[str, object], item["properties"])
+    assert cast(dict[str, object], item_properties["id"])["type"] == "string"
+
+
+async def test_a_citation_id_violating_the_pattern_still_fails_closed() -> None:
+    # The wire schema cannot enforce the pattern, so the parser must.
+    forged = json.loads(answer_text())
+    forged["statements"][0]["citation_ids"] = ["NOT-A-CITATION-ID"]
+    provider, client = await call_with(
+        httpx.MockTransport(
+            lambda _request: httpx.Response(200, json=response_body(json.dumps(forged)))
+        )
+    )
+    try:
+        with pytest.raises(LanguageModelError) as raised:
+            await provider.answer(request())
+    finally:
+        await client.aclose()
+    assert raised.value.retry_class is RetryClass.NON_RETRYABLE
+    assert raised.value.code == "provider_invalid_schema"

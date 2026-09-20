@@ -83,7 +83,8 @@ _LOCK = text(
     "WHERE d.id = :id AND d.report_id = :report FOR UPDATE OF d, r"
 )
 _CITATIONS = text(
-    "SELECT c.passage, c.location_label, v.review_state, v.retrieved_at, s.id AS source_id, "
+    "SELECT c.passage, c.location_label, v.review_state, v.retrieved_at, v.id AS "
+    "source_version_id, s.id AS source_id, "
     "s.title AS source_title, s.publisher, s.canonical_url, s.source_type, s.information_class "
     "FROM app.public_update_citations c "
     "JOIN app.source_versions v ON v.id = c.source_version_id "
@@ -132,6 +133,7 @@ class DraftInput:
 
 @dataclass(frozen=True)
 class PreviewCitation:
+    source_version_id: UUID
     source_id: UUID
     source_title: str
     publisher: str
@@ -335,6 +337,7 @@ async def build_preview(
     citable = [r for r in rows if r.review_state in CITABLE]
     citations = tuple(
         PreviewCitation(
+            r.source_version_id,
             r.source_id,
             r.source_title,
             r.publisher,

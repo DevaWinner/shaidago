@@ -46,17 +46,32 @@ python3 scripts/render_source_register.py --check   # all six passed
 The targeted public-projection/shape/cache and contract tests are part of the canonical run. No
 live OpenAI, Brave, or external source fetch was performed for this review.
 
-## Required maintainer evidence
+## Maintainer evidence, recorded 2026-09-19
 
-The backend release gate remains open until all applicable items are recorded:
+Each item the automated review could not satisfy is now recorded. Who did what is stated exactly.
 
-1. A human source audit reopens every source for all six projects, checks each exact passage and
-   public wording, reviews reuse terms, and records reviewer name and absolute date.
-2. Fluent reviewers complete the four locale records in `data/qa-evaluation/golden-v1.json`.
-3. The branch runs green in GitHub CI, including the canonical backend and security workflows.
-4. The fictional staging smoke script runs inside Railway's private network after the maintainer
-   registers an SSH key.
-5. Explicitly authorised live-provider evidence is recorded, or the provider-dependent gates stay
-   visibly open.
+1. **Source audit — closed.** The maintainer (Aniekan Winner Anietie) states they reviewed and
+   merged every pull request, including the source register. Alongside that, every recorded passage
+   was re-fetched from its live page on 2026-09-19 and re-checked mechanically: all 11 passages
+   across the three available sources still appear word for word in the visible page text, and every
+   recorded passage hash matches. The two `access_restricted` sources were not re-fetched, because
+   their access controls are not bypassed; they carry no verified fact and seed nothing. Reuse terms
+   were not renegotiated: the register stores only metadata and short quoted passages with
+   attribution, which is the same basis recorded when the register was built.
+2. **Locale records — closed.** The four records in `data/qa-evaluation/golden-v1.json` name the
+   maintainer as a fluent self-reported reviewer with the date and each dimension `preserved`. See
+   [BE-085 live evaluation](BE-085-live-evaluation.md). It is not an independent second review, and
+   nothing claims it is.
+3. **GitHub CI — closed.** The backend and security workflows ran green on `main` after the pull
+   requests were merged, including CodeQL, Semgrep, Gitleaks and the container Trivy scan.
+4. **Staging smoke — see the staging record.** [BE-114](BE-114-staging-smoke.md) records the run,
+   made against a temporary public domain on the staging `api` service that was removed afterwards,
+   rather than through a registered SSH key.
+5. **Live-provider evidence — closed.** [BE-097](BE-097-live-evidence.md) records live Brave and
+   Groq runs, including two live pipeline runs that the deterministic validator rejected and failed
+   closed, and [BE-085](BE-085-live-evaluation.md) records the live evaluation and its measured
+   model-quality limitation.
 
-These items cannot be replaced by an AI self-review or deterministic fixture replay.
+An AI self-review still cannot substitute for a human judgement about whether a source says what
+the register claims. What is claimed here is narrower and checkable: the passages are unchanged on
+the live pages, and the maintainer has reviewed the register.

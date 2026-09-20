@@ -94,6 +94,9 @@ class SourcePlan:
     availability: str
     checked_at: datetime
     content: str  # the cited excerpts only, never the full page
+    # Recorded on the approved version. None means the register's own note; a synthetic fixture
+    # supplies its own, so it is never described as coming from the real source register.
+    approval_note: str | None = None
 
     @property
     def sha256(self) -> str:

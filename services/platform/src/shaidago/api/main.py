@@ -12,8 +12,9 @@ from shaidago.files.pipeline import EvidencePipeline, PipelineParts, SanitiserPo
 from shaidago.files.rules import FileLimits
 from shaidago.files.scanner import ClamdScanner, build_scanner
 from shaidago.files.storage import S3ObjectStore
+from shaidago.retrieval.groq import GroqLanguageModel
 from shaidago.retrieval.language import QA_FIXTURES_ROOT, FixtureLanguageModel
-from shaidago.retrieval.openai import OpenAILanguageModel
+from shaidago.retrieval.local_embeddings import FastEmbedModel
 from shaidago.shared.config import load_settings
 from shaidago.shared.database import Database, create_engine
 from shaidago.shared.health import HealthCheck
@@ -68,18 +69,26 @@ def create_configured_app() -> FastAPI:
         timeout_seconds=limits.store_timeout_seconds,
     )
     pipeline = EvidencePipeline(PipelineParts(scanner, store, pool.executor), limits=limits)
-    language_model: FixtureLanguageModel | OpenAILanguageModel
-    managed_providers: tuple[OpenAILanguageModel, ...] = ()
+    language_model: FixtureLanguageModel | GroqLanguageModel
+    managed_providers: tuple[GroqLanguageModel, ...] = ()
     if settings.providers.mode == "replay":
         language_model = FixtureLanguageModel.from_path(QA_FIXTURES_ROOT / "grounded-qa-v1.json")
     else:
-        key = settings.providers.openai_api_key
+        key = settings.providers.language_api_key
         if key is None:  # load_settings enforces this; keep the construction boundary explicit.
             raise RuntimeError("live Q&A provider is not configured")
-        language_model = OpenAILanguageModel(
-            api_key=key.get_secret_value(), model_id=settings.providers.qa_model
+        language_model = GroqLanguageModel(
+            api_key=key.get_secret_value(),
+            model_id=settings.providers.qa_model,
+            base_url=settings.providers.language_base_url,
         )
         managed_providers = (language_model,)
+    embedder: FastEmbedModel | None = None
+    model_path = settings.providers.embedding_model_path
+    if settings.providers.embedding_backend == "fastembed" and model_path is not None:
+        # Optional: a model that fails to load degrades to keyword retrieval, not a failed start.
+        embedder = FastEmbedModel(model_path, threads=settings.providers.embedding_threads)
+    managed_embedder: tuple[FastEmbedModel, ...] = (embedder,) if embedder is not None else ()
     probes: list[HealthCheck] = [
         public,
         revision_check,
@@ -88,15 +97,18 @@ def create_configured_app() -> FastAPI:
     ]
     if isinstance(scanner, ClamdScanner):  # the hosted demo runs without a scanner
         probes.append(CallableProbe("scanner", scanner.ping, required=True))
+    if embedder is not None:
+        probes.append(CallableProbe("embedding", embedder.ping, required=False))
     return create_app(
         settings,
         Dependencies(
-            resources=(public, reviewer, limiter, pool, *managed_providers),
+            resources=(public, reviewer, limiter, pool, *managed_providers, *managed_embedder),
             health_checks=tuple(probes),
             public_database=public,
             reviewer_database=reviewer,
             rate_limiter=limiter,
             language_model=language_model,
+            query_embedder=embedder,
             evidence_pipeline=pipeline,
             evidence_store=store,
             job_queue=build_producer_queue(settings.redis.url.get_secret_value()),

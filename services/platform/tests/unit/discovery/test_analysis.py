@@ -12,7 +12,7 @@ from shaidago.discovery.analysis import (
     AnalysisInvalidError,
     AnalysisRequest,
     FixtureAnalyser,
-    OpenAIAnalyser,
+    LiveAnalyser,
     SourcePassage,
     analyse_sources,
     analysis_schema,
@@ -20,8 +20,8 @@ from shaidago.discovery.analysis import (
     request_fingerprint,
     validate_analysis,
 )
+from shaidago.retrieval.groq import GroqLanguageModel
 from shaidago.retrieval.language import LanguageModelError
-from shaidago.retrieval.openai import OpenAILanguageModel
 from shaidago.review.private_references import PrivateContext
 
 NOW = datetime(2026, 9, 19, 12, 0, tzinfo=UTC)
@@ -314,33 +314,32 @@ async def test_a_missing_fixture_is_a_provider_error_not_a_guess() -> None:
         await analyse_sources(FixtureAnalyser({}), (A, B), NOW)
 
 
-async def test_the_openai_analyser_sends_a_strict_toolless_unstored_request() -> None:
+async def test_the_live_analyser_sends_a_strict_toolless_deterministic_request() -> None:
     seen: list[dict[str, Any]] = []
 
     def handle(request: httpx.Request) -> httpx.Response:
         seen.append(json.loads(request.content))
         output = {
-            "status": "completed",
-            "output": [
+            "choices": [
                 {
-                    "type": "message",
-                    "content": [{"type": "output_text", "text": json.dumps(good())}],
+                    "finish_reason": "stop",
+                    "message": {"content": json.dumps(good()), "role": "assistant"},
                 }
-            ],
+            ]
         }
         return httpx.Response(200, json=output)
 
     client = httpx.AsyncClient(
-        base_url="https://api.openai.com", transport=httpx.MockTransport(handle)
+        base_url="https://api.groq.com", transport=httpx.MockTransport(handle)
     )
-    transport = OpenAILanguageModel(api_key="openai-key-canary", model_id="ignored", client=client)
-    outcome = await analyse_sources(OpenAIAnalyser(transport, "model-x"), (A, B), NOW)
+    transport = GroqLanguageModel(api_key="groq-key-canary", model_id="ignored", client=client)
+    outcome = await analyse_sources(LiveAnalyser(transport, "model-x"), (A, B), NOW)
     [body] = seen
     assert (outcome.status, outcome.demo_replay, outcome.model_id) == ("complete", False, "model-x")
-    assert body["store"] is False
-    assert body["tools"] == []
-    assert body["parallel_tool_calls"] is False
-    assert body["text"]["format"]["strict"] is True
+    assert body["temperature"] == 0
+    assert "tools" not in body
+    assert body["response_format"]["json_schema"]["strict"] is True
     assert body["model"] == "model-x"
-    assert "openai-key-canary" not in json.dumps(body)
-    assert json.loads(body["input"])["passages"][0]["citation_id"] == A.citation_id
+    assert "groq-key-canary" not in json.dumps(body)
+    user_content = body["messages"][1]["content"]
+    assert json.loads(user_content)["passages"][0]["citation_id"] == A.citation_id

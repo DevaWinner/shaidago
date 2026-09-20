@@ -19,7 +19,8 @@ FORBIDDEN_KEYS = {
     "reviewer_note",
     "reviewed_by",
     "visibility",
-    "source_version_id",
+    # `source_version_id` is deliberately public (migration 0026): a reviewer cites an approved
+    # version by id, and the same citation already publishes its source, URL and passage.
     "locality_id",
     "project_id",
     "created_at",
@@ -150,13 +151,19 @@ def test_a_cursor_only_works_for_the_request_that_produced_it(client: TestClient
     assert other_locale.status_code == 400
 
 
+def test_the_verification_filter_accepts_awaiting_verification(client: TestClient) -> None:
+    """The brief asks the interface to show unconfirmed claims, so they must be filterable."""
+    response = client.get("/v1/projects", params={"verification": "awaiting_verification"})
+    assert response.status_code == 200
+
+
 @pytest.mark.parametrize(
     "params",
     [
         {"unknown": "1"},
         {"category": "roads"},
         {"status": "abandoned"},
-        {"verification": "awaiting_verification"},
+        {"verification": "unverified"},  # not a state; `awaiting_verification` is a real one
         {"q": "x" * 101},
         {"q": ""},
         {"q": "a\x00b"},

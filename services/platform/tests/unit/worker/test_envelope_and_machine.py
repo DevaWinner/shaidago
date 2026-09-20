@@ -2,7 +2,7 @@
 
 import json
 from itertools import product
-from uuid import uuid4
+from uuid import uuid4, uuid7
 
 import pytest
 
@@ -35,6 +35,21 @@ def test_a_round_trip_keeps_only_identifiers_and_a_version() -> None:
     assert set(message) == {"envelope_version", "run_id", "config_version"}
     assert parse_envelope(message) == envelope
     assert message["envelope_version"] == ENVELOPE_VERSION
+
+
+def test_a_round_trip_carries_the_originating_request_id() -> None:
+    request_id = str(uuid7())
+    envelope = JobEnvelope(run_id=uuid4(), config_version="discovery-v1", request_id=request_id)
+    message = to_message(envelope)
+    assert message["request_id"] == request_id
+    assert parse_envelope(message) == envelope
+
+
+@pytest.mark.parametrize("value", ["not-a-uuid", "", "  ", "0" * 64, "'; DROP TABLE app.reports--"])
+def test_a_malformed_request_id_is_refused(value: str) -> None:
+    message = to_message(JobEnvelope(run_id=uuid4(), config_version="discovery-v1"))
+    with pytest.raises(InvalidEnvelopeError):
+        parse_envelope(message | {"request_id": value})
 
 
 @pytest.mark.parametrize(

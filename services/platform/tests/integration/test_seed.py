@@ -12,9 +12,11 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 from sqlalchemy.engine import URL
+from sqlalchemy.exc import IntegrityError
 
 from shaidago.api.app import create_app
 from shaidago.api.dependencies import Dependencies
+from shaidago.seed import __main__ as seed_command
 from shaidago.seed.__main__ import run
 from shaidago.seed.apply import SeedRefusedError, apply_plan
 from shaidago.seed.plan import RegisterInvalidError, build_plan, load_register
@@ -89,7 +91,11 @@ async def test_the_seed_adds_the_expected_rows_and_only_verified_evidence(owner:
             )
         ).all()
         versions = (
-            await session.execute(text("SELECT review_state, media_type FROM app.source_versions"))
+            await session.execute(
+                text(
+                    "SELECT review_state, media_type, reviewer_note, reviewed_at FROM app.source_versions"
+                )
+            )
         ).all()
         sources = {
             r[0] for r in await session.execute(text("SELECT canonical_url FROM app.sources"))
@@ -105,9 +111,14 @@ async def test_the_seed_adds_the_expected_rows_and_only_verified_evidence(owner:
     assert all(
         p.public_status == "unknown" for p in projects.values() if p.slug in {"gaba-tokulo-road"}
     )
-    assert {f.visibility for f in facts} == {"draft"}, "nothing is published by the seed"
+    # A cited fact is public with the honest label the brief requires, not hidden (migration 0025).
+    assert {f.visibility for f in facts} == {"public"}
     assert {f.verification_state for f in facts} == {"awaiting_verification"}
-    assert {v.review_state for v in versions} == {"pending"}, "approval is a human act"
+    # Approval asserts only that the quoted text is what the page said; the register validator
+    # re-checks every passage hash before seeding, and the note on the row says so.
+    assert {v.review_state for v in versions} == {"approved"}
+    assert all("SOURCE_REGISTER" in (v.reviewer_note or "") for v in versions)
+    assert all(v.reviewed_at is not None for v in versions)
     assert not any("fctubeb" in s or "thehospitalbook" in s for s in sources)
     assert routes == 0, "no escalation route is seeded"
 
@@ -198,19 +209,58 @@ async def test_an_invalid_register_writes_nothing(
     assert await snapshot(owner) == before
 
 
-async def test_seed_command_uses_keyword_fallback_without_a_provider_key(
-    role_urls: dict[str, URL],
+async def test_seed_command_uses_keyword_fallback_when_no_vector_file_exists(
+    role_urls: dict[str, URL], monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
+    # The model is fixed (ADR-0010), so the file is absent by pointing the seed at an empty folder.
+    def absent(model: str) -> Path:
+        del model
+        return tmp_path / "absent.jsonl"
+
+    monkeypatch.setattr(seed_command, "embedding_path", absent)
     output = await run(
         {
             "APP_ENV": "development",
             "DATABASE_URL": role_urls["owner"].render_as_string(hide_password=False),
-            "OPENAI_EMBEDDING_MODEL": "no-checked-in-fixture",
         }
     )
 
     assert "chunks: inserted" in output
     assert "keyword fallback enabled" in output
+
+
+async def test_seed_command_loads_the_checked_in_local_model_vectors(
+    role_urls: dict[str, URL],
+) -> None:
+    """No model and no key are needed: the vectors are data, matched to chunks by text hash."""
+    output = await run(
+        {
+            "APP_ENV": "development",
+            "DATABASE_URL": role_urls["owner"].render_as_string(hide_password=False),
+        }
+    )
+
+    assert "embeddings: loaded" in output
+    assert "keyword fallback" not in output
+    engine = build_engine(
+        role_urls["owner"], application_name="seed-check", statement_timeout_ms=8000
+    )
+    try:
+        async with Database(engine).unit_of_work() as session:
+            models = (
+                (
+                    await session.execute(
+                        text(
+                            "SELECT DISTINCT embedding_model FROM app.source_chunks WHERE embedding IS NOT NULL"
+                        )
+                    )
+                )
+                .scalars()
+                .all()
+            )
+    finally:
+        await engine.dispose()
+    assert models == ["intfloat/multilingual-e5-small"]
 
 
 async def test_the_command_refuses_production_and_remote_targets_before_touching_anything(
@@ -231,7 +281,7 @@ async def test_the_command_refuses_production_and_remote_targets_before_touching
             await run(env)
 
 
-async def test_seeded_projects_are_visible_publicly_without_any_fact_or_citation(
+async def test_seeded_projects_show_their_cited_facts_with_an_honest_state(
     owner: Database, role_urls: dict[str, URL]
 ) -> None:
     await seed(owner)
@@ -254,9 +304,109 @@ async def test_seeded_projects_are_visible_publicly_without_any_fact_or_citation
     finally:
         await engine.dispose()
     assert "bwari-township-water-supply-network" in slugs, slugs
-    assert detail["facts"] == [], "unapproved evidence is not shown"
+    assert detail["facts"], "a cited fact is shown rather than hidden"
+    for fact in detail["facts"]:
+        assert fact["verification_state"] == "awaiting_verification"
+        assert fact["citations"], "every shown fact carries its citation"
+        for citation in fact["citations"]:
+            assert citation["source_version_id"]
+            assert citation["passage"]
     assert detail["text"]["translation_status"] == "machine_assisted"
     assert (hausa["text"]["served_locale"], hausa["text"]["is_fallback"]) == ("ha", False)
     assert yoruba_only["text"]["is_fallback"] is True, (
         "a missing translation is labelled as English fallback"
     )
+
+
+async def test_a_public_cited_fact_may_await_verification_but_still_needs_its_citation(
+    owner: Database,
+) -> None:
+    """Migration 0025 publishes the honest label; the citation trigger is untouched."""
+    await seed(owner)
+    async with owner.unit_of_work() as session:
+        published = (
+            await session.execute(
+                text(
+                    "SELECT count(*) FROM public_api.project_facts "
+                    "WHERE verification_state = 'awaiting_verification'"
+                )
+            )
+        ).scalar_one()
+        assert published > 0, "a cited but unconfirmed fact is visible, not hidden"
+
+    async def drop_the_evidence() -> None:
+        """The constraint trigger is deferred, so it fires on commit, not on flush."""
+        async with owner.unit_of_work() as session:
+            fact_id = (
+                await session.execute(text("SELECT fact_id FROM app.fact_citations LIMIT 1"))
+            ).scalar_one()
+            await session.execute(
+                text("DELETE FROM app.fact_citations WHERE fact_id = :f"), {"f": fact_id}
+            )
+
+    # Removing the evidence must make the same row unpublishable.
+    with pytest.raises(IntegrityError):
+        await drop_the_evidence()
+
+
+async def test_public_citations_expose_the_version_a_reviewer_must_cite(owner: Database) -> None:
+    """Migration 0026: without this id the publication flow is unreachable through the API."""
+    await seed(owner)
+    async with owner.unit_of_work() as session:
+        rows = (
+            await session.execute(
+                text("SELECT source_version_id, source_id FROM public_api.fact_citations")
+            )
+        ).all()
+    assert rows, "the seeded facts publish citations"
+    assert all(row.source_version_id is not None for row in rows)
+    assert all(row.source_version_id != row.source_id for row in rows)
+
+
+async def test_the_staging_fixture_seeds_idempotently_and_is_fictional_on_the_public_page(
+    role_urls: dict[str, URL],
+) -> None:
+    from shaidago.seed import staging_fixture  # noqa: PLC0415 - only this test needs it
+
+    environ = {
+        "APP_ENV": "development",
+        "DATABASE_URL": role_urls["owner"].render_as_string(hide_password=False),
+    }
+    first = await staging_fixture.run(environ)
+    second = await staging_fixture.run(environ)
+
+    assert "added 1" in first
+    assert "added 0" in second, "a second run adds nothing"
+
+    engine = build_engine(
+        role_urls["shaidago_public"], application_name="fixture-check", statement_timeout_ms=8000
+    )
+    try:
+        app = create_app(build_settings(), Dependencies(public_database=Database(engine)))
+        with TestClient(app, headers={"Authorization": f"Bearer web.{CREDENTIAL}"}) as client:
+            detail = client.get(f"/v1/projects/{staging_fixture.SLUG}").json()
+    finally:
+        await engine.dispose()
+
+    assert detail["text"]["title"] == staging_fixture.TITLE
+    assert "fictional" in detail["text"]["summary"].lower()
+    (fact,) = detail["facts"]
+    assert fact["statement"].startswith("FICTIONAL")
+    (citation,) = fact["citations"]
+    assert citation["passage"] == staging_fixture.PASSAGE
+    assert citation["canonical_url"].startswith("https://synthetic.example/")
+    assert citation["source_version_id"], "a reviewer can cite exactly this version"
+
+
+async def test_the_staging_fixture_refuses_production_and_unflagged_staging(
+    role_urls: dict[str, URL],
+) -> None:
+    from shaidago.seed import staging_fixture  # noqa: PLC0415
+
+    url = role_urls["owner"].render_as_string(hide_password=False)
+    for environ in (
+        {"APP_ENV": "production", "SEED_ALLOW_DEPLOYED": "1", "DATABASE_URL": url},
+        {"APP_ENV": "staging", "DATABASE_URL": url},
+    ):
+        with pytest.raises(SeedRefusedError):
+            await staging_fixture.run(environ)

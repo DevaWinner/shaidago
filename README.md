@@ -41,7 +41,7 @@ flowchart LR
     A --> O[(Private object storage)]
     R --> K[Python worker]
     K --> S[Search provider]
-    K --> L[OpenAI Responses API]
+    K --> L[Groq language models]
 ```
 
 - **Frontend/BFF:** Next.js App Router, React, strict TypeScript, Tailwind CSS, accessible project-owned components, and `next-intl`.
@@ -80,7 +80,7 @@ Start with the [documentation index](docs/README.md).
 
 ## Development
 
-`services/platform` has a pinned Python toolchain (see its README); the root `Makefile` provides `make backend-*` targets (`make backend-verify` is the backend gate); the judge-facing `make setup`/`make verify` do not exist yet. The frozen frontend handoff is [`docs/FRONTEND_BACKEND_CONTRACT.md`](docs/FRONTEND_BACKEND_CONTRACT.md), backed by generated OpenAPI and MSW-ready response fixtures. `make infra-up-core` (after `cp .env.example .env`) starts local PostgreSQL 18 + pgvector, Redis, and MinIO through Docker Compose on loopback-only ports; `make infra-up` adds the ClamAV scanner, which needs 1.5-3 GB of memory. `make migrate` then `make db-roles` prepare the database (schema, roles, and role logins), and `make seed-demo` loads local demo data, refreshes approved public source chunks, and loads a matching checked-in embedding fixture when present. It never calls an AI provider. `make embeddings` is the separate, explicit OpenAI-backed generation command and requires `OPENAI_API_KEY`.
+`services/platform` has a pinned Python toolchain (see its README); the root `Makefile` provides `make backend-*` targets (`make backend-verify` is the backend gate); the judge-facing `make setup`/`make verify` do not exist yet. The frozen frontend handoff is [`docs/FRONTEND_BACKEND_CONTRACT.md`](docs/FRONTEND_BACKEND_CONTRACT.md), backed by generated OpenAPI and MSW-ready response fixtures. `make infra-up-core` (after `cp .env.example .env`) starts local PostgreSQL 18 + pgvector, Redis, and MinIO through Docker Compose on loopback-only ports; `make infra-up` adds the ClamAV scanner, which needs 1.5-3 GB of memory. `make migrate` then `make db-roles` prepare the database (schema, roles, and role logins), and `make seed-demo` loads local demo data, refreshes approved public source chunks, and loads the checked-in vectors for those chunks. It never calls an AI provider and needs no model. Embeddings run locally with FastEmbed and multilingual-e5-small (ADR-0010): `make embedding-model` downloads the 129 MB model once (pinned and checksum-verified), `make embeddings` regenerates the checked-in vectors, and `EMBEDDING_BACKEND=fastembed` turns on hybrid retrieval, which is what lets a Hausa, Igbo or Yoruba question find English source passages. It is off by default, and retrieval then runs keyword-only and says so in `retrieval_mode`. No key, no network at run time, and no question leaves the server to be embedded.
 
 When implementation starts, the separate stacks remain independently owned:
 
@@ -90,11 +90,16 @@ When implementation starts, the separate stacks remain independently owned:
 
 ## Known limitations
 
-This remains a fictional-data prototype, not an emergency service. Three source-register projects
-have no verified fact, multilingual Q&A copy awaits fluent human review, live OpenAI/Brave evidence
-has not been run, the hosted demo has no malware scanner, the complete staging smoke is pending,
-and production is closed until legal, privacy, security, and operational review. See the
-[`BE-122 evidence review`](docs/evidence/BE-122-final-backend-review.md) for the exact release items.
+This remains a fictional-data prototype, not an emergency service.
+
+- **Sources.** Three of the six source-register projects have no verified fact, because their sources block automated access.
+- **Languages.** The Hausa, Igbo and Yoruba copy was reviewed by the maintainer alone; it has no independent second review.
+- **Language model.** Live Groq and Brave runs were made once, and the model's answers were weak against the golden corpus (see [BE-085](docs/evidence/BE-085-live-evaluation.md)), so the demo defaults to replay and labels it.
+- **Retrieval.** Local embeddings let a Hausa, Igbo or Yoruba question find English passages that keyword search misses, measured on a small sample only (see [BE-081](docs/evidence/BE-081-local-embeddings.md)).
+- **Hosting.** The hosted demo has no malware scanner, and the API service uses about 65% of its 1 GB memory limit at rest and 83% at peak.
+- **Production** is closed until legal, privacy, security, and operational review.
+
+See the [`BE-122 evidence review`](docs/evidence/BE-122-final-backend-review.md) for the exact release items, and the staging record in [BE-114](docs/evidence/BE-114-staging-smoke.md) (24 of 24 smoke steps passed).
 
 ## Contributing and security
 
