@@ -7,6 +7,7 @@ import { TranslationNotice } from "@/components/evidence/evidence";
 import { ProjectQuestion } from "@/components/project/project-question";
 import { PageState } from "@/components/project/page-state";
 import { ProjectDetailView } from "@/components/project/project-detail";
+import { ProjectDiscovery } from "@/components/project/project-discovery";
 import { SiteShell } from "@/components/shell/site-shell";
 import { resolveDomain } from "@/i18n/catalogue";
 import { LOCALES, isSupportedLocale } from "@/i18n/routing";
@@ -118,6 +119,17 @@ export default async function ProjectPage({ params }: Properties): Promise<React
           localityName={localityName}
           now={new Date()}
           project={read.data}
+          discoveryPanel={
+            <div lang={project.language}>
+              <ProjectDiscovery
+                copy={project.messages.discovery}
+                locale={locale}
+                problems={problems.messages}
+                resultsCopy={resolveDomain(locale, "discovery").messages}
+                slug={slug}
+              />
+            </div>
+          }
           questionPanel={
             <div lang={qa.language}>
               <ProjectQuestion

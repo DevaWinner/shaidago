@@ -65,7 +65,10 @@ test("a cached page never keeps another visitor's private data, because none is 
           "reporter-handles:delete"
         ].includes(parts[1] ?? "")) ||
         (parts.length === 3 && parts[1] === "projects") ||
-        (parts.length === 4 && parts[1] === "projects" && parts[3] === "questions") ||
+        (parts.length === 3 && parts[1] === "discovery-runs") ||
+        (parts.length === 4 &&
+          parts[1] === "projects" &&
+          (parts[3] === "questions" || parts[3] === "discovery-runs")) ||
         (parts.length === 5 && parts[1] === "projects" && parts[3] === "sources"))
     );
   };

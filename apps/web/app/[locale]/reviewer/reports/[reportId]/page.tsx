@@ -10,6 +10,7 @@ import { EvidenceDownload } from "@/components/reviewer/evidence-download";
 import { PublicUpdatePanel } from "@/components/reviewer/public-update-panel";
 import { StatusActions } from "@/components/reviewer/status-actions";
 import { NoteForm } from "@/components/reviewer/note-form";
+import { DiscoveryPreview } from "@/components/reviewer/discovery-preview";
 import {
   ContactSection,
   DemoWarning,
@@ -287,7 +288,14 @@ export default async function ReviewerReportPage({
         words={reviewer.messages.notes}
       />
       <HandleSection context={context} report={report} />
-      <ScoutSection context={context} />
+      <ScoutSection context={context}>
+        <DiscoveryPreview
+          {...shared}
+          copy={copy.scout}
+          discoveryCopy={resolveDomain(locale, "discovery").messages}
+          language={reviewer.language}
+        />
+      </ScoutSection>
       <Section id="publication" title={copy.sections.publication}>
         <PublicUpdatePanel
           actions={shared.actions}

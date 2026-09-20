@@ -343,6 +343,33 @@
       "report": "Report a concern about this project",
       "note": "Reports are private and are never published automatically."
     },
+    "discovery": {
+      "heading": "Find related public information",
+      "intro": "Searches use only this public project record. New material is not verified and cannot change this record automatically.",
+      "notice": "This search does not use reports, contacts, attachments, or tracking details.",
+      "start": "Find public information",
+      "stop": "Stop checking this page",
+      "resume": "Resume checking",
+      "checking": "Checking the discovery run.",
+      "action": {
+        "create": "A new public search has started.",
+        "reuse_fresh": "Showing a recent shared public search.",
+        "show_latest_completed": "Showing the latest completed public search."
+      },
+      "states": {
+        "queued": "Waiting to search",
+        "searching": "Searching public sources",
+        "analysing": "Checking retrieved material",
+        "needs_review": "Waiting for review",
+        "complete": "Search completed"
+      },
+      "counts": "Found {found}; fetched {fetched}; analysed {analysed}.",
+      "replay": "Showing a fictional replay for the demo.",
+      "live": "This run used the configured public-source service.",
+      "started": "Started:",
+      "unavailable": "A public search is not available right now. The project record is unchanged.",
+      "invalid": "This discovery result could not be shown safely."
+    },
     "notFound": {
       "title": "This record is not available",
       "body": "Check the address or return to the project records. ShaidaGo does not confirm whether a private record exists.",
@@ -1087,8 +1114,26 @@
         "closed": "Closed"
       },
       "scout": {
-        "body": "Report-scoped source discovery is not available in this workspace yet. Nothing is searched for this report.",
-        "private": "When it is available it will use only a privacy-safe query that you approve first."
+        "body": "Prepare a privacy-safe query, inspect it exactly as it would be sent, then approve it before any source search begins.",
+        "private": "This panel does not receive report text, contacts, files, tracking credentials, or a precise location. Do not enter any of them below.",
+        "concepts": "Optional public search terms",
+        "conceptsHint": "Use commas for up to 20 public terms. Changing terms discards the current plan and requires a new review.",
+        "prepare": "Prepare query for review",
+        "preparing": "Preparing query…",
+        "planTitle": "Review the exact outbound query",
+        "query": "Outbound query",
+        "queryHint": "This is the only query that will be sent if you approve it.",
+        "policy": "Query policy",
+        "included": "Included terms",
+        "excluded": "Excluded from this query",
+        "noneExcluded": "No terms were excluded.",
+        "approve": "Approve and start search",
+        "discard": "Discard this plan",
+        "cancel": "Keep reviewing",
+        "confirm": "Approve and start",
+        "confirmTitle": "Start this source search?",
+        "confirmBody": "The exact query shown above will be sent to the discovery provider. The run remains private and every result needs human review.",
+        "started": "Source search started. Results remain private and unreviewed until you decide on each source."
       },
       "states": {
         "notFound": {
@@ -1286,6 +1331,163 @@
         "openFailed": "The preview could not be opened."
       },
       "guidanceTitle": "Write neutrally"
+    }
+  },
+  "discovery": {
+    "label": "discovered — not yet reviewed",
+    "unreviewedNote": "Found on the public web. Nothing here is verified, approved, or published, and a source appearing here or being repeated does not make it true.",
+    "results": {
+      "heading": "Discovered sources",
+      "count": "Sources shown: {count}",
+      "none": "No sources were found for this run.",
+      "cap": "At most 10 sources are shown."
+    },
+    "card": {
+      "untitled": "Untitled page",
+      "publisher": "Publisher",
+      "type": "Type",
+      "published": "Published {date} ({provenance})",
+      "publishedUnknown": "Publication date unknown",
+      "dateConflict": "The pages disagree about this date.",
+      "discovered": "First found {date}",
+      "retrieved": "Last checked {date}",
+      "availability": "Availability",
+      "open": "Open the original page (new tab)",
+      "noLink": "The address could not be shown safely, so there is no link.",
+      "injection": "This page contained text that tries to give instructions. It was treated as plain text and ignored.",
+      "excerpt": "Permitted excerpt",
+      "repeatsHeading": "Repeats of this page",
+      "repeats": "Repeats: {title}",
+      "decision": "Decision"
+    },
+    "availabilityStates": {
+      "unchecked": "Not checked",
+      "available": "Available",
+      "temporarily_unavailable": "Temporarily unavailable",
+      "access_restricted": "Access restricted",
+      "permanently_unavailable": "No longer available",
+      "stale": "May be out of date"
+    },
+    "analysis": {
+      "heading": "Analysis (an explanation, not a source)",
+      "unavailable": "No analysis is shown: it was missing or could not be checked against the sources. Read the sources directly.",
+      "facts": "Supported facts",
+      "claims": "Reported claims (as the source states them)",
+      "claimBy": "{publisher} says: {claim}",
+      "contradictions": "Contradictions",
+      "sides": "Sources on each side",
+      "gaps": "Information gaps",
+      "none": "None reported.",
+      "safety": "Safety and coverage note",
+      "sourceRef": "Source {number}",
+      "noScore": "No ranking or confidence score is shown. Search order and model confidence are not evidence."
+    },
+    "status": {
+      "label": "Run status",
+      "states": {
+        "queued": "Queued",
+        "searching": "Searching",
+        "analysing": "Analysing",
+        "needs_review": "Needs a reviewer's decision",
+        "complete": "Complete",
+        "failed": "Failed",
+        "cancelled": "Cancelled"
+      },
+      "counts": "Found {found}, read {fetched}, analysed {analysed}.",
+      "replay": "Recorded replay (demo), not a live search.",
+      "live": "Live search.",
+      "started": "Started {date}",
+      "finished": "Finished {date}",
+      "scope": {
+        "public": "Shared public run for this project",
+        "reviewer": "Private run for this report"
+      }
+    },
+    "failure": {
+      "title": "This run did not finish",
+      "codes": {
+        "provider_unavailable": "The search provider was unavailable.",
+        "fetch_blocked": "A page could not be fetched safely and was skipped.",
+        "unsafe_text": "A page contained unsafe text and was not used.",
+        "extraction_failed": "Text could not be read from a page.",
+        "analysis_invalid": "The analysis could not be checked against the sources, so it is not shown.",
+        "budget_exhausted": "The daily search budget is used up. The latest finished run is shown instead when there is one.",
+        "rate_limited": "Too many requests. Try again later.",
+        "dead_letter": "The job kept failing and was stopped. A reviewer can start a new run."
+      },
+      "generic": "The run ended without a usable result.",
+      "partial": "Sources found before it stopped are shown below and may be incomplete.",
+      "empty": "Nothing was found before it stopped."
+    },
+    "states": {
+      "cancelledPartial": "Cancelled. Anything found before cancelling is shown below and is incomplete.",
+      "cancelledEmpty": "Cancelled before anything was found.",
+      "needsReview": "This run needs a reviewer's decision before its analysis can be relied on.",
+      "offline": "You are offline. What is already on this page stays visible, and checking resumes when you are back online.",
+      "stale": "These results may be out of date. The run finished {date}.",
+      "checking": "Checking for updates.",
+      "paused": "Checking is paused."
+    },
+    "controls": {
+      "cancel": "Cancel this run",
+      "cancelTitle": "Cancel this source search?",
+      "cancelBody": "Work still to do is stopped. Anything already found is kept.",
+      "cancelConfirm": "Cancel the run",
+      "keep": "Keep it running",
+      "cancelRequested": "Cancellation requested. Work already done is kept.",
+      "approve": "Approve completion",
+      "reject": "Reject this run",
+      "reviewTitle": "Record this decision on the run?",
+      "approveBody": "This confirms the run finished properly. It does not verify any source or publish anything.",
+      "rejectBody": "This rejects the run. Its sources stay listed as not reviewed.",
+      "reviewConfirm": "Record decision",
+      "reviewed": "Run decision recorded.",
+      "retry": "Check again",
+      "stopChecking": "Stop checking",
+      "resumeChecking": "Resume checking"
+    },
+    "followUps": {
+      "heading": "Follow-up questions",
+      "cap": "At most 5 questions are shown.",
+      "why": "Why it is asked: {reason}",
+      "sensitivity": "Sensitivity: {level}",
+      "answerLabel": "Your answer (private)",
+      "answerHint": "Kept in memory until you send it. Never put in the address or saved in this browser.",
+      "send": "Send answer",
+      "skip": "Skip",
+      "unsafe": "Mark as unsafe to ask",
+      "sent": "Recorded. What you typed is not shown again.",
+      "skipped": "Skipped.",
+      "flagged": "Marked unsafe.",
+      "required": "Write an answer or choose Skip.",
+      "tooLong": "This answer is too long.",
+      "none": "No follow-up questions.",
+      "stale": "This question belongs to a different run, so it was not sent."
+    },
+    "decisions": {
+      "attach": "Attach as a pending source",
+      "reject": "Reject",
+      "defer": "Defer",
+      "reconsider": "Reconsider",
+      "reason": "Reason",
+      "reasonHint": "Say why. Up to 400 characters. It is stored privately.",
+      "reasonRequired": "Give a reason.",
+      "reasonTooLong": "This reason is too long.",
+      "confirmTitle": "Record this decision on the source?",
+      "attachBody": "This creates a pending source for the approved-source workflow. It does not approve any fact or publish anything.",
+      "rejectBody": "This rejects the source for this report. It stays listed and can be reconsidered.",
+      "deferBody": "This sets the source aside without a final decision.",
+      "reconsiderBody": "This moves the source back to deferred.",
+      "confirm": "Record decision",
+      "cancel": "Keep editing",
+      "recorded": "Decision recorded: {disposition}.",
+      "conflict": "This source changed since you loaded it, or that decision is not available now. Reload the results and try again.",
+      "dispositions": {
+        "not_reviewed": "Not reviewed",
+        "attached": "Attached as a pending source (not verified)",
+        "rejected": "Rejected",
+        "deferred": "Deferred"
+      }
     }
   }
 }

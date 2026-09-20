@@ -343,6 +343,33 @@
       "report": null,
       "note": null
     },
+    "discovery": {
+      "heading": null,
+      "intro": null,
+      "notice": null,
+      "start": null,
+      "stop": null,
+      "resume": null,
+      "checking": null,
+      "action": {
+        "create": null,
+        "reuse_fresh": null,
+        "show_latest_completed": null
+      },
+      "states": {
+        "queued": null,
+        "searching": null,
+        "analysing": null,
+        "needs_review": null,
+        "complete": null
+      },
+      "counts": null,
+      "replay": null,
+      "live": null,
+      "started": null,
+      "unavailable": null,
+      "invalid": null
+    },
     "notFound": {
       "title": null,
       "body": null,
@@ -1088,7 +1115,25 @@
       },
       "scout": {
         "body": null,
-        "private": null
+        "private": null,
+        "concepts": null,
+        "conceptsHint": null,
+        "prepare": null,
+        "preparing": null,
+        "planTitle": null,
+        "query": null,
+        "queryHint": null,
+        "policy": null,
+        "included": null,
+        "excluded": null,
+        "noneExcluded": null,
+        "approve": null,
+        "discard": null,
+        "cancel": null,
+        "confirm": null,
+        "confirmTitle": null,
+        "confirmBody": null,
+        "started": null
       },
       "states": {
         "notFound": {
@@ -1286,6 +1331,163 @@
         "openFailed": null
       },
       "guidanceTitle": null
+    }
+  },
+  "discovery": {
+    "label": null,
+    "unreviewedNote": null,
+    "results": {
+      "heading": null,
+      "count": null,
+      "none": null,
+      "cap": null
+    },
+    "card": {
+      "untitled": null,
+      "publisher": null,
+      "type": null,
+      "published": null,
+      "publishedUnknown": null,
+      "dateConflict": null,
+      "discovered": null,
+      "retrieved": null,
+      "availability": null,
+      "open": null,
+      "noLink": null,
+      "injection": null,
+      "excerpt": null,
+      "repeatsHeading": null,
+      "repeats": null,
+      "decision": null
+    },
+    "availabilityStates": {
+      "unchecked": null,
+      "available": null,
+      "temporarily_unavailable": null,
+      "access_restricted": null,
+      "permanently_unavailable": null,
+      "stale": null
+    },
+    "analysis": {
+      "heading": null,
+      "unavailable": null,
+      "facts": null,
+      "claims": null,
+      "claimBy": null,
+      "contradictions": null,
+      "sides": null,
+      "gaps": null,
+      "none": null,
+      "safety": null,
+      "sourceRef": null,
+      "noScore": null
+    },
+    "status": {
+      "label": null,
+      "states": {
+        "queued": null,
+        "searching": null,
+        "analysing": null,
+        "needs_review": null,
+        "complete": null,
+        "failed": null,
+        "cancelled": null
+      },
+      "counts": null,
+      "replay": null,
+      "live": null,
+      "started": null,
+      "finished": null,
+      "scope": {
+        "public": null,
+        "reviewer": null
+      }
+    },
+    "failure": {
+      "title": null,
+      "codes": {
+        "provider_unavailable": null,
+        "fetch_blocked": null,
+        "unsafe_text": null,
+        "extraction_failed": null,
+        "analysis_invalid": null,
+        "budget_exhausted": null,
+        "rate_limited": null,
+        "dead_letter": null
+      },
+      "generic": null,
+      "partial": null,
+      "empty": null
+    },
+    "states": {
+      "cancelledPartial": null,
+      "cancelledEmpty": null,
+      "needsReview": null,
+      "offline": null,
+      "stale": null,
+      "checking": null,
+      "paused": null
+    },
+    "controls": {
+      "cancel": null,
+      "cancelTitle": null,
+      "cancelBody": null,
+      "cancelConfirm": null,
+      "keep": null,
+      "cancelRequested": null,
+      "approve": null,
+      "reject": null,
+      "reviewTitle": null,
+      "approveBody": null,
+      "rejectBody": null,
+      "reviewConfirm": null,
+      "reviewed": null,
+      "retry": null,
+      "stopChecking": null,
+      "resumeChecking": null
+    },
+    "followUps": {
+      "heading": null,
+      "cap": null,
+      "why": null,
+      "sensitivity": null,
+      "answerLabel": null,
+      "answerHint": null,
+      "send": null,
+      "skip": null,
+      "unsafe": null,
+      "sent": null,
+      "skipped": null,
+      "flagged": null,
+      "required": null,
+      "tooLong": null,
+      "none": null,
+      "stale": null
+    },
+    "decisions": {
+      "attach": null,
+      "reject": null,
+      "defer": null,
+      "reconsider": null,
+      "reason": null,
+      "reasonHint": null,
+      "reasonRequired": null,
+      "reasonTooLong": null,
+      "confirmTitle": null,
+      "attachBody": null,
+      "rejectBody": null,
+      "deferBody": null,
+      "reconsiderBody": null,
+      "confirm": null,
+      "cancel": null,
+      "recorded": null,
+      "conflict": null,
+      "dispositions": {
+        "not_reviewed": null,
+        "attached": null,
+        "rejected": null,
+        "deferred": null
+      }
     }
   }
 }
