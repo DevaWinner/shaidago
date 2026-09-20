@@ -11,6 +11,12 @@ const validServerEnvironment = {
 } as const;
 
 describe("server environment", () => {
+  it("reports an empty API URL as a typed configuration error, not a raw parse error", () => {
+    expect(() =>
+      loadServerEnvironment({ ...validServerEnvironment, API_INTERNAL_URL: "" })
+    ).toThrowError(ServerEnvironmentError);
+  });
+
   it("fails closed when the Next Node runtime starts without private settings", async () => {
     await expect(validateRuntimeEnvironment({ NEXT_RUNTIME: "nodejs" })).rejects.toThrowError(
       ServerEnvironmentError
