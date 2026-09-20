@@ -1799,3 +1799,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the guards and adversarial tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-033 Purpose-built public mutation handlers
+
+- **Task:** FE-033 — Purpose-built public mutation handlers.
+- **User outcome delivered:** Browser code has one same-origin, guarded endpoint per public write or poll (question, discovery, report, tracking, follow-up, handles) with no path to the private API and no generic proxy.
+- **Files changed:** nine `apps/web/app/api/**/route.ts` handlers; `apps/web/src/lib/bff/{public-handler,public-schemas,guard,body,problem}.ts`; `apps/web/src/lib/api/server.ts` (shared `execute`, no-retry mutation methods, 204 and replay handling, `aborted` reason); `apps/web/tests/unit/{bff-public-handlers,server-api}.test.ts`; `apps/web/README.md`; `docs/FRONTEND_BUILD_ORDER.md`; this log.
+- **Backend operations/contract version:** `projects_ask_question`, `discovery_start_public_run`, `discovery_get_public_run`, `reports_submit`, `report_status_lookup`, `report_status_answer_follow_up`, `reporter_handles_create`, `reporter_handles_list_reports`, `reporter_handles_delete`; OpenAPI 0.0.0 unchanged.
+- **Public/private data handled:** Tracking codes, passphrases, follow-up answers, and report multipart bodies exist only in the request body/stream and are never placed in a URL or log; tests assert the URLs and problem bodies never contain them. One-time receipt/handle values are returned once, `no-store`. Browser `Cookie`, `Authorization`, and `X-Forwarded-*` are never forwarded.
+- **States implemented:** success (200/201/204, replay flag), 304 poll, 400/403/413/415/422 BFF rejections, mapped API problems (including rate limit Retry-After), 499 cancellation, 503/504 upstream failure, generic 500.
+- **Accessibility evidence:** Not applicable; no visible surface.
+- **Locales reviewed:** Only a validated `X-Shaidago-Locale` is forwarded; localised copy belongs to FE-053. No translation claimed.
+- **Performance/cache impact:** No dependency added. Reports are streamed, not buffered. All nine routes are dynamic and no-store; `next build` still performs no API fetch and the client boundary scan is clean (13 chunks).
+- **Failure behaviour verified:** As listed in the build-order note; additionally an empty-body operation rejects a body even when the runtime omits Content-Length, and a streamed report over the cap stops reading (chunks consumed < total) and returns 413.
+- **Commands run and results:** `make web-verify` exit 0 (139 unit, 7 component, contract drift, build with nine dynamic API routes, boundary scan); `make web-e2e` 4 passed and `make web-a11y` 2 passed (Chromium and mobile WebKit) on the unchanged foundation page; coverage 96.08% statements, 93.42% branches, 94.59% functions (`src/lib/bff` 96.65%). Lint has 0 errors and the same pre-existing warning.
+- **Screenshots/traces/artifacts checked:** None; non-visual. No handler has been exercised against a running FastAPI, so real-integration behaviour (including multipart streaming to uvicorn and the 65 s budget) is unverified.
+- **Known limitations/open decisions:** (1) `X-Shaidago-Client-Hmac` is not forwarded: the contract says the BFF supplies a pseudonymous HMAC of the client IP, but no key, rotation scheme, or trusted-proxy IP source is defined in `.env.example` or the ADRs. Until the maintainer decides, backend rate limits cannot distinguish clients. (2) Success bodies are passed through as the typed API response rather than re-picked field by field; the API's Pydantic allowlists remain the only filter. (3) Per-file 10 MiB and file-type checks are enforced by the API (and later client preparation), not by the BFF, because the BFF does not buffer or parse multipart. (4) The locale header is provisional until FE-050/FE-054 define the locale source. (5) Idempotency keys are lower-case UUIDs, matching the API.
+- **Commit/PR:** `feat: add same-origin public mutation handlers`
+- **Next task may rely on:** the handler paths above, `handlePublicJson`/`handlePublicEmpty`/`handleReportSubmission`, and the `MutationOptions` transport methods for FE-034's reviewer handlers.
+- **AI assistance used:** Designed and implemented the handlers, schemas, transport extension, and table-driven adversarial tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

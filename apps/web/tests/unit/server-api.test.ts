@@ -77,7 +77,14 @@ describe("server API client", () => {
     expect(request.headers.get("X-Shaidago-Locale")).toBe("ha");
     expect(request.headers.get("X-Shaidago-Client-Hmac")).toBe("f".repeat(64));
     expect(request.headers.get("Cookie")).toBeNull();
-    expect(result).toEqual({ kind: "ok", data: { items: [] }, etag: '"abc"', requestId });
+    expect(result).toEqual({
+      kind: "ok",
+      status: 200,
+      data: { items: [] },
+      etag: '"abc"',
+      replayed: false,
+      requestId
+    });
   });
 
   it("drops invalid locale, HMAC, and entity tags instead of forwarding them", async () => {
