@@ -260,7 +260,7 @@ async def test_seed_command_loads_the_checked_in_local_model_vectors(
             )
     finally:
         await engine.dispose()
-    assert models == ["intfloat/multilingual-e5-large"]
+    assert models == ["intfloat/multilingual-e5-small"]
 
 
 async def test_the_command_refuses_production_and_remote_targets_before_touching_anything(

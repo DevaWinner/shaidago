@@ -1,12 +1,13 @@
 """Cross-lingual retrieval quality of the real local model (ADR-0010).
 
-This is the evidence behind choosing multilingual-e5-large. It runs the production adapter on the
-real model, so it needs the 2.2 GB download (``make embedding-model``) and is skipped without it,
+This is the evidence behind choosing multilingual-e5-small. It runs the production adapter on the
+real model, so it needs the 129 MB download (``make embedding-model``) and is skipped without it,
 the way live-provider tests are.
 
-What it guards, and what it does not. It catches a *gross* regression: swapping in a smaller
-multilingual model (MiniLM and mpnet score 0 of 3 on Hausa, Igbo and Yoruba, no better than keyword
-search), or a library upgrade that changes the vectors enough to lose the cross-lingual match. It
+What it guards, and what it does not. It catches a *gross* regression: swapping in a multilingual
+model that was not trained on these languages (MiniLM and mpnet score 0 of 3 on Hausa, Igbo and
+Yoruba, no better than keyword search), or a library upgrade that changes the vectors enough to
+lose the cross-lingual match. It
 does not detect subtle mistakes: removing the ``query:``/``passage:`` prefixes changed no score on
 this sample, so the prefixes are kept because the model card says the model is trained with them,
 not because this test proves it.
@@ -26,7 +27,7 @@ from shaidago.retrieval.local_embeddings import FastEmbedModel
 
 REPOSITORY = Path(__file__).resolve().parents[4]
 MODEL_PATH = Path(
-    os.environ.get("EMBEDDING_MODEL_PATH", REPOSITORY / ".models" / "multilingual-e5-large")
+    os.environ.get("EMBEDDING_MODEL_PATH", REPOSITORY / ".models" / "multilingual-e5-small")
 )
 GOLDEN = REPOSITORY / "data" / "qa-evaluation" / "golden-v1.json"
 REGISTER = REPOSITORY / "data" / "source-register.json"
@@ -34,7 +35,7 @@ REGISTER = REPOSITORY / "data" / "source-register.json"
 pytestmark = [
     pytest.mark.model,
     pytest.mark.skipif(
-        not (MODEL_PATH / "model.onnx_data").is_file(),
+        not (MODEL_PATH / "onnx" / "model_qint8_avx512_vnni.onnx").is_file(),
         reason="the embedding model is not downloaded; run `make embedding-model`",
     ),
 ]

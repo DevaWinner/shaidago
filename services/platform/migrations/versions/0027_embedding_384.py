@@ -1,10 +1,10 @@
-"""Chunk embeddings become 1024-dimensional for multilingual-e5-large (BE-081, ADR-0010).
+"""Chunk embeddings become 384-dimensional for multilingual-e5-small (BE-081, ADR-0010).
 
-Revision ID: 0027_embedding_1024
+Revision ID: 0027_embedding_384
 Revises: 0026_citation_version_id
 
 `app.source_chunks.embedding` was `vector(1536)`, sized for a hosted provider model. Retrieval now
-embeds locally with multilingual-e5-large, whose vectors have 1024 dimensions, so the column type,
+embeds locally with multilingual-e5-small, whose vectors have 384 dimensions, so the column type,
 the HNSW index and the public view are rebuilt around the new width.
 
 Vectors from one model cannot be compared with vectors from another, so every stored vector is
@@ -20,7 +20,7 @@ from alembic import op
 
 from shaidago.db.migration_helpers import use_owner_role
 
-revision = "0027_embedding_1024"
+revision = "0027_embedding_384"
 down_revision = "0026_citation_version_id"
 branch_labels = None
 depends_on = None
@@ -65,7 +65,7 @@ def _retype(dimensions: int) -> None:
 
 
 def upgrade() -> None:
-    _retype(1024)
+    _retype(384)
 
 
 def downgrade() -> None:

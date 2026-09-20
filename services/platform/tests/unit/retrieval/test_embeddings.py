@@ -71,8 +71,8 @@ def test_reader_rejects_unknown_fields_duplicate_hashes_and_wrong_dimensions(
 
 
 def test_a_hub_model_id_maps_to_one_flat_file_and_never_a_folder() -> None:
-    path = embedding_path("intfloat/multilingual-e5-large")
-    assert path == EMBEDDINGS_ROOT / "intfloat__multilingual-e5-large.jsonl"
+    path = embedding_path("intfloat/multilingual-e5-small")
+    assert path == EMBEDDINGS_ROOT / "intfloat__multilingual-e5-small.jsonl"
     assert path.parent == EMBEDDINGS_ROOT
 
 
@@ -85,9 +85,9 @@ def test_an_unsafe_model_id_is_refused_as_a_file_name(model: str) -> None:
 
 
 def test_the_checked_in_local_model_vectors_match_the_column_width() -> None:
-    """The vectors `make seed-demo` loads must fit the vector(1024) column exactly."""
-    path = embedding_path("intfloat/multilingual-e5-large")
-    records = read_embedding_file(path, expected_model="intfloat/multilingual-e5-large")
+    """The vectors `make seed-demo` loads must fit the vector(384) column exactly."""
+    path = embedding_path("intfloat/multilingual-e5-small")
+    records = read_embedding_file(path, expected_model="intfloat/multilingual-e5-small")
     assert records, "run `make embeddings` after changing approved chunks"
     for record in records:
         assert len(record.embedding) == EMBEDDING_DIMENSIONS

@@ -1,4 +1,4 @@
-"""Local text embeddings with FastEmbed and multilingual-e5-large (ADR-0010).
+"""Local text embeddings with FastEmbed and multilingual-e5-small (ADR-0010).
 
 Nothing here leaves the machine: the question and the passages are embedded in-process by an ONNX
 model that is read from disk, so no provider key, no egress, and no third party sees a question.
@@ -27,7 +27,10 @@ import structlog
 from shaidago.retrieval.embeddings import EmbeddingUnavailableError
 from shaidago.retrieval.search import EMBEDDING_DIMENSIONS
 
-MODEL_ID: Final = "intfloat/multilingual-e5-large"
+MODEL_ID: Final = "intfloat/multilingual-e5-small"
+# The int8 export inside the model directory; fastembed is told where it is, since this model is not
+# in its built-in list.
+ONNX_FILE: Final = "onnx/model_qint8_avx512_vnni.onnx"
 # e5 models are trained with these prefixes; without them retrieval quality drops noticeably.
 QUERY_PREFIX: Final = "query: "
 PASSAGE_PREFIX: Final = "passage: "
@@ -49,12 +52,30 @@ ModelLoader = Callable[[Path, int], Any]
 def load_fastembed(model_path: Path, threads: int) -> Any:
     """Load the pinned model from a plain directory, refusing any network access."""
     from fastembed import TextEmbedding  # noqa: PLC0415 - heavy import, only when actually loading
+    from fastembed.common.model_description import (  # noqa: PLC0415 - same reason
+        ModelSource,
+        PoolingType,
+    )
 
     # ONNX Runtime ships a telemetry hook (it logs "Failed to persist telemetry device ID" at load).
     # Nothing here needs it, and AGENTS.md forbids undocumented telemetry, so it is switched off.
     # Imported dynamically into an Any because the package ships no type stubs.
     runtime: Any = importlib.import_module("onnxruntime")
     runtime.disable_telemetry_events()
+    try:
+        # e5 models are trained with mean pooling and unit-length vectors. Registration is
+        # process-wide, so a second load in the same process must not register the model again.
+        TextEmbedding.add_custom_model(
+            model=MODEL_ID,
+            pooling=PoolingType.MEAN,
+            normalization=True,
+            sources=ModelSource(hf=MODEL_ID),
+            dim=EMBEDDING_DIMENSIONS,
+            model_file=ONNX_FILE,
+        )
+    except ValueError as error:
+        if "already registered" not in str(error):
+            raise
     return TextEmbedding(
         MODEL_ID, specific_model_path=str(model_path), local_files_only=True, threads=threads
     )

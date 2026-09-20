@@ -285,7 +285,7 @@ class ProviderSettings(_Section):
     discovery_model: str = Field(
         default="openai/gpt-oss-120b", min_length=1, validation_alias="GROQ_DISCOVERY_MODEL"
     )
-    # Embeddings run in this process with FastEmbed and multilingual-e5-large, so they need no
+    # Embeddings run in this process with FastEmbed and multilingual-e5-small, so they need no
     # provider key, send nothing off the machine and cost nothing per request (ADR-0010). `off`
     # keeps retrieval keyword-only, and the answer says so in `retrieval_mode`.
     embedding_backend: EmbeddingBackend = Field(default="off", validation_alias="EMBEDDING_BACKEND")

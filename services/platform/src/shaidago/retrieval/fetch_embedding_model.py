@@ -6,10 +6,10 @@ Run at image build time (and once by a developer), never at request time. It fet
 Hugging Face revision and then verifies every file against a SHA-256 digest recorded here, so a
 compromised or silently updated upstream repository cannot change what runs in the API.
 
-The files must land as real files in ``--dest``. The default Hugging Face cache stores them as
-symlinks into a ``blobs/`` directory, and ONNX Runtime 1.30 rejects an external-data file that
-resolves outside the model directory ("External data path escapes model directory"), which is why
-``local_dir`` is used and why the result is verified rather than trusted.
+The files must land as real files in ``--dest``: a symlink's target is not the file that was
+verified, so a symlink is treated as an integrity failure. (The larger model this replaced also
+needed real files because ONNX Runtime rejects an external-data file that resolves outside the model
+directory; the small model is a single file, but the rule is kept.)
 """
 
 import argparse
@@ -19,18 +19,20 @@ import sys
 from pathlib import Path
 from typing import Any, Final
 
-REPOSITORY: Final = "qdrant/multilingual-e5-large-onnx"
-# The Apache-2.0 ONNX conversion (Qdrant) of intfloat/multilingual-e5-large (MIT).
-REVISION: Final = "66076b8dc6e367337e3e90e6fb309fb0f3addaf6"
+# The publisher's own repository (MIT), not a third-party re-export: an alternative int8 export
+# declares no licence at all.
+REPOSITORY: Final = "intfloat/multilingual-e5-small"
+REVISION: Final = "614241f622f53c4eeff9890bdc4f31cfecc418b3"
 CHUNK_BYTES: Final = 16 * 1024 * 1024
 
 FILE_DIGESTS: Final[dict[str, str]] = {
-    "model.onnx": "1c09780c907c8a91a77a6ab1fd231f79e090d2907ca431223703dfebeed3d36c",
-    "model.onnx_data": "0cf1883fee81c63819a44e2ba0efa51d4043d9759685a4ebebbde97e0623d15c",
-    "tokenizer.json": "f59925fcb90c92b894cb93e51bb9b4a6105c5c249fe54ce1c704420ac39b81af",
-    "config.json": "1de8c3be1f344c0eefa4962480a006f8639f416dfafaa95a770e3cf4bceae6a4",
-    "tokenizer_config.json": "f90024142df07163e5e6c5b9a6ad7c8c68b22a9112af11e3db4559a9ff90f737",
-    "special_tokens_map.json": "8c785abebea9ae3257b61681b4e6fd8365ceafde980c21970d001e834cf10835",
+    "onnx/model_qint8_avx512_vnni.onnx": (
+        "dd476dd0c2514e9b9be83aeb3853fac0763e0bdf4a71645407587d77c48a2d88"
+    ),
+    "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+    "config.json": "69137736cab8b8903a07fe8afaafdda25aac55415a12a55d1bffa9f581abf959",
+    "tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b",
+    "special_tokens_map.json": "d05497f1da52c5e09554c0cd874037a083e1dc1b9cfd48034d1c717f1afc07a7",
 }
 
 

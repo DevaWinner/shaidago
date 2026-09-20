@@ -20,7 +20,7 @@ make seed-demo                 # cited demo data and checked-in vectors; local d
 make backend-verify            # the canonical gate: format, lint, pyright strict, every test layer,
                                # 85% branch coverage, OpenAPI drift, Bandit, pip-audit
 make openapi-generate          # after changing a route or schema (also frontend-contract-generate)
-make embedding-model           # optional: 2.2 GB local embedding model, pinned and SHA-256 verified
+make embedding-model           # optional: 129 MB local embedding model, pinned and SHA-256 verified
 make embeddings                # regenerate data/embeddings/*.jsonl after approved chunks change
 make worker                    # the discovery worker (needs Redis and DATABASE_URL_WORKER)
 ```
@@ -76,7 +76,7 @@ These are recorded in `docs/IMPLEMENTATION_PLAN.md` and override the original br
 - Hosted demo runs without ClamAV (`SCANNER_MODE=not_deployed`, files labelled `not_scanned_demo`); local and CI scan for real; production refuses that mode.
 - Session cookie is `__Host-sg_session` (Secure) in staging/production and plain `sg_session` in development/test so WebKit E2E works on `http://localhost`.
 - Language model is Groq (ADR-0009), not OpenAI; the strict schema sent over the wire drops `pattern` because Groq's constrained decoder rejects it, and our own Pydantic models still enforce it.
-- Embeddings are local: FastEmbed with `multilingual-e5-large`, 1024 dimensions (ADR-0010). `EMBEDDING_BACKEND` is `off` by default; when on, a question is embedded in-process and retrieval is hybrid, otherwise (or on any failure) it falls back to keyword and reports `retrieval_mode`. The model must be a real directory, not a Hugging Face cache, because ONNX Runtime rejects the symlink layout. Only the API image bakes it in (`WITH_EMBEDDING_MODEL=1`) and it needs at least 3 GB of memory.
+- Embeddings are local: FastEmbed with `multilingual-e5-small` (int8), 384 dimensions (ADR-0010). `EMBEDDING_BACKEND` is `off` by default; when on, a question is embedded in-process and retrieval is hybrid, otherwise (or on any failure) it falls back to keyword and reports `retrieval_mode`. The 129 MB model is baked into the platform image and fits the hosted service's 1 GB memory limit; the 2.2 GB large model did not (it was killed in a restart loop on Railway), so do not switch to it without raising that limit.
 - A cited fact can be public while `awaiting_verification`, and public citations expose `source_version_id` (migrations 0025 and 0026). Seeded source versions are `approved` because the register validator re-checks every passage hash; that approves the quoted text, not the claim.
 - The demo seed refuses everything except local databases, plus `APP_ENV=staging` with `SEED_ALLOW_DEPLOYED=1`. Production has no seed mode, with or without the flag.
 - Optional anonymous reporter handles: server-generated handle plus six-word passphrase, Argon2id hash, no contact or recovery data, verified only at submission, reviewer-only track record, deletable without deleting reports. Fully anonymous reporting remains the default, and handles are built only after the anonymous path works.

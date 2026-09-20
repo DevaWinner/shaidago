@@ -15,6 +15,7 @@ from shaidago.retrieval.local_embeddings import (
     EMBEDDING_DIMENSIONS,
     MAX_IN_FLIGHT,
     MODEL_ID,
+    ONNX_FILE,
     PASSAGE_PREFIX,
     QUERY_PREFIX,
     FastEmbedModel,
@@ -252,8 +253,8 @@ async def test_a_burst_beyond_the_cap_is_refused_as_busy_instead_of_queued() -> 
 
 
 def test_the_model_identity_and_width_are_the_agreed_ones() -> None:
-    assert MODEL_ID == "intfloat/multilingual-e5-large"
-    assert EMBEDDING_DIMENSIONS == 1024
+    assert MODEL_ID == "intfloat/multilingual-e5-small"
+    assert EMBEDDING_DIMENSIONS == 384
     assert FastEmbedModel(PATH, loader=loader_for(FakeModel())).model_id == MODEL_ID
 
 
@@ -268,10 +269,10 @@ def test_at_least_one_thread_is_required() -> None:
         FastEmbedModel(PATH, threads=0)
 
 
-def test_the_real_loader_is_offline_only_and_switches_telemetry_off(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """The production loader must never download and must disable ONNX Runtime telemetry."""
+def stub_fastembed(
+    monkeypatch: pytest.MonkeyPatch, *, registration_error: Exception | None = None
+) -> tuple[list[str], dict[str, Any]]:
+    """Replace fastembed's TextEmbedding and ONNX Runtime's telemetry switch with recorders."""
     import fastembed  # noqa: PLC0415
 
     runtime: Any = importlib.import_module("onnxruntime")
@@ -284,13 +285,62 @@ def test_the_real_loader_is_offline_only_and_switches_telemetry_off(
             captured["model"] = model
             captured.update(kwargs)
 
+        @classmethod
+        def add_custom_model(cls, **kwargs: Any) -> None:
+            calls.append("register")
+            captured["registration"] = kwargs
+            if registration_error is not None:
+                raise registration_error
+
     monkeypatch.setattr(runtime, "disable_telemetry_events", lambda: calls.append("telemetry"))
     monkeypatch.setattr(fastembed, "TextEmbedding", StubTextEmbedding)
+    return calls, captured
+
+
+def test_the_real_loader_is_offline_only_and_switches_telemetry_off(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The production loader must never download and must disable ONNX Runtime telemetry."""
+    calls, captured = stub_fastembed(monkeypatch)
 
     load_fastembed(Path("/models/e5"), 3)
 
-    assert calls == ["telemetry", "model"], "telemetry is disabled before the model is created"
+    assert calls == ["telemetry", "register", "model"], "telemetry is off before anything loads"
     assert captured["model"] == MODEL_ID
     assert captured["local_files_only"] is True, "a load must never reach the network"
     assert captured["specific_model_path"] == "/models/e5"
     assert captured["threads"] == 3
+
+
+def test_the_loader_registers_the_model_as_mean_pooled_unit_length_384_wide(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _calls, captured = stub_fastembed(monkeypatch)
+
+    load_fastembed(Path("/models/e5"), 2)
+
+    registration = captured["registration"]
+    assert registration["model"] == MODEL_ID
+    assert registration["dim"] == EMBEDDING_DIMENSIONS == 384
+    assert registration["normalization"] is True
+    assert registration["model_file"] == ONNX_FILE
+    assert registration["pooling"].name == "MEAN", "e5 is trained with mean pooling"
+
+
+def test_a_second_load_in_one_process_tolerates_the_model_already_being_registered(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls, _captured = stub_fastembed(
+        monkeypatch, registration_error=ValueError("Model x is already registered in TextEmbedding")
+    )
+
+    load_fastembed(Path("/models/e5"), 2)
+
+    assert calls == ["telemetry", "register", "model"], "it still goes on to load the model"
+
+
+def test_any_other_registration_error_is_not_swallowed(monkeypatch: pytest.MonkeyPatch) -> None:
+    stub_fastembed(monkeypatch, registration_error=ValueError("dimension must be positive"))
+
+    with pytest.raises(ValueError, match="dimension must be positive"):
+        load_fastembed(Path("/models/e5"), 2)

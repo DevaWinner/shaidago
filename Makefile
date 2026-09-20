@@ -108,10 +108,10 @@ seed-demo:
 reviewer-bootstrap:
 	$(RUN_WITH_ENV) python -m shaidago.auth.bootstrap
 
-# Downloads the 2.2 GB embedding model (one pinned revision, every file checked against its SHA-256)
+# Downloads the 129 MB embedding model (one pinned revision, every file checked against its SHA-256)
 # into .models/, which is git-ignored. Needed once, and only for `make embeddings` and hybrid mode.
 embedding-model:
-	$(UV) run --frozen python -m shaidago.retrieval.fetch_embedding_model --dest ../../.models/multilingual-e5-large
+	$(UV) run --frozen python -m shaidago.retrieval.fetch_embedding_model --dest ../../.models/multilingual-e5-small
 
 # Embeds every approved public chunk locally (no key, no network) and writes the checked-in vector
 # file that `make seed-demo` loads. Run `make embedding-model` first. Explicit, never run by seed.

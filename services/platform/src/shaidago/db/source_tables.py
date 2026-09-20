@@ -136,7 +136,7 @@ source_chunks = Table(
         Computed("to_tsvector('simple', content_text)", persisted=True),
         nullable=True,
     ),
-    Column("embedding", VECTOR(1024)),
+    Column("embedding", VECTOR(384)),
     Column("embedding_model", Text()),
     Column("embedded_at", DateTime(timezone=True)),
     PrimaryKeyConstraint("id"),

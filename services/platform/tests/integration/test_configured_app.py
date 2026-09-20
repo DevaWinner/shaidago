@@ -31,7 +31,7 @@ def configure(monkeypatch: pytest.MonkeyPatch, url: URL) -> None:
     monkeypatch.setenv("DATABASE_URL_PUBLIC", url.render_as_string(hide_password=False))
     monkeypatch.setenv("DATABASE_URL_REVIEWER", url.render_as_string(hide_password=False))
     monkeypatch.setenv("DATABASE_CONNECT_TIMEOUT_SECONDS", "1")
-    # Explicit, never inherited: a developer's .env may turn on the 2.2 GB local model, and these
+    # Explicit, never inherited: a developer's .env may turn on the local model, and these
     # tests are about the database, not about loading a model on every app start.
     monkeypatch.setenv("EMBEDDING_BACKEND", "off")
     monkeypatch.delenv("EMBEDDING_MODEL_PATH", raising=False)

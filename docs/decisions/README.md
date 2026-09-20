@@ -15,7 +15,7 @@ A record is **accepted** when the decision is binding for implementation. Its co
 | [0007](0007-generated-openapi-browser-contract.md) | Generated OpenAPI contract for the browser boundary | accepted |
 | [0008](0008-provider-isolation-replay-fixtures-and-live-tests.md) | Provider isolation, replay fixtures, and live-test policy | accepted |
 | [0009](0009-groq-as-the-language-provider.md) | Groq as the language provider, and embeddings as a separate optional key | accepted |
-| [0010](0010-local-embeddings-with-fastembed.md) | Local embeddings with FastEmbed and multilingual-e5-large | accepted |
+| [0010](0010-local-embeddings-with-fastembed.md) | Local embeddings with FastEmbed and multilingual-e5-small | accepted |
 
 ## Template
 
