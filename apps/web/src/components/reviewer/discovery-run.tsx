@@ -27,6 +27,7 @@ import {
 } from "@/lib/discovery/run-state";
 import { createFormatters } from "@/lib/format/formatters";
 import { scaleDelay } from "@/lib/low-data";
+import { withTimeout } from "@/lib/net/timeout";
 import { networkProblem, readBrowserProblem } from "@/lib/problems/browser-problem";
 import type { SafeProblem } from "@/lib/problems/problem-messages";
 import { postJson } from "@/lib/tracking/client";
@@ -349,7 +350,7 @@ export function DiscoveryRun({
             cache: "no-store",
             credentials: "same-origin",
             headers: { Accept: "application/json", "X-Shaidago-Locale": locale },
-            signal: next.signal
+            signal: withTimeout(next.signal)
           }
         );
 
@@ -418,14 +419,22 @@ export function DiscoveryRun({
   const version = run?.version;
   const active = run !== undefined && !paused && shouldPoll("reviewer", run.status);
 
+  const [tick, setTick] = useState(0);
+
+  // Each attempt schedules the next, even when the API said "not modified" or the attempt was
+  // skipped because the tab is hidden; coming back online restarts the schedule.
   useEffect(() => {
     if (!active || !online) return;
     const retry = problem?.retryAfterSeconds;
     const timer = window.setTimeout(
       () => {
-        if (document.hidden) return;
-        attempts.current += 1;
-        void load(false);
+        void (async (): Promise<void> => {
+          if (!document.hidden) {
+            attempts.current += 1;
+            await load(false);
+          }
+          setTick((value) => value + 1);
+        })();
       },
       scaleDelay(nextPollDelayMs(attempts.current, retry))
     );
@@ -433,7 +442,7 @@ export function DiscoveryRun({
     return () => {
       window.clearTimeout(timer);
     };
-  }, [active, online, load, version, problem]);
+  }, [active, online, load, version, problem, tick]);
 
   async function act(kind: "cancel" | "approve" | "reject"): Promise<void> {
     setConfirm(undefined);

@@ -1,3 +1,4 @@
+import { progressSlug } from "../support/progress-slug";
 import { expect, test } from "@playwright/test";
 
 const LOCALES = ["en", "ha", "ig", "yo"] as const;
@@ -138,7 +139,7 @@ test("low-data mode slows Source Scout polling instead of dropping it", async ({
   context,
   page,
   baseURL
-}) => {
+}, info) => {
   const gaps: number[] = [];
 
   await context.addCookies([
@@ -154,7 +155,7 @@ test("low-data mode slows Source Scout polling instead of dropping it", async ({
       last = now;
     }
   });
-  await page.goto("/en/projects/synthetic-project-04");
+  await page.goto(`/en/projects/${progressSlug(info)}`);
   await page.waitForLoadState("networkidle");
   await page.getByRole("button", { name: "Find public information" }).click();
   await expect(page.locator("[data-slot=project-discovery]")).toContainText("Search completed", {

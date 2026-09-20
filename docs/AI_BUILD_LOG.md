@@ -2531,3 +2531,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the mode, and diagnosed the hydration mismatch.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-134 Network resilience
+
+- **Task:** FE-134 — Network resilience (Circle 13).
+- **User outcome delivered:** On a poor or flapping connection, Source Scout checking keeps going or stops cleanly, a stuck read is abandoned and can be retried, and pressing a button twice or losing the connection never makes duplicate work or silently loses what was typed.
+- **Routes/components changed:** `src/lib/net/timeout.ts`, polling in `project-discovery.tsx` and `discovery-run.tsx`, mock scenarios (a second progressing public run), unit and e2e tests.
+- **Backend operations/contract version:** `discovery_start_public_run`, `discovery_get_public_run`, `reviewer_discovery_get`, `projects_ask_question` (unchanged).
+- **Public/private data handled:** none new; nothing stored.
+- **States implemented:** offline mid-read, flapping, reconnect, not modified, stuck read, retry, offline before a mutation, back online.
+- **Accessibility evidence:** status and alert regions announce state changes; covered by the existing axe suites (`make web-a11y` 338 passed).
+- **Locales reviewed:** no new copy.
+- **Performance/cache impact:** Polling is bounded and scheduled per attempt; reads time out at ten seconds.
+- **Commands run and results:** `make web-verify` exit 0 (558 unit and 201 component tests in total); `make web-e2e` 395 passed and 9 skipped; `make web-a11y` 338 passed.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** No throttled slow-3G profile; the stuck-read test and the offline-with-service-worker tests are Chromium-only because of Playwright WebKit limitations (stated in the tests).
+- **Commit/PR:** `fix: keep Source Scout checking through flapping connections and bound browser reads`
+- **Next task may rely on:** `withTimeout`, `CLIENT_READ_TIMEOUT_MS`, the per-attempt polling pattern, and `progressSlug`.
+- **AI assistance used:** Found the stopped-polling defect while writing the resilience tests and fixed it.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
