@@ -31,7 +31,7 @@ export default defineConfig({
     }
   ],
   webServer: {
-    command: `APP_ENV=test API_INTERNAL_URL=http://api.internal-test.invalid INTERNAL_WEB_CREDENTIAL_CURRENT=shaida-go-browser-test-credential-not-a-secret HOSTNAME=127.0.0.1 PORT=${port} node .next/standalone/apps/web/server.js`,
+    command: `APP_ENV=test API_INTERNAL_URL=http://api.internal-test.invalid INTERNAL_WEB_CREDENTIAL_CURRENT=shaida-go-browser-test-credential-not-a-secret HOSTNAME=127.0.0.1 PORT=${port} pnpm run start:standalone`,
     cwd: webRoot,
     url: baseURL,
     reuseExistingServer: !process.env["CI"],

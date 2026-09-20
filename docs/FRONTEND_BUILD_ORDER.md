@@ -479,6 +479,8 @@ For every handler, test success, validation, backend problem, timeout, cancellat
 
 ### FE-040 — Implement tokens from the approved world
 
+> **Execution status (2026-09-20): complete.** `apps/web/app/globals.css` now exposes the approved Field Ledger semantic token roles through native CSS and Tailwind 4.3.3 aliases. Unit checks prove base-palette contrast and preference overrides; browser checks prove the compiled token stylesheet is served from standalone output in Chromium and mobile WebKit. `DESIGN.md` remains deliberately absent until Circle 15.
+
 Implement semantic CSS/Tailwind tokens for:
 
 - canvas/surface/text/muted/accent/danger/success/warning/information roles;

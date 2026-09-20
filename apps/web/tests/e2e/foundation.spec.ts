@@ -8,6 +8,16 @@ test("the foundation renders safe metadata without requesting an internal API", 
   expect(response?.status()).toBe(200);
   await expect(page).toHaveTitle("ShaidaGo");
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  expect(
+    await page
+      .locator("html")
+      .evaluate((element) => getComputedStyle(element).getPropertyValue("--color-canvas").trim())
+  ).toBe("#f7f2e8");
+  expect(
+    await page
+      .locator("h1")
+      .evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize))
+  ).toBeGreaterThan(24);
 
   const requestedURLs = await page.evaluate(() =>
     performance.getEntriesByType("resource").map((entry) => entry.name)
