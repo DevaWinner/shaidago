@@ -1,5 +1,21 @@
 import { expect, test } from "@playwright/test";
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+import type EnglishMessages from "../../messages/en.json";
+
+// Playwright's ESM loader cannot import JSON, so the catalogues are read from disk. The English
+// type gives every locale's catalogue the same checked shape (see `pnpm run messages:check`).
+const catalogue = (name: string): typeof EnglishMessages =>
+  JSON.parse(
+    readFileSync(join(import.meta.dirname, "..", "..", "messages", `${name}.json`), "utf8")
+  ) as typeof EnglishMessages;
+const en = catalogue("en");
+const ha = catalogue("ha");
+const ig = catalogue("ig");
+const yo = catalogue("yo");
+
 test("a bare visit lands on the English route and keeps the query", async ({ page }) => {
   await page.goto("/?locality=amac&q=clinic");
 
@@ -29,20 +45,35 @@ test("Accept-Language chooses a supported locale and an unsupported one falls ba
   await french.close();
 });
 
-test("an unreviewed locale serves the original, says so, and declares the true language", async ({
-  page
-}) => {
-  const response = await page.goto("/ha");
+for (const locale of ["ha", "ig", "yo"] as const) {
+  test(`${locale} serves its own reviewed copy in its own language`, async ({ page }) => {
+    const copy = { ha, ig, yo }[locale];
+    const response = await page.goto(`/${locale}`);
 
-  expect(response?.status()).toBe(200);
+    expect(response?.status()).toBe(200);
+    await expect(page.locator("html")).toHaveAttribute("lang", locale);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(copy.landing.heading);
+    await expect(page.getByRole("link", { name: copy.landing.browse })).toBeVisible();
+    await expect(page.getByRole("link", { name: copy.landing.report })).toBeVisible();
+    await expect(page.getByText(copy.shell.public.notEmergency)).toBeVisible();
+    // Nothing falls back to English: no notice, and no language is labelled unreviewed.
+    await expect(page.getByText(en.evidence.translation.unavailable)).toHaveCount(0);
+    await expect(page.getByText(`(${en.shell.public.localeUnavailable})`)).toHaveCount(0);
+    const control = page.getByRole("navigation", { name: copy.shell.public.localeLabel });
+    await expect(control.getByText(copy.shell.public.localeNames[locale])).toHaveAttribute(
+      "aria-current",
+      "true"
+    );
+  });
+}
+
+test("English stays the source language and needs no notice", async ({ page }) => {
+  await page.goto("/en");
+
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
-  await expect(page.getByText("No translation available; showing the original")).toBeVisible();
-  const control = page.getByRole("navigation", { name: "Language" });
-  await expect(control.getByText("Hausa")).toHaveAttribute("lang", "ha");
-  await expect(control.getByText("(not yet reviewed)")).toHaveCount(3);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("AMAC and Bwari");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(en.landing.heading);
+  await expect(page.getByText(en.evidence.translation.unavailable)).toHaveCount(0);
 });
-
 test("the language cookie is remembered, holds only a locale code, and wins over the header", async ({
   browser
 }) => {

@@ -150,8 +150,7 @@ Yoruba. Add a locale to that list only when fluent, reviewed copy for every crit
 ## Messages
 
 Copy lives in `messages/{en,ha,ig,yo}.json` by domain, with `messages/status.json` recording each
-locale's per-domain review status. English is the source. Non-English values are `null` until a
-fluent reviewer supplies text; set a domain to `reviewed` (or `machine_assisted`) only with a named
+locale's per-domain review status. English is the source. All four locales are currently `reviewed` (the maintainer is the self-reported reviewer). A value is `null` while a translation is pending; set a domain to `reviewed` (or `machine_assisted`) only with a named
 reviewer and date. `pnpm run messages:check` (also part of `make web-contract`) enforces identical
 keys, valid ICU, the same variables and types, identical `select` branches, and consistent status.
 `resolveDomain` in `src/i18n/catalogue.ts` serves a locale's text only when its domain is reviewed

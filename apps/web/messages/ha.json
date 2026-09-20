@@ -1,127 +1,124 @@
 {
   "shell": {
     "public": {
-      "footerLabel": null,
-      "footerSources": null,
-      "footerTrust": null,
-      "localeCurrentSuffix": null,
-      "localeLabel": null,
+      "footerLabel": "Game da ShaidaGo",
+      "footerSources": "Yadda ake amincewa da majiyoyi",
+      "footerTrust": "Yadda ake karanta kundi",
+      "localeCurrentSuffix": "harshen da ake amfani da shi yanzu",
+      "localeLabel": "Harshe",
       "localeNames": {
-        "en": null,
-        "ha": null,
-        "ig": null,
-        "yo": null
+        "en": "Turanci",
+        "ha": "Hausa",
+        "ig": "Igbo",
+        "yo": "Yorùbá"
       },
-      "localeUnavailable": null,
-      "navLabel": null,
-      "navLocalities": null,
-      "navReport": null,
-      "navTrust": null,
-      "notEmergency": null,
-      "productName": null,
-      "skipToContent": null,
-      "statusRegionLabel": null
+      "localeUnavailable": "ba a tantance ba tukuna",
+      "navLabel": "Babban menu",
+      "navLocalities": "Yankuna",
+      "navReport": "Bayar da rahoton wata damuwa",
+      "navTrust": "Yadda kundin bayanai ke aiki",
+      "notEmergency": "ShaidaGo ba sabis na gaggawa ba ne. Idan wani yana cikin haɗari, a fara tuntuɓar ma'aikatan agajin gaggawa na yankin.",
+      "productName": "ShaidaGo",
+      "skipToContent": "Tsallaka zuwa babban abun ciki",
+      "statusRegionLabel": "Haɗi da matsayin shafi"
     },
     "reviewer": {
-      "area": null,
-      "navLabel": null,
-      "productName": null,
-      "queue": null,
-      "skipToContent": null
+      "area": "Mai dubawa",
+      "navLabel": "Mai dubawa",
+      "productName": "ShaidaGo",
+      "queue": "Jerin rahotannin da ke jiran dubawa",
+      "skipToContent": "Tsallaka zuwa babban abun ciki"
     }
   },
   "evidence": {
     "verification": {
-      "awaiting_verification": null,
-      "verified_official": null,
-      "corroborated": null,
-      "community_reviewed": null,
-      "disputed": null,
-      "outdated": null
+      "awaiting_verification": "Ana jiran tabbatarwa",
+      "verified_official": "Majiya ta hukuma ta tabbatar",
+      "corroborated": "Fiye da majiya ɗaya sun tabbatar",
+      "community_reviewed": "Shaidar al'umma da aka duba",
+      "disputed": "Majiyoyi ba su yi daidai ba",
+      "outdated": "Wataƙila bayanin ya tsufa"
     },
     "informationClass": {
-      "official_source": null,
-      "independent_source": null,
-      "community_evidence_reviewed": null,
-      "community_report_unverified": null,
-      "ai_generated_explanation": null
+      "official_source": "Majiya ta hukuma",
+      "independent_source": "Majiya mai zaman kanta",
+      "community_evidence_reviewed": "Shaidar al'umma da aka duba",
+      "community_report_unverified": "Rahoton al'umma, ba a tabbatar da shi ba",
+      "ai_generated_explanation": "Bayanin da AI ya samar, ba majiya ba"
     },
     "availability": {
-      "unchecked": null,
-      "available": null,
-      "temporarily_unavailable": null,
-      "access_restricted": null,
-      "permanently_unavailable": null
+      "unchecked": "Ba a duba ba tukuna",
+      "available": "Akwai",
+      "temporarily_unavailable": "Babu na ɗan lokaci",
+      "access_restricted": "An taƙaita damar shiga",
+      "permanently_unavailable": "Babu shi kuma"
     },
     "dates": {
-      "effective": null,
-      "lastChecked": null,
-      "published": null,
-      "retrieved": null,
-      "unknown": null
+      "effective": "Ranar fara aiki",
+      "lastChecked": "Dubawa ta ƙarshe",
+      "published": "An wallafa",
+      "retrieved": "An samo",
+      "unknown": "Ba a rubuta ba"
     },
     "source": {
-      "availabilityHeading": null,
-      "externalNotice": null,
-      "publisherHeading": null
+      "availabilityHeading": "Samuwar majiya",
+      "externalNotice": "yana buɗe majiyar a sabon shafi",
+      "publisherHeading": "Mawallafi"
     },
     "translation": {
-      "reviewed": null,
-      "machine_assisted": null,
-      "unavailable": null
+      "reviewed": "Fassarar da aka duba",
+      "machine_assisted": "Fassarar da na'ura ta taimaka wajen yi, mai iya harshen bai duba ta ba tukuna",
+      "unavailable": "Babu fassara; ana nuna asalin rubutun"
     },
     "timeline": {
-      "official": null,
-      "community_reviewed": null
+      "official": "Sabuntawa ta hukuma",
+      "community_reviewed": "Shaidar al'umma da aka duba"
     }
   },
   "landing": {
-    "browse": null,
-    "citedLabel": null,
-    "citationBack": null,
-    "evidenceHeading": null,
-    "heading": null,
-    "lead": null,
-    "localityLabel": null,
-    "recordKind": null,
-    "report": null,
-    "reportNote": null,
+    "browse": "Duba kundin ayyuka",
+    "citedLabel": "Majiyoyin wannan bayani",
+    "citationBack": "Komawa ga bayanin",
+    "evidenceHeading": "Shaida mai ɗauke da kwanan wata",
+    "heading": "Kundin ayyukan jama'a na AMAC da Bwari, tare da majiyoyinsu",
+    "lead": "Kowane kundi yana nuna abin da aka yi alkawari, abin da majiyoyi suka ce, lokacin dubawa ta ƙarshe, da abin da har yanzu ba a sani ba.",
+    "localityLabel": "Misalin yanki",
+    "recordKind": "Kundin aikin jama'a",
+    "report": "Bayar da rahoton wata damuwa a ɓoye",
+    "reportNote": "Rahotanni na sirri ne kuma ba a taɓa wallafa su kai tsaye ba.",
     "sample": {
       "citation": {
-        "locationLabel": null,
-        "passage": null,
-        "publisher": null,
-        "sourceTitle": null
+        "locationLabel": "sashen misali",
+        "passage": "Misalin bayani: an lissafa gyaran cibiyar lafiya a matsayin abin da aka tsara yi a shekara mai zuwa.",
+        "publisher": "Misalin mawallafi",
+        "sourceTitle": "Misalin sanarwar tsari"
       },
-      "heading": null,
-      "notice": null,
-      "noticeTitle": null,
-      "promised": null,
+      "heading": "Misali: gyaran cibiyar lafiyar unguwa",
+      "notice": "Misali ne na ƙirƙira. Yana nuna yadda ake tsara kundi; ba ainihin aiki ko majiya ba ne.",
+      "noticeTitle": "Misali kawai",
+      "promised": "Alkawari: za a gyara cibiyar lafiyar unguwa.",
       "railEntries": {
-        "community": null,
-        "official": null
+        "community": "An karɓi bayanin ziyarar kuma yana jiran dubawa.",
+        "official": "Sanarwar tsari ta lissafa cibiyar a matsayin abin da aka tsara."
       },
-      "sourceCount": null,
-      "sourceLabel": null,
-      "stateLabel": null,
-      "stateText": null
+      "sourceCount": "{count, plural, one {# majiya} other {# majiyoyi}}",
+      "sourceLabel": "Majiya {number, number}",
+      "stateLabel": "Halin da aka sani yanzu",
+      "stateText": "An lissafa shi a matsayin abin da aka tsara. Ba a tabbatar da ci gaban aikin ba."
     }
   },
   "recovery": {
     "notFound": {
-      "title": null,
-      "body": null,
-      "home": null
+      "title": "Babu wannan shafin",
+      "body": "Duba adireshin ko komawa babban shafi. ShaidaGo ba ya tabbatar da ko akwai wani kundi na sirri.",
+      "home": "Komawa ShaidaGo"
     },
     "error": {
-      "title": null,
-      "body": null,
-      "retry": null,
-      "reference": null
+      "title": "Ba a iya loda wannan shafin ba",
+      "body": "Sake gwadawa. Idan matsalar ta ci gaba, a tura lambar tallafi ba tare da bayyana bayanan sirri ba.",
+      "retry": "Sake gwadawa",
+      "reference": "Lambar tallafi: {reference}"
     },
-    "loading": null,
-    "fatal": {
-      "title": null
-    }
+    "loading": "Ana shirya wannan shafin."
   }
 }

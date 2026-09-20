@@ -114,11 +114,10 @@ describe("locale configuration", () => {
     }
   });
 
-  it("declares the truthful content language for every locale", () => {
-    expect([...REVIEWED_LOCALES]).toEqual(["en"]);
-    expect(contentLocale("en")).toBe("en");
-    for (const locale of ["ha", "ig", "yo"] as const) {
-      expect(contentLocale(locale)).toBe("en");
+  it("serves each locale in its own language because every critical domain is reviewed", () => {
+    expect([...REVIEWED_LOCALES]).toEqual(["en", "ha", "ig", "yo"]);
+    for (const locale of LOCALES) {
+      expect(contentLocale(locale)).toBe(locale);
     }
   });
 });

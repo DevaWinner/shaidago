@@ -1,127 +1,124 @@
 {
   "shell": {
     "public": {
-      "footerLabel": null,
-      "footerSources": null,
-      "footerTrust": null,
-      "localeCurrentSuffix": null,
-      "localeLabel": null,
+      "footerLabel": "Nípa ShaidaGo",
+      "footerSources": "Bí a ṣe ń fọwọ́sí àwọn orísun",
+      "footerTrust": "Bí a ṣe ń ka àkọsílẹ̀",
+      "localeCurrentSuffix": "èdè tí a ń lò lọ́wọ́lọ́wọ́",
+      "localeLabel": "Èdè",
       "localeNames": {
-        "en": null,
-        "ha": null,
-        "ig": null,
-        "yo": null
+        "en": "Gẹ̀ẹ́sì",
+        "ha": "Hausa",
+        "ig": "Igbo",
+        "yo": "Yorùbá"
       },
-      "localeUnavailable": null,
-      "navLabel": null,
-      "navLocalities": null,
-      "navReport": null,
-      "navTrust": null,
-      "notEmergency": null,
-      "productName": null,
-      "skipToContent": null,
-      "statusRegionLabel": null
+      "localeUnavailable": "a kò tíì ṣàyẹ̀wò",
+      "navLabel": "Àkójọ àkọ́kọ́",
+      "navLocalities": "Àwọn àgbègbè",
+      "navReport": "Jábọ̀ nípa ìṣòro kan",
+      "navTrust": "Bí àwọn àkọsílẹ̀ ṣe ń ṣiṣẹ́",
+      "notEmergency": "ShaidaGo kì í ṣe iṣẹ́ pàjáwìrì. Bí ẹnì kan bá wà nínú ewu, kọ́kọ́ kàn sí àwọn iṣẹ́ pàjáwìrì agbègbè.",
+      "productName": "ShaidaGo",
+      "skipToContent": "Lọ sí àkóónú pàtàkì",
+      "statusRegionLabel": "Ìsopọ̀ àti ipò ojú ìwé"
     },
     "reviewer": {
-      "area": null,
-      "navLabel": null,
-      "productName": null,
-      "queue": null,
-      "skipToContent": null
+      "area": "Olùṣàyẹ̀wò",
+      "navLabel": "Olùṣàyẹ̀wò",
+      "productName": "ShaidaGo",
+      "queue": "Àtòjọ àwọn ìròyìn fún àyẹ̀wò",
+      "skipToContent": "Lọ sí àkóónú pàtàkì"
     }
   },
   "evidence": {
     "verification": {
-      "awaiting_verification": null,
-      "verified_official": null,
-      "corroborated": null,
-      "community_reviewed": null,
-      "disputed": null,
-      "outdated": null
+      "awaiting_verification": "Ń dúró de ìjẹ́rìísí",
+      "verified_official": "Orísun aláṣẹ kan ti fìdí rẹ̀ múlẹ̀",
+      "corroborated": "Orísun tó ju ẹyọ kan lọ ti fìdí rẹ̀ múlẹ̀",
+      "community_reviewed": "Ẹ̀rí àwùjọ tí a ti ṣàyẹ̀wò",
+      "disputed": "Àwọn orísun kò fara mọ́ra",
+      "outdated": "Ó lè jẹ́ àlàyé àtijọ́"
     },
     "informationClass": {
-      "official_source": null,
-      "independent_source": null,
-      "community_evidence_reviewed": null,
-      "community_report_unverified": null,
-      "ai_generated_explanation": null
+      "official_source": "Orísun aláṣẹ",
+      "independent_source": "Orísun olómìnira",
+      "community_evidence_reviewed": "Ẹ̀rí àwùjọ tí a ti ṣàyẹ̀wò",
+      "community_report_unverified": "Ìròyìn àwùjọ, a kò tíì fìdí rẹ̀ múlẹ̀",
+      "ai_generated_explanation": "Àlàyé tí AI ṣe, kì í ṣe orísun"
     },
     "availability": {
-      "unchecked": null,
-      "available": null,
-      "temporarily_unavailable": null,
-      "access_restricted": null,
-      "permanently_unavailable": null
+      "unchecked": "A kò tíì ṣàyẹ̀wò",
+      "available": "Ó wà",
+      "temporarily_unavailable": "Kò sí fún ìgbà díẹ̀",
+      "access_restricted": "A ti dín ààyè ìwọlé kù",
+      "permanently_unavailable": "Kò sí mọ́"
     },
     "dates": {
-      "effective": null,
-      "lastChecked": null,
-      "published": null,
-      "retrieved": null,
-      "unknown": null
+      "effective": "Ọjọ́ tí ó bẹ̀rẹ̀ sí í ṣiṣẹ́",
+      "lastChecked": "Àyẹ̀wò tó kẹ́yìn",
+      "published": "A tẹ̀ jáde",
+      "retrieved": "A gba wọlé",
+      "unknown": "A kò kọ ọ́ sílẹ̀"
     },
     "source": {
-      "availabilityHeading": null,
-      "externalNotice": null,
-      "publisherHeading": null
+      "availabilityHeading": "Wíwà nílẹ̀",
+      "externalNotice": "yóò ṣí orísun náà nínú taabu tuntun",
+      "publisherHeading": "Olùtẹ̀jáde"
     },
     "translation": {
-      "reviewed": null,
-      "machine_assisted": null,
-      "unavailable": null
+      "reviewed": "Ìtumọ̀ tí a ti ṣàyẹ̀wò",
+      "machine_assisted": "Ìtumọ̀ tí ẹ̀rọ ṣèrànwọ́ láti ṣe, ẹni tó mọ èdè náà dáadáa kò tíì ṣàyẹ̀wò rẹ̀",
+      "unavailable": "Kò sí ìtumọ̀; a ń fi èyí ojúlówó hàn"
     },
     "timeline": {
-      "official": null,
-      "community_reviewed": null
+      "official": "Ìmúdójúìwọ̀n láti ọ̀dọ̀ aláṣẹ",
+      "community_reviewed": "Ẹ̀rí àwùjọ tí a ti ṣàyẹ̀wò"
     }
   },
   "landing": {
-    "browse": null,
-    "citedLabel": null,
-    "citationBack": null,
-    "evidenceHeading": null,
-    "heading": null,
-    "lead": null,
-    "localityLabel": null,
-    "recordKind": null,
-    "report": null,
-    "reportNote": null,
+    "browse": "Ṣàwárí àwọn àkọsílẹ̀ iṣẹ́ àkànṣe",
+    "citedLabel": "Àwọn orísun fún gbólóhùn yìí",
+    "citationBack": "Padà sí gbólóhùn náà",
+    "evidenceHeading": "Ẹ̀rí tó ní ọjọ́",
+    "heading": "Àwọn àkọsílẹ̀ iṣẹ́ àkànṣe gbogbogbò ti AMAC àti Bwari, pẹ̀lú àwọn orísun wọn",
+    "lead": "Àkọsílẹ̀ kọ̀ọ̀kan ń fi ohun tí a ṣèlérí, ohun tí àwọn orísun sọ, ìgbà tí a ṣàyẹ̀wò rẹ̀ gbẹ̀yìn, àti ohun tí a kò tíì mọ̀ hàn.",
+    "localityLabel": "Àpẹẹrẹ àgbègbè",
+    "recordKind": "Àkọsílẹ̀ iṣẹ́ àkànṣe gbogbogbò",
+    "report": "Jábọ̀ nípa ìṣòro kan ní ìkọ̀kọ̀",
+    "reportNote": "Àwọn ìròyìn jẹ́ àṣírí, a kì í sì tẹ̀ wọ́n jáde láìfọwọ́yí.",
     "sample": {
       "citation": {
-        "locationLabel": null,
-        "passage": null,
-        "publisher": null,
-        "sourceTitle": null
+        "locationLabel": "abala àpẹẹrẹ",
+        "passage": "Àpẹẹrẹ ọ̀rọ̀: a ṣe àkọsílẹ̀ àtúnṣe ilé ìwòsàn àdúgbò gẹ́gẹ́ bí ohun tí a wéwèé fún ọdún tó ń bọ̀.",
+        "publisher": "Àpẹẹrẹ olùtẹ̀jáde",
+        "sourceTitle": "Àpẹẹrẹ ìkéde ètò"
       },
-      "heading": null,
-      "notice": null,
-      "noticeTitle": null,
-      "promised": null,
+      "heading": "Àpẹẹrẹ: àtúnṣe ilé ìwòsàn àdúgbò",
+      "notice": "Àpẹẹrẹ àròsọ ni èyí. Ó ń fi bí a ṣe ṣètò àkọsílẹ̀ hàn; kì í ṣe iṣẹ́ àkànṣe tàbí orísun gidi.",
+      "noticeTitle": "Àpẹẹrẹ nìkan",
+      "promised": "Ìlérí: ilé ìwòsàn àdúgbò tí a tún ṣe.",
       "railEntries": {
-        "community": null,
-        "official": null
+        "community": "A gba àkọsílẹ̀ ìbẹ̀wò kan, ó sì ń dúró de àyẹ̀wò.",
+        "official": "Ìkéde ètò náà ṣe àkọsílẹ̀ ilé ìwòsàn náà gẹ́gẹ́ bí ohun tí a wéwèé."
       },
-      "sourceCount": null,
-      "sourceLabel": null,
-      "stateLabel": null,
-      "stateText": null
+      "sourceCount": "{count, plural, one {# orísun} other {# àwọn orísun}}",
+      "sourceLabel": "Orísun {number, number}",
+      "stateLabel": "Ipò tí a mọ̀ lọ́wọ́lọ́wọ́",
+      "stateText": "A ṣe àkọsílẹ̀ rẹ̀ gẹ́gẹ́ bí ohun tí a wéwèé. A kò tíì fìdí ìlọsíwájú rẹ̀ múlẹ̀."
     }
   },
   "recovery": {
     "notFound": {
-      "title": null,
-      "body": null,
-      "home": null
+      "title": "Ojú ìwé yìí kò sí",
+      "body": "Ṣàyẹ̀wò àdírẹ́sì náà tàbí padà sí ojú ìwé àkọ́kọ́. ShaidaGo kì í fìdí rẹ̀ múlẹ̀ bóyá àkọsílẹ̀ àṣírí kan wà.",
+      "home": "Padà sí ShaidaGo"
     },
     "error": {
-      "title": null,
-      "body": null,
-      "retry": null,
-      "reference": null
+      "title": "A kò lè ṣí ojú ìwé yìí",
+      "body": "Gbìyànjú lẹ́ẹ̀kan sí i. Bí ìṣòro náà bá ń bá a lọ, fi nọ́ńbà ìtọ́kasí ìrànlọ́wọ́ ránṣẹ́ láìfi àlàyé àṣírí kún un.",
+      "retry": "Gbìyànjú lẹ́ẹ̀kan sí i",
+      "reference": "Nọ́ńbà ìtọ́kasí ìrànlọ́wọ́: {reference}"
     },
-    "loading": null,
-    "fatal": {
-      "title": null
-    }
+    "loading": "A ń múra ojú ìwé yìí sílẹ̀."
   }
 }

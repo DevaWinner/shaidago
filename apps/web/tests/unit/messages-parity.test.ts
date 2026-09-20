@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 
 // @ts-expect-error -- plain ESM script shared with the CLI; it has no type declarations.
 import { LOCALES, checkCatalogues, describeMessage } from "../../scripts/messages-parity.mjs";
-import { contentLocale, REVIEWED_LOCALES } from "@/i18n/routing";
+import { REVIEWED_LOCALES } from "@/i18n/routing";
 
 type Json = Record<string, unknown>;
 const root = join(import.meta.dirname, "..", "..", "messages");
@@ -74,21 +74,22 @@ describe("real catalogues", () => {
     expect(checkCatalogues({ catalogues, status: read("status") })).toEqual([]);
   });
 
-  it("serve English as reviewed source and mark the other locales pending, so they are not served as their own language", () => {
+  it("mark every locale and domain reviewed with a named reviewer and date, so all four are served as themselves", () => {
     const status = read("status") as {
-      locales: Record<string, Record<string, { status: string }>>;
+      locales: Record<
+        string,
+        Record<string, { status: string; reviewer?: string; reviewedOn?: string }>
+      >;
     };
 
-    expect(
-      Object.values(status.locales["en"] ?? {}).every((domain) => domain.status === "reviewed")
-    ).toBe(true);
-    for (const locale of ["ha", "ig", "yo"]) {
-      expect(
-        Object.values(status.locales[locale] ?? {}).every((domain) => domain.status === "pending")
-      ).toBe(true);
+    for (const locale of LOCALES as string[]) {
+      for (const [domain, record] of Object.entries(status.locales[locale] ?? {})) {
+        expect(record.status, `${locale}.${domain}`).toBe("reviewed");
+        expect(record.reviewer, `${locale}.${domain}`).toMatch(/\S/);
+        expect(record.reviewedOn, `${locale}.${domain}`).toBe("2026-09-20");
+      }
     }
-    expect([...REVIEWED_LOCALES]).toEqual(["en"]);
-    expect(contentLocale("yo")).toBe("en");
+    expect([...REVIEWED_LOCALES]).toEqual(["en", "ha", "ig", "yo"]);
   });
 });
 

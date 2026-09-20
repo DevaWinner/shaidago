@@ -1,6 +1,15 @@
 import { describe, expect, it, vi } from "vitest";
 
 import en from "../../messages/en.json";
+import ha from "../../messages/ha.json";
+import ig from "../../messages/ig.json";
+import yo from "../../messages/yo.json";
+
+type Json = Record<string, unknown>;
+type StatusFile = {
+  domains: Record<string, unknown>;
+  locales: Record<string, Record<string, unknown>>;
+};
 import { formatMessage, resolveDomain } from "@/i18n/catalogue";
 import { isDomainReviewed } from "@/i18n/routing";
 
@@ -12,53 +21,80 @@ describe("resolveDomain", () => {
     expect(copy).toMatchObject({ language: "en", isOriginal: false });
   });
 
-  it("returns the flagged English original, never blank or partial text, for pending locales", () => {
+  it("serves a reviewed locale's own complete copy in its own language", () => {
+    const catalogues = { ha, ig, yo };
+
     for (const locale of ["ha", "ig", "yo"] as const) {
       for (const domain of ["shell", "evidence", "landing", "recovery"] as const) {
         const copy = resolveDomain(locale, domain);
 
-        expect(copy.language, `${locale}.${domain}`).toBe("en");
-        expect(copy.isOriginal, `${locale}.${domain}`).toBe(true);
-        expect(copy.messages, `${locale}.${domain}`).toBe(en[domain]);
+        expect(copy, `${locale}.${domain}`).toMatchObject({ language: locale, isOriginal: false });
+        expect(copy.messages, `${locale}.${domain}`).toBe(catalogues[locale][domain]);
       }
     }
+    expect(isDomainReviewed("ha", "shell")).toBe(true);
   });
 
-  it("marks every critical domain of a pending locale as an original so a notice is always shown", () => {
-    expect(isDomainReviewed("ha", "shell")).toBe(false);
-    expect(isDomainReviewed("en", "shell")).toBe(true);
-    expect(resolveDomain("yo", "recovery").isOriginal).toBe(true);
+  async function withMocks(
+    status: (real: StatusFile) => StatusFile,
+    catalogue?: (real: Json) => Json
+  ) {
+    vi.resetModules();
+    vi.doMock("../../messages/status.json", async () => {
+      const real = (await vi.importActual<{ default: StatusFile }>("../../messages/status.json"))
+        .default;
+
+      return { default: status(structuredClone(real)) };
+    });
+    if (catalogue !== undefined) {
+      vi.doMock("../../messages/ha.json", async () => {
+        const real = (await vi.importActual<{ default: Json }>("../../messages/ha.json")).default;
+
+        return { default: catalogue(structuredClone(real)) };
+      });
+    }
+
+    return import("@/i18n/catalogue");
+  }
+
+  it("returns the flagged English original when a domain is not reviewed, never blank or partial text", async () => {
+    const { resolveDomain: resolveWith } = await withMocks((real) => {
+      real.locales["ha"] = Object.fromEntries(
+        Object.keys(real.domains).map((domain) => [domain, { status: "pending" }])
+      );
+
+      return real;
+    });
+
+    for (const domain of ["shell", "evidence", "landing", "recovery"] as const) {
+      const copy = resolveWith("ha", domain);
+
+      expect(copy, domain).toMatchObject({ language: "en", isOriginal: true });
+      // A reset module graph reloads the JSON, so compare by value, not identity.
+      expect(copy.messages, domain).toEqual(en[domain]);
+    }
+    vi.doUnmock("../../messages/status.json");
+    vi.resetModules();
   });
 
   it("falls back, flagged, when a domain is marked reviewed but has a pending key", async () => {
-    vi.resetModules();
-    vi.doMock("../../messages/status.json", async () => {
-      const real = (
-        await vi.importActual<{ default: Record<string, unknown> }>("../../messages/status.json")
-      ).default as { domains: unknown; locales: Record<string, Record<string, unknown>> };
+    const { resolveDomain: resolveWith } = await withMocks(
+      (real) => real,
+      (real) => {
+        (real["shell"] as Json)["public"] = {
+          ...((real["shell"] as Json)["public"] as Json),
+          productName: null
+        };
 
-      return {
-        default: {
-          ...real,
-          locales: {
-            ...real.locales,
-            ha: Object.fromEntries(
-              Object.keys(real.locales["ha"] ?? {}).map((domain) => [
-                domain,
-                { status: "reviewed", reviewer: "test", reviewedOn: "2026-09-20" }
-              ])
-            )
-          }
-        }
-      };
-    });
+        return real;
+      }
+    );
 
-    const { resolveDomain: resolveWithStatus } = await import("@/i18n/catalogue");
-    const copy = resolveWithStatus("ha", "shell");
-
-    // `ha.json` still holds nulls, so "reviewed" alone must not serve blanks.
-    expect(copy).toMatchObject({ language: "en", isOriginal: true });
+    expect(resolveWith("ha", "shell")).toMatchObject({ language: "en", isOriginal: true });
+    // A domain that is complete still serves its own language.
+    expect(resolveWith("ha", "recovery")).toMatchObject({ language: "ha", isOriginal: false });
     vi.doUnmock("../../messages/status.json");
+    vi.doUnmock("../../messages/ha.json");
     vi.resetModules();
   });
 });

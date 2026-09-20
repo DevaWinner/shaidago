@@ -39,44 +39,68 @@
     },
     "ha": {
       "shell": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "evidence": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "recovery": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "landing": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewedOn": "2026-09-20"
       }
     },
     "ig": {
       "shell": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "evidence": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "recovery": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "landing": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewedOn": "2026-09-20"
       }
     },
     "yo": {
       "shell": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "evidence": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "recovery": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewedOn": "2026-09-20"
       },
       "landing": {
-        "status": "pending"
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)",
+        "reviewedOn": "2026-09-20"
       }
     }
   }

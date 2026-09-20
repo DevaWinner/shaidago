@@ -119,9 +119,6 @@
       "retry": "Try again",
       "reference": "Support reference: {reference}"
     },
-    "loading": "Preparing this page.",
-    "fatal": {
-      "title": "ShaidaGo could not be opened"
-    }
+    "loading": "Preparing this page."
   }
 }

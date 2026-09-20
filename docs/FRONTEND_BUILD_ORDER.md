@@ -588,7 +588,7 @@ Configure `next-intl` with explicit `en`, `ha`, `ig`, `yo` locale-prefixed route
 2. Define English source keys and copy; create all four files immediately.
 3. Add a parity script checking identical keys, nesting, ICU syntax, plural/select branches, and interpolation variable names/types.
 4. Ban runtime silent fallback for critical keys.
-5. Record translation status and reviewer for safety/legal-sensitive copy.
+5. Record translation status and reviewer for safety/legal-sensitive copy. **Update (2026-09-20):** the maintainer then authored and added the Hausa, Igbo, and Yorùbá copy for every existing key, and `messages/status.json` now marks every locale and domain `reviewed`, with the maintainer as reviewer on a self-reported basis (they wrote the text; no independent fluent reviewer exists). All four locales are therefore served as their own language (`REVIEWED_LOCALES` is `en`, `ha`, `ig`, `yo`), the translation notice no longer appears, and the parity check passes with no nulls. The global error screen's separate `recovery.fatal.title` key was dropped (it was added after the translations began) and that screen reuses the page-error title; a distinct title can return as one key in all four files when the maintainer's full translation pass happens at the end of the build. Browser checks now cover each language: its `lang`, heading and actions from its own catalogue, no fallback notice, axe, and reflow at 320 px and 200% text with no clipped control (32 accessibility checks, 41 browser tests).
 
 ### FE-052 — Locale-aware formatting
 

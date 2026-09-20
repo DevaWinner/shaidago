@@ -48,7 +48,7 @@ describe("recovery boundaries", () => {
       />
     );
 
-    expect(screen.getByRole("heading", { name: "ShaidaGo could not be opened" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "This page could not be loaded" })).toBeVisible();
     expect(screen.queryByText(/provider token|private-value/i)).not.toBeInTheDocument();
   });
 });

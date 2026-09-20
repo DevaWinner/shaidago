@@ -2026,3 +2026,22 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the formatters and wrote the boundary tests.
 - **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — Hausa, Igbo, and Yorùbá copy added and served
+
+- **Task:** Bring the maintainer's translations into the build and serve all four locales as themselves (follow-up to FE-050 and FE-051).
+- **User outcome delivered:** Residents opening `/ha`, `/ig`, or `/yo` now get the landing page, shell, evidence labels, and recovery pages in that language, with the correct `lang`, and no "showing the original" notice.
+- **Files changed:** `apps/web/messages/{ha,ig,yo,status,en}.json`, `apps/web/app/global-error.tsx`, unit, component, browser, and accessibility tests (new `tests/a11y/locales.a11y.spec.ts`), `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None.
+- **Public/private data handled:** Public static copy only.
+- **States implemented:** reviewed status for every locale and domain; fallback-with-notice remains implemented and is now covered by tests that mock a pending or gapped domain.
+- **Accessibility evidence:** axe passes for `en`, `ha`, `ig`, and `yo` in Chromium and mobile WebKit; each locale reflows at 320 px and at 200% text with no horizontal scroll and no clipped link or button; a phone-width screenshot of `/yo` was inspected (diacritics, wrapping, and the language control intact).
+- **Locales reviewed:** The text in `ha.json`, `ig.json`, and `yo.json` was written by the maintainer, who asked for it to be recorded as not pending. `messages/status.json` records `reviewed` with the reviewer "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)" on 2026-09-20. I did not write, edit, or check the wording of any Hausa, Igbo, or Yorùbá text; the parity checker verified only structure, ICU syntax, variables, and completeness.
+- **Performance/cache impact:** Catalogues are static JSON; the client bundle scan is still clean.
+- **Failure behaviour verified:** the checker found that the maintainer's files lacked `recovery.fatal.title`, a key added after translation began. Rather than write the three missing strings, that key was removed and the global error screen reuses the page-error title; the maintainer plans one full translation pass at the end of the build.
+- **Commands run and results:** `make web-verify` exit 0 (313 unit, 47 component, catalogues consistent, bundle scan clean); `make web-e2e` 41 passed and 1 skipped (iOS WebKit Tab-to-link); `make web-a11y` 32 passed; `pnpm audit --prod` clean.
+- **Known limitations/open decisions:** Igbo and Yorùbá CLDR formatting data in the runtime is thin (for example relative days and one time format); the landing page uses only long dates, which render acceptably, but relative and clock formatting must be reviewed before any surface uses them in those languages. The maintainer plans a full translation pass at the end, including any new keys; new domains added before then must be marked pending and non-critical so they do not flip a locale back to English.
+- **Commit/PR:** `feat: serve reviewed Hausa, Igbo, and Yorùbá copy`
+- **AI assistance used:** Integrated the maintainer's translations, updated the status and tests, and added per-locale browser checks.
+- **Prompt summary:** Maintainer added translations and asked that they not be pending and that the work be committed.
+- **Human review:** The maintainer authored the translations and set their status by instruction; the code and test changes have not been reviewed by anyone else.
