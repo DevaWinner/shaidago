@@ -10,6 +10,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prepare:standalone": "node scripts/prepare-standalone.mjs",
+    "start:standalone": "pnpm run prepare:standalone && node .next/standalone/apps/web/server.js",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
@@ -25,6 +27,7 @@
     "a11y": "pnpm run build && playwright test --config tests/playwright.a11y.config.ts"
   },
   "dependencies": {
+    "@base-ui/react": "1.8.0",
     "next": "16.3.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -35,6 +38,7 @@
     "@axe-core/playwright": "4.13.0",
     "@eslint/js": "9.39.5",
     "@playwright/test": "1.63.0",
+    "@tailwindcss/postcss": "4.3.3",
     "@testing-library/jest-dom": "7.0.1",
     "@testing-library/react": "16.3.3",
     "@testing-library/user-event": "14.6.7",
@@ -54,6 +58,7 @@
     "jsdom": "30.0.1",
     "msw": "2.15.0",
     "prettier": "3.9.6",
+    "tailwindcss": "4.3.3",
     "typescript": "5.9.3",
     "vitest": "5.0.0"
   }

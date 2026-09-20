@@ -1636,3 +1636,103 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Implemented the workflow and its negative-path validator, resolved the setup action revision, and kept browser data artifacts out of pull-request visibility.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
 - **Human review:** none yet; unattended loop, pending maintainer review.
+## 2026-09-20 — FE-010 visual-direction discovery (resolved)
+
+- **Task:** FE-010 — One-round design discovery.
+- **User outcome delivered:** The maintainer's Field ledger choice now constrains the public product before any visible component is built.
+- **Routes/components changed:** No runtime route or component changed. [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) records the accepted pre-implementation constraints.
+- **Backend operations/contract version:** No backend operation or contract changed.
+- **Public/private data handled:** No runtime data flow changed. The direction explicitly preserves the public-record/private-report boundary.
+- **States implemented:** No UI state changed; the decision requires all later visual states to retain text labels, timestamps, and explicit evidence boundaries.
+- **Accessibility evidence:** The approved constraints require four-locale typography, text-first public reading, keyboard-visible evidence links, reduced-motion equivalence, and low-data resilience. These are direction requirements, not completed UI evidence.
+- **Locales reviewed:** No message copy or translation changed.
+- **Performance/cache impact:** No runtime bundle or cache changed. The direction prohibits decorative dependencies as a substitute for evidence and requires a text-first fallback.
+- **Commands run and results:** Ran Impeccable's direction concept seed and local decision board. The maintainer selected Field ledger; no generated image, remote asset, runtime UI, or provider data was introduced.
+- **Screenshots/traces/artifacts checked:** No product surface exists yet. Temporary local decision-board artifacts were removed after the selection was recorded.
+- **Known limitations/open decisions:** FE-011 through FE-013 remain to record the comparison, workflow preference, and implementation contract. `DESIGN.md` remains intentionally absent until Circle 15.
+- **Commit/PR:** `docs: record the approved field ledger direction`
+- **Next task may rely on:** FE-011 may evaluate the accepted direction against the alternatives; no visible product UI is authorised until the complete Circle 1 gate closes.
+- **AI assistance used:** Presented a product-grounded visual-direction hand and translated the maintainer's selection into concrete trust and boundary constraints.
+- **Prompt summary:** Using Impeccable, present choices for ShaidaGo's frontend feel, look, and tokens; maintainer selected Field ledger.
+- **Human review:** The maintainer explicitly selected Field ledger on 20 September 2026.
+
+## 2026-09-20 — FE-011 compare visual directions
+
+- **Task:** FE-011 — Generate and compare visual directions.
+- **User outcome delivered:** Field ledger was selected from a product-grounded hand, with its evidence and privacy behaviour defined before components can dilute it.
+- **Routes/components changed:** No runtime route or component changed. [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) now records the comparison and cross-surface visual grammar.
+- **Backend operations/contract version:** No backend operation or contract changed.
+- **Public/private data handled:** No runtime data changed. The selected grammar makes public evidence, private reporting, and reviewer-only material visibly separate without inventing a new authorisation rule.
+- **States implemented:** No UI state changed. The contract requires text and icon labels alongside state colour, dated in-place history, and explicit limited-evidence/review states.
+- **Accessibility evidence:** Citation stitch is specified as keyboard-operable, programmatically announced, no-JavaScript reachable links; narrow/low-data behaviour is explicit. These requirements await implementation tests.
+- **Locales reviewed:** No message copy or translation changed. The typography direction requires all four locale scripts/diacritics to be tested before use.
+- **Performance/cache impact:** No runtime bundle, asset, or cache changed. The selected path forbids decorative media or motion from being required for evidence reading.
+- **Commands run and results:** The Impeccable direction seed and local decision board completed before the human selection. Documentation validation remains limited to the project validators because no visual implementation exists.
+- **Screenshots/traces/artifacts checked:** No product screenshot or comp exists; code-led execution is recorded in FE-012.
+- **Known limitations/open decisions:** Exact token values, first-viewport contract, and initial route surface brief are FE-012/FE-013 work. `DESIGN.md` remains intentionally deferred.
+- **Commit/PR:** `docs: define the field ledger visual system`
+- **Next task may rely on:** FE-012 can select and persist the workflow path without re-opening the visual-world decision.
+- **AI assistance used:** Framed and evaluated candidate worlds against audience identification and product clarity, then documented the maintainer's selected system without using unverified cultural or public-record claims.
+- **Prompt summary:** Using Impeccable, present choices for ShaidaGo's frontend feel, look, and tokens; maintainer selected Field ledger.
+- **Human review:** The maintainer selected Field ledger after the comparison on 20 September 2026.
+
+## 2026-09-20 — FE-012 choose code-led execution
+
+- **Task:** FE-012 — Choose comp-led or code-led execution.
+- **User outcome delivered:** The frontend has a durable code-led workflow preference, so future UI work has an explicit fidelity contract instead of treating the absence of a comp as permission to use defaults.
+- **Routes/components changed:** No runtime route or component changed. [`.impeccable/config.json`](../.impeccable/config.json) sets the standing workflow; [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) explains the execution implications.
+- **Backend operations/contract version:** No backend operation or contract changed.
+- **Public/private data handled:** No data flow changed.
+- **States implemented:** No UI state changed. Future states must preserve the selected world without visual motion or media being necessary to understand a state.
+- **Accessibility evidence:** The workflow requires keyboard, semantic, reduced-motion, responsive, and low-data evidence when components are built; none can be claimed before implementation.
+- **Locales reviewed:** No message copy or translation changed.
+- **Performance/cache impact:** No runtime asset, bundle, or cache changed. Code-led execution avoids making the public experience depend on generated raster imagery.
+- **Commands run and results:** Verified the committed JSON is intentionally minimal and valid; project documentation validators remain the available checks before the frontend toolchain branch is integrated.
+- **Screenshots/traces/artifacts checked:** None; a code-led direction has no approved comp. Later visual review compares renders to the written direction contract.
+- **Known limitations/open decisions:** FE-013 must now define the exact first viewport and token roles. `DESIGN.md` remains deferred until the reviewed product exists.
+- **Commit/PR:** `docs: set the code-led visual workflow`
+- **Next task may rely on:** FE-013 can write the implementation contract without inventing an execution preference.
+- **AI assistance used:** Explained the code-led trade-off and persisted the selection without adding imagery, providers, or runtime dependencies.
+- **Prompt summary:** Using Impeccable, present choices for ShaidaGo's frontend feel, look, and tokens; maintainer selected Field ledger.
+- **Human review:** The Field ledger decision board recorded code-led execution as the selected build path on 20 September 2026.
+
+## 2026-09-20 — FE-013 Field ledger direction contract
+
+- **Task:** FE-013 — Direction contract and surface brief.
+- **User outcome delivered:** Future frontend work now has an exact Field ledger visual contract: semantic starting tokens, a code-led first viewport, evidence interaction, responsive behaviour, mode-specific grammar, and explicit anti-default boundaries.
+- **Routes/components changed:** No runtime route or component changed. [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) adds the contract and `/{locale}` surface brief; `PRODUCT.md` now records the accepted brand commitment.
+- **Backend operations/contract version:** No backend operation or contract changed.
+- **Public/private data handled:** No runtime data flow changed. The contract explicitly preserves source attribution, private-report separation, no one-time-secret display, and public/private cache differences.
+- **States implemented:** No UI state changed. Later components must implement the named loading, empty, stale, limited-evidence, error, and recovery grammar.
+- **Accessibility evidence:** The contract requires visible keyboard focus, semantic citation links, text-plus-icon-plus-colour states, 200% zoom, forced colours, reduced motion, and four-locale text testing. No implementation test is claimed yet.
+- **Locales reviewed:** No message copy or translation changed. Noto font coverage and rendered Hausa, Igbo, Yoruba, and English locale expansion are explicit future verification requirements.
+- **Performance/cache impact:** No runtime bundle, cache, font, image, or provider request changed. The direction rejects a decorative asset dependency and keeps public pages text-first; private-cache rules remain unchanged.
+- **Commands run and results:** Ran all five current frontend contract/inventory validators after the documentation change; each passed. `git diff --check` passed. No planned frontend command or visual test is reported as run.
+- **Screenshots/traces/artifacts checked:** No runtime surface, comp, or screenshot exists. `DESIGN.md` is intentionally absent until the Circle 15 render/review gate.
+- **Known limitations/open decisions:** Actual primitives, font licensing/subsetting, contrast values, layout implementation, and visual verification belong to Circle 4 and later. The contract is authoritative until a reviewed implementation updates the final design documentation.
+- **Commit/PR:** `docs: establish the field ledger direction contract`
+- **Next task may rely on:** Circle 4 design-foundation work can implement tokens and primitives; all visible work must preserve this contract.
+- **AI assistance used:** Converted the selected direction into a bounded implementation contract and semantic token system while retaining the product's evidence, accessibility, locale, low-data, and privacy constraints.
+- **Prompt summary:** Using Impeccable, present choices for ShaidaGo's frontend feel, look, and tokens; maintainer selected Field ledger.
+- **Human review:** The maintainer selected Field ledger and the decision board recorded code-led execution on 20 September 2026.
+
+## 2026-09-20 — FE-040 Field Ledger token foundation
+
+- **Task:** FE-040 — Implement tokens from the approved world.
+- **User outcome delivered:** The web foundation now has one semantic, Field Ledger token layer for warm paper surfaces, readable evidence/review states, responsive rhythm, motion, focus, selected, disabled, and read-only behaviour. The token stylesheet is compiled into the production standalone output, not merely available during development.
+- **Files changed:** `apps/web/app/globals.css`, `apps/web/app/layout.tsx`, `apps/web/postcss.config.mjs`, `apps/web/scripts/prepare-standalone.mjs`, `apps/web/tests/unit/design-tokens.test.ts`, the Playwright configuration and foundation browser assertion, `apps/web/package.json`, `pnpm-lock.yaml`, `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** No BFF handler, API operation, generated client, database schema, or OpenAPI contract changed.
+- **Public/private data handled:** No data is fetched, stored, logged, cached, or sent to a third party. The layer contains no provider, font, image, or external asset request. It does not create an evidence, report, or publication state.
+- **States implemented:** Semantic visual roles cover reviewed, under-review, limited-evidence, unavailable, and problem status; components must still pair those values with explicit text and icons. Focus, selected, disabled, read-only, reduced-motion, increased-contrast, and forced-colour treatments are defined as global foundation behaviour.
+- **Accessibility evidence:** Unit tests calculate WCAG AA contrast for thirteen canonical foreground/background state pairs and assert forced-colours, increased-contrast, focus-visible, and reduced-motion overrides. Standalone Chromium and mobile WebKit checks assert the compiled canvas token and fluid title style are present; axe has no automated violations in either target. No claim is made that later interactive primitives have their required keyboard tests.
+- **Locales reviewed:** No message or route changed. `Noto Sans`/`Noto Serif` remain local-preference names followed by system fallbacks; no font is downloaded. Fluent rendering and parity for `en`, `ha`, `ig`, and `yo` remain FE-050 work.
+- **Performance/cache impact:** Tailwind CSS 4.3.3 and its PostCSS adapter are MIT-licensed build-time dependencies that emit static CSS with no browser runtime. The standalone preparation script copies only local compiled static assets and a future public directory. No cache policy or private response handling changed.
+- **Failure behaviour verified:** A real-browser capture exposed that the old standalone test command omitted compiled static assets and therefore rendered without CSS. `start:standalone` now prepares that output before every browser/a11y run, and the browser assertion fails if the computed Field Ledger token is absent. An early token test incorrectly read an increased-contrast override as the base palette; its parser was narrowed to the first root block before acceptance.
+- **Commands run and results:** `pnpm --dir apps/web install --frozen-lockfile` passed after lockfile regeneration; `format:check`, lint, strict typecheck, unit (32 tests), component (4 tests), coverage (36 tests; 96.72% statements, 86.48% branches, 94.44% functions, 96.61% lines), contract drift check, boundary build/scan (13 client chunks), E2E (4 tests across Chromium and mobile WebKit), a11y (2 tests across Chromium and mobile WebKit), and `make web-verify` all passed. `git diff --check` is rerun before commit.
+- **Screenshots/traces/artifacts checked:** Reviewed a local desktop production-standalone capture after static asset preparation. It shows the warm canvas, constrained gutter, and fluid type foundation; the temporary capture is not committed. Impeccable's mechanical detector reported no generic UI anti-patterns for `apps/web/app`.
+- **Known limitations/open decisions:** This is the provisional token foundation, not the complete public shell or first viewport. FE-041 owns accessible primitives, FE-042 evidence components, FE-043 shells, and FE-044 code-led viewport proof. `DESIGN.md` remains intentionally absent until Circle 15.
+- **Commit/PR:** `feat: establish field ledger design tokens`
+- **Next task may rely on:** Semantic CSS/Tailwind aliases, static standalone asset preparation, and contrast/preference/browser proof. It must not infer product truth or authorisation from a token.
+- **AI assistance used:** Implemented the approved semantic system, selected Tailwind's documented v4 PostCSS integration, added deterministic contrast/preference tests, and corrected the standalone browser-serving defect found by visual inspection.
+- **Prompt summary:** Continue frontend work through the established task loop after selecting the Field Ledger direction.
+- **Human review:** none yet; unattended loop, pending maintainer review.

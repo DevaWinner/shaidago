@@ -261,7 +261,7 @@ This circle must pause for human choice. It may run in parallel with non-visual 
 
 ### FE-010 — One-round design discovery
 
-> **Execution status (2026-09-20): blocked.** This unattended loop cannot choose ShaidaGo's visual world. It needs the maintainer's answers to the three questions below and an explicit direction/build-path selection; no visible component, comp, direction contract, or `DESIGN.md` may be created until then. Circle 2 non-visual scaffolding may continue.
+> **Execution status (2026-09-20): complete.** The maintainer selected the Field ledger visual world. [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) records its human-approved trust, cultural, low-data, and accessibility constraints; FE-012 records the selected execution path.
 
 Ask no more than three questions that materially change the work:
 
@@ -272,6 +272,8 @@ Ask no more than three questions that materially change the work:
 Do not ask for CSS values, trendy style names, or a colour preference detached from product truth. Record answers as constraints, not implementation.
 
 ### FE-011 — Generate and compare visual directions
+
+> **Execution status (2026-09-20): complete.** The Impeccable direction round compared the Field ledger, District index, Evidence panes, Accountability board, declined challengers, and category-standard exit. The maintainer selected Field ledger; [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) records the comparison, system grammar, signature interaction, and honest risk.
 
 Use the repository's available visual-direction workflow when present; with the Impeccable tooling, run the new-world concept process in the appropriate visitor modes (`Persuade` for landing, `Operate` for application/reviewer surfaces, `Read` for trust/source surfaces).
 
@@ -290,12 +292,16 @@ Candidates must avoid generic civic-tech dashboards, startup gradients, glass ca
 
 ### FE-012 — Choose comp-led or code-led execution
 
+> **Execution status (2026-09-20): complete.** The maintainer's selected decision state uses the standing code-led workflow, committed in [`.impeccable/config.json`](../.impeccable/config.json). [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) defines its non-negotiable spatial, interaction, responsive, and review obligations.
+
 - **Comp-led:** create/approve a north-star first-viewport composition before code. The approved comp becomes a spatial contract; later screenshots are compared at the same dimensions.
 - **Code-led:** define exact first-viewport composition, signature interaction, and motion grammar in writing; absence of a comp does not reduce the craft bar.
 
 Record the standing preference in `.impeccable/config.json` if that workflow is used. A per-session exception does not silently rewrite team preference.
 
 ### FE-013 — Direction contract and surface brief
+
+> **Execution status (2026-09-20): complete.** [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) defines the Field ledger contract, semantic starting tokens, `/{locale}` surface brief, cross-surface grammar, exact code-led first viewport, citation stitch, responsive transformation, and review boundaries. `DESIGN.md` remains intentionally absent until Circle 15 documents a reviewed implementation.
 
 Write a compact direction contract containing:
 
@@ -310,7 +316,7 @@ Plan for this contract to survive as the first emitted body comment in the root 
 
 ### Circle 1 exit gate
 
-> **Gate status (2026-09-20): open.** Awaiting maintainer-approved visual direction and build path from FE-010. FE-011 through FE-013 and all visible Circle 4+ surfaces remain ineligible; Circle 2/3 work whose dependencies are otherwise met may proceed.
+> **Gate status (2026-09-20): closed.** The maintainer approved Field ledger and the code-led workflow; FE-010 through FE-013 record the human constraints, comparison, execution preference, exact first viewport, token roles, citation interaction, and cross-surface grammar. Visible Circle 4+ tasks may begin only from this contract, not library defaults. `DESIGN.md` remains deferred until Circle 15.
 
 - Human has selected one direction and build path.
 - Direction handles public, report, reviewer, and source-reading modes within one world.
@@ -472,6 +478,8 @@ For every handler, test success, validation, backend problem, timeout, cancellat
 - **Exit:** public and reviewer shells plus core primitives express one distinctive world at mobile and desktop.
 
 ### FE-040 — Implement tokens from the approved world
+
+> **Execution status (2026-09-20): complete.** `apps/web/app/globals.css` now exposes the approved Field Ledger semantic token roles through native CSS and Tailwind 4.3.3 aliases. Unit checks prove base-palette contrast and preference overrides; browser checks prove the compiled token stylesheet is served from standalone output in Chromium and mobile WebKit. `DESIGN.md` remains deliberately absent until Circle 15.
 
 Implement semantic CSS/Tailwind tokens for:
 

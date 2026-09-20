@@ -48,6 +48,13 @@ allows only reviewed `msw` and `unrs-resolver` install hooks. MSW's hook has no 
 future task configures a worker directory; `unrs-resolver` prepares the platform resolver used by
 the ESLint import path.
 
+Tailwind CSS 4.3.3 and `@tailwindcss/postcss` 4.3.3 are MIT-licensed, build-time-only CSS tools.
+They compile the Field Ledger semantic token layer through `postcss.config.mjs`; they add no
+browser runtime, external font request, or third-party asset. `start:standalone` copies Next's
+compiled static assets (and a future `public/` directory when present) into the standalone output
+before browser tests or a local production preview, so those checks exercise the same CSS assets
+served in deployment.
+
 ## Runtime boundary
 
 `next build` must work when `API_INTERNAL_URL` is unreachable. Server Components later call the

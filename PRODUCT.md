@@ -45,13 +45,14 @@ ShaidaGo connects three activities that are usually separated: understanding an 
 - Human review is required before a private report or discovered source can affect the public record.
 - The product is not an emergency service and must show appropriate escalation guidance.
 - No native mobile application, public allegation feed, autonomous publication, legal judgment, nationwide coverage, blockchain, or complex predictive analytics in the proof of concept.
-- Open decisions: human audit/approval of the six source-register candidates; reviewed translations; remaining hosted-service evidence; visual direction; and the standing comp-first or code-first UI workflow preference.
+- Open decisions: human audit/approval of the six source-register candidates; reviewed translations; and remaining hosted-service evidence.
 
 ## Brand Commitments
 
 - Product name: **ShaidaGo**.
 - Tagline: **Track promises. Verify progress. Take action.**
 - Tone: plain, calm, specific, neutral, evidence-led, and safety-conscious. Never sensationalise an allegation or imply certainty that the evidence does not support.
+- Visual direction: **Field ledger** — an evidence-first public record with warm mineral surfaces, restrained rules, visible provenance, and safe action. Its accepted pre-implementation contract is in [`docs/FRONTEND_VISUAL_DIRECTION.md`](docs/FRONTEND_VISUAL_DIRECTION.md); the standing workflow is code-led.
 
 ## Evidence on Hand
 
