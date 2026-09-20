@@ -510,5 +510,218 @@
       "wait": "Try again in about {seconds} seconds."
     },
     "needsScript": "Asking a question needs JavaScript. You can still read every source on this page."
+  },
+  "report": {
+    "title": "Report a concern privately",
+    "needsScript": "Sending a report needs JavaScript. Nothing you type is sent or stored until you choose to send it.",
+    "context": "Reporting about: {title}",
+    "chooser": {
+      "title": "Choose the project your report is about",
+      "lead": "A report is about one project record. Choose the record, then report from its page.",
+      "listHeading": "Project records",
+      "browse": "Browse all project records",
+      "unavailable": "The list of records could not be loaded. Try again in a moment, or browse the records."
+    },
+    "unknownProject": {
+      "title": "We could not open that record",
+      "body": "Check the address, or choose a record from the list.",
+      "choose": "Choose a record"
+    },
+    "steps": {
+      "label": "Report steps",
+      "progress": "Step {number} of {total}",
+      "notice": "Before you start",
+      "observation": "What you saw",
+      "evidence": "Evidence",
+      "anonymity": "How you are identified",
+      "review": "Review and send"
+    },
+    "notice": {
+      "heading": "Before you start",
+      "fictional": "This prototype accepts fictional reports only. Do not enter real names, contact details, or events.",
+      "private": "Your report is private. It is never published automatically. A person reviews it before anything reaches a public record.",
+      "anonymous": "You do not need an account, email address, or phone number.",
+      "limitTitle": "This is not an emergency service",
+      "limit": "ShaidaGo is not an emergency service. It cannot promise protection, an investigation, or a response. If someone is in immediate danger, do not use this form. Contact local emergency services.",
+      "trust": "How records and reports are handled",
+      "start": "I understand. Continue"
+    },
+    "observation": {
+      "heading": "What you saw",
+      "categoryLabel": "What kind of concern is it?",
+      "categoryPlaceholder": "Choose a kind of concern",
+      "categories": {
+        "no_visible_work": "No visible work at the site",
+        "incomplete_work": "Work that looks incomplete",
+        "unsafe_construction": "Unsafe construction",
+        "suspected_incorrect_status": "The recorded status looks wrong",
+        "access_barrier": "A barrier to using the project",
+        "other_concern": "Something else"
+      },
+      "descriptionLabel": "What did you see?",
+      "descriptionHint": "Say what you saw, where, and roughly when, in your own words. Write at least {min} and at most {max} characters. Do not include names or contact details.",
+      "counter": "{count} of {max} characters"
+    },
+    "evidence": {
+      "heading": "Evidence",
+      "lead": "Photos or a PDF can help a reviewer. This step is optional.",
+      "hint": "Up to {max} files, {size} MB each. JPEG, PNG, WebP, or PDF.",
+      "pick": "Add a file",
+      "none": "No files added.",
+      "remove": "Remove file {number}",
+      "preview": "Preview of file {number}",
+      "previewNone": "PDF: no preview",
+      "prepared": "Location and camera details were removed in your browser.",
+      "pdfNotPrepared": "A PDF is not changed in your browser. The server checks it and may reject it.",
+      "role": "Your browser removes hidden photo details before sending. The server repeats its own safety checks, and only the server's checks count. A file the server rejects does not stop the report from being received.",
+      "preparing": "Preparing file {number}",
+      "errors": {
+        "unsupported": "File {number} is not a JPEG, PNG, WebP, or PDF, so it was not added.",
+        "tooLarge": "File {number} is larger than {size} MB, so it was not added.",
+        "tooMany": "You can add at most {max} files.",
+        "mismatch": "File {number} is not the kind of file its name says, so it was not added.",
+        "tooManyPixels": "File {number} is too large in pixels to prepare safely, so it was not added.",
+        "failed": "File {number} could not be prepared in your browser, so it was not added. It was not sent.",
+        "empty": "File {number} is empty, so it was not added."
+      }
+    },
+    "anonymity": {
+      "heading": "How you are identified",
+      "lead": "Choose how you want to be known. You can stay fully anonymous.",
+      "modes": {
+        "anonymous": {
+          "label": "Stay fully anonymous (recommended)",
+          "body": "No name, contact, or handle. You can check the status later with the tracking code you receive."
+        },
+        "contact": {
+          "label": "Give a way to contact me",
+          "body": "A reviewer may use it to ask a question. It is optional and stored separately from your report text."
+        },
+        "handle": {
+          "label": "Use a reporter handle",
+          "body": "A handle links your reports without giving your identity.",
+          "warning": "Reviewers can recognise reports under one handle as related. A handle may not suit a very sensitive report."
+        }
+      },
+      "channelLabel": "How should we reach you?",
+      "channels": {
+        "email": "Email",
+        "phone": "Phone",
+        "messaging_app": "Messaging app"
+      },
+      "contactLabel": "Contact detail",
+      "contactHint": "Only give a way you are comfortable being reached. It is shown only to reviewers.",
+      "handleLabel": "Handle",
+      "passphraseLabel": "Passphrase",
+      "reveal": "Show passphrase",
+      "hide": "Hide passphrase",
+      "handleNote": "Your handle and passphrase are checked only when you send the report. They are not kept in this browser.",
+      "createHandle": "Create a handle first"
+    },
+    "review": {
+      "heading": "Review and send",
+      "lead": "Check everything. A report cannot be changed after it is sent.",
+      "rows": {
+        "concern": "Kind of concern",
+        "description": "What you saw",
+        "files": "Files",
+        "identity": "How you are identified"
+      },
+      "noFiles": "No files",
+      "files": "{count} files",
+      "identity": {
+        "anonymous": "Fully anonymous",
+        "contact": "Contact given: {channel}",
+        "handle": "Handle: {handle}. Passphrase hidden."
+      },
+      "change": "Change",
+      "sendNote": "Sending creates a private report. Nothing is published.",
+      "submit": "Send report"
+    },
+    "draft": {
+      "heading": "Save a draft on this device",
+      "consent": "Save what I have written on this device",
+      "warning": "Anyone who uses this browser could read a saved draft. Do not save a draft on a shared or public device. Only the kind of concern and your description are saved. Files, contact details, and handles are never saved. A draft is deleted after 24 hours.",
+      "remove": "Delete the saved draft",
+      "removed": "The saved draft was deleted.",
+      "found": "You have a saved draft from {when}.",
+      "restore": "Restore the draft",
+      "discard": "Delete it",
+      "restored": "The draft was restored.",
+      "unavailable": "This browser cannot save a draft, so nothing was saved."
+    },
+    "send": {
+      "sending": "Sending your report",
+      "progress": "Sent {percent} percent",
+      "cancel": "Cancel sending",
+      "cancelled": "Sending was cancelled. Your report is still here.",
+      "retry": "Send again",
+      "offline": "You appear to be offline. Reconnect, then send again. Your report is still here.",
+      "unknown": "We could not confirm whether your report was received. Send again. The same report will not be created twice.",
+      "fixFields": "Some details need fixing before the report can be sent.",
+      "failedTitle": "The report was not sent",
+      "wait": "Try again in about {seconds} seconds."
+    },
+    "nav": {
+      "back": "Back",
+      "next": "Continue",
+      "stepErrors": "Fix these before continuing",
+      "jump": "Go to the field",
+      "loading": "Loading this step"
+    },
+    "errors": {
+      "category": "Choose a kind of concern.",
+      "descriptionRequired": "Describe what you saw.",
+      "descriptionShort": "Write at least {min} characters.",
+      "descriptionLong": "Write at most {max} characters.",
+      "contact": "Enter a contact detail.",
+      "channel": "Choose how we should reach you.",
+      "handle": "Enter your handle.",
+      "passphrase": "Enter your passphrase."
+    },
+    "complete": {
+      "title": "Your report was received",
+      "lead": "It is private. Nothing was published.",
+      "codeLabel": "Your tracking code",
+      "codeWarning": "This code is shown once. ShaidaGo cannot show it again or recover it. Anyone who has the code can see the report's status.",
+      "copy": "Copy the code",
+      "copied": "Copied",
+      "copyFailed": "Copying is not available here. Select the code and copy it yourself.",
+      "print": "Print",
+      "download": "Download as a text file",
+      "fileText": "ShaidaGo tracking code: {code}\nThis code is shown once. Keep it private.\nThis is a fictional prototype.",
+      "next": {
+        "heading": "What happens next",
+        "save_tracking_code": "Save the tracking code now.",
+        "check_status_later": "Check the status later on the status page. A review can take time.",
+        "see_escalation_guidance": "Read where else a concern can be taken."
+      },
+      "filesHeading": "Your files",
+      "fileKept": "File {number}: kept after the server's checks.",
+      "fileRejected": "File {number}: not kept ({reason}). The report itself was received.",
+      "reasons": {
+        "unsupported_type": "unsupported type",
+        "spoofed_type": "the type did not match",
+        "active_content": "it contained active content",
+        "encrypted_pdf": "the PDF was encrypted",
+        "too_large": "too large",
+        "too_many_pixels": "too many pixels",
+        "too_many_pages": "too many pages",
+        "malformed": "it could not be read",
+        "malware_detected": "a safety check failed",
+        "scan_failed": "the safety check could not run",
+        "storage_failed": "it could not be stored",
+        "timeout": "the check took too long"
+      },
+      "contactSaved": "Your contact detail was saved separately.",
+      "contactNotSaved": "No contact detail was saved.",
+      "track": "Go to the status page",
+      "leave": "I have saved my code. Leave",
+      "lost": {
+        "title": "The tracking code is no longer available",
+        "body": "For your safety the code is shown only once, and it is not stored in this browser. If you did not save it, it cannot be recovered. You can send a new report.",
+        "newReport": "Send a new report"
+      }
+    }
   }
 }

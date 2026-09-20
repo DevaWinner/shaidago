@@ -29,7 +29,9 @@ for (const path of [
   "/ha",
   "/yo/projects",
   "/en/projects/synthetic-record-full",
-  "/en/trust"
+  "/en/trust",
+  "/en/report/synthetic-record-full",
+  "/en/report/complete"
 ]) {
   test(`first-load JavaScript for ${path} stays inside the plan's budget`, async ({
     page

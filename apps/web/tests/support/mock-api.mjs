@@ -436,6 +436,35 @@ function answerFor(detail, question, locale) {
   );
 }
 
+// --- Reports (fictional) -----------------------------------------------------------------------
+// The mock keeps only what a test needs to prove: which fields arrived, how many files, whether any
+// file still carried hidden photo details, and how often one idempotency key was seen. It never
+// keeps a description, contact, handle, or passphrase.
+const receipts = new Map();
+const reportLog = [];
+let reportCounter = 0;
+
+function multipartFacts(buffer) {
+  const text = buffer.toString("latin1");
+  const fields = text
+    .split("Content-Disposition: form-data;")
+    .slice(1)
+    .map((part) => ({
+      name: /name="([a-z_]+)"/.exec(part)?.[1] ?? "",
+      file: part.includes('filename="')
+    }));
+  const files = fields.filter((field) => field.file);
+
+  return {
+    fields: fields.map((field) => field.name),
+    fileCount: files.length,
+    fileNames: [...text.matchAll(/filename="([^"]*)"/g)].map((match) => match[1]),
+    // Only the metadata a test planted counts: a browser encoder may write its own technical headers.
+    exif: text.includes("GPSLatitude") || text.includes("FictionalCam"),
+    text
+  };
+}
+
 let mode = "ok";
 let projects = makeProjects(30);
 const stats = {};
@@ -504,6 +533,16 @@ createServer((request, response) => {
       return;
     }
     response.writeHead(200, { "Content-Type": "application/json" }).end(JSON.stringify(stats));
+    return;
+  }
+  if (path === "/__reports") {
+    if (request.method === "POST") {
+      reportLog.length = 0;
+      receipts.clear();
+      response.writeHead(204).end();
+      return;
+    }
+    response.writeHead(200, { "Content-Type": "application/json" }).end(JSON.stringify(reportLog));
     return;
   }
   if (path === "/health/live") {
@@ -601,6 +640,99 @@ createServer((request, response) => {
       },
       locale
     );
+    return;
+  }
+
+  if (path === "/v1/reports" && request.method === "POST") {
+    const chunks = [];
+    request.on("data", (chunk) => chunks.push(chunk));
+    request.on("end", () => {
+      const key = String(request.headers["idempotency-key"] ?? "");
+      const facts = multipartFacts(Buffer.concat(chunks));
+      const has = (marker) => facts.text.includes(marker);
+      const scenario = [
+        "__ratelimit",
+        "__unavailable",
+        "__invalid_handle",
+        "__validation",
+        "__conflict",
+        "__slow"
+      ].find(has);
+
+      reportLog.push({
+        key,
+        fields: facts.fields,
+        fileCount: facts.fileCount,
+        fileNames: facts.fileNames,
+        exif: facts.exif,
+        replay: receipts.has(key)
+      });
+
+      if (receipts.has(key)) {
+        response.writeHead(201, {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-store",
+          "Idempotency-Replayed": "true"
+        });
+        response.end(JSON.stringify(receipts.get(key)));
+        return;
+      }
+      if (scenario === "__ratelimit")
+        return problem(response, 429, "rate_limited", { "Retry-After": "30" });
+      if (scenario === "__unavailable") return problem(response, 503, "dependency_unavailable");
+      if (scenario === "__invalid_handle")
+        return problem(response, 403, "invalid_reporter_credentials");
+      if (scenario === "__conflict") return problem(response, 409, "idempotency_conflict");
+      if (scenario === "__validation") {
+        response.writeHead(422, {
+          "Content-Type": "application/problem+json",
+          "Cache-Control": "no-store"
+        });
+        response.end(
+          JSON.stringify({
+            type: "about:blank",
+            title: "Fictional problem",
+            status: 422,
+            code: "validation_failed",
+            detail: "synthetic detail that must never be shown",
+            errors: [{ field: "body.description", code: "string_too_short" }],
+            request_id: "0198f1a2-7b3c-4d4e-8f5a-123456789abc"
+          })
+        );
+        return;
+      }
+
+      const send = () => {
+        reportCounter += 1;
+        const receipt = {
+          attachments: Array.from({ length: facts.fileCount }, (_, position) => ({
+            kept: !(has("__reject_attachment") && position === 0),
+            position,
+            reason: has("__reject_attachment") && position === 0 ? "malformed" : null
+          })),
+          contact_saved: facts.fields.includes("contact_value"),
+          next_steps: ["save_tracking_code", "check_status_later", "see_escalation_guidance"],
+          published: false,
+          status: "received",
+          tracking_code: `SG-DEMO-${String(reportCounter).padStart(4, "0")}-FICTIONAL`
+        };
+        receipts.set(key, receipt);
+
+        if (has("__dropfirst")) {
+          // The report is stored, but the answer never arrives: completion is unknown to the client.
+          request.socket.destroy();
+          return;
+        }
+        response.writeHead(201, {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-store"
+        });
+        response.end(JSON.stringify(receipt));
+      };
+
+      if (scenario === "__slow") setTimeout(send, 6000);
+      else send();
+    });
     return;
   }
 

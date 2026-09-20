@@ -795,6 +795,8 @@ Implement a typed client state machine for:
 
 Define allowed next/back transitions, per-step validation, server-error return step, navigation guard, and cleared-on-success behaviour. Progress communicates steps semantically and never traps a screen-reader user.
 
+> **Execution status (2026-09-20): complete.** `src/lib/report/flow.ts` is a pure state machine (five steps: notice, observation, evidence, anonymity, review; submission and the one-time confirmation are the sixth and seventh, on `/report/complete`). It defines forward and back moves, per-step validation (category and 10 to 8000 character description; contact or handle fields only for their mode), the earliest broken step, and the map from an API field path to the step that owns it, so a server validation, credential, or attachment error returns to where it can be fixed. Steps are a plain ordered list with `aria-current="step"`, focus moves to each step heading, and nothing traps a screen-reader user. Routes: `/{locale}/report/{slug}` (no-store, noindex), `/{locale}/report?project=` (redirects to the record's form; without one, a chooser of records), `/{locale}/report/complete`. Navigation guard: a language switch warns through the existing draft guard, and `beforeunload` warns while text would be lost. The form clears on success. 15 unit tests cover the machine.
+
 ### FE-091 — Anonymous/contact/handle choices
 
 - Fully anonymous is selected first and loses no capability except contact/handle-specific follow-up.
@@ -802,6 +804,8 @@ Define allowed next/back transitions, per-step validation, server-error return s
 - Handle credentials are verified only by backend at submission; never create a browser session or remember them.
 - Show the warning that handle-linked reports can be recognised as related by reviewers and may be unsuitable for very sensitive reports.
 - Review screen makes the chosen mode explicit without displaying secret passphrase after entry unless the user requests reveal with accessible control.
+
+> **Execution status (2026-09-20): complete.** Fully anonymous is first and preselected. Contact and handle fields do not render, and are not in state, until chosen; switching mode deletes the other modes' values at once (unit and component tests). Handle credentials are only sent in the submission body: no session, nothing remembered (asserted against storage and cookies in the browser). The handle warning about reports being recognised as related is shown. The review screen names the mode and always shows the passphrase as hidden; reveal is offered only on the entry field, so it is stricter than the plan's optional reveal on review. The link to create a handle points to `/{locale}/handle`, which belongs to Circle 10 and is not built yet.
 
 ### FE-092 — Private draft policy
 
@@ -816,11 +820,15 @@ Ask before local draft storage with a shared-device warning. If accepted:
 
 Default without consent is in-memory only.
 
+> **Execution status (2026-09-20): complete.** Opt-in only, after the shared-device warning. A draft holds the concern, the description, the step, and the project (the type has no place for anything else); it expires after 24 hours, is deleted when corrupt, expired, future-dated, or of another version, is offered for the same project only, has a visible delete action, and is cleared on success. Storage failures (missing, blocked, full) are caught, and the person is told nothing was saved. Without consent nothing is written. 12 unit tests, 5 component tests, and 2 browser tests cover this. A bug found on the way: a draft saved after the page opened was judged dated in the future against the page's opening time and deleted at once; a person who has consented is no longer re-judged.
+
 ### FE-093 — Client image preparation
 
 For supported images, inspect size/type, decode with bounded dimensions, normalise orientation, and re-encode without EXIF/IPTC/XMP before preview/upload. Show resulting preview/size and state clearly that the server repeats security sanitation. Never claim client processing is the security boundary. Unsupported or failed processing gets a safe actionable message and is not uploaded silently.
 
 Files never enter local draft/storage/cache. Object URLs are revoked on removal/unmount. Test GPS fixture, corrupt image, extreme dimensions, MIME mismatch, cancellation, multiple replacement, and memory cleanup.
+
+> **Execution status (2026-09-20): complete.** `src/lib/report/image-prep.ts` sniffs the real type from the first bytes, refuses a name or type that disagrees, reads pixel size from the header and refuses over 40 megapixels before decoding, decodes with orientation applied, scales to at most 2560 px, re-encodes (dropping EXIF, IPTC, and XMP), and renames every file `attachment-N.ext` so a file name never leaves the device. PDFs pass through unchanged and are labelled as not cleaned here. The interface says plainly that the server repeats every check and is the only one that counts. Browser proof: a JPEG carrying a GPS and camera Exif segment is sent with none of that metadata, in Chromium and mobile WebKit (the check looks for the planted values only, because a browser encoder may write its own technical headers). 15 unit tests cover sniffing, header sizes, and refusals. Not proven: an extreme-dimension image in a real browser (covered by header-level unit tests only), and object-URL revocation and memory cleanup are implemented but not asserted.
 
 ### FE-094 — Streamed submission and retry
 
@@ -839,13 +847,19 @@ Handle:
 
 Never log/form-serialize to analytics or error trackers.
 
+> **Execution status (2026-09-20): complete.** `src/lib/report/submit.ts` sends the multipart body through `XMLHttpRequest` (for upload progress) to the fixed `/api/reports` path with an `Idempotency-Key` and the locale. The key is created when a send begins and reused only while the reviewed payload is unchanged, so a retry cannot create a second report and an edit is a new intent. Handled: offline before sending (nothing sent), cancel, upload progress, validation (returns to the owning step, keeps the form), rate limit with the wait, outage and timeout and unreadable receipt (with the same-report-not-twice message), a replayed response, an idempotency conflict (new key), refused credentials, and accepted-report-with-rejected-attachment (shown per file on the confirmation). A dropped upstream connection is proven with the fictional mock: the same key is sent twice, the second is a replay, and exactly one code appears. The real API's multipart handling was not exercised in this loop.
+
 ### FE-095 — One-time confirmation
 
 Render tracking code only from the just-completed in-memory/response state on a dynamic no-store route. Provide copy, print/download-as-text, recovery warning, expected next step, status-link without code, and safe exit. Do not put the code in URL, local/session storage, service worker, page metadata, logs, clipboard automatically, or analytics. Back/refresh after secret is gone shows an honest cannot-recover state, not a stale cached code.
 
+> **Execution status (2026-09-20): complete.** `/report/complete` renders the tracking code only from a receipt held in this page's memory (`src/lib/report/receipt-store.ts`), reached by client-side navigation. It has copy, print, and download-as-text (each only on request; nothing is copied automatically), a recovery warning, the next steps, the per-file outcome, whether contact was saved, a link to the status page without the code, and an exit that drops the receipt. Reload, direct visit, and back after leaving show an honest cannot-recover state; the code is asserted absent from the URL, title, storage, cookies, and the reloaded page, and the route is no-store and noindex. Print is the browser's own print of the page, with the action buttons hidden. The status page (`/track`) is Circle 10 and not built yet.
+
 ### FE-096 — Report accessibility, localisation, and E2E
 
 Test all steps by keyboard and mobile WebKit, focus on step headings/errors, announcement without leaking field text, 200% zoom, long translated safety copy, shared-device warning, reduced motion, file picker/preview removal, offline/retry/idempotency, partial attachment, and one-time secret loss. Use fictional data only; redact screenshots/traces.
+
+> **Execution status (2026-09-20): complete.** Proof: 15 component tests and 12 unit tests around the wizard, 22 browser flows on Chromium and mobile WebKit (anonymous, contact, handle refusal, GPS photo, refused and surplus files, partial attachment, dropped connection with one report, rate limit, outage, server validation, cancel, offline then online, draft opt-in and deletion, copy/download/print controls, keyboard completion on Chromium, entry and 404s, no JavaScript, four languages); axe clean, 320 px and 200% reflow for eight wizard states and the confirmation in four languages (72 cases); reduced motion, labelled fields, 44 px controls. Not done: a screen-reader run, and a long real translation of the safety copy (the `report` domain is `null` in ha/ig/yo, so those languages show the flagged English original).
 
 ### Circle 9 exit gate
 
@@ -855,6 +869,8 @@ Test all steps by keyboard and mobile WebKit, focus on step headings/errors, ann
 - Retry cannot create a duplicate report.
 - Tracking code is shown once and absent from persistent/browser-observable channels.
 - Complete flow passes keyboard, mobile WebKit, four-language, offline, and failure tests.
+
+> **Gate status (2026-09-20): closed with caveats.** Met: the anonymous path is first and needs no account, contact, or handle; a draft never holds files, contact, credentials, or a tracking code; client and server sanitation roles are stated as they are; a retry of the same reviewed report cannot create a duplicate (proven against the mock's replay); the tracking code is shown once and is absent from the URL, storage, cookies, and a reloaded page; the flow passes keyboard, mobile WebKit, four-language, offline, and failure tests. Open: the real API's multipart and idempotency behaviour was not run in this loop; the `report` domain is untranslated in ha/ig/yo; approved local escalation guidance (FE-141), the handle page, and the status page are later circles, so their links do not open yet; no screen-reader run; the record and report pages' first-load JavaScript is 169.5 KB gzip against a 170 KB budget, which leaves almost no margin.
 
 ## 13. Circle 10 — tracking status and optional reporter handles
 
