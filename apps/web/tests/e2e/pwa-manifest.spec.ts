@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("the manifest is served, linked from the page, and claims no unapproved icons", async ({
+test("the manifest is served, linked from the page, and serves its letter-mark icons", async ({
   page,
   request
 }) => {
@@ -14,7 +14,21 @@ test("the manifest is served, linked from the page, and claims no unapproved ico
   expect(manifest["scope"]).toBe("/");
   expect(manifest["display"]).toBe("standalone");
   expect(manifest["theme_color"]).toBe("#F7F2E8");
-  expect(manifest["icons"]).toBeUndefined();
+  const icons = manifest["icons"] as { src: string; sizes: string; type: string }[];
+
+  for (const icon of icons) {
+    const file = await request.get(icon.src);
+
+    expect(file.status(), icon.src).toBe(200);
+    expect(file.headers()["content-type"]).toContain(icon.type);
+  }
+  const sizes = await Promise.all(
+    icons
+      .filter((icon) => icon.type === "image/png")
+      .map(async (icon) => (await request.get(icon.src)).body())
+  );
+
+  for (const body of sizes) expect(body.subarray(1, 4).toString()).toBe("PNG");
 
   await page.goto("/en");
   await expect(page.locator('link[rel="manifest"]')).toHaveAttribute(

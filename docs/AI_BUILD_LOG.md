@@ -2454,9 +2454,9 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 
 ## 2026-09-20 — FE-130 Manifest and installability
 
-- **Task:** FE-130 — Manifest and installability (Circle 13). Marked blocked: the manifest is delivered, installability is not.
-- **User outcome delivered:** The app has a valid web app manifest with the real name and approved colours; installation is not yet offered because no approved icon exists.
-- **Routes/components changed:** `apps/web/app/manifest.ts`, `tests/unit/manifest.test.ts`, `tests/e2e/pwa-manifest.spec.ts`.
+- **Task:** FE-130 — Manifest and installability (Circle 13). Initially recorded blocked for lack of an approved icon; the maintainer then asked for a simple letter icon and logo, which were made and the task completed.
+- **User outcome delivered:** The app has a valid web app manifest, a simple letter-mark icon set (any, maskable, Apple touch) and a logo, so it can be installed.
+- **Routes/components changed:** `apps/web/app/manifest.ts`, icon metadata in the locale layout, `public/icons/*` (SVG and PNG), `scripts/render-icons.mjs`, unit and e2e tests.
 - **Backend operations/contract version:** none.
 - **Public/private data handled:** none; the manifest is static and public.
 - **States implemented:** served, linked, start address resolves to a locale.
@@ -2465,8 +2465,8 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Performance/cache impact:** one small static JSON file.
 - **Commands run and results:** `make web-verify` exit 0 (512 unit tests in total); targeted e2e `pwa-manifest` 4 passed (Chromium and mobile WebKit).
 - **Screenshots/traces/artifacts checked:** none.
-- **Known limitations/open decisions:** No icons, so browsers will not offer installation. Needs a maintainer-approved icon design (192 px, 512 px, maskable) because the visual direction authorises no logo or raster asset.
-- **Commit/PR:** `feat: add the web app manifest without unapproved icons`
+- **Known limitations/open decisions:** The mark is a plain letter S with a double rule, made on the maintainer's instruction; it has had no other visual review. No real install prompt was exercised. The wordmark in `logo.svg` is live text in a generic serif stack, not outlined.
+- **Commit/PR:** `feat: add the ShaidaGo letter-mark icons and logo to the manifest`
 - **Next task may rely on:** `/manifest.webmanifest` and the approved colours.
 - **AI assistance used:** Wrote the manifest and tests; declined to invent an icon.
 - **Prompt summary:** Unattended frontend/BFF build loop.
