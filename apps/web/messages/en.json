@@ -1164,6 +1164,41 @@
       "withdrawBody": "The reporter will no longer see it. An answer already given stays in the record.",
       "withdrawConfirm": "Withdraw question",
       "withdrawn": "Question withdrawn."
+    },
+    "transition": {
+      "legend": "Change the status",
+      "command": "Action",
+      "commandHelp": "Moves the report from {from} to {to}.",
+      "commands": {
+        "start_review": "Start review",
+        "request_information": "Ask the reporter for more information",
+        "resume_review": "Resume review",
+        "verify_for_public_update": "Mark verified for a public update",
+        "refer": "Record a referral",
+        "close": "Close the report",
+        "reopen": "Reopen the report"
+      },
+      "message": "Message the reporter will see",
+      "messageHint": "Shown on the reporter's status page, never on the public record. Up to {max} characters. Leave it empty to use the standard message. Do not include names or contact details.",
+      "messageRequired": "Say what you need from the reporter.",
+      "messageTooLong": "This message is too long.",
+      "reason": "Internal reason (private)",
+      "reasonHint": "Never shown to the reporter. Up to {max} characters.",
+      "reasonRequired": "Give a reason for reopening.",
+      "reasonTooLong": "This reason is too long.",
+      "counter": "{count} of {max}",
+      "submit": "Apply change",
+      "pending": "Applying",
+      "confirmTitle": "Change the status to {to}?",
+      "confirmBody": "The reporter will see the new status and the message above. This does not publish anything on the public record.",
+      "confirmCareful": "This changes what the reporter is told and how the case is treated. Check the message before you confirm.",
+      "confirm": "Apply change",
+      "cancel": "Keep editing",
+      "done": "Status changed from {from} to {to}. Nothing was published.",
+      "conflict": "This report changed while you were working, or that action is no longer available. Reload to see the latest status and history, then choose again. What you typed is kept.",
+      "reload": "Reload the report",
+      "none": "No status change is available from this status.",
+      "publishNote": "A status change never publishes text. A public update is a separate step further down this page."
     }
   }
 }

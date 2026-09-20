@@ -7,6 +7,7 @@ import { QueueNotice } from "@/components/reviewer/queue";
 import { ReviewerFrame } from "@/components/reviewer/frame";
 import { AskQuestionForm, WithdrawQuestionButton } from "@/components/reviewer/question-controls";
 import { EvidenceDownload } from "@/components/reviewer/evidence-download";
+import { StatusActions } from "@/components/reviewer/status-actions";
 import { NoteForm } from "@/components/reviewer/note-form";
 import {
   ContactSection,
@@ -213,6 +214,13 @@ export default async function ReviewerReportPage({
       </nav>
       <Section id="status" title={copy.sections.status}>
         <ReportHeader context={context} report={report} />
+        <StatusActions
+          {...shared}
+          copy={reviewer.messages.transition}
+          status={report.status}
+          statuses={reviewer.messages.queue.statuses}
+          version={report.version}
+        />
       </Section>
       <DemoWarning copy={copy} />
       <ObservationSection context={context} report={report} />

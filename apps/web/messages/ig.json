@@ -1164,6 +1164,41 @@
       "withdrawBody": null,
       "withdrawConfirm": null,
       "withdrawn": null
+    },
+    "transition": {
+      "legend": null,
+      "command": null,
+      "commandHelp": null,
+      "commands": {
+        "start_review": null,
+        "request_information": null,
+        "resume_review": null,
+        "verify_for_public_update": null,
+        "refer": null,
+        "close": null,
+        "reopen": null
+      },
+      "message": null,
+      "messageHint": null,
+      "messageRequired": null,
+      "messageTooLong": null,
+      "reason": null,
+      "reasonHint": null,
+      "reasonRequired": null,
+      "reasonTooLong": null,
+      "counter": null,
+      "submit": null,
+      "pending": null,
+      "confirmTitle": null,
+      "confirmBody": null,
+      "confirmCareful": null,
+      "confirm": null,
+      "cancel": null,
+      "done": null,
+      "conflict": null,
+      "reload": null,
+      "none": null,
+      "publishNote": null
     }
   }
 }

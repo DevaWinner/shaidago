@@ -76,11 +76,42 @@ const notes = new Map([
   ]
 ]);
 const questions = new Map();
+// Status changes made through the transition endpoint, so a reload shows the new state.
+const changes = new Map();
+// Reports where another reviewer "acts first": the first attempt is refused as stale.
+const RACE_IDS = new Set([REPORT_IDS[24], REPORT_IDS[30]]);
+const raced = new Set();
+const MACHINE = {
+  received: {
+    start_review: "under_review",
+    request_information: "needs_information",
+    close: "closed"
+  },
+  needs_information: { resume_review: "under_review", close: "closed" },
+  under_review: {
+    request_information: "needs_information",
+    verify_for_public_update: "verified_for_public_update",
+    refer: "referred",
+    close: "closed"
+  },
+  verified_for_public_update: { resume_review: "under_review", refer: "referred", close: "closed" },
+  referred: { resume_review: "under_review", close: "closed" },
+  closed: { reopen: "under_review" }
+};
+
+function current(item) {
+  const change = changes.get(item.report_id);
+
+  return change === undefined
+    ? item
+    : { ...item, status: change.status, version: change.version, status_updated_at: change.at };
+}
 let counter = 0;
 const nextId = (prefix) =>
   `0198f1a2-7b3c-4d4e-8f5a-${prefix}${String(++counter).padStart(11, "0")}`;
 
-function detailFor(item, includeContact) {
+function detailFor(source, includeContact) {
+  const item = current(source);
   const first = item.report_id === REPORT_IDS[0];
 
   return {
@@ -96,6 +127,7 @@ function detailFor(item, includeContact) {
         occurred_at: item.created_at,
         internal_reason: null
       },
+      ...(changes.get(item.report_id)?.events ?? []),
       ...(first
         ? [
             {
@@ -430,6 +462,83 @@ export function handleReviewer({ request, response, url, problem, readBody }) {
       )
     );
     response.writeHead(204, { "Cache-Control": "no-store" }).end();
+    return true;
+  }
+
+  const transition = /^\/v1\/reviewer\/reports\/([^/]+)\/status-transitions$/.exec(path);
+
+  if (transition !== null && method === "POST") {
+    if (!hasCsrf(request)) {
+      problem(response, 403, "csrf_invalid");
+      return true;
+    }
+    readBody(request, (body) => {
+      const source = queue.find((entry) => entry.report_id === transition[1]);
+
+      if (source === undefined) {
+        problem(response, 404, "not_found");
+        return;
+      }
+
+      const item = current(source);
+
+      log.push({ op: "transition", command: body?.command });
+      if (RACE_IDS.has(item.report_id) && !raced.has(item.report_id)) {
+        raced.add(item.report_id);
+        changes.set(item.report_id, {
+          status: item.status,
+          version: item.version + 1,
+          at: "2026-09-20T08:00:00Z",
+          events: []
+        });
+        problem(response, 409, "report_version_conflict");
+        return;
+      }
+      if (body?.expected_version !== item.version || body?.expected_status !== item.status) {
+        problem(response, 409, "report_version_conflict");
+        return;
+      }
+
+      const to = MACHINE[item.status]?.[body?.command];
+
+      if (to === undefined) {
+        problem(response, 409, "report_status_transition_not_allowed");
+        return;
+      }
+      if (body.command === "reopen" && !body.internal_reason) {
+        problem(response, 422, "validation_failed");
+        return;
+      }
+
+      const version = item.version + 1;
+      const previous = changes.get(item.report_id)?.events ?? [];
+
+      changes.set(item.report_id, {
+        status: to,
+        version,
+        at: "2026-09-20T09:30:00Z",
+        events: [
+          ...previous,
+          {
+            event_id: nextId("e"),
+            previous_status: item.status,
+            new_status: to,
+            public_message: body.reporter_message ?? "Standard fictional message.",
+            actor_type: "reviewer",
+            occurred_at: "2026-09-20T09:30:00Z",
+            internal_reason: body.internal_reason ?? null
+          }
+        ]
+      });
+      json(response, 200, {
+        report_id: item.report_id,
+        previous_status: item.status,
+        status: to,
+        version,
+        occurred_at: "2026-09-20T09:30:00Z",
+        published: false
+      });
+    });
     return true;
   }
 

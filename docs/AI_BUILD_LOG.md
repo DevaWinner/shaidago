@@ -2253,3 +2253,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the download, notes, and question components, mock endpoints, and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-114 Status transition controls
+
+- **Task:** FE-114 — Status transition controls (Circle 11).
+- **User outcome delivered:** A reviewer can move a report to another status through a confirmed, version-checked action, sees exactly what the reporter will see, and can recover from a stale view without losing their text; no status change ever publishes anything.
+- **Routes/components changed:** `src/components/reviewer/status-actions.tsx`, `src/lib/reviewer/transitions.ts`, the detail page's status section, `messages/*` (`reviewer.transition`), mock transition endpoint with a first-attempt race, unit, component and e2e tests.
+- **Backend operations/contract version:** `reviewer_decisions_transition` through the existing handler (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Reporter-visible message and private internal reason in a same-origin POST body and component memory only; neither is stored or placed in an address. The transition never changes the public record.
+- **States implemented:** initial, field validation, confirming, pending lock, success announced, stale/not-allowed conflict with reload, session ended, may-have-completed, unknown status (no controls).
+- **Accessibility evidence:** labelled fields with error association and required marking, alertdialog confirmation with Cancel first, result in a status region and failures in an alert region, keyboard Enter/Escape verified on Chromium. No axe or screen-reader run yet (FE-116).
+- **Locales reviewed:** English only; `ha`/`ig`/`yo` keys are `null` and pending.
+- **Performance/cache impact:** One client island on the reviewer detail only.
+- **Commands run and results:** `make web-verify` exit 0; targeted e2e `reviewer` 81 passed on Chromium and mobile WebKit before the final record.
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** The frontend's copy of the allowed transitions is a usability aid and could lag a backend change until the parity test is run. iOS WebKit Tab-focus behaviour is skipped as elsewhere. The real API's problem payloads for `409` were not exercised.
+- **Commit/PR:** `feat: add version-checked, confirmed reviewer status transition controls`
+- **Next task may rely on:** `REVIEWER_TRANSITIONS`, `StatusActions`, and the mock `changes` state that makes a reload show the new status.
+- **AI assistance used:** Designed and implemented the controls, transition table, parity test, mock endpoint and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
