@@ -13,6 +13,8 @@ export default defineProject({
     name: "unit",
     environment: "node",
     include: ["tests/unit/**/*.test.ts"],
+    // next-intl imports `next/server` without an extension, which Node ESM cannot resolve.
+    server: { deps: { inline: ["next-intl"] } },
     clearMocks: true,
     restoreMocks: true
   }

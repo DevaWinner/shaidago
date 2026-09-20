@@ -20,15 +20,15 @@ export type GuardResult =
   | { readonly ok: true; readonly idempotencyKey: string | undefined }
   | { readonly ok: false; readonly response: Response };
 
+/**
+ * Empty-body operations refuse a declared or chunked body. The framework hands every handler a
+ * body stream object even when nothing was sent, so its mere presence proves nothing; what matters
+ * is that these handlers never read or forward a body, so an undeclared one has no effect.
+ */
 function emptyBodyRejected(request: Request): boolean {
   const declared = request.headers.get("Content-Length");
 
-  // A runtime may not surface Content-Length for a buffered body, so the body itself is checked too.
-  return (
-    request.body !== null ||
-    request.headers.has("Transfer-Encoding") ||
-    (declared !== null && declared !== "0")
-  );
+  return request.headers.has("Transfer-Encoding") || (declared !== null && declared !== "0");
 }
 
 /**

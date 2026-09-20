@@ -4,7 +4,10 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { PublicShell, ReviewerShell } from "@/components/shell/shell";
 import { SignOutButton } from "@/components/shell/sign-out-button";
-import { publicShellMessages, reviewerShellMessages } from "@/content/en/shell";
+import en from "../../messages/en.json";
+
+const publicShellMessages = en.shell.public;
+const reviewerShellMessages = en.shell.reviewer;
 
 const links = {
   home: "/",
@@ -69,6 +72,32 @@ describe("public shell", () => {
       expect(item).toHaveTextContent("not yet reviewed");
       expect(item).toHaveAttribute("lang");
     }
+  });
+
+  it("labels a linked language that has no reviewed copy, outside the link and in English", () => {
+    render(
+      <PublicShell
+        currentLocale="ha"
+        links={links}
+        localeRoutes={{ en: "/en", ha: "/ha", ig: "/ig", yo: "/yo" }}
+        messages={publicShellMessages}
+        unreviewedLocales={["ha", "ig", "yo"]}
+      >
+        <p>x</p>
+      </PublicShell>
+    );
+    const locale = screen.getByRole("navigation", { name: "Language" });
+
+    expect(within(locale).getByRole("link", { name: "English" })).toHaveAttribute("href", "/en");
+    expect(within(locale).getByRole("link", { name: "Igbo" })).toHaveAttribute("href", "/ig");
+    expect(within(locale).getByRole("link", { name: "Igbo" })).toHaveAttribute("lang", "ig");
+    expect(within(locale).getAllByText("(not yet reviewed)")).toHaveLength(3);
+    for (const note of within(locale).getAllByText("(not yet reviewed)")) {
+      expect(note).toHaveAttribute("lang", "en");
+      expect(note.closest("a")).toBeNull();
+    }
+    expect(within(locale).queryByRole("link", { name: "Hausa" })).toBeNull();
+    expect(within(locale).getByText("Hausa").closest("[aria-current]")).not.toBeNull();
   });
 
   it("links a language once its route exists", () => {

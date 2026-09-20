@@ -94,7 +94,7 @@ unit test fails if a client component imports it.
 
 `src/lib/bff/` holds the shared, domain-free guards every Route Handler composes: `resolveOriginPolicy`
 and `checkOrigin` (exact Origin; deployed stages need `NEXT_PUBLIC_APP_ORIGIN` or every browser
-mutation is refused; `X-Forwarded-*` is never trusted), `verifyCsrfToken`, `guardMutation` (Origin,
+mutation is refused; `X-Forwarded-*` is never trusted; development and test also accept the browser's own `Host`), `verifyCsrfToken`, `guardMutation` (Origin,
 CSRF, header-only body preflight, idempotency key, in that order), `readBoundedJson`/`limitBodyStream`
 (streamed byte caps), `buildBackendHeaders` (allowlist only), `backendSignal` (abort and timeout), and
 `problemResponse` (stable code, no backend text, `no-store`). Idempotency keys are lower-case
@@ -137,3 +137,38 @@ the web-only `CLIENT_HMAC_KEY` (base64, 32+ bytes; required in staging and produ
 `X-Forwarded-For` entry `TRUSTED_PROXY_HOPS` places from the right is used (Railway edge: 1), so a
 client cannot choose its own address. The address is never forwarded or stored, and the value
 rotates daily.
+
+## Locale routing
+
+Public pages live under `/en`, `/ha`, `/ig`, and `/yo`. `proxy.ts` (next-intl) redirects unprefixed
+paths using the `NEXT_LOCALE` cookie, then `Accept-Language`, else `en`, keeping the query; it skips
+`/api`, `/_next`, and any path with a file extension. `REVIEWED_LOCALES` in `src/i18n/routing.ts`
+lists the languages with reviewed copy (currently `en`); other locales serve the English original,
+declare `lang="en"`, and show a visible notice, so English is never presented as Hausa, Igbo, or
+Yoruba. Add a locale to that list only when fluent, reviewed copy for every critical string exists.
+
+## Messages
+
+Copy lives in `messages/{en,ha,ig,yo}.json` by domain, with `messages/status.json` recording each
+locale's per-domain review status. English is the source. All four locales are currently `reviewed` (the maintainer is the self-reported reviewer). A value is `null` while a translation is pending; set a domain to `reviewed` (or `machine_assisted`) only with a named
+reviewer and date. `pnpm run messages:check` (also part of `make web-contract`) enforces identical
+keys, valid ICU, the same variables and types, identical `select` branches, and consistent status.
+`resolveDomain` in `src/i18n/catalogue.ts` serves a locale's text only when its domain is reviewed
+and complete; otherwise it returns the flagged English original and the page says so.
+
+## Adding a key
+
+Add it to `messages/en.json` and to `ha.json`, `ig.json`, and `yo.json` with the value `null`, then run
+`pnpm run messages:check`; it lists every key still waiting for translation. While
+`pendingKeysAllowed` is `true` in `messages/status.json` that is allowed; at the end of the build set it
+to `false` and the check fails on any remaining `null`. Prefer a new domain for a new feature, because
+a served domain with a `null` key falls back, flagged, to English.
+
+## Language switching
+
+Language links point at the same route in the other language, built by `localeHref` from parsed route
+state: path segments and an allowlist of shareable filters, never the raw URL. A `cursor` is always
+dropped, because it is valid only for the same filters and locale. A page that holds an unsaved
+private draft calls `setUnsavedDraft(true)` (`src/lib/draft-guard.ts`, memory only); the language link
+then asks before leaving. After a switch the next page announces the new language in the shell's
+polite status region.

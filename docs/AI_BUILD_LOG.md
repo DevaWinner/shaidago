@@ -1350,7 +1350,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** a working live language path and honest evidence of its quality.
 - **AI assistance used:** Wrote the adapter, migrated its callers and tests, ran the live evaluation and pipeline runs, diagnosed the two live defects, and recorded the evidence without overstating it.
 - **Prompt summary:** Use the Groq key instead of OpenAI; a Brave key was supplied; the maintainer stated they reviewed the Hausa, Igbo and Yoruba copy themselves.
-- **Human review:** Pending maintainer review of this branch. The locale review itself is the maintainer's own, self-reported; no independent reviewer exists.
+- **Human review:** The maintainer reviewed this branch and merged it on 2026-09-20 (pull request #16), as they stated when asking for this record. The locale review itself is the maintainer's own, self-reported; no independent reviewer exists.
 
 ## 2026-09-19 — Public evidence path fixes found while staging (BE-041, BE-043 follow-up)
 
@@ -1386,7 +1386,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** hybrid retrieval in the live path, a complete and honest staging record, and the frontend contract unchanged.
 - **AI assistance used:** Discovered that query embedding never existed, measured the candidate models rather than assuming, deployed to staging, diagnosed the memory kill from platform metrics, downgraded the two databases before rewriting an applied migration, and recorded what went wrong. Its own informal Hausa, Igbo and Yoruba test sentences are unreviewed and are labelled as such.
 - **Prompt summary:** Use FastEmbed for embeddings instead of a paid provider; clear the backend's open items on a new branch and use Railway.
-- **Human review:** Pending maintainer review of this branch.
+- **Human review:** The maintainer reviewed this branch and merged it on 2026-09-20 (pull request #16), as they stated when asking for this record.
 
 ## 2026-09-20 — FE-000 frontend scope and authority reconciliation
 
@@ -1448,7 +1448,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** The frontend loop's task-selection, safety-boundary, validation, documentation, commit, blocked-task, and hard-stop rules.
 - **AI assistance used:** Mirrored the proven backend loop structure, then adapted it to the frontend's Server Component/BFF boundary, state-matrix proof, four-locale requirements, and mandatory human visual-direction gate.
 - **Prompt summary:** Create a frontend loop equivalent to the backend loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — Frontend circle branch and commit naming rule
 
@@ -1468,7 +1468,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Outcome-named, circle-isolated frontend branches and concise outcome-based commit subjects.
 - **AI assistance used:** Added the requested branch/commit convention and moved the active Circle 0 checkout to its compliant branch without rewriting or deleting history.
 - **Prompt summary:** Require a frontend branch per circle and exclude roadmap names from branch names and commits.
-- **Human review:** none yet; pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-003 content and range inventory
 
@@ -1488,7 +1488,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Stable `content.<surface>.<tier>` names, explicit safe data classifications, contract-absence markers, and three layout-density targets for every requested content family.
 - **AI assistance used:** Derived a contract-safe fixture taxonomy from the frontend handoff and task requirements; added an adversarial validator rather than using source-register data as plausible-looking UI content.
 - **Prompt summary:** Use the frontend loop and work the next frontend task.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-004 BFF operation map
 
@@ -1508,9 +1508,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Exact BFF path ownership, profile-based guard/caching/redaction rules, and complete operation coverage without a generic proxy.
 - **AI assistance used:** Reconciled OpenAPI, route ownership, state rules, and backend handoff into one validator-backed BFF ledger; explicitly excluded unsafe generic forwarding and frontend policy decisions.
 - **Prompt summary:** Use the frontend loop and continue the next eligible frontend task.
-- **Human review:** none yet; unattended run, pending maintainer review.
-
-
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-010 visual-direction discovery
 
@@ -1551,7 +1549,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Node 24.20.0, pnpm 12.4.2, the committed lockfile, `apps/web` package scripts, strict compiler settings, standalone output, and proof that the base build does not require the private API.
 - **AI assistance used:** Selected/pinned the accepted stack versions, created the minimal non-visual foundation, diagnosed the supply-chain age-policy failure, and refused to retain the tool-added policy exemption.
 - **Prompt summary:** Use the frontend loop and continue with the eligible web foundation task.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-021 quality toolchain and commands
 
@@ -1572,7 +1570,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** FE-022 can add base error/metadata behaviour with component, browser, and axe tests using these exact commands.
 - **AI assistance used:** Selected and configured development-only quality tools, identified the ESLint compatibility failure, inspected the two allowed install hooks, and recorded their bounded purpose.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
-- **Human review:** none yet; unattended loop, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-022 safe app recovery and metadata boundary
 
@@ -1593,7 +1591,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Root metadata/viewport/robots behavior; safe generic unavailable/retry semantics; `toSafeRequestReference`; standalone browser-test configuration; and a real passing test layer.
 - **AI assistance used:** Implemented the minimal safety boundary, corrected resolver/standalone test-harness defects revealed by actual tests, and kept locale/design-system scope with their designated tasks.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
-- **Human review:** none yet; unattended loop, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-023 server/client environment boundary
 
@@ -1614,7 +1612,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Validated runtime/private configuration, the explicit public environment allowlist, `web-boundary`, canary scanning, and stable standalone test-process environment setup.
 - **AI assistance used:** Implemented separate runtime/public schemas, added a production-artifact canary scan, and fixed test-runner-only handling of Next's server-only import without altering the production barrier.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
-- **Human review:** none yet; unattended loop, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-024 least-privilege frontend CI
 
@@ -1635,7 +1633,8 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** A SHA-pinned, read-only workflow and local workflow-invariant validator; not on a claimed hosted green result.
 - **AI assistance used:** Implemented the workflow and its negative-path validator, resolved the setup action revision, and kept browser data artifacts out of pull-request visibility.
 - **Prompt summary:** Use the frontend loop and keep working without stopping.
-- **Human review:** none yet; unattended loop, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
+
 ## 2026-09-20 — FE-010 visual-direction discovery (resolved)
 
 - **Task:** FE-010 — One-round design discovery.
@@ -1735,7 +1734,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Semantic CSS/Tailwind aliases, static standalone asset preparation, and contrast/preference/browser proof. It must not infer product truth or authorisation from a token.
 - **AI assistance used:** Implemented the approved semantic system, selected Tailwind's documented v4 PostCSS integration, added deterministic contrast/preference tests, and corrected the standalone browser-serving defect found by visual inspection.
 - **Prompt summary:** Continue frontend work through the established task loop after selecting the Field Ledger direction.
-- **Human review:** none yet; unattended loop, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-030 Deterministic OpenAPI generation
 
@@ -1756,7 +1755,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `createGeneratedClient(baseUrl)` and the `paths`/`operations`/`components` types.
 - **AI assistance used:** Wrote the deterministic generator with drift check and compile-time contract assertions.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-031 Server-only private API client
 
@@ -1777,7 +1776,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `serverApi()` public reads, `buildForwardedHeaders`, and the typed `ApiResult` for FE-032/FE-033.
 - **AI assistance used:** Designed and implemented the transport, its tests, and the boundary test; found and fixed the environment parse defect.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-032 BFF request guard library
 
@@ -1798,7 +1797,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `guardMutation`, `readBoundedJson`, `buildBackendHeaders`, `backendSignal`, and the problem builders.
 - **AI assistance used:** Designed and implemented the guards and adversarial tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-033 Purpose-built public mutation handlers
 
@@ -1819,7 +1818,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the handler paths above, `handlePublicJson`/`handlePublicEmpty`/`handleReportSubmission`, and the `MutationOptions` transport methods for FE-034's reviewer handlers.
 - **AI assistance used:** Designed and implemented the handlers, schemas, transport extension, and table-driven adversarial tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-034 Reviewer session and mutation handlers
 
@@ -1840,7 +1839,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `handleReviewerJson`/`handleReviewerEmpty`/`handleReviewerGet`, the reviewer cookie helpers, and the server-only reviewer read methods.
 - **AI assistance used:** Designed and implemented the session cookie handling, handlers, schemas, and adversarial tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-035 BFF contract/security tests
 
@@ -1861,7 +1860,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** The operation-map parity test and the runtime no-output test as guard rails for later route or logging changes.
 - **AI assistance used:** Wrote the parity, redaction, and cancellation tests and the bundle markers.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-041 Accessible primitive layer
 
@@ -1882,7 +1881,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** Primitive props and classes for FE-042 and FE-043.
 - **AI assistance used:** Reworked the primitives, wrote tests, and iterated on screenshots.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-042 Evidence-specific components
 
@@ -1903,7 +1902,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the exported components and exhaustive label record types.
 - **AI assistance used:** Designed and implemented the components, tests, and fixture.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
 
 ## 2026-09-20 — FE-043 Public and reviewer shells, FE-044 First-viewport proof, and maintainer-requested changes
 
@@ -1924,4 +1923,141 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `PublicShell`, `ReviewerShell`, `SignOutButton`, the `ui/*` components, `cn`, the English content modules, and the forwarded client HMAC.
 - **AI assistance used:** Implemented the shells, first viewport, migration to Tailwind/shadcn, client HMAC, and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop; maintainer asked me to finish Circle 4 myself and to use Tailwind and shadcn.
+- **Human review:** the maintainer reviewed this work and merged it on 2026-09-20 (pull requests #17 to #22), as they stated when asking for this record. That review does not cover fluent Hausa, Igbo, or Yoruba review, screen-reader testing, or a live-API run; see the entry "Maintainer review of the merged frontend and backend work".
+
+## 2026-09-20 — Open-item closure before locale work
+
+- **Task:** Close the earlier circles' open items that were waiting only on CI or review, before starting Circle 5.
+- **User outcome delivered:** The hosted CI gate and the live-API gap are closed with evidence, and two real bugs that only a live run could expose are fixed.
+- **Files changed:** `apps/web/src/lib/bff/{guard,origin,public-handler}.ts`, `apps/web/src/components/evidence/evidence.tsx`, `apps/web/src/content/en/evidence.ts`, unit tests, `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** No contract change. Exercised through the BFF: question, tracking lookup and follow-up answer, report submission, reporter-handle create/list/delete, public discovery start and poll, and reviewer sign-in, note, transition, conflict, evidence download, follow-up ask, publication-draft refusal, and sign-out.
+- **Public/private data handled:** Fictional reports, a 1x1 fictional image, and the local development reviewer only. Tokens, cookies, and tracking codes were read within one shell process, never printed, and the scratch files were deleted.
+- **Closed items:** hosted CI for the web workflow (green on PRs #19 to #22 and on `main` at `fe14bf7`); the live-API run; the unused `unknownDate` label.
+- **Failure behaviour verified:** a foreign Origin is refused; a session-less reviewer call is 401; a stale transition is a stable conflict code; a used-up follow-up question and a deleted handle return the generic failure; a same-key retry replays.
+- **Defects found and fixed:** (1) empty-body POSTs (reporter-handle create, sign-out, cancel, withdraw) returned 413 because the framework always supplies a body stream; the guard now rejects only a declared or chunked body, since these handlers never read or forward one; regression tests added. (2) In development the browser's own `Host` (for example `127.0.0.1`) was refused because the framework reports `localhost`; development and test now also accept it, deployed stages never do.
+- **Commands run and results:** `make web-verify` exit 0 (271 unit, 46 component, contract drift, build, boundary scan clean), `make web-e2e` 17 passed and 1 skipped (iOS WebKit Tab-to-link, as before), `make web-a11y` 16 passed. The live run started the API (replay provider mode, so no live provider call) and the built web app on local ports, and both were stopped afterwards.
+- **Known limitations/open decisions:** publish, reviewer discovery, and source decisions were not exercised live. The local ClamAV container's mapped port does not match the API's scanner setting, so real scanning was not exercised (demo scanner mode used). Still open and not closable by me: fluent Hausa, Igbo, and Yoruba review; screen-reader testing; real browser zoom; links to routes later work builds; the fictional landing example.
+- **Commit/PR:** `fix: accept runtime empty bodies and the browser host locally, and record the open-item closures`
+- **AI assistance used:** Ran the live integration, diagnosed the two defects, fixed them with regression tests, and recorded the closures.
+- **Prompt summary:** Unattended frontend/BFF build loop for Circle 5; first close any open items that only needed CI or review.
+- **Human review:** The maintainer stated that all CI has run and passed and that the earlier work is reviewed; the two bug fixes and this entry have not been reviewed by anyone else.
+
+## 2026-09-20 — FE-050 Locale routing and negotiation
+
+- **Task:** FE-050 — Locale routing and negotiation.
+- **User outcome delivered:** Every public page has a language-prefixed URL, a bare visit lands on the visitor's remembered or requested language (else English) with its query intact, and a language without reviewed copy is shown honestly rather than as English dressed up as another language.
+- **Files changed:** `apps/web/proxy.ts`, `apps/web/next.config.ts`, `apps/web/src/i18n/{routing,request}.ts`, `apps/web/app/[locale]/**` (layout, landing, not-found, error, catch-all, loading), `apps/web/src/components/shell/shell.tsx`, `apps/web/vitest.unit.config.ts`, tests (proxy unit, shell component, locale e2e, recovery), `apps/web/package.json`, `pnpm-lock.yaml`, `apps/web/README.md`, `docs/PRIVACY_AND_SAFETY.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None. The BFF stays unprefixed and unchanged.
+- **Public/private data handled:** A language-preference cookie (`NEXT_LOCALE`, one of four codes, one year, `SameSite=Lax`, not `HttpOnly` because it is a preference) is now set on locale-prefixed pages. Its data flow is documented in `docs/PRIVACY_AND_SAFETY.md`. No private data is involved.
+- **States implemented:** bare visit, cookie, header, unsupported header/cookie/segment, canonical case, preserved query, reviewed and unreviewed locales, 404 per locale.
+- **Accessibility evidence:** `html lang` is the language the text is written in; each locale name in the switcher carries its own `lang`; the "not yet reviewed" note is outside the link and marked `lang="en"`; the notice is a labelled note; axe still passes (16 browser checks plus the existing suites).
+- **Locales reviewed:** English only. `ha`, `ig`, and `yo` routes exist but serve the English original with a visible status; no translation was written or simulated.
+- **Performance/cache impact:** New dependency `next-intl` 4.14.5 (MIT, peer-compatible with Next 16 and React 19; `pnpm audit --prod` reports no known vulnerabilities). Pages are static per locale (`generateStaticParams`); the not-found page stays static; the client bundle scan is still clean. First-load JavaScript was not measured against the plan's budget in this task.
+- **Failure behaviour verified:** hostile and unsupported cookies, `//host`, `/%2F%2Fhost`, `/\host` and similar paths never leave the origin; `/EN` canonicalises; an unknown path under a real locale is a real 404 (a `loading.tsx` at the locale root had turned it into a 200 and was moved into a route group); a not-found page that read request headers made the server log "static to dynamic" errors and was made static. `proxy.ts` never runs for `/api`, so the 26 BFF routes are unchanged.
+- **Commands run and results:** `make web-verify` exit 0 (281 unit, 47 component, contract drift, build, boundary scan clean); `make web-e2e` 35 passed and 1 skipped (iOS WebKit Tab-to-link, as before) with no server errors logged; `make web-a11y` 16 passed; lint 0 errors and 0 warnings.
+- **Screenshots/traces/artifacts checked:** `/ha` at desktop width inspected (notice, labelled language links, current language marked); not committed.
+- **Known limitations/open decisions:** Recovery-page and loading strings are static English until FE-051. The not-found home link is `/`, so it returns to the remembered language through the proxy rather than to a fixed locale. Reviewer routes do not exist yet; when they do they must live under a locale prefix.
+- **Commit/PR:** `feat: add locale-prefixed routing and language negotiation`
+- **Next task may rely on:** `LOCALES`, `REVIEWED_LOCALES`, `contentLocale`, `isSupportedLocale`, the `[locale]` layout, and `src/i18n/request.ts` as the place FE-051 loads catalogues.
+- **AI assistance used:** Configured next-intl, restructured the routes, and wrote the negotiation and open-redirect tests.
+- **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-051 Message structure and parity tooling
+
+- **Task:** FE-051 — Message structure and parity tooling.
+- **User outcome delivered:** Copy is now structured by domain in four catalogues with a machine-checked guarantee that no translation can drift from English, and a locale is served in its own language only when a named reviewer has approved it.
+- **Files changed:** `apps/web/messages/{en,ha,ig,yo,status}.json`, `apps/web/scripts/{messages-parity,check-messages}.mjs`, `apps/web/src/i18n/{catalogue,routing}.ts`, landing page and first-viewport component, recovery pages and `RecoveryPage`, the shell test, `apps/web/package.json` and lockfile (dev dependency `@formatjs/icu-messageformat-parser` 3.5.19, MIT, already in the tree via next-intl), tests (parity, catalogue, e2e link name), `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log. The old `src/content/en/*.ts` modules were removed.
+- **Backend operations/contract version:** None.
+- **Public/private data handled:** None; static public copy only.
+- **States implemented:** reviewed, machine-assisted, and pending domains; complete versus gapped catalogues; original-with-notice fallback.
+- **Accessibility evidence:** unchanged axe results (16 browser checks); the fallback keeps `lang` truthful and shows a visible notice. "Sources 1" became "Source 1" through an ICU `{number, number}` message.
+- **Locales reviewed:** English is marked reviewed with the maintainer as reviewer, self-reported on the basis that they reviewed and merged pull requests 17 to 22. `ha`, `ig`, and `yo` are `pending`, every value `null`. I did not write, machine-translate, or simulate any Hausa, Igbo, or Yoruba text, because a wrong safety or status string would mislead residents and CLAUDE.md forbids fabricated translations.
+- **Performance/cache impact:** No runtime dependency. The client `error` and `global-error` boundaries import `en.json` (about 5 KB of JSON); the client bundle scan is still clean. First-load JavaScript was not measured against the plan's budget.
+- **Failure behaviour verified:** the checker fails on a missing or extra key, a leaf/object mismatch, an empty or non-string leaf, invalid ICU in English or a translation, a renamed or retyped variable, missing `other` branches, unknown plural categories, differing select branches, translated text under `pending`, gaps under `reviewed`, missing reviewer or date, an invalid status value, mismatched domains, and an unreviewed English source. The loader falls back, flagged, when a domain is marked reviewed but still contains nulls.
+- **Commands run and results:** `make web-verify` exit 0 (300 unit, 47 component, contract drift plus message check, build, boundary scan clean); `make web-e2e` 35 passed and 1 skipped (iOS WebKit Tab-to-link) on three consecutive runs; `make web-a11y` 16 passed; lint 0 errors and 0 warnings; the frontend workflow validator passes.
+- **Screenshots/traces/artifacts checked:** None new; the rendered landing is unchanged apart from the "Source 1" label.
+- **Known limitations/open decisions:** Every non-English domain is pending, so the Circle 5 requirement for reviewed critical copy in three languages needs a fluent reviewer. Recovery pages are English-only because reading the locale would make them dynamic. Typed content records for evidence labels remain exhaustive by TypeScript and by the parity check.
+- **Commit/PR:** `feat: add domain message catalogues with parity checking and honest review status`
+- **Next task may rely on:** `resolveDomain`, `formatMessage`, the catalogue types, and `messages:check` for FE-052 to FE-054.
+- **AI assistance used:** Designed the catalogue structure, wrote the parity checker and loader, and migrated the existing copy.
+- **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-052 Locale-aware formatting
+
+- **Task:** FE-052 — Locale-aware formatting.
+- **User outcome delivered:** Dates, times, numbers, lists, and (once the API has one) naira amounts display consistently in the page language without altering the facts they carry.
+- **Files changed:** `apps/web/src/lib/format/formatters.ts` (replaces `date.ts`), the landing page, `apps/web/tests/unit/formatters.test.ts`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None. No API field carries money today; `naira` is ready for one.
+- **Public/private data handled:** None.
+- **States implemented:** instant, calendar date, date-time, relative-with-exact, plain and NGN numbers, lists, language names, unformattable input.
+- **Accessibility evidence:** Not applicable to the formatters themselves; consumers should render dates in `<time datetime>` (the evidence components already do).
+- **Locales reviewed:** English output is asserted exactly. For `ha`, `ig`, and `yo` the tests assert only invariants (same digits, same order, same year and day), because I cannot verify their CLDR wording and did not want to enshrine possibly wrong text.
+- **Performance/cache impact:** Standard `Intl` only; no dependency.
+- **Failure behaviour verified:** a UTC instant near midnight lands on the correct Lagos day; a date-only value never shifts; malformed dates come back unchanged; malformed or over-precise amounts, exponent notation, thousands separators, and non-finite numbers throw; a large amount keeps every digit.
+- **Commands run and results:** `make web-verify` exit 0 with the new tests included in the unit run. Browser suites are unaffected by this change and were not re-run for this task.
+- **Screenshots/traces/artifacts checked:** None.
+- **Known limitations/open decisions:** Igbo and Yorùbá CLDR data has visible gaps in the runtime's ICU (relative times, one time format), so their formatted output needs review before those languages are served. Relative months and years are approximate (30 and 365 days), which is why the exact time is always paired with them.
+- **Commit/PR:** `feat: add locale-aware formatters that never change the underlying value`
+- **AI assistance used:** Designed the formatters and wrote the boundary tests.
+- **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — Hausa, Igbo, and Yorùbá copy added and served
+
+- **Task:** Bring the maintainer's translations into the build and serve all four locales as themselves (follow-up to FE-050 and FE-051).
+- **User outcome delivered:** Residents opening `/ha`, `/ig`, or `/yo` now get the landing page, shell, evidence labels, and recovery pages in that language, with the correct `lang`, and no "showing the original" notice.
+- **Files changed:** `apps/web/messages/{ha,ig,yo,status,en}.json`, `apps/web/app/global-error.tsx`, unit, component, browser, and accessibility tests (new `tests/a11y/locales.a11y.spec.ts`), `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None.
+- **Public/private data handled:** Public static copy only.
+- **States implemented:** reviewed status for every locale and domain; fallback-with-notice remains implemented and is now covered by tests that mock a pending or gapped domain.
+- **Accessibility evidence:** axe passes for `en`, `ha`, `ig`, and `yo` in Chromium and mobile WebKit; each locale reflows at 320 px and at 200% text with no horizontal scroll and no clipped link or button; a phone-width screenshot of `/yo` was inspected (diacritics, wrapping, and the language control intact).
+- **Locales reviewed:** The text in `ha.json`, `ig.json`, and `yo.json` was written by the maintainer, who asked for it to be recorded as not pending. `messages/status.json` records `reviewed` with the reviewer "maintainer (self-reported: authored and added this copy; no independent fluent reviewer)" on 2026-09-20. I did not write, edit, or check the wording of any Hausa, Igbo, or Yorùbá text; the parity checker verified only structure, ICU syntax, variables, and completeness.
+- **Performance/cache impact:** Catalogues are static JSON; the client bundle scan is still clean.
+- **Failure behaviour verified:** the checker found that the maintainer's files lacked `recovery.fatal.title`, a key added after translation began. Rather than write the three missing strings, that key was removed and the global error screen reuses the page-error title; the maintainer plans one full translation pass at the end of the build.
+- **Commands run and results:** `make web-verify` exit 0 (313 unit, 47 component, catalogues consistent, bundle scan clean); `make web-e2e` 41 passed and 1 skipped (iOS WebKit Tab-to-link); `make web-a11y` 32 passed; `pnpm audit --prod` clean.
+- **Known limitations/open decisions:** Igbo and Yorùbá CLDR formatting data in the runtime is thin (for example relative days and one time format); the landing page uses only long dates, which render acceptably, but relative and clock formatting must be reviewed before any surface uses them in those languages. The maintainer plans a full translation pass at the end, including any new keys; new domains added before then must be marked pending and non-critical so they do not flip a locale back to English.
+- **Commit/PR:** `feat: serve reviewed Hausa, Igbo, and Yorùbá copy`
+- **AI assistance used:** Integrated the maintainer's translations, updated the status and tests, and added per-locale browser checks.
+- **Prompt summary:** Maintainer added translations and asked that they not be pending and that the work be committed.
+- **Human review:** The maintainer authored the translations and set their status by instruction; the code and test changes have not been reviewed by anyone else.
+
+## 2026-09-20 — FE-053 Localised validation and problem mapping, and pending-key tracking
+
+- **Task:** FE-053 — Localised validation and problem mapping; plus the maintainer's instruction to add all new keys with `null` translations and translate them at the end of the build.
+- **User outcome delivered:** A failed action can be explained to a resident from the problem's stable code alone, in reviewed wording, without ever showing backend text, submitted values, or internals; form errors have an accessible summary that moves focus to the field.
+- **Files changed:** `apps/web/src/lib/problems/{problem-messages,browser-problem}.ts`, `apps/web/src/components/ui/{error-summary,field}.tsx`, `apps/web/messages/*.json` (new `problems` domain, restored `recovery.fatal.title`, `pendingKeysAllowed`), `apps/web/scripts/{messages-parity.mjs,messages-parity.d.mts,check-messages.mjs}`, `apps/web/app/global-error.tsx`, tests (problem messages, error summary, parity, catalogue), `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None called. Covers the problem codes in `docs/API.md`, `contracts/openapi.json`, and the BFF's own codes.
+- **Public/private data handled:** Problem responses only. The parser ignores `title` and `detail` and any submitted value; `preservedValues` never restores secrets, contacts, or files.
+- **States implemented:** known code, unknown code with reference, Retry-After, completion-unknown after timeout or network loss, field rule errors, unmapped errors, empty summary, focused summary.
+- **Accessibility evidence:** component tests show the summary takes focus and is an alert, each link moves focus to its field by mouse and keyboard, and the field keeps its value, is `aria-invalid`, and has its message as its accessible description. Browser axe and reflow suites for all four locales still pass.
+- **Locales reviewed:** English only. The `problems` domain is `null` in `ha`, `ig`, and `yo` and `pending`/non-critical so it does not flip those languages back to English; I wrote no Hausa, Igbo, or Yorùbá text. It must be translated, reviewed, and made critical before the first form ships.
+- **Pending keys:** restored `recovery.fatal.title` (English) with `null` in the other three, as instructed. `status.json` now has `pendingKeysAllowed: true`; the checker allows `null` keys in a reviewed domain during the build, lists 36 per language, keeps requiring a reviewer and date, and fails on any `null` once the switch is `false`.
+- **Performance/cache impact:** No dependency. The problem code adds no client JavaScript until a form imports it; the bundle scan is clean.
+- **Failure behaviour verified:** hostile or malformed problem bodies, a wrong content type, an unsafe request ID, a non-numeric Retry-After, inherited object keys (`constructor`, `__proto__`) used as codes, unmapped and duplicate field errors, and files and secrets in preserved values.
+- **Commands run and results:** `make web-verify` exit 0 (331 unit, 51 component, catalogues consistent with 36 pending keys per language, bundle scan clean); `make web-e2e` 41 passed and 1 skipped (iOS WebKit Tab-to-link); `make web-a11y` 32 passed.
+- **Known limitations/open decisions:** No form uses this yet, so no page renders a problem message; Circle 9 wires it in. Adding keys to a served domain would show a fallback notice, so new keys go into new domains. The Circle 5 exit criterion for critical validation copy in every language is open until the translation pass.
+- **Commit/PR:** `feat: map problem codes to reviewed copy and add an accessible error summary`
+- **AI assistance used:** Designed the mapping, parser, and summary, extended the checker, and wrote the tests.
+- **Prompt summary:** Unattended frontend/BFF build loop for Circle 5; maintainer asked to keep the fatal key and add all future keys as null.
+- **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-054 Language-switch behaviour and the Circle 5 gate
+
+- **Task:** FE-054 — Language-switch behaviour; close Circle 5.
+- **User outcome delivered:** A resident can change language and land on the same page in the new language, is warned before losing an unsaved private draft, hears or sees a confirmation, and can do all of it without JavaScript except the warning and announcement.
+- **Files changed:** `apps/web/src/i18n/locale-href.ts`, `apps/web/src/lib/draft-guard.ts`, `apps/web/src/components/shell/{language-link,language-announcer,shell}.tsx`, `apps/web/src/components/ui/overlay.tsx` (controlled `ConfirmDialog`), the landing page, `apps/web/messages/*.json` (new `language` domain, `null` in ha, ig, yo), `apps/web/tests/{unit,component,e2e}`, `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None. The cursor rule comes from `docs/FRONTEND_BACKEND_CONTRACT.md`.
+- **Public/private data handled:** No private data. Links contain only the route and allowlisted public filters. The draft flag is memory only. One `sessionStorage` key holds a language code for a single navigation and is cleared on read.
+- **States implemented:** switch with and without JavaScript, unsaved-draft confirmation (stay, Escape, leave), announcement shown, cleared after 8 seconds, absent on ordinary loads and on reload, storage unavailable.
+- **Accessibility evidence:** the confirmation is an `alertdialog` with a title and description, focus returns to the link on cancel, the announcement is in an existing `role=status` polite region and carries the correct `lang`, axe passes for all four locales, and reflow passes at 320 px and 200% text.
+- **Locales reviewed:** The switcher and the announcement text use the new `language` domain, which is `null` in `ha`, `ig`, and `yo`, so the announcement appears in English with `lang="en"` until the maintainer translates it. I wrote no translation.
+- **Performance/cache impact:** Two small client components (`LanguageLink`, `LanguageAnnouncer`) and the existing dialog; the client bundle scan is clean across 14 chunks. The landing stays static.
+- **Failure behaviour verified:** hostile path segments and filter values cannot leave the origin; drafts, tracking codes, and unlisted parameters never appear in a link; a blocked `sessionStorage` does not break the switch; the announcer ignores a flag for another language and clears it.
+- **Commands run and results:** `make web-verify` exit 0 (336 unit, 58 component, catalogues consistent with 41 pending keys per language, bundle scan clean); `make web-e2e` 47 passed and 1 skipped (iOS WebKit Tab-to-link); `make web-a11y` 32 passed; `pnpm audit --prod` clean; lint 0 errors.
+- **Known limitations/open decisions:** The draft warning is proven at component level only, because no page has a draft yet; re-check it when the report form lands. Nothing on the landing has query filters, so filter preservation is proven by unit tests, not in a browser, until the directory exists. See the Circle 5 gate note for the remaining translation work.
+- **Commit/PR:** `feat: switch language to the equivalent page with a draft guard and an announcement`
+- **AI assistance used:** Designed and implemented the link builder, guard, link, and announcer and wrote the tests.
+- **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
 - **Human review:** none yet; unattended run, pending maintainer review.

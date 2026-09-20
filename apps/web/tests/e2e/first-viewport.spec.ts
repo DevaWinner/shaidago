@@ -114,7 +114,7 @@ test("the page works without JavaScript, including the citation link", async ({ 
 
   await page.goto("http://127.0.0.1:3100/");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await page.getByRole("link", { name: "Sources 1" }).click();
+  await page.getByRole("link", { name: "Source 1" }).click();
   expect(page.url()).toContain("#citation-example-1");
   await context.close();
 });

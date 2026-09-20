@@ -37,6 +37,20 @@ bounded, and represented in the browser by a secure `HttpOnly` cookie through th
 Reviewer mutations require origin enforcement in the BFF and a separate CSRF token at the API.
 Evidence downloads are authorised and audited on every request; no object-store URL is exposed.
 
+### Browser cookies
+
+The web app sets at most three first-party cookies, all `SameSite=Lax`, none read by a third party:
+
+| Cookie | Purpose | Contents | Lifetime | Readable by page script |
+| --- | --- | --- | --- | --- |
+| `NEXT_LOCALE` | Remembers the chosen language so `/` redirects to it | One of `en`, `ha`, `ig`, `yo` | 1 year | Yes (a preference, not a secret) |
+| `sg_session` / `__Host-sg_session` | Reviewer session (reviewers only) | Opaque token | Session policy from the API | No (`HttpOnly`) |
+| `sg_csrf` / `__Host-sg_csrf` | Reviewer CSRF token, forwarded server-side | Opaque token | Same as the session | No (`HttpOnly`) |
+
+Residents who only read pages or submit anonymous reports receive only the language cookie, and only
+after they open a locale-prefixed page. It contains no identifier, no contact detail, and no report
+data, and it is set by the proxy that negotiates language (`proxy.ts`).
+
 ## Providers and hostile content
 
 Public Q&A receives only approved passages for one project. Strict structured output, citation
@@ -100,6 +114,6 @@ Exact commands and current results are recorded in [`AI_BUILD_LOG.md`](AI_BUILD_
 - Production has not been created. Legal basis, privacy notice, real retention periods, backup and
   restore operations, incident staffing, provider agreements, access review, and an independent
   security/operational review remain mandatory before real data.
-- The Next.js BFF and browser application do not exist yet, so cookie setting, same-origin/CSRF
-  enforcement, client cache behaviour, accessibility, localisation, and low-bandwidth behaviour
-  are contracts rather than deployed evidence.
+- The Next.js BFF and browser application are built and tested locally but not deployed, so cookie
+  setting, same-origin/CSRF enforcement, client cache behaviour, accessibility, localisation, and
+  low-bandwidth behaviour have no deployed evidence.

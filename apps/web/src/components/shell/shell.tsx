@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { LanguageAnnouncer } from "@/components/shell/language-announcer";
+import { LanguageLink, type DraftGuardCopy } from "@/components/shell/language-link";
 import { cn } from "@/lib/utils";
 import type { ApiLocale } from "@/lib/api/forwarded-context";
 
@@ -51,18 +53,32 @@ const mainClasses =
 
 const LOCALES: readonly ApiLocale[] = ["en", "ha", "ig", "yo"];
 
+export type LanguageSwitch = Readonly<{
+  /** Copy for the "you have an unsaved draft" confirmation. */
+  guard: DraftGuardCopy;
+  /** The announcement template with a `{language}` variable, and the language it is written in. */
+  announce: string;
+  announceLanguage: ApiLocale;
+}>;
+
 export type LocaleControlProperties = Readonly<{
   /** Locales whose reviewed content exists, with their route; others are shown as unavailable. */
   available: Readonly<Partial<Record<ApiLocale, string>>>;
   current: ApiLocale;
   messages: PublicShellMessages;
+  /** Locales that have routes but no reviewed copy yet; each is labelled as such beside its link. */
+  unreviewed?: readonly ApiLocale[];
+  /** With this, links warn before discarding an unsaved draft and mark the switch for announcement. */
+  languageSwitch?: LanguageSwitch | undefined;
 }>;
 
 /** A list of links, not a script-driven select: it works with no JavaScript and is fully labelled. */
 export function LocaleControl({
   available,
   current,
-  messages
+  messages,
+  unreviewed = [],
+  languageSwitch
 }: LocaleControlProperties): ReactNode {
   return (
     <nav aria-label={messages.localeLabel} className="ms-auto" data-slot="locale-control">
@@ -70,9 +86,14 @@ export function LocaleControl({
         {LOCALES.map((locale) => {
           const href = available[locale];
           const name = messages.localeNames[locale];
+          const note = unreviewed.includes(locale) ? (
+            <span className="ms-1 text-muted-foreground" lang="en">
+              ({messages.localeUnavailable})
+            </span>
+          ) : null;
 
           return (
-            <li key={locale}>
+            <li className="inline-flex items-center" key={locale}>
               {locale === current ? (
                 <span
                   aria-current="true"
@@ -89,11 +110,22 @@ export function LocaleControl({
                 >
                   {name} <span className="ms-1">({messages.localeUnavailable})</span>
                 </span>
-              ) : (
+              ) : languageSwitch === undefined ? (
                 <a className={navLink} href={href} hrefLang={locale} lang={locale}>
                   {name}
                 </a>
+              ) : (
+                <LanguageLink
+                  className={navLink}
+                  guard={languageSwitch.guard}
+                  href={href}
+                  lang={locale}
+                  language={locale}
+                >
+                  {name}
+                </LanguageLink>
               )}
+              {note}
             </li>
           );
         })}
@@ -108,7 +140,9 @@ export function PublicShell({
   lowDataControl,
   links,
   localeRoutes,
-  messages
+  messages,
+  unreviewedLocales = [],
+  languageSwitch
 }: Readonly<{
   children: ReactNode;
   currentLocale: ApiLocale;
@@ -117,6 +151,8 @@ export function PublicShell({
   links: PublicShellLinks;
   localeRoutes: LocaleControlProperties["available"];
   messages: PublicShellMessages;
+  unreviewedLocales?: readonly ApiLocale[];
+  languageSwitch?: LanguageSwitch;
 }>): ReactNode {
   return (
     <div className="grid min-h-dvh grid-rows-[auto_auto_1fr_auto]" data-slot="shell">
@@ -146,7 +182,13 @@ export function PublicShell({
             </li>
           </ul>
         </nav>
-        <LocaleControl available={localeRoutes} current={currentLocale} messages={messages} />
+        <LocaleControl
+          available={localeRoutes}
+          current={currentLocale}
+          messages={messages}
+          languageSwitch={languageSwitch}
+          unreviewed={unreviewedLocales}
+        />
         {lowDataControl}
       </header>
       {/* Reserved for offline and stale notices; it announces politely and is empty by default. */}
@@ -156,7 +198,16 @@ export function PublicShell({
         className="border-b border-border px-[var(--layout-gutter)] py-2 empty:hidden"
         data-slot="shell-status"
         role="status"
-      />
+      >
+        {languageSwitch === undefined ? null : (
+          <LanguageAnnouncer
+            current={currentLocale}
+            language={languageSwitch.announceLanguage}
+            languageName={messages.localeNames[currentLocale]}
+            template={languageSwitch.announce}
+          />
+        )}
+      </div>
       <main className={mainClasses} id="main-content" tabIndex={-1}>
         {children}
       </main>

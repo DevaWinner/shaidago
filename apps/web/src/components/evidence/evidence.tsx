@@ -173,7 +173,6 @@ export type SourceCardLabels = Readonly<{
   classes: Readonly<Record<InformationClass, string>>;
   externalNotice: string;
   publisherHeading: string;
-  unknownDate: string;
 }>;
 
 /** Source identity and whether it can currently be reached. Approved sources only. */

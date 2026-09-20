@@ -1,0 +1,179 @@
+{
+  "shell": {
+    "public": {
+      "footerLabel": "Game da ShaidaGo",
+      "footerSources": "Yadda ake amincewa da majiyoyi",
+      "footerTrust": "Yadda ake karanta kundi",
+      "localeCurrentSuffix": "harshen da ake amfani da shi yanzu",
+      "localeLabel": "Harshe",
+      "localeNames": {
+        "en": "Turanci",
+        "ha": "Hausa",
+        "ig": "Igbo",
+        "yo": "Yorùbá"
+      },
+      "localeUnavailable": "ba a tantance ba tukuna",
+      "navLabel": "Babban menu",
+      "navLocalities": "Yankuna",
+      "navReport": "Bayar da rahoton wata damuwa",
+      "navTrust": "Yadda kundin bayanai ke aiki",
+      "notEmergency": "ShaidaGo ba sabis na gaggawa ba ne. Idan wani yana cikin haɗari, a fara tuntuɓar ma'aikatan agajin gaggawa na yankin.",
+      "productName": "ShaidaGo",
+      "skipToContent": "Tsallaka zuwa babban abun ciki",
+      "statusRegionLabel": "Haɗi da matsayin shafi"
+    },
+    "reviewer": {
+      "area": "Mai dubawa",
+      "navLabel": "Mai dubawa",
+      "productName": "ShaidaGo",
+      "queue": "Jerin rahotannin da ke jiran dubawa",
+      "skipToContent": "Tsallaka zuwa babban abun ciki"
+    }
+  },
+  "evidence": {
+    "verification": {
+      "awaiting_verification": "Ana jiran tabbatarwa",
+      "verified_official": "Majiya ta hukuma ta tabbatar",
+      "corroborated": "Fiye da majiya ɗaya sun tabbatar",
+      "community_reviewed": "Shaidar al'umma da aka duba",
+      "disputed": "Majiyoyi ba su yi daidai ba",
+      "outdated": "Wataƙila bayanin ya tsufa"
+    },
+    "informationClass": {
+      "official_source": "Majiya ta hukuma",
+      "independent_source": "Majiya mai zaman kanta",
+      "community_evidence_reviewed": "Shaidar al'umma da aka duba",
+      "community_report_unverified": "Rahoton al'umma, ba a tabbatar da shi ba",
+      "ai_generated_explanation": "Bayanin da AI ya samar, ba majiya ba"
+    },
+    "availability": {
+      "unchecked": "Ba a duba ba tukuna",
+      "available": "Akwai",
+      "temporarily_unavailable": "Babu na ɗan lokaci",
+      "access_restricted": "An taƙaita damar shiga",
+      "permanently_unavailable": "Babu shi kuma"
+    },
+    "dates": {
+      "effective": "Ranar fara aiki",
+      "lastChecked": "Dubawa ta ƙarshe",
+      "published": "An wallafa",
+      "retrieved": "An samo",
+      "unknown": "Ba a rubuta ba"
+    },
+    "source": {
+      "availabilityHeading": "Samuwar majiya",
+      "externalNotice": "yana buɗe majiyar a sabon shafi",
+      "publisherHeading": "Mawallafi"
+    },
+    "translation": {
+      "reviewed": "Fassarar da aka duba",
+      "machine_assisted": "Fassarar da na'ura ta taimaka wajen yi, mai iya harshen bai duba ta ba tukuna",
+      "unavailable": "Babu fassara; ana nuna asalin rubutun"
+    },
+    "timeline": {
+      "official": "Sabuntawa ta hukuma",
+      "community_reviewed": "Shaidar al'umma da aka duba"
+    }
+  },
+  "landing": {
+    "browse": "Duba kundin ayyuka",
+    "citedLabel": "Majiyoyin wannan bayani",
+    "citationBack": "Komawa ga bayanin",
+    "evidenceHeading": "Shaida mai ɗauke da kwanan wata",
+    "heading": "Kundin ayyukan jama'a na AMAC da Bwari, tare da majiyoyinsu",
+    "lead": "Kowane kundi yana nuna abin da aka yi alkawari, abin da majiyoyi suka ce, lokacin dubawa ta ƙarshe, da abin da har yanzu ba a sani ba.",
+    "localityLabel": "Misalin yanki",
+    "recordKind": "Kundin aikin jama'a",
+    "report": "Bayar da rahoton wata damuwa a ɓoye",
+    "reportNote": "Rahotanni na sirri ne kuma ba a taɓa wallafa su kai tsaye ba.",
+    "sample": {
+      "citation": {
+        "locationLabel": "sashen misali",
+        "passage": "Misalin bayani: an lissafa gyaran cibiyar lafiya a matsayin abin da aka tsara yi a shekara mai zuwa.",
+        "publisher": "Misalin mawallafi",
+        "sourceTitle": "Misalin sanarwar tsari"
+      },
+      "heading": "Misali: gyaran cibiyar lafiyar unguwa",
+      "notice": "Misali ne na ƙirƙira. Yana nuna yadda ake tsara kundi; ba ainihin aiki ko majiya ba ne.",
+      "noticeTitle": "Misali kawai",
+      "promised": "Alkawari: za a gyara cibiyar lafiyar unguwa.",
+      "railEntries": {
+        "community": "An karɓi bayanin ziyarar kuma yana jiran dubawa.",
+        "official": "Sanarwar tsari ta lissafa cibiyar a matsayin abin da aka tsara."
+      },
+      "sourceCount": "{count, plural, one {# majiya} other {# majiyoyi}}",
+      "sourceLabel": "Majiya {number, number}",
+      "stateLabel": "Halin da aka sani yanzu",
+      "stateText": "An lissafa shi a matsayin abin da aka tsara. Ba a tabbatar da ci gaban aikin ba."
+    }
+  },
+  "recovery": {
+    "notFound": {
+      "title": "Babu wannan shafin",
+      "body": "Duba adireshin ko komawa babban shafi. ShaidaGo ba ya tabbatar da ko akwai wani kundi na sirri.",
+      "home": "Komawa ShaidaGo"
+    },
+    "error": {
+      "title": "Ba a iya loda wannan shafin ba",
+      "body": "Sake gwadawa. Idan matsalar ta ci gaba, a tura lambar tallafi ba tare da bayyana bayanan sirri ba.",
+      "retry": "Sake gwadawa",
+      "reference": "Lambar tallafi: {reference}"
+    },
+    "loading": "Ana shirya wannan shafin.",
+    "fatal": {
+      "title": null
+    }
+  },
+  "problems": {
+    "codes": {
+      "badRequest": null,
+      "unauthenticated": null,
+      "forbidden": null,
+      "notFound": null,
+      "codeNotRecognised": null,
+      "invalidCredentials": null,
+      "rateLimited": null,
+      "conflict": null,
+      "idempotencyConflict": null,
+      "notAllowedNow": null,
+      "tooLarge": null,
+      "unsupportedType": null,
+      "validationFailed": null,
+      "markupNotAllowed": null,
+      "publicationIncomplete": null,
+      "invalidCursor": null,
+      "queryChanged": null,
+      "notVerified": null,
+      "timeout": null,
+      "unavailable": null,
+      "aborted": null,
+      "network": null,
+      "internal": null,
+      "unknown": null
+    },
+    "rules": {
+      "required": null,
+      "tooShort": null,
+      "tooLong": null,
+      "invalidFormat": null,
+      "notAccepted": null,
+      "markup": null,
+      "invalid": null
+    },
+    "summary": {
+      "title": null
+    },
+    "mayHaveCompleted": null,
+    "retryAfter": null,
+    "reference": null
+  },
+  "language": {
+    "changed": null,
+    "draft": {
+      "title": null,
+      "body": null,
+      "stay": null,
+      "leave": null
+    }
+  }
+}

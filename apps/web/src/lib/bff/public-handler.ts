@@ -45,7 +45,8 @@ export function originPolicyFor(request: Request): OriginPolicy {
   return resolveOriginPolicy({
     appEnvironment: loadServerEnvironment().appEnvironment,
     publicOrigin: loadPublicEnvironment().appOrigin,
-    requestUrl: request.url
+    requestUrl: request.url,
+    requestHost: request.headers.get("Host")
   });
 }
 

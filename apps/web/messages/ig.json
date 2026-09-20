@@ -1,0 +1,179 @@
+{
+  "shell": {
+    "public": {
+      "footerLabel": "Maka ShaidaGo",
+      "footerSources": "Otu e si akwado isi mmalite",
+      "footerTrust": "Otu e si agụ ndekọ",
+      "localeCurrentSuffix": "asụsụ a na-eji ugbu a",
+      "localeLabel": "Asụsụ",
+      "localeNames": {
+        "en": "Bekee",
+        "ha": "Hausa",
+        "ig": "Igbo",
+        "yo": "Yorùbá"
+      },
+      "localeUnavailable": "enyochabeghị",
+      "navLabel": "Isi menu",
+      "navLocalities": "Mpaghara",
+      "navReport": "Kọwaa nchegbu",
+      "navTrust": "Otu ndekọ si arụ ọrụ",
+      "notEmergency": "ShaidaGo abụghị ọrụ enyemaka mberede. Ọ bụrụ na mmadụ nọ n'ihe ize ndụ, buru ụzọ kpọtụrụ ndị ọrụ enyemaka mberede dị n'ógbè ahụ.",
+      "productName": "ShaidaGo",
+      "skipToContent": "Gaa na isi ọdịnaya",
+      "statusRegionLabel": "Njikọ na ọnọdụ peeji"
+    },
+    "reviewer": {
+      "area": "Onye nyocha",
+      "navLabel": "Onye nyocha",
+      "productName": "ShaidaGo",
+      "queue": "Ahịrị mkpesa a ga-enyocha",
+      "skipToContent": "Gaa na isi ọdịnaya"
+    }
+  },
+  "evidence": {
+    "verification": {
+      "awaiting_verification": "Na-eche nkwenye",
+      "verified_official": "Isi mmalite gọọmentị kwadoro ya",
+      "corroborated": "Ihe karịrị otu isi mmalite kwadoro ya",
+      "community_reviewed": "Ihe akaebe obodo a nyochara",
+      "disputed": "Isi mmalite ekwekọghị",
+      "outdated": "O nwere ike ịbụ ozi ochie"
+    },
+    "informationClass": {
+      "official_source": "Isi mmalite gọọmentị",
+      "independent_source": "Isi mmalite nọọrọ onwe ya",
+      "community_evidence_reviewed": "Ihe akaebe obodo a nyochara",
+      "community_report_unverified": "Mkpesa obodo, akwadobeghị ya",
+      "ai_generated_explanation": "Nkọwa AI mepụtara, ọ bụghị isi mmalite"
+    },
+    "availability": {
+      "unchecked": "Enyochabeghị",
+      "available": "Dị",
+      "temporarily_unavailable": "Adịghị nwa oge",
+      "access_restricted": "E gbochiri ohere ịnweta ya",
+      "permanently_unavailable": "Adịghịzi"
+    },
+    "dates": {
+      "effective": "Ụbọchị ọ malitere ịrụ ọrụ",
+      "lastChecked": "Nnyocha ikpeazụ",
+      "published": "E bipụtara",
+      "retrieved": "E wetara",
+      "unknown": "Edekọghị"
+    },
+    "source": {
+      "availabilityHeading": "Nnweta",
+      "externalNotice": "na-emepe isi mmalite na taabụ ọhụrụ",
+      "publisherHeading": "Onye bipụtara"
+    },
+    "translation": {
+      "reviewed": "Ntụgharị asụsụ a nyochara",
+      "machine_assisted": "Ntụgharị asụsụ igwe nyere aka mee, onye maara asụsụ ahụ nke ọma enyochabeghị ya",
+      "unavailable": "Ntụgharị asụsụ adịghị; a na-egosi nke mbụ"
+    },
+    "timeline": {
+      "official": "Mmelite gọọmentị",
+      "community_reviewed": "Ihe akaebe obodo a nyochara"
+    }
+  },
+  "landing": {
+    "browse": "Chọgharịa ndekọ ọrụ ngo",
+    "citedLabel": "Isi mmalite nke okwu a",
+    "citationBack": "Laghachi n'okwu ahụ",
+    "evidenceHeading": "Ihe akaebe nwere ụbọchị",
+    "heading": "Ndekọ ọrụ ngo ọha nke AMAC na Bwari, tinyere isi mmalite ha",
+    "lead": "Ndekọ ọ bụla na-egosi ihe e kwere ná nkwa, ihe isi mmalite kwuru, mgbe e nyochara ya ikpeazụ, na ihe a ka na-amaghị.",
+    "localityLabel": "Ọmụmaatụ mpaghara",
+    "recordKind": "Ndekọ ọrụ ngo ọha",
+    "report": "Kọwaa nchegbu na nzuzo",
+    "reportNote": "Mkpesa bụ nke nzuzo, a naghị ebipụta ha ozugbo.",
+    "sample": {
+      "citation": {
+        "locationLabel": "ngalaba ọmụmaatụ",
+        "passage": "Ọmụmaatụ ederede: e depụtara mmezigharị ụlọ ọgwụ mpaghara dịka ihe e zubere maka afọ na-abịa.",
+        "publisher": "Ọmụmaatụ onye bipụtara",
+        "sourceTitle": "Ọmụmaatụ ọkwa atụmatụ"
+      },
+      "heading": "Ọmụmaatụ: mmezigharị ụlọ ọgwụ mpaghara",
+      "notice": "Nke a bụ ọmụmaatụ echepụtara echepụta. Ọ na-egosi otu e si hazie ndekọ; ọ bụghị ezigbo ọrụ ngo ma ọ bụ isi mmalite.",
+      "noticeTitle": "Naanị ọmụmaatụ",
+      "promised": "Nkwa: ụlọ ọgwụ mpaghara a rụzigharịrị.",
+      "railEntries": {
+        "community": "A natara ihe edeturu banyere nleta, ọ na-eche nyocha.",
+        "official": "Ọkwa atụmatụ ahụ depụtara ụlọ ọgwụ ahụ dịka ihe e zubere."
+      },
+      "sourceCount": "{count, plural, one {# isi mmalite} other {# isi mmalite}}",
+      "sourceLabel": "Isi mmalite {number, number}",
+      "stateLabel": "Ọnọdụ a maara ugbu a",
+      "stateText": "E depụtara ya dịka ihe e zubere. A kwadobeghị ọganihu ya."
+    }
+  },
+  "recovery": {
+    "notFound": {
+      "title": "Peeji a adịghị",
+      "body": "Lelee adreesị ahụ ma ọ bụ laghachi na peeji mbụ. ShaidaGo anaghị akwado ma ndekọ nzuzo ọ dị.",
+      "home": "Laghachi na ShaidaGo"
+    },
+    "error": {
+      "title": "Enweghị ike ibunye peeji a",
+      "body": "Nwaa ọzọ. Ọ bụrụ na nsogbu ahụ aga n'ihu, zipụ akara nkwado ahụ n'ezipụghị nkọwa nzuzo.",
+      "retry": "Nwaa ọzọ",
+      "reference": "Akara nkwado: {reference}"
+    },
+    "loading": "Na-akwadebe peeji a.",
+    "fatal": {
+      "title": null
+    }
+  },
+  "problems": {
+    "codes": {
+      "badRequest": null,
+      "unauthenticated": null,
+      "forbidden": null,
+      "notFound": null,
+      "codeNotRecognised": null,
+      "invalidCredentials": null,
+      "rateLimited": null,
+      "conflict": null,
+      "idempotencyConflict": null,
+      "notAllowedNow": null,
+      "tooLarge": null,
+      "unsupportedType": null,
+      "validationFailed": null,
+      "markupNotAllowed": null,
+      "publicationIncomplete": null,
+      "invalidCursor": null,
+      "queryChanged": null,
+      "notVerified": null,
+      "timeout": null,
+      "unavailable": null,
+      "aborted": null,
+      "network": null,
+      "internal": null,
+      "unknown": null
+    },
+    "rules": {
+      "required": null,
+      "tooShort": null,
+      "tooLong": null,
+      "invalidFormat": null,
+      "notAccepted": null,
+      "markup": null,
+      "invalid": null
+    },
+    "summary": {
+      "title": null
+    },
+    "mayHaveCompleted": null,
+    "retryAfter": null,
+    "reference": null
+  },
+  "language": {
+    "changed": null,
+    "draft": {
+      "title": null,
+      "body": null,
+      "stay": null,
+      "leave": null
+    }
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "shell": {
+    "public": {
+      "footerLabel": "About ShaidaGo",
+      "footerSources": "How sources are approved",
+      "footerTrust": "How to read a record",
+      "localeCurrentSuffix": "current language",
+      "localeLabel": "Language",
+      "localeNames": {
+        "en": "English",
+        "ha": "Hausa",
+        "ig": "Igbo",
+        "yo": "Yorùbá"
+      },
+      "localeUnavailable": "not yet reviewed",
+      "navLabel": "Main",
+      "navLocalities": "Localities",
+      "navReport": "Report a concern",
+      "navTrust": "How records work",
+      "notEmergency": "ShaidaGo is not an emergency service. If someone is in danger, contact local emergency services first.",
+      "productName": "ShaidaGo",
+      "skipToContent": "Skip to main content",
+      "statusRegionLabel": "Connection and page status"
+    },
+    "reviewer": {
+      "area": "Reviewer",
+      "navLabel": "Reviewer",
+      "productName": "ShaidaGo",
+      "queue": "Report queue",
+      "skipToContent": "Skip to main content"
+    }
+  },
+  "evidence": {
+    "verification": {
+      "awaiting_verification": "Awaiting verification",
+      "verified_official": "Confirmed by an official source",
+      "corroborated": "Corroborated by more than one source",
+      "community_reviewed": "Reviewed community evidence",
+      "disputed": "Sources disagree",
+      "outdated": "May be out of date"
+    },
+    "informationClass": {
+      "official_source": "Official source",
+      "independent_source": "Independent source",
+      "community_evidence_reviewed": "Reviewed community evidence",
+      "community_report_unverified": "Community report, not verified",
+      "ai_generated_explanation": "AI-generated explanation, not a source"
+    },
+    "availability": {
+      "unchecked": "Not yet checked",
+      "available": "Available",
+      "temporarily_unavailable": "Temporarily unavailable",
+      "access_restricted": "Access restricted",
+      "permanently_unavailable": "No longer available"
+    },
+    "dates": {
+      "effective": "Effective",
+      "lastChecked": "Last checked",
+      "published": "Published",
+      "retrieved": "Retrieved",
+      "unknown": "Not recorded"
+    },
+    "source": {
+      "availabilityHeading": "Availability",
+      "externalNotice": "opens the source in a new tab",
+      "publisherHeading": "Publisher"
+    },
+    "translation": {
+      "reviewed": "Reviewed translation",
+      "machine_assisted": "Machine-assisted translation, not yet reviewed by a fluent reader",
+      "unavailable": "No translation available; showing the original"
+    },
+    "timeline": {
+      "official": "Official update",
+      "community_reviewed": "Reviewed community evidence"
+    }
+  },
+  "landing": {
+    "browse": "Browse project records",
+    "citedLabel": "Sources for this statement",
+    "citationBack": "Back to the statement",
+    "evidenceHeading": "Dated evidence",
+    "heading": "Public project records for AMAC and Bwari, with their sources",
+    "lead": "Each record shows what was promised, what the sources say, when it was last checked, and what is still unknown.",
+    "localityLabel": "Example locality",
+    "recordKind": "Public project record",
+    "report": "Report a concern privately",
+    "reportNote": "Reports are private and are never published automatically.",
+    "sample": {
+      "citation": {
+        "locationLabel": "example section",
+        "passage": "Example passage: the clinic refurbishment is listed as planned for the coming year.",
+        "publisher": "Example publisher",
+        "sourceTitle": "Example planning notice"
+      },
+      "heading": "Example: ward health clinic refurbishment",
+      "notice": "Fictional example. This shows how a record is laid out; it is not a real project or source.",
+      "noticeTitle": "Example only",
+      "promised": "Promised: a refurbished ward health clinic.",
+      "railEntries": {
+        "community": "A visit note was received and is waiting for review.",
+        "official": "The planning notice lists the clinic as planned."
+      },
+      "sourceCount": "{count, plural, one {# source} other {# sources}}",
+      "sourceLabel": "Source {number, number}",
+      "stateLabel": "Current known state",
+      "stateText": "Listed as planned. Progress has not been confirmed."
+    }
+  },
+  "recovery": {
+    "notFound": {
+      "title": "This page is not available",
+      "body": "Check the address or return to the main page. ShaidaGo does not confirm whether a private record exists.",
+      "home": "Return to ShaidaGo"
+    },
+    "error": {
+      "title": "This page could not be loaded",
+      "body": "Try again. If the problem continues, share the support reference without sharing private report details.",
+      "retry": "Try again",
+      "reference": "Support reference: {reference}"
+    },
+    "loading": "Preparing this page.",
+    "fatal": {
+      "title": "ShaidaGo could not be opened"
+    }
+  },
+  "problems": {
+    "codes": {
+      "badRequest": "The request could not be understood. Check what you entered and try again.",
+      "unauthenticated": "Sign in to continue.",
+      "forbidden": "You do not have permission to do that.",
+      "notFound": "We could not find that.",
+      "codeNotRecognised": "We could not find a report for that code. Check the code and try again.",
+      "invalidCredentials": "Those details were not accepted. Check them and try again.",
+      "rateLimited": "Too many attempts. Wait a moment and try again.",
+      "conflict": "This changed while you were working. Refresh and try again.",
+      "idempotencyConflict": "This request was already used with different details. Start again.",
+      "notAllowedNow": "That action is not available in the current state.",
+      "tooLarge": "That is too large to send. Reduce its size and try again.",
+      "unsupportedType": "That format is not supported.",
+      "validationFailed": "Some details need attention.",
+      "markupNotAllowed": "Remove formatting or markup and try again.",
+      "publicationIncomplete": "Something required is missing before this can be published.",
+      "invalidCursor": "That page of results is no longer valid. Return to the first page.",
+      "queryChanged": "The search changed. Review the new plan before continuing.",
+      "notVerified": "This request could not be verified. Reload the page and try again.",
+      "timeout": "The service took too long to respond. Try again.",
+      "unavailable": "The service is unavailable right now. Try again shortly.",
+      "aborted": "The request was cancelled.",
+      "network": "Could not reach ShaidaGo. Check your connection and try again.",
+      "internal": "Something went wrong on our side.",
+      "unknown": "Something went wrong."
+    },
+    "rules": {
+      "required": "Enter a value.",
+      "tooShort": "This is too short.",
+      "tooLong": "This is too long.",
+      "invalidFormat": "This is not in the expected format.",
+      "notAccepted": "This field is not accepted.",
+      "markup": "Remove formatting or markup.",
+      "invalid": "Check this value."
+    },
+    "summary": {
+      "title": "{count, plural, one {Fix # problem to continue} other {Fix # problems to continue}}"
+    },
+    "mayHaveCompleted": "If you already sent this, check before sending it again.",
+    "retryAfter": "Try again in {seconds, plural, one {# second} other {# seconds}}.",
+    "reference": "Support reference: {reference}"
+  },
+  "language": {
+    "changed": "Language changed to {language}.",
+    "draft": {
+      "title": "Change language?",
+      "body": "Changing the language reloads this page. Anything you have not saved will be lost.",
+      "stay": "Stay on this page",
+      "leave": "Change language"
+    }
+  }
+}

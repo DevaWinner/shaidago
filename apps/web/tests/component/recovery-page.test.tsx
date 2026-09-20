@@ -2,12 +2,12 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
-import NotFound from "../../app/not-found";
-import RouteError from "../../app/error";
+import NotFound from "../../app/[locale]/not-found";
+import RouteError from "../../app/[locale]/error";
 import GlobalError from "../../app/global-error";
 
 describe("recovery boundaries", () => {
-  it("keeps not-found responses generic about private records", () => {
+  it("keeps not-found responses generic about private records and links home", () => {
     render(<NotFound />);
 
     expect(screen.getByRole("heading", { name: "This page is not available" })).toBeVisible();
