@@ -175,5 +175,126 @@
       "stay": null,
       "leave": null
     }
+  },
+  "directory": {
+    "title": null,
+    "intro": null,
+    "form": {
+      "label": null,
+      "searchLabel": null,
+      "searchHelp": null,
+      "locality": null,
+      "category": null,
+      "status": null,
+      "verification": null,
+      "any": null,
+      "apply": null,
+      "clear": null
+    },
+    "categories": {
+      "health": null,
+      "education": null,
+      "water_sanitation": null,
+      "roads_public_works": null,
+      "other_public_service": null
+    },
+    "statuses": {
+      "unknown": null,
+      "planned": null,
+      "procurement": null,
+      "in_progress": null,
+      "on_hold": null,
+      "completed": null,
+      "cancelled": null
+    },
+    "pills": {
+      "label": null,
+      "remove": null,
+      "search": null
+    },
+    "results": {
+      "heading": null,
+      "shown": null,
+      "moreAvailable": null
+    },
+    "card": {
+      "recordedStatus": null,
+      "lastChecked": null,
+      "notChecked": null,
+      "staleNote": null,
+      "original": null
+    },
+    "states": {
+      "empty": {
+        "title": null,
+        "body": null
+      },
+      "noMatches": {
+        "title": null,
+        "body": null
+      },
+      "unavailable": {
+        "title": null,
+        "body": null,
+        "retry": null
+      },
+      "invalidCursor": {
+        "title": null,
+        "body": null,
+        "first": null
+      }
+    },
+    "pagination": {
+      "label": null,
+      "next": null,
+      "first": null
+    }
+  },
+  "home": {
+    "search": {
+      "apply": null,
+      "label": null,
+      "help": null
+    },
+    "localities": {
+      "heading": null,
+      "all": null
+    },
+    "categories": {
+      "heading": null,
+      "note": null
+    },
+    "latest": {
+      "heading": null,
+      "recordedStatus": null,
+      "lastChecked": null,
+      "notChecked": null,
+      "view": null,
+      "unavailable": null,
+      "empty": null
+    },
+    "trust": {
+      "heading": null,
+      "sources": null,
+      "review": null,
+      "privacy": null,
+      "link": null
+    },
+    "how": {
+      "heading": null,
+      "read": {
+        "title": null,
+        "body": null
+      },
+      "report": {
+        "title": null,
+        "body": null
+      },
+      "review": {
+        "title": null,
+        "body": null
+      }
+    },
+    "limitation": null
   }
 }

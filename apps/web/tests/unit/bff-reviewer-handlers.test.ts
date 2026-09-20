@@ -3,6 +3,9 @@ import { join } from "node:path";
 
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from "vitest";
 
+const revalidateTag = vi.hoisted(() => vi.fn());
+vi.mock("next/cache", () => ({ revalidateTag }));
+
 import { DELETE as signOut, POST as signIn } from "../../app/api/reviewer/session/route";
 import { POST as createNote } from "../../app/api/reviewer/reports/[reportId]/notes/route";
 import { GET as downloadEvidence } from "../../app/api/reviewer/reports/[reportId]/evidence/[evidenceId]/route";
@@ -811,5 +814,34 @@ describe("reviewer route surface", () => {
       expect(source, file).toContain('export const dynamic = "force-dynamic";');
       expect(source, file).toContain('export const runtime = "nodejs";');
     }
+  });
+});
+
+describe("public cache invalidation", () => {
+  const publishCase = mutationCases.find((item) => item.name === "publish update");
+
+  it("drops the public cache once, and only after the API accepted a publication", async () => {
+    revalidateTag.mockClear();
+    if (publishCase === undefined) throw new Error("missing case");
+
+    backend.mockResolvedValueOnce(publishCase.success());
+    expect((await call(publishCase)).status).toBe(200);
+    expect(revalidateTag).toHaveBeenCalledExactlyOnceWith("public-catalogue", { expire: 0 });
+  });
+
+  it("leaves the cache alone when publication is refused, unauthenticated, invalid, or any other command", async () => {
+    revalidateTag.mockClear();
+    if (publishCase === undefined) throw new Error("missing case");
+
+    backend.mockResolvedValueOnce(problemJson("preview_stale", 409));
+    expect((await call(publishCase)).status).toBe(409);
+    expect((await call(publishCase, { cookie: null })).status).toBe(401);
+    expect((await call(publishCase, { body: { preview_digest: "nope" } })).status).toBe(422);
+
+    for (const other of mutationCases.filter((item) => item.name !== "publish update")) {
+      backend.mockResolvedValueOnce(other.success());
+      await call(other);
+    }
+    expect(revalidateTag).not.toHaveBeenCalled();
   });
 });

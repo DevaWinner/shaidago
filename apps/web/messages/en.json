@@ -175,5 +175,126 @@
       "stay": "Stay on this page",
       "leave": "Change language"
     }
+  },
+  "directory": {
+    "title": "Project records",
+    "intro": "Public records for AMAC and Bwari, each with its sources and the date it was last checked.",
+    "form": {
+      "label": "Search and filter project records",
+      "searchLabel": "Search project records",
+      "searchHelp": "Search by project name or what was promised.",
+      "locality": "Locality",
+      "category": "Category",
+      "status": "Recorded status",
+      "verification": "Verification",
+      "any": "Any",
+      "apply": "Search",
+      "clear": "Clear all filters"
+    },
+    "categories": {
+      "health": "Health",
+      "education": "Education",
+      "water_sanitation": "Water and sanitation",
+      "roads_public_works": "Roads and public works",
+      "other_public_service": "Other public service"
+    },
+    "statuses": {
+      "unknown": "Not known",
+      "planned": "Planned",
+      "procurement": "In procurement",
+      "in_progress": "In progress",
+      "on_hold": "On hold",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "pills": {
+      "label": "Active filters",
+      "remove": "Remove filter: {filter}",
+      "search": "Search: {value}"
+    },
+    "results": {
+      "heading": "Results",
+      "shown": "{count, plural, one {Showing # project record.} other {Showing # project records.}}",
+      "moreAvailable": "More records are available."
+    },
+    "card": {
+      "recordedStatus": "Recorded status",
+      "lastChecked": "Last checked",
+      "notChecked": "Not yet checked",
+      "staleNote": "Last checked more than {days, plural, one {# day} other {# days}} ago.",
+      "original": "Shown in the original language: no translation is available for this record."
+    },
+    "states": {
+      "empty": {
+        "title": "No project records yet",
+        "body": "No public project records are available at the moment. Check again later."
+      },
+      "noMatches": {
+        "title": "No records match these filters",
+        "body": "Try removing a filter or searching for different words. Records may exist under other filters."
+      },
+      "unavailable": {
+        "title": "Project records could not be loaded",
+        "body": "The service is not responding right now. Nothing has been lost. Try again in a moment.",
+        "retry": "Try again"
+      },
+      "invalidCursor": {
+        "title": "That page of results is no longer valid",
+        "body": "The list changed since this link was made. Start again from the first page.",
+        "first": "Go to the first page"
+      }
+    },
+    "pagination": {
+      "label": "Project record pages",
+      "next": "Next records",
+      "first": "Back to the first page"
+    }
+  },
+  "home": {
+    "search": {
+      "apply": "Search",
+      "label": "Search project records",
+      "help": "Search by project name or what was promised."
+    },
+    "localities": {
+      "heading": "Choose where to look",
+      "all": "All localities"
+    },
+    "categories": {
+      "heading": "Browse by category",
+      "note": "Only categories that have records are listed."
+    },
+    "latest": {
+      "heading": "Latest record",
+      "recordedStatus": "Recorded status",
+      "lastChecked": "Last checked",
+      "notChecked": "Not yet checked",
+      "view": "View record",
+      "unavailable": "Project records could not be loaded right now. The rest of this page still works.",
+      "empty": "No public project records are available yet."
+    },
+    "trust": {
+      "heading": "How you can check what you read",
+      "sources": "Every fact links to the source it came from, with the exact passage and the date it was checked.",
+      "review": "A person reviews evidence before it changes a public record. Automated tools explain and search, but they are not sources.",
+      "privacy": "Reports are private by default and are never published automatically.",
+      "link": "How records work"
+    },
+    "how": {
+      "heading": "How ShaidaGo works",
+      "read": {
+        "title": "Read the record",
+        "body": "Find a project and see what was promised and what the sources say."
+      },
+      "report": {
+        "title": "Report a concern safely",
+        "body": "Send a private report without an account. Only a reviewer can read it."
+      },
+      "review": {
+        "title": "A person reviews",
+        "body": "Reviewers decide what, if anything, is added to the public record, with citations."
+      }
+    },
+    "limitation": "ShaidaGo is a prototype. It is not an emergency service. If someone is in danger, contact local emergency services first."
   }
 }

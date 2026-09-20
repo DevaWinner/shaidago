@@ -22,6 +22,9 @@ import { loadServerEnvironment, type ServerEnvironment } from "@/lib/config/serv
 const INTERNAL_CALLER_ID = "web";
 const PUBLIC_READ_TIMEOUT_MS = 5_000;
 const PUBLIC_REVALIDATE_SECONDS = 60;
+
+/** Every cached public read carries this tag so one call can drop all of them after a publication. */
+export const PUBLIC_CACHE_TAG = "public-catalogue";
 const READ_RETRY_DELAY_MS = 250;
 const MAX_RETRY_AFTER_FOR_RETRY_SECONDS = 1;
 
@@ -210,7 +213,7 @@ export function createServerApi(dependencies: ServerApiDependencies) {
       dependencies.fetch(
         request,
         (policy.cache === "public"
-          ? { next: { revalidate: PUBLIC_REVALIDATE_SECONDS } }
+          ? { next: { revalidate: PUBLIC_REVALIDATE_SECONDS, tags: [PUBLIC_CACHE_TAG] } }
           : { cache: "no-store" }) as RequestInit
       );
     const attempts = policy.retry ? 2 : 1;
