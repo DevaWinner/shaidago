@@ -155,3 +155,48 @@ test("language links work without JavaScript", async ({ browser }) => {
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await context.close();
 });
+
+test("switching language by link lands on the equivalent page, sets the new language, and announces it once", async ({
+  page
+}) => {
+  await page.goto("/en");
+  await page
+    .getByRole("navigation", { name: "Language" })
+    .getByRole("link", { name: "Hausa" })
+    .click();
+
+  await expect(page).toHaveURL(/\/ha$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "ha");
+  const region = page.locator("[data-slot=shell-status]");
+  await expect(region).toHaveAttribute("aria-live", "polite");
+  await expect(region).toHaveAttribute("role", "status");
+  // The `language` copy is not translated yet, so the announcement is the English original and says so.
+  await expect(
+    region.getByText(en.language.changed.replace("{language}", ha.shell.public.localeNames.ha))
+  ).toHaveAttribute("lang", "en");
+
+  await page.reload();
+  await expect(region).toBeEmpty();
+});
+
+test("an ordinary visit to a language page makes no announcement", async ({ page }) => {
+  await page.goto("/ig");
+
+  await expect(page.locator("[data-slot=shell-status]")).toBeEmpty();
+});
+
+test("every language link points at the same route in that language", async ({ page }) => {
+  await page.goto("/yo");
+  const control = page.getByRole("navigation", { name: yo.shell.public.localeLabel });
+
+  for (const [code, name] of Object.entries(yo.shell.public.localeNames)) {
+    const link = control.getByRole("link", { name });
+
+    if (code === "yo") {
+      await expect(link).toHaveCount(0);
+    } else {
+      await expect(link).toHaveAttribute("href", `/${code}`);
+      await expect(link).toHaveAttribute("hreflang", code);
+    }
+  }
+});

@@ -166,5 +166,14 @@
     "mayHaveCompleted": "If you already sent this, check before sending it again.",
     "retryAfter": "Try again in {seconds, plural, one {# second} other {# seconds}}.",
     "reference": "Support reference: {reference}"
+  },
+  "language": {
+    "changed": "Language changed to {language}.",
+    "draft": {
+      "title": "Change language?",
+      "body": "Changing the language reloads this page. Anything you have not saved will be lost.",
+      "stay": "Stay on this page",
+      "leave": "Change language"
+    }
   }
 }

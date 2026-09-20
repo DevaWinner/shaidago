@@ -91,6 +91,8 @@ export function ConfirmDialog({
   description,
   destructive = false,
   onConfirm,
+  onOpenChange,
+  open,
   title,
   triggerLabel
 }: Readonly<{
@@ -99,14 +101,22 @@ export function ConfirmDialog({
   description: string;
   destructive?: boolean;
   onConfirm: () => void;
+  /** With `open`, the dialog is controlled by its caller and needs no trigger of its own. */
+  onOpenChange?: (open: boolean) => void;
+  open?: boolean;
   title: string;
-  triggerLabel: string;
+  triggerLabel?: string;
 }>): ReactNode {
   return (
-    <Dialog.Root>
-      <Dialog.Trigger className={secondaryButton} data-slot="button" data-variant="secondary">
-        {triggerLabel}
-      </Dialog.Trigger>
+    <Dialog.Root
+      {...(onOpenChange === undefined ? {} : { onOpenChange })}
+      {...(open === undefined ? {} : { open })}
+    >
+      {triggerLabel === undefined ? null : (
+        <Dialog.Trigger className={secondaryButton} data-slot="button" data-variant="secondary">
+          {triggerLabel}
+        </Dialog.Trigger>
+      )}
       <Dialog.Portal>
         <Dialog.Backdrop className={backdrop} />
         <Dialog.Viewport className={cn(viewport, "place-items-center")}>
@@ -119,9 +129,7 @@ export function ConfirmDialog({
             <Dialog.Title className="m-0 text-ledger-lg">{title}</Dialog.Title>
             <Dialog.Description>{description}</Dialog.Description>
             <div className="flex flex-wrap gap-3">
-              <Dialog.Close className={secondaryButton} data-slot="button" data-variant="secondary">
-                {cancelLabel}
-              </Dialog.Close>
+              <Dialog.Close className={secondaryButton}>{cancelLabel}</Dialog.Close>
               <Dialog.Close
                 className={buttonVariants({ variant: destructive ? "danger" : "primary" })}
                 onClick={onConfirm}

@@ -12,6 +12,8 @@ import {
 import { REVIEWED_LOCALES } from "@/i18n/routing";
 
 type Json = Record<string, unknown>;
+// Domains added after the maintainer's translation pass: `null` in ha, ig, and yo until the end.
+const PENDING_DOMAINS = ["problems", "language"];
 const root = join(import.meta.dirname, "..", "..", "messages");
 const read = (name: string): Json =>
   JSON.parse(readFileSync(join(root, `${name}.json`), "utf8")) as Json;
@@ -84,12 +86,17 @@ describe("real catalogues", () => {
     expect(pending["ha"]).toEqual(pending["yo"]);
     expect(pending["ha"]).toContain("recovery.fatal.title");
     expect(
-      pending["ha"]?.every((key) => key === "recovery.fatal.title" || key.startsWith("problems."))
+      pending["ha"]?.every(
+        (key) =>
+          key === "recovery.fatal.title" ||
+          key.startsWith("problems.") ||
+          key.startsWith("language.")
+      )
     ).toBe(true);
     expect((read("status") as { pendingKeysAllowed?: boolean }).pendingKeysAllowed).toBe(true);
   });
 
-  it("mark every served domain reviewed with a named reviewer and date, and keep the untranslated `problems` domain pending", () => {
+  it("mark every served domain reviewed with a named reviewer and date, and keep the domains added since the translation pass pending", () => {
     const status = read("status") as {
       domains: Record<string, { critical: boolean }>;
       locales: Record<
@@ -100,7 +107,7 @@ describe("real catalogues", () => {
 
     for (const locale of LOCALES) {
       for (const [domain, record] of Object.entries(status.locales[locale] ?? {})) {
-        if (domain === "problems" && locale !== "en") {
+        if (PENDING_DOMAINS.includes(domain) && locale !== "en") {
           // New keys are added as null for the maintainer's end-of-build translation pass.
           expect(record.status, `${locale}.${domain}`).toBe("pending");
           expect(status.domains[domain]?.critical, domain).toBe(false);

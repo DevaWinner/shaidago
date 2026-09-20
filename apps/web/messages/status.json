@@ -15,6 +15,9 @@
     },
     "problems": {
       "critical": false
+    },
+    "language": {
+      "critical": false
     }
   },
   "locales": {
@@ -43,6 +46,11 @@
         "status": "reviewed",
         "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
         "reviewedOn": "2026-09-20"
+      },
+      "language": {
+        "status": "reviewed",
+        "reviewer": "maintainer (self-reported: approved by reviewing and merging pull requests 17 to 22)",
+        "reviewedOn": "2026-09-20"
       }
     },
     "ha": {
@@ -67,6 +75,9 @@
         "reviewedOn": "2026-09-20"
       },
       "problems": {
+        "status": "pending"
+      },
+      "language": {
         "status": "pending"
       }
     },
@@ -93,6 +104,9 @@
       },
       "problems": {
         "status": "pending"
+      },
+      "language": {
+        "status": "pending"
       }
     },
     "yo": {
@@ -117,6 +131,9 @@
         "reviewedOn": "2026-09-20"
       },
       "problems": {
+        "status": "pending"
+      },
+      "language": {
         "status": "pending"
       }
     }

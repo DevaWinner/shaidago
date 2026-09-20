@@ -2065,3 +2065,22 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed the mapping, parser, and summary, extended the checker, and wrote the tests.
 - **Prompt summary:** Unattended frontend/BFF build loop for Circle 5; maintainer asked to keep the fatal key and add all future keys as null.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-054 Language-switch behaviour and the Circle 5 gate
+
+- **Task:** FE-054 — Language-switch behaviour; close Circle 5.
+- **User outcome delivered:** A resident can change language and land on the same page in the new language, is warned before losing an unsaved private draft, hears or sees a confirmation, and can do all of it without JavaScript except the warning and announcement.
+- **Files changed:** `apps/web/src/i18n/locale-href.ts`, `apps/web/src/lib/draft-guard.ts`, `apps/web/src/components/shell/{language-link,language-announcer,shell}.tsx`, `apps/web/src/components/ui/overlay.tsx` (controlled `ConfirmDialog`), the landing page, `apps/web/messages/*.json` (new `language` domain, `null` in ha, ig, yo), `apps/web/tests/{unit,component,e2e}`, `apps/web/README.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None. The cursor rule comes from `docs/FRONTEND_BACKEND_CONTRACT.md`.
+- **Public/private data handled:** No private data. Links contain only the route and allowlisted public filters. The draft flag is memory only. One `sessionStorage` key holds a language code for a single navigation and is cleared on read.
+- **States implemented:** switch with and without JavaScript, unsaved-draft confirmation (stay, Escape, leave), announcement shown, cleared after 8 seconds, absent on ordinary loads and on reload, storage unavailable.
+- **Accessibility evidence:** the confirmation is an `alertdialog` with a title and description, focus returns to the link on cancel, the announcement is in an existing `role=status` polite region and carries the correct `lang`, axe passes for all four locales, and reflow passes at 320 px and 200% text.
+- **Locales reviewed:** The switcher and the announcement text use the new `language` domain, which is `null` in `ha`, `ig`, and `yo`, so the announcement appears in English with `lang="en"` until the maintainer translates it. I wrote no translation.
+- **Performance/cache impact:** Two small client components (`LanguageLink`, `LanguageAnnouncer`) and the existing dialog; the client bundle scan is clean across 14 chunks. The landing stays static.
+- **Failure behaviour verified:** hostile path segments and filter values cannot leave the origin; drafts, tracking codes, and unlisted parameters never appear in a link; a blocked `sessionStorage` does not break the switch; the announcer ignores a flag for another language and clears it.
+- **Commands run and results:** `make web-verify` exit 0 (336 unit, 58 component, catalogues consistent with 41 pending keys per language, bundle scan clean); `make web-e2e` 47 passed and 1 skipped (iOS WebKit Tab-to-link); `make web-a11y` 32 passed; `pnpm audit --prod` clean; lint 0 errors.
+- **Known limitations/open decisions:** The draft warning is proven at component level only, because no page has a draft yet; re-check it when the report form lands. Nothing on the landing has query filters, so filter preservation is proven by unit tests, not in a browser, until the directory exists. See the Circle 5 gate note for the remaining translation work.
+- **Commit/PR:** `feat: switch language to the equivalent page with a draft guard and an announcement`
+- **AI assistance used:** Designed and implemented the link builder, guard, link, and announcer and wrote the tests.
+- **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
+- **Human review:** none yet; unattended run, pending maintainer review.

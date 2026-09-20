@@ -166,5 +166,14 @@
     "mayHaveCompleted": null,
     "retryAfter": null,
     "reference": null
+  },
+  "language": {
+    "changed": null,
+    "draft": {
+      "title": null,
+      "body": null,
+      "stay": null,
+      "leave": null
+    }
   }
 }

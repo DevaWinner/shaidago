@@ -6,6 +6,7 @@ import { TranslationNotice } from "@/components/evidence/evidence";
 import { FirstViewport } from "@/components/landing/first-viewport";
 import { PublicShell } from "@/components/shell/shell";
 import { formatMessage, resolveDomain } from "@/i18n/catalogue";
+import { localeHref } from "@/i18n/locale-href";
 import { LOCALES, REVIEWED_LOCALES, isSupportedLocale } from "@/i18n/routing";
 import { createFormatters } from "@/lib/format/formatters";
 
@@ -31,6 +32,7 @@ export default async function LandingPage({ params }: LandingProperties): Promis
   const shell = resolveDomain(locale, "shell");
   const evidence = resolveDomain(locale, "evidence");
   const landing = resolveDomain(locale, "landing");
+  const language = resolveDomain(locale, "language");
   // Any critical domain served as the English original must be announced, never silent.
   const showsOriginal = shell.isOriginal || evidence.isOriginal || landing.isOriginal;
   const sample = landing.messages.sample;
@@ -39,7 +41,17 @@ export default async function LandingPage({ params }: LandingProperties): Promis
     <PublicShell
       currentLocale={locale}
       links={links}
-      localeRoutes={{ en: "/en", ha: "/ha", ig: "/ig", yo: "/yo" }}
+      localeRoutes={{
+        en: localeHref("en"),
+        ha: localeHref("ha"),
+        ig: localeHref("ig"),
+        yo: localeHref("yo")
+      }}
+      languageSwitch={{
+        announce: language.messages.changed,
+        announceLanguage: language.language,
+        guard: language.messages.draft
+      }}
       messages={shell.messages.public}
       unreviewedLocales={LOCALES.filter((code) => !REVIEWED_LOCALES.includes(code))}
     >

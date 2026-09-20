@@ -163,3 +163,12 @@ Add it to `messages/en.json` and to `ha.json`, `ig.json`, and `yo.json` with the
 `pendingKeysAllowed` is `true` in `messages/status.json` that is allowed; at the end of the build set it
 to `false` and the check fails on any remaining `null`. Prefer a new domain for a new feature, because
 a served domain with a `null` key falls back, flagged, to English.
+
+## Language switching
+
+Language links point at the same route in the other language, built by `localeHref` from parsed route
+state: path segments and an allowlist of shareable filters, never the raw URL. A `cursor` is always
+dropped, because it is valid only for the same filters and locale. A page that holds an unsaved
+private draft calls `setUnsavedDraft(true)` (`src/lib/draft-guard.ts`, memory only); the language link
+then asks before leaving. After a switch the next page announces the new language in the shell's
+polite status region.
