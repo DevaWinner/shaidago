@@ -54,3 +54,6 @@ Thumbs.db
 
 # Codex/local agent logs
 .codex-log/
+
+# Generated test fixtures
+apps/web/tests/.generated/

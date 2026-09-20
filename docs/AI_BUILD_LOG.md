@@ -1806,3 +1806,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Wrote the parity, redaction, and cancellation tests and the bundle markers.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-041 Accessible primitive layer
+
+- **Task:** FE-041 — Accessible primitive layer.
+- **User outcome delivered:** Later surfaces get one accessible, token-driven control set in the Field ledger style, with labels/errors wired automatically and no built-in English.
+- **Files changed:** `apps/web/src/components/primitives/{primitives.tsx,primitives.css}`, `apps/web/tests/component/primitives.test.tsx`, `apps/web/tests/a11y/primitives.a11y.spec.ts`, `apps/web/tests/support/primitives-sheet.tsx`, `apps/web/tests/unit/primitive-sheet.test.ts`, `apps/web/package.json` (`a11y` renders the fixture first), `.gitignore`, `apps/web/.prettierignore`, `apps/web/eslint.config.mjs`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None.
+- **Public/private data handled:** None; fixtures are fictional text.
+- **States implemented:** default, hover, focus-visible, disabled, read-only, invalid, required, checked, open/closed overlays, loading, notice tones, status tones.
+- **Accessibility evidence:** 19 component tests plus 14 browser checks (axe, target size, reflow at 320 px and 200% text, token styling, focus ring, forced colours, reduced motion) in Chromium and mobile WebKit; screenshots inspected at both widths.
+- **Locales reviewed:** All strings are props. The fixture uses one long unbroken Yoruba-diacritic word and a long Yoruba-style label as a worst case; this is a layout probe, not a translation, and no human language review is claimed.
+- **Performance/cache impact:** No new dependency; Base UI was already present. CSS is token-only with one gradient chevron and no external asset.
+- **Failure behaviour verified:** Screenshots caught default-green progress, a checkbox-looking switch, a required marker missing its space, and a WebKit select ignoring min height and widening the page; each was fixed and re-tested. Pagination was changed from page counts to previous/next links because the API's cursors have no page count.
+- **Commands run and results:** `make web-verify` exit 0 (259 unit, 19 component, boundary scan clean), `make web-e2e` 4 passed, `make web-a11y` 14 passed plus the fixture render. Lint 0 errors.
+- **Screenshots/traces/artifacts checked:** Desktop Chromium and iPhone 13 WebKit full-sheet captures and a zoomed switch/progress capture; not committed.
+- **Known limitations/open decisions:** No screen-reader run; no real 200% browser zoom (emulated by font size and 320 px width); datalist combobox popup is browser-drawn; the generated fixture lives in gitignored `tests/.generated/`.
+- **Commit/PR:** `feat: build the accessible primitive layer`
+- **Next task may rely on:** Primitive props and classes for FE-042 and FE-043.
+- **AI assistance used:** Reworked the primitives, wrote tests, and iterated on screenshots.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.
