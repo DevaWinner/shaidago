@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 
-import en from "../../messages/en.json";
+import { RECOVERY as recovery } from "@/lib/recovery-copy";
 import { RecoveryPage } from "../_components/recovery-page";
 import { toSafeRequestReference } from "@/lib/support/request-reference";
 
@@ -15,7 +15,7 @@ type RouteErrorProperties = Readonly<{
   reset: () => void;
 }>;
 
-const copy = en.recovery.error;
+const copy = recovery.error;
 
 // Static English for now (the layout declares `lang="en"` for locales without reviewed copy).
 export default function RouteError({ error, reset }: RouteErrorProperties): ReactNode {

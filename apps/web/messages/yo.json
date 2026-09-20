@@ -723,5 +723,141 @@
         "newReport": null
       }
     }
+  },
+  "track": {
+    "title": null,
+    "lead": null,
+    "privacy": null,
+    "needsScript": null,
+    "loading": null,
+    "code": {
+      "heading": null,
+      "label": null,
+      "hint": null,
+      "submit": null,
+      "again": null,
+      "forget": null,
+      "empty": null
+    },
+    "handle": {
+      "heading": null,
+      "handleLabel": null,
+      "passphraseLabel": null,
+      "reveal": null,
+      "hide": null,
+      "note": null,
+      "submit": null,
+      "forget": null,
+      "emptyHandle": null,
+      "emptyPassphrase": null,
+      "listHeading": null,
+      "none": null,
+      "create": null
+    },
+    "result": {
+      "heading": null,
+      "updated": null,
+      "nextHeading": null,
+      "message": null
+    },
+    "statuses": {
+      "received": {
+        "label": null,
+        "meaning": null
+      },
+      "needs_information": {
+        "label": null,
+        "meaning": null
+      },
+      "under_review": {
+        "label": null,
+        "meaning": null
+      },
+      "verified_for_public_update": {
+        "label": null,
+        "meaning": null
+      },
+      "referred": {
+        "label": null,
+        "meaning": null
+      },
+      "closed": {
+        "label": null,
+        "meaning": null
+      }
+    },
+    "next": {
+      "wait_for_review": null,
+      "answer_follow_up": null,
+      "watch_public_updates": null,
+      "see_escalation_guidance": null,
+      "none": null
+    },
+    "followUp": {
+      "heading": null,
+      "intro": null,
+      "states": {
+        "open": null,
+        "answered": null,
+        "skipped": null,
+        "unsafe": null
+      },
+      "answerLabel": null,
+      "counter": null,
+      "answer": null,
+      "skip": null,
+      "unsafe": null,
+      "sent": null,
+      "answerEmpty": null
+    },
+    "failure": {
+      "title": null,
+      "still": null,
+      "wait": null
+    },
+    "newReport": null
+  },
+  "handle": {
+    "title": null,
+    "lead": null,
+    "needsScript": null,
+    "facts": {
+      "heading": null,
+      "benefit": null,
+      "risk": null,
+      "recovery": null
+    },
+    "create": {
+      "heading": null,
+      "button": null,
+      "creating": null,
+      "again": null
+    },
+    "created": {
+      "heading": null,
+      "handle": null,
+      "passphrase": null,
+      "warning": null,
+      "use": null,
+      "copy": null,
+      "copied": null,
+      "copyFailed": null,
+      "print": null,
+      "download": null,
+      "fileText": null,
+      "done": null
+    },
+    "delete": {
+      "heading": null,
+      "explain": null,
+      "handleLabel": null,
+      "passphraseLabel": null,
+      "confirm": null,
+      "needConfirm": null,
+      "submit": null,
+      "done": null,
+      "failedTitle": null
+    },
+    "statusLink": null
   }
 }

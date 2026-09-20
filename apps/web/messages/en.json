@@ -723,5 +723,141 @@
         "newReport": "Send a new report"
       }
     }
+  },
+  "track": {
+    "title": "Check a report's status",
+    "lead": "Use the tracking code you were given when you sent a report, or a reporter handle. You see only a public-safe status. ShaidaGo does not show what you wrote, your files, or reviewer notes.",
+    "privacy": "Your code and passphrase are sent only when you press a button. They are not put in the address, saved, or remembered by this browser.",
+    "needsScript": "Checking a status needs JavaScript. Nothing you type is sent until you choose to check.",
+    "loading": "Checking your report status.",
+    "code": {
+      "heading": "Check with a tracking code",
+      "label": "Tracking code",
+      "hint": "Spaces and dashes are fine. The service decides whether the code is valid.",
+      "submit": "Check status",
+      "again": "Check again",
+      "forget": "Clear and start again",
+      "empty": "Enter your tracking code."
+    },
+    "handle": {
+      "heading": "Check with a reporter handle",
+      "handleLabel": "Handle",
+      "passphraseLabel": "Passphrase",
+      "reveal": "Show passphrase",
+      "hide": "Hide passphrase",
+      "note": "A handle is not an account or proof of who you are. It only links the reports you sent with it.",
+      "submit": "List my reports",
+      "forget": "Clear and start again",
+      "emptyHandle": "Enter your handle.",
+      "emptyPassphrase": "Enter your passphrase.",
+      "listHeading": "Reports linked to this handle",
+      "none": "No reports are linked to this handle right now.",
+      "create": "Create a handle"
+    },
+    "result": {
+      "heading": "Status",
+      "updated": "Last updated {date}",
+      "nextHeading": "What to do next",
+      "message": "Message"
+    },
+    "statuses": {
+      "received": {
+        "label": "Received",
+        "meaning": "Your report was accepted. A person has not started reviewing it yet."
+      },
+      "needs_information": {
+        "label": "More information needed",
+        "meaning": "A reviewer needs a specific answer from you to continue."
+      },
+      "under_review": {
+        "label": "Under review",
+        "meaning": "A reviewer is looking at your report and any files."
+      },
+      "verified_for_public_update": {
+        "label": "Checked for a possible public update",
+        "meaning": "A reviewer found enough support to write a separate public update. Nothing is published automatically."
+      },
+      "referred": {
+        "label": "Referred",
+        "meaning": "A reviewer noted a referral through an approved route. This does not promise a response from anyone else."
+      },
+      "closed": {
+        "label": "Closed",
+        "meaning": "No further review is planned unless a reviewer reopens it."
+      }
+    },
+    "next": {
+      "wait_for_review": "Wait for the review. A review can take time.",
+      "answer_follow_up": "Answer the question below.",
+      "watch_public_updates": "Watch the project's public updates. Nothing is published automatically.",
+      "see_escalation_guidance": "Read where else a concern can be taken.",
+      "none": "Nothing more is needed from you right now."
+    },
+    "followUp": {
+      "heading": "Questions from a reviewer",
+      "intro": "You can answer, skip, or say a question is not safe to answer. Do not include names or contact details.",
+      "states": {
+        "open": "Waiting for your response",
+        "answered": "You answered",
+        "skipped": "You skipped it",
+        "unsafe": "You said it was not safe to answer"
+      },
+      "answerLabel": "Your answer",
+      "counter": "{count} of {max} characters",
+      "answer": "Send answer",
+      "skip": "Skip this question",
+      "unsafe": "This is not safe for me to answer",
+      "sent": "Your response was sent.",
+      "answerEmpty": "Type an answer, or choose to skip."
+    },
+    "failure": {
+      "title": "The status could not be checked",
+      "still": "Nothing was changed.",
+      "wait": "Try again in about {seconds} seconds."
+    },
+    "newReport": "Send a new report"
+  },
+  "handle": {
+    "title": "Reporter handles",
+    "lead": "A handle is an optional label that links your reports without your name, contact, or any identity detail. It is not an account, a sign-in, or proof of who you are.",
+    "needsScript": "Creating or deleting a handle needs JavaScript. Nothing is sent until you choose to.",
+    "facts": {
+      "heading": "Before you create one",
+      "benefit": "Benefit: you can see the status of several reports in one place.",
+      "risk": "Risk: reviewers can recognise reports under one handle as related. A handle may not suit a very sensitive report.",
+      "recovery": "No recovery: if you lose the handle or the passphrase, nobody can restore them."
+    },
+    "create": {
+      "heading": "Create a handle",
+      "button": "Create a handle",
+      "creating": "Creating your handle.",
+      "again": "If you refreshed or left this page, a handle you made here cannot be shown again. You can create a new one, unrelated to the first."
+    },
+    "created": {
+      "heading": "Your handle and passphrase",
+      "handle": "Handle",
+      "passphrase": "Passphrase",
+      "warning": "These are shown once. ShaidaGo cannot show them again or recover them. Save them now.",
+      "use": "Use them when you send a report, or on the status page.",
+      "copy": "Copy the handle and passphrase",
+      "copied": "Copied",
+      "copyFailed": "Copying is not available here. Select the text and copy it yourself.",
+      "print": "Print",
+      "download": "Download as a text file",
+      "fileText": "ShaidaGo reporter handle: {handle}\nPassphrase: {passphrase}\nShown once. Keep this private.\nThis is a fictional prototype.",
+      "done": "I have saved them. Clear this page"
+    },
+    "delete": {
+      "heading": "Delete a handle",
+      "explain": "Deleting a handle unlinks it from your reports. It does not delete the reports, and it does not remove anything already published. After deleting, the handle cannot be used again.",
+      "handleLabel": "Handle",
+      "passphraseLabel": "Passphrase",
+      "confirm": "I understand the reports stay and only the link is removed",
+      "needConfirm": "Tick the box to confirm.",
+      "submit": "Delete this handle",
+      "done": "The handle was deleted. Your reports were not deleted.",
+      "failedTitle": "The handle was not deleted"
+    },
+    "statusLink": "Check the status of a report"
   }
 }

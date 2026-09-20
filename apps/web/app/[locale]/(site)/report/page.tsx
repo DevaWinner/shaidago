@@ -49,6 +49,7 @@ export default async function ReportEntryPage({
 
   const report = resolveDomain(locale, "report");
   const evidence = resolveDomain(locale, "evidence");
+  const track = resolveDomain(locale, "track");
   const read = await loadProjectPage({}, locale, 12);
 
   return (
@@ -80,9 +81,12 @@ export default async function ReportEntryPage({
         ) : (
           <p className="m-0">{report.messages.chooser.unavailable}</p>
         )}
-        <div>
+        <div className="flex flex-wrap gap-3">
           <ButtonLink href={`/${locale}/projects`} variant="secondary">
             {report.messages.chooser.browse}
+          </ButtonLink>
+          <ButtonLink href={`/${locale}/track`} variant="secondary">
+            <span lang={track.language}>{track.messages.title}</span>
           </ButtonLink>
         </div>
       </div>
