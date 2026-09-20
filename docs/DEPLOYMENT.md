@@ -70,7 +70,7 @@ Built with `docker build -f apps/web/Dockerfile --build-arg REVISION=$(git rev-p
 
 ## Hosted verification (FE-161): run against the deployed origin, not the config
 
-Nothing below has been run against a hosted deployment; deploying is a maintainer action. After the first deploy, from any machine, with `ORIGIN=https://<the public domain>`:
+These checks were run against the deployed staging origin on 2026-09-20 (record: [`evidence/FE-162-hosted-smoke.md`](evidence/FE-162-hosted-smoke.md)). To repeat them from any machine, with `ORIGIN=https://<the public domain>`:
 
 ```text
 curl -sI $ORIGIN/en | grep -iE 'content-security-policy|x-frame-options|x-content-type-options|referrer-policy|permissions-policy|strict-transport-security|cache-control'
@@ -85,3 +85,17 @@ Expected: the CSP allows only `'self'`; `X-Frame-Options: DENY`; `strict-transpo
 ## Rollback
 
 Redeploy the previous web image. The web service holds no durable state; the only browser-side state is the service-worker caches, which are versioned and cleaned when a new worker activates.
+
+## Provisioning the web service (what was actually done, 2026-09-20)
+
+In the existing `shaidago-staging` project and `staging` environment: `railway add --service web`; variables set with `railway variable set` (`APP_ENV=staging`; `API_INTERNAL_URL=http://api.railway.internal:8080`, because the API listens on the platform's `PORT`, 8080; `INTERNAL_WEB_CREDENTIAL_CURRENT` as a reference to the API's own variable, so the value is never copied or printed; a freshly generated `CLIENT_HMAC_KEY`; `TRUSTED_PROXY_HOPS=1`; `NEXT_PUBLIC_APP_ORIGIN` set to the public origin; `RAILWAY_DOCKERFILE_PATH=apps/web/Dockerfile`); health check `/health/live`, restart on failure (5 retries), and a 25 s drain set on the service; a Railway-generated domain; and `railway up --service web`, followed to a SUCCESS deployment. The public origin is `https://web-staging-0edf.up.railway.app`. The API and worker were not redeployed: they already run the latest backend commit.
+
+**The `migrate` service was deleted** to make room: the Free plan allows five services and the project already had five. It is a finished one-shot job. To run a future migration, re-create it from `railway/migrate.railway.json` (an empty service, the migration-owner variables, start command `alembic upgrade head` then role provisioning), deploy it first, and delete it again if the plan limit requires; or upgrade the plan.
+
+## Degradation drill (2026-09-20)
+
+`API_INTERNAL_URL` was pointed at a port nothing listens on, the web service redeployed, and then restored. While the API was unreachable, `/health/live` stayed 200, `/en/offline` stayed 200, the directory showed "Project records could not be loaded... Nothing has been lost", and a tracking lookup returned a safe 503. After restoring the variable, the records returned.
+
+## Fixture removal and temporary access (2026-09-20)
+
+At the maintainer's request the synthetic record `fixture-scenario-success` was hidden on staging with `update app.projects set visibility='hidden' where slug='fixture-scenario-success'`; reverse it by setting `visibility='public'`. Rows that depend on it (reports, question runs) were left intact. The change was made through `railway ssh` using a temporary key that was removed from the Railway account and deleted locally afterwards. Recorded Source Scout replays exist only for that fixture, so hosted Source Scout now ends in a stated state on real records.

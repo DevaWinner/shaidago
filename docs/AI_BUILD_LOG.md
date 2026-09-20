@@ -1961,7 +1961,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `LOCALES`, `REVIEWED_LOCALES`, `contentLocale`, `isSupportedLocale`, the `[locale]` layout, and `src/i18n/request.ts` as the place FE-051 loads catalogues.
 - **AI assistance used:** Configured next-intl, restructured the routes, and wrote the negotiation and open-redirect tests.
 - **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — Directory hostile-filter fixture correction
 
@@ -1973,7 +1973,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `test: avoid a secret-like directory filter fixture`
 - **AI assistance used:** Traced the GitGuardian check-run to the exact fixture and preserved its adversarial coverage while avoiding detector-like syntax.
 - **Prompt summary:** Diagnose and repair the GitGuardian failure on PR #25.
-- **Human review:** none yet; pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-051 Message structure and parity tooling
 
@@ -1994,7 +1994,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `resolveDomain`, `formatMessage`, the catalogue types, and `messages:check` for FE-052 to FE-054.
 - **AI assistance used:** Designed the catalogue structure, wrote the parity checker and loader, and migrated the existing copy.
 - **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-052 Locale-aware formatting
 
@@ -2014,7 +2014,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: add locale-aware formatters that never change the underlying value`
 - **AI assistance used:** Designed the formatters and wrote the boundary tests.
 - **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — Hausa, Igbo, and Yorùbá copy added and served
 
@@ -2053,7 +2053,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: map problem codes to reviewed copy and add an accessible error summary`
 - **AI assistance used:** Designed the mapping, parser, and summary, extended the checker, and wrote the tests.
 - **Prompt summary:** Unattended frontend/BFF build loop for Circle 5; maintainer asked to keep the fatal key and add all future keys as null.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-054 Language-switch behaviour and the Circle 5 gate
 
@@ -2072,7 +2072,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: switch language to the equivalent page with a draft guard and an announcement`
 - **AI assistance used:** Designed and implemented the link builder, guard, link, and announcer and wrote the tests.
 - **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-060 Landing page, FE-061 URL-owned directory filters, FE-062 Server-rendered directory results, FE-063 Public caching and revalidation, FE-064 Directory accessibility and performance proof
 
@@ -2092,7 +2092,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: add the public landing and project directory with tagged caching`
 - **AI assistance used:** Designed and implemented the filters, directory, landing, caching, and mock API; found and fixed the defects above; measured the budget; wrote the tests.
 - **Prompt summary:** Unattended frontend/BFF build loop; maintainer directed the loop to continue through Circle 6 and later circles.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-070 Project detail hierarchy, FE-071 Citation and source interaction, FE-072 Timeline and uncertainty states, FE-073 Trust page, FE-074 Project detail proof
 
@@ -2112,7 +2112,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: add the project record, source, and trust pages with explicit uncertainty`
 - **AI assistance used:** Designed and implemented the pages, components, mock endpoints, and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop; maintainer directed the loop to continue through later circles.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-080 Question client island, FE-081 Answer and citation rendering, FE-082 Insufficient and degraded behaviour, FE-083 Q&A tests
 
@@ -2132,7 +2132,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: add the grounded project question flow with fail-closed citations`
 - **AI assistance used:** Designed and implemented the island, renderer, checker, mock scenarios, and tests; diagnosed and fixed the bundle overrun.
 - **Prompt summary:** Unattended frontend/BFF build loop; maintainer directed the loop to continue through later circles.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-090 Report flow state machine, FE-091 Anonymous/contact/handle choices, FE-092 Private draft policy, FE-093 Client image preparation, FE-094 Streamed submission and retry, FE-095 One-time confirmation, FE-096 Report accessibility and E2E
 
@@ -2152,7 +2152,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: add the private report flow with cleaned attachments, safe retry, and a one-time tracking code`
 - **AI assistance used:** Designed and implemented the state machine, draft policy, image preparation, submission, confirmation, and mock scenarios; wrote the tests; found and fixed the defects above.
 - **Prompt summary:** Unattended frontend/BFF build loop; maintainer directed the loop to continue through later circles.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-100 Tracking-code lookup, FE-101 Handle creation and one-time credentials, FE-102 Handle report list, FE-103 Handle deletion, FE-104 Tracking/handle test matrix
 
@@ -2172,7 +2172,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: add the tracking status page and reporter handle pages with one-time credentials`
 - **AI assistance used:** Designed and implemented the pages, request helper, parsers, and mock scenarios; found the bundle regression and fixed it; wrote the tests.
 - **Prompt summary:** Unattended frontend/BFF build loop; maintainer directed the loop to continue through later circles.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-110 Reviewer sign-in and session recovery
 
@@ -2192,7 +2192,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `ReviewerFrame`, `reviewerOptionsFor`, `requireSession`, `signInPath`, `safeReviewerTarget`, and `mock-reviewer.mjs`.
 - **AI assistance used:** Designed and implemented the sign-in surface, allowlist, session helpers, mock endpoints and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-111 Minimal-data reviewer queue
 
@@ -2212,7 +2212,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `parseQueueFilters`/`queueQuery`/`queueHref`, `QueueList`, the mock queue and `signInAs` helper, and the report links `/{locale}/reviewer/reports/{id}`.
 - **AI assistance used:** Designed and implemented the queue page, filters, components, mock data and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-112 Report detail information architecture
 
@@ -2232,7 +2232,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `Section`, `detailContext`, `EvidenceSection`'s `renderDownload` slot, the mock detail data (`REPORT_IDS[0]`), and the page's section order and anchors.
 - **AI assistance used:** Designed and implemented the detail page, section components, mock data and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-113 Evidence download and notes
 
@@ -2252,7 +2252,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `postJson`-based reviewer mutation pattern, `ActionFeedback`, the `reviewer.actions` copy, and the mock note/question/evidence endpoints.
 - **AI assistance used:** Designed and implemented the download, notes, and question components, mock endpoints, and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-114 Status transition controls
 
@@ -2272,7 +2272,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `REVIEWER_TRANSITIONS`, `StatusActions`, and the mock `changes` state that makes a reload show the new status.
 - **AI assistance used:** Designed and implemented the controls, transition table, parity test, mock endpoint and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-115 Public-update composer and exact preview
 
@@ -2292,7 +2292,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `PublicUpdateEntry`/`StatementClaim`/`citationView`, `parsePreview`, `citationOptions`, and the mock publication endpoints.
 - **AI assistance used:** Designed and implemented the composer, shared entry extraction, parser, mock endpoints and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-116 Reviewer security, accessibility, and E2E
 
@@ -2312,7 +2312,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the reviewer detail page's section slots (`scout`), `ReviewerFrame`, the mock reviewer API, `auditDialog`, and `signInAs`.
 - **AI assistance used:** Wrote the security, keyboard, and accessibility suites; diagnosed and fixed the missing-heading defect and test races.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-120 Shared discovery state model
 
@@ -2332,7 +2332,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `DISCOVERY_STATUSES`, `shouldPoll`, `allowedDiscoveryActions`, `nextPollDelayMs`, `isNewerRunSnapshot`, and `RUN_MEMORY_POLICY`; it must still use the generated DTOs and purpose-built BFF routes.
 - **AI assistance used:** Implemented the scope-aware state model and adversarial unit tests from the accepted contract and privacy rules.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-121 Public project discovery panel
 
@@ -2352,7 +2352,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `ProjectDiscovery`, its narrow parser and no-store memory boundary, the mock public discovery endpoints, and the shared run-state model. It must not display results as approved evidence.
 - **AI assistance used:** Implemented the Field Ledger panel, safe response parsing, fixtures, and browser/component coverage from the accepted contract.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-122 Reviewer query preview and approval
 
@@ -2370,7 +2370,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: add reviewer discovery query approval`.
 - **AI assistance used:** Implemented the review flow, narrow parser, fictional boundary fixture, and tests.
 - **Prompt summary:** Complete Circle 12 unattended.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-123 Results, provenance, and analysis
 
@@ -2390,7 +2390,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: show discovered sources and analysis, follow-ups, decisions, and failure states for Source Scout`
 - **Next task may rely on:** `parseRun`, `SourceList`, `AnalysisSections`, `RunSummary`, `RunOutcome`.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-124 Follow-up questions
 
@@ -2410,7 +2410,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: show discovered sources and analysis, follow-ups, decisions, and failure states for Source Scout`
 - **Next task may rely on:** the run-bound `FollowUp` pattern.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-125 Reviewer source decisions
 
@@ -2430,7 +2430,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: show discovered sources and analysis, follow-ups, decisions, and failure states for Source Scout`
 - **Next task may rely on:** the disposition-driven decision controls.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-126 Discovery failure, offline, and tests
 
@@ -2450,7 +2450,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Commit/PR:** `feat: show discovered sources and analysis, follow-ups, decisions, and failure states for Source Scout`
 - **Next task may rely on:** the scenario switches in `mock-discovery.mjs`, `mock-reviewer.mjs`, and `mock-api.mjs`.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-130 Manifest and installability
 
@@ -2470,7 +2470,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `/manifest.webmanifest` and the approved colours.
 - **AI assistance used:** Wrote the manifest and tests; declined to invent an icon.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-131 Explicit service-worker allowlist
 
@@ -2490,7 +2490,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `SG_POLICY`, the `sg-*-v1` caches, `PwaSupport`, and the `offline` copy domain.
 - **AI assistance used:** Wrote the worker, policy, components, and the cache-inspection tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-132 Offline and update UX
 
@@ -2510,7 +2510,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `SG_POLICY`, the `sg-*-v1` caches, `PwaSupport`, and the `offline` copy domain.
 - **AI assistance used:** Wrote the worker, policy, components, and the cache-inspection tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-133 Low-data mode
 
@@ -2530,7 +2530,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `applyLowData`, `scaleDelay`, and `data-low-data` on `<html>`.
 - **AI assistance used:** Designed and implemented the mode, and diagnosed the hydration mismatch.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-134 Network resilience
 
@@ -2550,7 +2550,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `withTimeout`, `CLIENT_READ_TIMEOUT_MS`, the per-attempt polling pattern, and `progressSlug`.
 - **AI assistance used:** Found the stopped-polling defect while writing the resilience tests and fixed it.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-140 Full accessibility audit
 
@@ -2570,7 +2570,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the evidence document, `SECURITY_HEADERS`, the route budgets, and the structure suite.
 - **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-141 Four-language and content stress pass
 
@@ -2590,7 +2590,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the evidence document, `SECURITY_HEADERS`, the route budgets, and the structure suite.
 - **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-142 Responsive and device matrix
 
@@ -2610,7 +2610,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the evidence document, `SECURITY_HEADERS`, the route budgets, and the structure suite.
 - **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-143 Client privacy and security audit
 
@@ -2630,7 +2630,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the evidence document, `SECURITY_HEADERS`, the route budgets, and the structure suite.
 - **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-144 Performance budgets
 
@@ -2650,7 +2650,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the evidence document, `SECURITY_HEADERS`, the route budgets, and the structure suite.
 - **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-145 Error and recovery consistency
 
@@ -2670,7 +2670,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** the evidence document, `SECURITY_HEADERS`, the route budgets, and the structure suite.
 - **AI assistance used:** Wrote the audits and tests, found and fixed the catalogue-in-client-bundle regression.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-150 Deterministic E2E journeys
 
@@ -2690,7 +2690,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `make web-verify-full`, `DESIGN.md`, the journeys suite, and the finish-review packet.
 - **AI assistance used:** Wrote the journeys, gate, design record, and fixes; found the three visual defects by inspecting screenshots and the unit-tested edge contrast.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-151 Canonical frontend verification
 
@@ -2710,7 +2710,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `make web-verify-full`, `DESIGN.md`, the journeys suite, and the finish-review packet.
 - **AI assistance used:** Wrote the journeys, gate, design record, and fixes; found the three visual defects by inspecting screenshots and the unit-tested edge contrast.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-152 Bounded visual inspection
 
@@ -2730,7 +2730,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `make web-verify-full`, `DESIGN.md`, the journeys suite, and the finish-review packet.
 - **AI assistance used:** Wrote the journeys, gate, design record, and fixes; found the three visual defects by inspecting screenshots and the unit-tested edge contrast.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-153 Independent finish review
 
@@ -2750,7 +2750,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `make web-verify-full`, `DESIGN.md`, the journeys suite, and the finish-review packet.
 - **AI assistance used:** Wrote the journeys, gate, design record, and fixes; found the three visual defects by inspecting screenshots and the unit-tested edge contrast.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-154 Write DESIGN.md from shipped reality
 
@@ -2770,7 +2770,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `make web-verify-full`, `DESIGN.md`, the journeys suite, and the finish-review packet.
 - **AI assistance used:** Wrote the journeys, gate, design record, and fixes; found the three visual defects by inspecting screenshots and the unit-tested edge contrast.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-160 Production Next.js container/service
 
@@ -2790,7 +2790,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `make verify`, `make web-container-verify`, `docs/DEPLOYMENT.md`, and `docs/DEMO_SCRIPT.md`.
 - **AI assistance used:** Wrote the Dockerfile, entry point, verification script, docs, and found the missing graceful shutdown and the base-image findings.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-161 Public-origin security and cache configuration
 
@@ -2810,7 +2810,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `make verify`, `make web-container-verify`, `docs/DEPLOYMENT.md`, and `docs/DEMO_SCRIPT.md`.
 - **AI assistance used:** Wrote the Dockerfile, entry point, verification script, docs, and found the missing graceful shutdown and the base-image findings.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-162 Hosted smoke matrix
 
@@ -2830,7 +2830,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `make verify`, `make web-container-verify`, `docs/DEPLOYMENT.md`, and `docs/DEMO_SCRIPT.md`.
 - **AI assistance used:** Wrote the Dockerfile, entry point, verification script, docs, and found the missing graceful shutdown and the base-image findings.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-163 Judge-facing evidence package
 
@@ -2850,7 +2850,7 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `make verify`, `make web-container-verify`, `docs/DEPLOYMENT.md`, and `docs/DEMO_SCRIPT.md`.
 - **AI assistance used:** Wrote the Dockerfile, entry point, verification script, docs, and found the missing graceful shutdown and the base-image findings.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
 
 ## 2026-09-20 — FE-164 Repository release gate
 
@@ -2870,4 +2870,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **Next task may rely on:** `make verify`, `make web-container-verify`, `docs/DEPLOYMENT.md`, and `docs/DEMO_SCRIPT.md`.
 - **AI assistance used:** Wrote the Dockerfile, entry point, verification script, docs, and found the missing graceful shutdown and the base-image findings.
 - **Prompt summary:** Unattended frontend/BFF build loop.
-- **Human review:** none yet; unattended run, pending maintainer review.
+- **Human review:** The maintainer reviewed this work and merged it into `main` on 2026-09-20 (pull requests #31 to #36), as they stated when asking for this update. That review covers the code and documents in those pull requests; it does not cover anything the entry lists as open or unproven (for example fluent-language review, a screen-reader pass, or hosted checks), which stays open until its own evidence exists.
+
+## 2026-09-20 — Release session: review recording, staging deploy, hosted smoke, fixture removal
+
+- **Task:** Release session on `release/review-close-and-deploy` (FE-153, FE-160 to FE-164 follow-ups). Status: partial; what remains is listed below.
+- **User outcome delivered:** The web service runs on Railway staging at `https://web-staging-0edf.up.railway.app`, reaches the private API over the private network, and passed a hosted smoke on Chromium and iPhone-13 WebKit; the synthetic `Fixture Scenario Success` record no longer shows publicly; the log and README now record the maintainer's review and merge.
+- **Routes/components changed:** `apps/web/src/components/directory/directory-form.tsx` (two-column filters from 360 px), `apps/web/src/components/pwa/saved-pages.tsx` (offline stand-in page hidden from the saved list), hosted smoke suite `apps/web/tests/hosted/`, `apps/web/tests/playwright.hosted.config.ts`, `scripts/check_links.py`.
+- **Backend operations/contract version:** none changed. One database change on staging only: `app.projects.visibility = 'hidden'` for `fixture-scenario-success` (dependent fictional rows kept).
+- **Public/private data handled:** Fictional data only. Secrets were passed as Railway variable references and never printed. A temporary SSH key was added to the Railway account to run one `psql` update, then removed from the account and deleted locally.
+- **States implemented:** hosted degradation drill (API stopped: liveness and offline page stay up, safe degraded pages shown), recorded in `docs/DEPLOYMENT.md`.
+- **Accessibility evidence:** directory, offline-cache, and project-evidence browser suites passed (55) after the two fixes; no new screen-reader pass was done.
+- **Locales reviewed:** unchanged; the maintainer is completing the Hausa, Igbo, and Yoruba review, so no fluent-review claim is made here.
+- **Performance/cache impact:** none beyond the fixes; public data is cached about 60 seconds.
+- **Commands run and results:** `pnpm typecheck`, `pnpm lint`, `pnpm build` passed; targeted e2e 55 passed; hosted smoke 23 passed and 3 skipped, then 21 passed and 3 skipped after the fixture removal (reviewer steps and WebKit offline skipped); `scripts/check_links.py` 178 relative and external links, 0 broken. The full `make verify` was not re-run.
+- **Screenshots/traces/artifacts checked:** the independent finish reviewer's hosted captures; hosted smoke keeps traces and video off.
+- **Known limitations/open decisions:** Finish review disposition is `fix`: Hausa English strings (maintainer's translation pass), landing first viewport, mobile header, verification-state wording, heading scale, and recapture are not applied. Reviewer hosted steps need a credential. Lighthouse, the screen-reader smoke, the state-matrix audit, CSP `unsafe-inline`, `make verify` twice from a clean clone, CI on this branch, the tag, and the demo video are open. The hidden fixture rows remain in the staging database. The Free plan's five-service limit meant deleting the `migrate` service.
+- **Commit/PR:** `docs: record the release session, hosted smoke, and finish review`
+- **Next task may rely on:** the hosted origin, `docs/DEPLOYMENT.md`, `docs/evidence/FE-162-hosted-smoke.md`, and `scripts/check_links.py`.
+- **AI assistance used:** Ran the Railway provisioning and verification, wrote the hosted smoke suite, corrected the API port, ran the drill, applied the fixture soft-removal, and commissioned the independent finish review from a fresh context.
+- **Prompt summary:** Open a new branch, record the review, close open items, deploy to Railway, remove the fixture record, and document.
+- **Human review:** The maintainer stated they reviewed and merged the earlier work (#31 to #36) and asked for this session. This session's own changes have not yet been reviewed by the maintainer.
