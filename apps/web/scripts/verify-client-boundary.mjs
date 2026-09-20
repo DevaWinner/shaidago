@@ -50,7 +50,18 @@ async function main() {
     ...sensitiveEnvironmentNames,
     ...canaries.map((canary) => canary.value),
     "server-only",
-    "src/lib/config/server"
+    "src/lib/config/server",
+    // BFF-only wire details: none of these has a reason to exist in browser code.
+    "X-Shaidago-Session",
+    "X-Shaidago-Csrf",
+    "X-Shaidago-Client-Hmac",
+    "Bearer web.",
+    "__Host-sg_session",
+    "sg_csrf",
+    "/v1/reviewer",
+    "/v1/reports",
+    "src/lib/bff",
+    "src/lib/api/server"
   ];
   const leakedNames = new Set();
 

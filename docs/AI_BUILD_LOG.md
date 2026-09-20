@@ -1841,3 +1841,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the session cookie handling, handlers, schemas, and adversarial tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-035 BFF contract/security tests
+
+- **Task:** FE-035 — BFF contract/security tests.
+- **User outcome delivered:** The BFF boundary is now regression-protected: adding, renaming, or widening a browser route, logging a sensitive value, or leaking a wire detail into client JavaScript fails a check.
+- **Files changed:** `apps/web/tests/unit/bff-contract.test.ts`, `apps/web/tests/unit/bff-reviewer-handlers.test.ts`, `apps/web/tests/unit/bff-public-handlers.test.ts`, `apps/web/scripts/verify-client-boundary.mjs`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None called; OpenAPI 0.0.0 and the operation map are read-only inputs.
+- **Public/private data handled:** Synthetic canaries only (a fake tracking code, credentials, session cookies, and an internal IP); no real data.
+- **States implemented:** Not applicable (tests and a build check).
+- **Accessibility evidence:** Not applicable.
+- **Locales reviewed:** Not applicable.
+- **Performance/cache impact:** No runtime change. The bundle scan adds ten literal markers.
+- **Failure behaviour verified:** Map-versus-filesystem drift in either direction; logging via console, logger, or stdout/stderr; canary and internal-host echo in response bodies and headers; reviewer and public cancellation.
+- **Commands run and results:** `make web-verify` exit 0: 258 unit and 7 component tests, contract drift check, production build with boundary scan clean across 13 client chunks including the new markers. Lint 0 errors plus the same pre-existing warning.
+- **Screenshots/traces/artifacts checked:** None.
+- **Known limitations/open decisions:** Same as the Circle 3 gate note: no live-API run, undefined client HMAC, and two decisions pending maintainer confirmation. Log redaction is proven by absence of output rather than by a redaction function, because the BFF deliberately logs nothing; adding logging later must add a central denylist and a test.
+- **Commit/PR:** `test: guard the BFF boundary against drift and leaks`
+- **Next task may rely on:** The operation-map parity test and the runtime no-output test as guard rails for later route or logging changes.
+- **AI assistance used:** Wrote the parity, redaction, and cancellation tests and the bundle markers.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

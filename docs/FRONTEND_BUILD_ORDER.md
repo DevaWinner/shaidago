@@ -471,9 +471,13 @@ Implement explicit sign-in, sign-out, queue/detail fetch where client polling is
 
 ### FE-035 — BFF contract/security tests
 
+> **Execution status (2026-09-20): complete.** `bff-contract.test.ts` parses `docs/FRONTEND_BFF_OPERATION_MAP.md` and proves the 26 implemented browser routes match its method and path list exactly, with no unlisted route and no generic proxy; asserts no `console`/logger/stdout use in handlers or BFF libraries and, at runtime, that failures carrying canary tracking codes, credentials, cookies, and an internal host emit no output and echo none of them. The handler suites gained cancellation (499) coverage for every reviewer mutation and the public poll. `bundle:check` now also fails on BFF wire markers (session/CSRF/client-HMAC headers, `Bearer web.`, session cookie names, `/v1/reviewer`, `/v1/reports`, BFF/API-server module paths) in client JavaScript. 258 unit tests pass.
+
 For every handler, test success, validation, backend problem, timeout, cancellation, wrong content type, oversized body, forbidden origin, CSRF failure where applicable, cookie forwarding, no-store headers, and sensitive-value log redaction. Add a build-time/client-bundle search for internal host and credentials.
 
 ### Circle 3 exit gate
+
+> **Gate status (2026-09-20): closed with caveats.** Met: the generated client is reproducible and drift-checked; the client bundle scan finds no internal URL, credential, BFF header, or server module; all 26 browser routes are purpose-built, guarded, and covered by success/validation/problem/timeout/cancellation/content-type/size/Origin/CSRF/cookie/no-store/log-redaction tests; reviewer tokens exist only in server memory and `HttpOnly` cookies; the BFF maps errors by stable code and makes no domain decision. Open, not claimed: no handler has run against a live FastAPI (the local API and Docker were not started), the pseudonymous client HMAC is not forwarded because its key and IP source are undefined, and the HttpOnly-cookie CSRF design and the operation-map correction for public-update withdraw need maintainer confirmation.
 
 - Generated client is reproducible and drift-checked.
 - Browser has no import/path to the private API client or internal URL.

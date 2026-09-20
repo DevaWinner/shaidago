@@ -517,6 +517,21 @@ describe("public discovery poll handler", () => {
     expect(backend).toHaveBeenCalledTimes(1);
   });
 
+  it("reports cancellation when the browser disconnects mid-poll", async () => {
+    const controller = new AbortController();
+    backend.mockImplementationOnce(async (input) => {
+      controller.abort();
+      throw (input as Request).signal.reason ?? new DOMException("aborted", "AbortError");
+    });
+
+    const response = await pollDiscovery(
+      new NextRequest(`${origin}/api/public/discovery/${runId}`, { signal: controller.signal }),
+      context(runId)
+    );
+
+    expect(response.status).toBe(499);
+  });
+
   it("maps a missing run and a timeout to safe problems", async () => {
     backend.mockResolvedValueOnce(problemJson("not_found", 404));
     expect(

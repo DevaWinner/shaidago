@@ -562,6 +562,31 @@ describe.each(mutationCases)("reviewer $name handler", (spec) => {
     expect(backend).toHaveBeenCalledTimes(2);
   });
 
+  it("stops and reports cancellation when the browser disconnects", async () => {
+    const controller = new AbortController();
+    backend.mockImplementationOnce(async (input) => {
+      controller.abort();
+      throw (input as Request).signal.reason ?? new DOMException("aborted", "AbortError");
+    });
+
+    const response = await spec.handler(
+      new Request(`${origin}${spec.path}`, {
+        method: "POST",
+        headers: {
+          Origin: origin,
+          Cookie: cookies,
+          ...(spec.body === undefined ? {} : { "Content-Type": "application/json" })
+        },
+        body: spec.body === undefined ? null : JSON.stringify(spec.body),
+        signal: controller.signal
+      }),
+      { params: Promise.resolve(spec.ctx) as never }
+    );
+
+    expect(response.status).toBe(499);
+    expect(backend).toHaveBeenCalledTimes(1);
+  });
+
   it("rejects the wrong body shape or content type before the API", async () => {
     if (spec.body === undefined) {
       const withBody = await call(spec, { body: { unexpected: true } });
