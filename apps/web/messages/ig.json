@@ -1000,7 +1000,8 @@
         "questions": null,
         "handle": null,
         "scout": null,
-        "publication": null
+        "publication": null,
+        "notes": null
       },
       "observation": {
         "category": null,
@@ -1108,6 +1109,61 @@
           "retry": null
         }
       }
+    },
+    "actions": {
+      "sessionEnded": null,
+      "signIn": null,
+      "pending": null,
+      "tryAgain": null
+    },
+    "download": {
+      "button": null,
+      "buttonLabel": null,
+      "pending": null,
+      "done": null,
+      "failed": null,
+      "note": null
+    },
+    "notes": {
+      "empty": null,
+      "intro": null,
+      "label": null,
+      "hint": null,
+      "counter": null,
+      "submit": null,
+      "required": null,
+      "tooLong": null,
+      "confirmTitle": null,
+      "confirmBody": null,
+      "confirm": null,
+      "cancel": null,
+      "added": null,
+      "by": null,
+      "gone": null,
+      "more": null,
+      "first": null,
+      "navLabel": null,
+      "unavailable": null,
+      "retry": null
+    },
+    "questionActions": {
+      "label": null,
+      "hint": null,
+      "counter": null,
+      "submit": null,
+      "tooShort": null,
+      "tooLong": null,
+      "confirmTitle": null,
+      "confirmBody": null,
+      "confirm": null,
+      "cancel": null,
+      "added": null,
+      "withdraw": null,
+      "withdrawLabel": null,
+      "withdrawTitle": null,
+      "withdrawBody": null,
+      "withdrawConfirm": null,
+      "withdrawn": null
     }
   }
 }

@@ -54,6 +54,7 @@ test("the detail page is no-store, unindexed, and ordered as the reviewer works"
     "contact",
     "history",
     "questions",
+    "notes",
     "handle",
     "scout"
   ]);

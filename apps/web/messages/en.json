@@ -1000,7 +1000,8 @@
         "questions": "Questions to the reporter",
         "handle": "Reporter handle",
         "scout": "Source Scout",
-        "publication": "Public update"
+        "publication": "Public update",
+        "notes": "Internal notes"
       },
       "observation": {
         "category": "Concern",
@@ -1108,6 +1109,61 @@
           "retry": "Try again"
         }
       }
+    },
+    "actions": {
+      "sessionEnded": "Your session ended. Sign in again to continue. Anything you typed here will not be kept.",
+      "signIn": "Sign in again",
+      "pending": "Working",
+      "tryAgain": "Nothing was changed by a failed request unless it says otherwise. You can try again."
+    },
+    "download": {
+      "button": "Download",
+      "buttonLabel": "Download {name}",
+      "pending": "Preparing the download",
+      "done": "The download of {name} started.",
+      "failed": "The file could not be downloaded.",
+      "note": "A fresh request is made each time. Nothing is kept in this browser."
+    },
+    "notes": {
+      "empty": "No notes yet.",
+      "intro": "Notes are private and plain text. They cannot be edited or deleted; a correction is a new note.",
+      "label": "New note",
+      "hint": "Plain text only, up to {max} characters. Do not paste contact details or anything that identifies the reporter.",
+      "counter": "{count} of {max}",
+      "submit": "Add note",
+      "required": "Write a note first.",
+      "tooLong": "This note is too long.",
+      "confirmTitle": "Add this note?",
+      "confirmBody": "It is private and permanent. It cannot be edited or deleted afterwards.",
+      "confirm": "Add note",
+      "cancel": "Keep editing",
+      "added": "Note added.",
+      "by": "By {author}",
+      "gone": "The text of this note is no longer available.",
+      "more": "Show later notes",
+      "first": "Back to the first notes",
+      "navLabel": "Notes pages",
+      "unavailable": "The notes could not be loaded. The rest of the report is unaffected.",
+      "retry": "Try loading the notes again"
+    },
+    "questionActions": {
+      "label": "New question for the reporter",
+      "hint": "The reporter sees this on the status page. 5 to 500 characters. Do not ask for identifying details.",
+      "counter": "{count} of {max}",
+      "submit": "Ask question",
+      "tooShort": "Write at least 5 characters.",
+      "tooLong": "This question is too long.",
+      "confirmTitle": "Send this question?",
+      "confirmBody": "The reporter will see it when they check their status. It does not change the report's status.",
+      "confirm": "Send question",
+      "cancel": "Keep editing",
+      "added": "Question added.",
+      "withdraw": "Withdraw",
+      "withdrawLabel": "Withdraw the question: {question}",
+      "withdrawTitle": "Withdraw this question?",
+      "withdrawBody": "The reporter will no longer see it. An answer already given stays in the record.",
+      "withdrawConfirm": "Withdraw question",
+      "withdrawn": "Question withdrawn."
     }
   }
 }

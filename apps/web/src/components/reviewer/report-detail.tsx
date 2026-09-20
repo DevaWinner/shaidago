@@ -315,8 +315,14 @@ export function HistorySection({
 /** Read-only view of the questions; asking and withdrawing are added by the notes task. */
 export function QuestionsList({
   report,
-  context
-}: Readonly<{ report: Report; context: DetailContext }>): ReactNode {
+  context,
+  renderActions
+}: Readonly<{
+  report: Report;
+  context: DetailContext;
+  /** Extra controls for a question that is still open, such as withdrawing it. */
+  renderActions?: (item: Report["follow_ups"][number]) => ReactNode;
+}>): ReactNode {
   const { copy, format } = context;
   const words = copy.questions;
 
@@ -341,9 +347,84 @@ export function QuestionsList({
               {item.answer ?? words.private}
             </p>
           )}
+          {item.withdrawn || item.answer_kind !== null ? null : renderActions?.(item)}
         </li>
       ))}
     </ul>
+  );
+}
+
+export type NotesView =
+  | Readonly<{
+      state: "ok";
+      items: readonly components["schemas"]["NoteOut"][];
+      nextHref: string | undefined;
+      firstHref: string | undefined;
+    }>
+  | Readonly<{ state: "unavailable"; retryHref: string }>;
+
+/** Internal notes, oldest first, as private plain text with the form supplied by the caller. */
+export function NotesSection({
+  context,
+  form,
+  notes,
+  words
+}: Readonly<{
+  context: DetailContext;
+  form: ReactNode;
+  notes: NotesView;
+  words: Messages["reviewer"]["notes"];
+}>): ReactNode {
+  const { copy, format } = context;
+
+  return (
+    <Section id="notes" title={copy.sections.notes}>
+      <p className="m-0 text-sm text-muted-foreground">{words.intro}</p>
+      {notes.state === "unavailable" ? (
+        <div className="grid gap-2 border-2 border-border bg-card p-3" role="status">
+          <p className="m-0">{words.unavailable}</p>
+          <p className="m-0">
+            <Link href={notes.retryHref}>{words.retry}</Link>
+          </p>
+        </div>
+      ) : notes.items.length === 0 ? (
+        <p className="m-0">{words.empty}</p>
+      ) : (
+        <>
+          <ol className="m-0 grid list-none gap-3 p-0" data-slot="notes-list">
+            {notes.items.map((note) => (
+              <li className="grid gap-1 border-s-[0.375rem] border-border ps-3" key={note.note_id}>
+                <small>
+                  <time dateTime={note.created_at}>{format.dateTime(note.created_at)}</time>
+                  {note.author === null
+                    ? null
+                    : ` · ${formatMessageLite(words.by, { author: note.author })}`}
+                </small>
+                {/* Plain text only: escaped by React, never treated as markup. */}
+                <p className="m-0 max-w-[68ch] whitespace-pre-wrap [overflow-wrap:anywhere]">
+                  {note.body ?? words.gone}
+                </p>
+              </li>
+            ))}
+          </ol>
+          {notes.nextHref === undefined && notes.firstHref === undefined ? null : (
+            <nav aria-label={words.navLabel} className="flex flex-wrap gap-3">
+              {notes.firstHref === undefined ? null : (
+                <ButtonLink href={notes.firstHref} variant="secondary">
+                  {words.first}
+                </ButtonLink>
+              )}
+              {notes.nextHref === undefined ? null : (
+                <ButtonLink href={notes.nextHref} rel="next" variant="secondary">
+                  {words.more}
+                </ButtonLink>
+              )}
+            </nav>
+          )}
+        </>
+      )}
+      {form}
+    </Section>
   );
 }
 

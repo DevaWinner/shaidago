@@ -2233,3 +2233,23 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Designed and implemented the detail page, section components, mock data and tests.
 - **Prompt summary:** Unattended frontend/BFF build loop.
 - **Human review:** none yet; unattended run, pending maintainer review.
+
+## 2026-09-20 — FE-113 Evidence download and notes
+
+- **Task:** FE-113 — Evidence download and notes (Circle 11). It also delivers the reviewer follow-up question controls that FR-12 lists with the notes.
+- **User outcome delivered:** A reviewer can download a cleaned evidence file on request, read private notes, append a note or a reporter question only after confirming it, and withdraw a question, without any private value reaching an address or storage.
+- **Routes/components changed:** `src/components/reviewer/{evidence-download,note-form,question-controls,action-feedback}.tsx`, `NotesSection` and the `renderActions` slot in `report-detail.tsx`, the detail page, `messages/*` (`reviewer.actions`, `download`, `notes`, `questionActions`), mock notes, evidence and question endpoints, component and e2e tests.
+- **Backend operations/contract version:** `reviewer_notes_list` (server read), `reviewer_notes_create`, `reviewer_evidence_download`, `reviewer_decisions_ask_follow_up`, `reviewer_decisions_withdraw_follow_up` through existing handlers (OpenAPI 0.0.0 unchanged).
+- **Public/private data handled:** Private notes, question text, and evidence bytes. Notes and questions travel in same-origin POST bodies and component memory; evidence bytes are held in memory only for the save dialog. No storage, address, log, or cache. Fictional data only.
+- **States implemented:** note and question form initial, empty, too long or short, confirming, sending, saved, failed with text kept, session ended, markup refused, outage, may-have-completed; notes empty, paged, unavailable with retry, body gone; download idle, preparing, started, failed, session ended.
+- **Accessibility evidence:** labelled fields with error association, alertdialog confirmations (Cancel first), `role="status"` and `role="alert"` regions, buttons named for the file or question. Keyboard focus return after the dialogs is Base UI's default and is not yet asserted; axe and screen-reader runs are FE-116.
+- **Locales reviewed:** English only; `ha`/`ig`/`yo` keys are `null` and pending.
+- **Performance/cache impact:** Client islands are only on the reviewer detail page; no public page changed.
+- **Commands run and results:** `make web-verify` exit 0; targeted e2e `reviewer` 68 passed (Chromium and mobile WebKit).
+- **Screenshots/traces/artifacts checked:** none captured.
+- **Known limitations/open decisions:** The API's note limit is inconsistent in documentation (4,000 in `docs/API.md`, 4,500 in OpenAPI); the UI enforces 4,000, the stricter. Downloads are held in memory, which is fine for the 10 MiB per-file cap. A reload after a network failure re-shows the list, which is how a reviewer checks whether a note landed.
+- **Commit/PR:** `feat: add reviewer evidence download, append-only notes, and follow-up question controls`
+- **Next task may rely on:** `postJson`-based reviewer mutation pattern, `ActionFeedback`, the `reviewer.actions` copy, and the mock note/question/evidence endpoints.
+- **AI assistance used:** Designed and implemented the download, notes, and question components, mock endpoints, and tests.
+- **Prompt summary:** Unattended frontend/BFF build loop.
+- **Human review:** none yet; unattended run, pending maintainer review.

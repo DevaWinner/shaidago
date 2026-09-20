@@ -5,26 +5,31 @@ import type { ReactNode } from "react";
 
 import { QueueNotice } from "@/components/reviewer/queue";
 import { ReviewerFrame } from "@/components/reviewer/frame";
+import { AskQuestionForm, WithdrawQuestionButton } from "@/components/reviewer/question-controls";
+import { EvidenceDownload } from "@/components/reviewer/evidence-download";
+import { NoteForm } from "@/components/reviewer/note-form";
 import {
   ContactSection,
   DemoWarning,
   EvidenceSection,
   HandleSection,
   HistorySection,
+  NotesSection,
   ObservationSection,
   QuestionsList,
   ReportHeader,
   ScoutSection,
   Section,
   detailContext,
-  type ContactOutcome
+  type ContactOutcome,
+  type NotesView
 } from "@/components/reviewer/report-detail";
 import { ButtonLink, Link } from "@/components/ui/button";
 import { resolveDomain } from "@/i18n/catalogue";
 import { isSupportedLocale } from "@/i18n/routing";
 import { idParam } from "@/lib/bff/reviewer-schemas";
 import { serverApi } from "@/lib/api/server";
-import { queuePath } from "@/lib/reviewer/safe-return";
+import { queuePath, signInPath } from "@/lib/reviewer/safe-return";
 import { redirectToSignIn, requireSession, reviewerOptionsFor } from "@/lib/reviewer/session";
 
 // Private, per reviewer, never cached, prefetched, or indexed. The address holds the opaque report
@@ -147,6 +152,38 @@ export default async function ReviewerReportPage({
   }
 
   const report = result.data;
+  const rawNotes = query["notes"];
+  const notesCursor =
+    typeof rawNotes === "string" && /^[\x21-\x7e]{1,512}$/.test(rawNotes) ? rawNotes : undefined;
+  const notesResult = requireSession(
+    await api.listReviewerNotes(
+      reportId,
+      { limit: 20, ...(notesCursor === undefined ? {} : { cursor: notesCursor }) },
+      options
+    ),
+    locale,
+    self
+  );
+  const notes: NotesView =
+    notesResult.kind === "ok"
+      ? {
+          state: "ok",
+          items: notesResult.data.items,
+          nextHref:
+            notesResult.data.next_cursor === null
+              ? undefined
+              : `${self}?notes=${encodeURIComponent(notesResult.data.next_cursor)}#notes`,
+          firstHref: notesCursor === undefined ? undefined : `${self}#notes`
+        }
+      : { state: "unavailable", retryHref: `${self}#notes` };
+  const signInHref = signInPath(locale, { reason: "expired", next: self });
+  const shared = {
+    actions: reviewer.messages.actions,
+    locale,
+    problems: resolveDomain(locale, "problems").messages,
+    reportId,
+    signInHref
+  };
   const context = detailContext(copy, reviewer.messages.queue, reviewer.language, locale);
   const anchors = [
     "status",
@@ -179,7 +216,21 @@ export default async function ReviewerReportPage({
       </Section>
       <DemoWarning copy={copy} />
       <ObservationSection context={context} report={report} />
-      <EvidenceSection context={context} renderDownload={() => null} report={report} />
+      <EvidenceSection
+        context={context}
+        renderDownload={(file) => (
+          <EvidenceDownload
+            actions={shared.actions}
+            copy={reviewer.messages.download}
+            evidenceId={file.evidence_id}
+            fileName={file.display_name}
+            problems={shared.problems}
+            reportId={reportId}
+            signInHref={signInHref}
+          />
+        )}
+        report={report}
+      />
       <ContactSection
         context={context}
         hideHref={self}
@@ -189,8 +240,26 @@ export default async function ReviewerReportPage({
       />
       <HistorySection context={context} report={report} />
       <Section id="questions" title={copy.sections.questions}>
-        <QuestionsList context={context} report={report} />
+        <QuestionsList
+          context={context}
+          renderActions={(item) => (
+            <WithdrawQuestionButton
+              {...shared}
+              copy={reviewer.messages.questionActions}
+              question={item.question}
+              questionId={item.question_id}
+            />
+          )}
+          report={report}
+        />
+        <AskQuestionForm {...shared} copy={reviewer.messages.questionActions} />
       </Section>
+      <NotesSection
+        context={context}
+        form={<NoteForm {...shared} copy={reviewer.messages.notes} />}
+        notes={notes}
+        words={reviewer.messages.notes}
+      />
       <HandleSection context={context} report={report} />
       <ScoutSection context={context} />
     </ReviewerFrame>

@@ -60,6 +60,26 @@ const NO_CONTACT_CAPABILITY = REPORT_IDS[4];
 const UNAVAILABLE_REPORT = REPORT_IDS[43];
 const FORBIDDEN_REPORT = REPORT_IDS[44];
 
+// Per-report state that the browser tests change: notes and questions are append-only or withdrawn.
+const notes = new Map([
+  [
+    REPORT_IDS[0],
+    Array.from({ length: 22 }, (_, index) => ({
+      note_id: `0198f1a2-7b3c-4d4e-8f5a-b${String(index).padStart(11, "0")}`,
+      created_at: `2026-09-10T09:${String(index).padStart(2, "0")}:00Z`,
+      author: "reviewer-demo",
+      body:
+        index === 1
+          ? "Seeded note with <b>markup</b> that must stay text."
+          : `Seeded fictional note ${index + 1}.`
+    }))
+  ]
+]);
+const questions = new Map();
+let counter = 0;
+const nextId = (prefix) =>
+  `0198f1a2-7b3c-4d4e-8f5a-${prefix}${String(++counter).padStart(11, "0")}`;
+
 function detailFor(item, includeContact) {
   const first = item.report_id === REPORT_IDS[0];
 
@@ -90,26 +110,29 @@ function detailFor(item, includeContact) {
           ]
         : [])
     ],
-    follow_ups: first
-      ? [
-          {
-            question_id: "0198f1a2-7b3c-4d4e-8f5a-f00000000001",
-            question: "Which side of the building is the fictional crack on?",
-            asked_at: "2026-09-05T09:00:00Z",
-            withdrawn: false,
-            answer_kind: "answered",
-            answer: "The north side, fictionally."
-          },
-          {
-            question_id: "0198f1a2-7b3c-4d4e-8f5a-f00000000002",
-            question: "Is there a fictional sign at the gate?",
-            asked_at: "2026-09-05T10:00:00Z",
-            withdrawn: false,
-            answer_kind: null,
-            answer: null
-          }
-        ]
-      : [],
+    follow_ups: [
+      ...(questions.get(item.report_id) ?? []),
+      ...(first
+        ? [
+            {
+              question_id: "0198f1a2-7b3c-4d4e-8f5a-f00000000001",
+              question: "Which side of the building is the fictional crack on?",
+              asked_at: "2026-09-05T09:00:00Z",
+              withdrawn: false,
+              answer_kind: "answered",
+              answer: "The north side, fictionally."
+            },
+            {
+              question_id: "0198f1a2-7b3c-4d4e-8f5a-f00000000002",
+              question: "Is there a fictional sign at the gate?",
+              asked_at: "2026-09-05T10:00:00Z",
+              withdrawn: false,
+              answer_kind: null,
+              answer: null
+            }
+          ]
+        : [])
+    ],
     evidence: first
       ? [
           {
@@ -305,6 +328,108 @@ export function handleReviewer({ request, response, url, problem, readBody }) {
       log.push({ op: "detail", contact });
       json(response, 200, detailFor(item, contact));
     }
+    return true;
+  }
+
+  const notesMatch = /^\/v1\/reviewer\/reports\/([^/]+)\/notes$/.exec(path);
+
+  if (notesMatch !== null) {
+    const all = notes.get(notesMatch[1]) ?? [];
+
+    if (method === "GET") {
+      const cursor = Number(url.searchParams.get("cursor") ?? 0);
+      const limit = Math.min(Number(url.searchParams.get("limit") ?? 20), 50);
+
+      json(response, 200, {
+        items: all.slice(cursor, cursor + limit),
+        next_cursor: cursor + limit < all.length ? String(cursor + limit) : null
+      });
+      return true;
+    }
+    if (method === "POST") {
+      if (!hasCsrf(request)) {
+        problem(response, 403, "csrf_invalid");
+        return true;
+      }
+      readBody(request, (body) => {
+        const text = String(body?.body ?? "");
+
+        log.push({ op: "note_create" });
+        if (text.includes("zz-fail")) {
+          problem(response, 503, "dependency_unavailable");
+        } else if (/<[a-z/]/i.test(text)) {
+          problem(response, 422, "markup_not_allowed");
+        } else {
+          const note = {
+            note_id: nextId("c"),
+            created_at: "2026-09-20T09:00:00Z",
+            author: "reviewer-demo",
+            body: text
+          };
+
+          notes.set(notesMatch[1], [...all, note]);
+          json(response, 201, { note_id: note.note_id, created_at: note.created_at });
+        }
+      });
+      return true;
+    }
+  }
+
+  const evidenceMatch = /^\/v1\/reviewer\/reports\/([^/]+)\/evidence\/([^/]+)\/content$/.exec(path);
+
+  if (evidenceMatch !== null && method === "GET") {
+    log.push({ op: "evidence_download" });
+    response.writeHead(200, {
+      "Content-Type": "image/jpeg",
+      "Content-Disposition": 'attachment; filename="evidence-1.jpg"',
+      "X-Content-Type-Options": "nosniff",
+      "X-Evidence-Scan-State": "not_scanned_demo",
+      "Cache-Control": "no-store"
+    });
+    response.end(Buffer.from("fictional-image-bytes"));
+    return true;
+  }
+
+  const askMatch = /^\/v1\/reviewer\/reports\/([^/]+)\/follow-up-questions$/.exec(path);
+
+  if (askMatch !== null && method === "POST") {
+    if (!hasCsrf(request)) {
+      problem(response, 403, "csrf_invalid");
+      return true;
+    }
+    readBody(request, (body) => {
+      const question = {
+        question_id: nextId("d"),
+        question: String(body?.question ?? ""),
+        asked_at: "2026-09-20T09:00:00Z",
+        withdrawn: false,
+        answer_kind: null,
+        answer: null
+      };
+
+      log.push({ op: "question_create" });
+      questions.set(askMatch[1], [...(questions.get(askMatch[1]) ?? []), question]);
+      json(response, 201, { question_id: question.question_id });
+    });
+    return true;
+  }
+
+  const withdrawMatch =
+    /^\/v1\/reviewer\/reports\/([^/]+)\/follow-up-questions\/([^/]+):withdraw$/.exec(path);
+
+  if (withdrawMatch !== null && method === "POST") {
+    if (!hasCsrf(request)) {
+      problem(response, 403, "csrf_invalid");
+      return true;
+    }
+    log.push({ op: "question_withdraw" });
+    questions.set(
+      withdrawMatch[1],
+      (questions.get(withdrawMatch[1]) ?? []).map((item) =>
+        item.question_id === withdrawMatch[2] ? { ...item, withdrawn: true } : item
+      )
+    );
+    response.writeHead(204, { "Cache-Control": "no-store" }).end();
     return true;
   }
 
