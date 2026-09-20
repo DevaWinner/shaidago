@@ -137,3 +137,12 @@ the web-only `CLIENT_HMAC_KEY` (base64, 32+ bytes; required in staging and produ
 `X-Forwarded-For` entry `TRUSTED_PROXY_HOPS` places from the right is used (Railway edge: 1), so a
 client cannot choose its own address. The address is never forwarded or stored, and the value
 rotates daily.
+
+## Locale routing
+
+Public pages live under `/en`, `/ha`, `/ig`, and `/yo`. `proxy.ts` (next-intl) redirects unprefixed
+paths using the `NEXT_LOCALE` cookie, then `Accept-Language`, else `en`, keeping the query; it skips
+`/api`, `/_next`, and any path with a file extension. `REVIEWED_LOCALES` in `src/i18n/routing.ts`
+lists the languages with reviewed copy (currently `en`); other locales serve the English original,
+declare `lang="en"`, and show a visible notice, so English is never presented as Hausa, Igbo, or
+Yoruba. Add a locale to that list only when fluent, reviewed copy for every critical string exists.

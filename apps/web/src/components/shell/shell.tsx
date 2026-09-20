@@ -56,13 +56,16 @@ export type LocaleControlProperties = Readonly<{
   available: Readonly<Partial<Record<ApiLocale, string>>>;
   current: ApiLocale;
   messages: PublicShellMessages;
+  /** Locales that have routes but no reviewed copy yet; each is labelled as such beside its link. */
+  unreviewed?: readonly ApiLocale[];
 }>;
 
 /** A list of links, not a script-driven select: it works with no JavaScript and is fully labelled. */
 export function LocaleControl({
   available,
   current,
-  messages
+  messages,
+  unreviewed = []
 }: LocaleControlProperties): ReactNode {
   return (
     <nav aria-label={messages.localeLabel} className="ms-auto" data-slot="locale-control">
@@ -70,9 +73,14 @@ export function LocaleControl({
         {LOCALES.map((locale) => {
           const href = available[locale];
           const name = messages.localeNames[locale];
+          const note = unreviewed.includes(locale) ? (
+            <span className="ms-1 text-muted-foreground" lang="en">
+              ({messages.localeUnavailable})
+            </span>
+          ) : null;
 
           return (
-            <li key={locale}>
+            <li className="inline-flex items-center" key={locale}>
               {locale === current ? (
                 <span
                   aria-current="true"
@@ -94,6 +102,7 @@ export function LocaleControl({
                   {name}
                 </a>
               )}
+              {note}
             </li>
           );
         })}
@@ -108,7 +117,8 @@ export function PublicShell({
   lowDataControl,
   links,
   localeRoutes,
-  messages
+  messages,
+  unreviewedLocales = []
 }: Readonly<{
   children: ReactNode;
   currentLocale: ApiLocale;
@@ -117,6 +127,7 @@ export function PublicShell({
   links: PublicShellLinks;
   localeRoutes: LocaleControlProperties["available"];
   messages: PublicShellMessages;
+  unreviewedLocales?: readonly ApiLocale[];
 }>): ReactNode {
   return (
     <div className="grid min-h-dvh grid-rows-[auto_auto_1fr_auto]" data-slot="shell">
@@ -146,7 +157,12 @@ export function PublicShell({
             </li>
           </ul>
         </nav>
-        <LocaleControl available={localeRoutes} current={currentLocale} messages={messages} />
+        <LocaleControl
+          available={localeRoutes}
+          current={currentLocale}
+          messages={messages}
+          unreviewed={unreviewedLocales}
+        />
         {lowDataControl}
       </header>
       {/* Reserved for offline and stale notices; it announces politely and is empty by default. */}

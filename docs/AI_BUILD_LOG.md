@@ -1964,3 +1964,24 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Ran the live integration, diagnosed the two defects, fixed them with regression tests, and recorded the closures.
 - **Prompt summary:** Unattended frontend/BFF build loop for Circle 5; first close any open items that only needed CI or review.
 - **Human review:** The maintainer stated that all CI has run and passed and that the earlier work is reviewed; the two bug fixes and this entry have not been reviewed by anyone else.
+
+## 2026-09-20 — FE-050 Locale routing and negotiation
+
+- **Task:** FE-050 — Locale routing and negotiation.
+- **User outcome delivered:** Every public page has a language-prefixed URL, a bare visit lands on the visitor's remembered or requested language (else English) with its query intact, and a language without reviewed copy is shown honestly rather than as English dressed up as another language.
+- **Files changed:** `apps/web/proxy.ts`, `apps/web/next.config.ts`, `apps/web/src/i18n/{routing,request}.ts`, `apps/web/app/[locale]/**` (layout, landing, not-found, error, catch-all, loading), `apps/web/src/components/shell/shell.tsx`, `apps/web/vitest.unit.config.ts`, tests (proxy unit, shell component, locale e2e, recovery), `apps/web/package.json`, `pnpm-lock.yaml`, `apps/web/README.md`, `docs/PRIVACY_AND_SAFETY.md`, `docs/FRONTEND_BUILD_ORDER.md`, and this log.
+- **Backend operations/contract version:** None. The BFF stays unprefixed and unchanged.
+- **Public/private data handled:** A language-preference cookie (`NEXT_LOCALE`, one of four codes, one year, `SameSite=Lax`, not `HttpOnly` because it is a preference) is now set on locale-prefixed pages. Its data flow is documented in `docs/PRIVACY_AND_SAFETY.md`. No private data is involved.
+- **States implemented:** bare visit, cookie, header, unsupported header/cookie/segment, canonical case, preserved query, reviewed and unreviewed locales, 404 per locale.
+- **Accessibility evidence:** `html lang` is the language the text is written in; each locale name in the switcher carries its own `lang`; the "not yet reviewed" note is outside the link and marked `lang="en"`; the notice is a labelled note; axe still passes (16 browser checks plus the existing suites).
+- **Locales reviewed:** English only. `ha`, `ig`, and `yo` routes exist but serve the English original with a visible status; no translation was written or simulated.
+- **Performance/cache impact:** New dependency `next-intl` 4.14.5 (MIT, peer-compatible with Next 16 and React 19; `pnpm audit --prod` reports no known vulnerabilities). Pages are static per locale (`generateStaticParams`); the not-found page stays static; the client bundle scan is still clean. First-load JavaScript was not measured against the plan's budget in this task.
+- **Failure behaviour verified:** hostile and unsupported cookies, `//host`, `/%2F%2Fhost`, `/\host` and similar paths never leave the origin; `/EN` canonicalises; an unknown path under a real locale is a real 404 (a `loading.tsx` at the locale root had turned it into a 200 and was moved into a route group); a not-found page that read request headers made the server log "static to dynamic" errors and was made static. `proxy.ts` never runs for `/api`, so the 26 BFF routes are unchanged.
+- **Commands run and results:** `make web-verify` exit 0 (281 unit, 47 component, contract drift, build, boundary scan clean); `make web-e2e` 35 passed and 1 skipped (iOS WebKit Tab-to-link, as before) with no server errors logged; `make web-a11y` 16 passed; lint 0 errors and 0 warnings.
+- **Screenshots/traces/artifacts checked:** `/ha` at desktop width inspected (notice, labelled language links, current language marked); not committed.
+- **Known limitations/open decisions:** Recovery-page and loading strings are static English until FE-051. The not-found home link is `/`, so it returns to the remembered language through the proxy rather than to a fixed locale. Reviewer routes do not exist yet; when they do they must live under a locale prefix.
+- **Commit/PR:** `feat: add locale-prefixed routing and language negotiation`
+- **Next task may rely on:** `LOCALES`, `REVIEWED_LOCALES`, `contentLocale`, `isSupportedLocale`, the `[locale]` layout, and `src/i18n/request.ts` as the place FE-051 loads catalogues.
+- **AI assistance used:** Configured next-intl, restructured the routes, and wrote the negotiation and open-redirect tests.
+- **Prompt summary:** Unattended frontend/BFF build loop for Circle 5.
+- **Human review:** none yet; unattended run, pending maintainer review.

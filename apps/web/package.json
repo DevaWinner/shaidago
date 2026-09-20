@@ -33,6 +33,7 @@
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "next": "16.3.5",
+    "next-intl": "4.14.5",
     "openapi-fetch": "0.17.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",

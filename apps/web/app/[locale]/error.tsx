@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 
-import { RecoveryPage } from "./_components/recovery-page";
+import { RecoveryPage } from "../_components/recovery-page";
 import { toSafeRequestReference } from "@/lib/support/request-reference";
 
 type RecoverableError = Error & {
