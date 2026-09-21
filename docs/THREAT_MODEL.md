@@ -360,7 +360,7 @@ Coverage floors from `AGENTS.md` apply. Tracking normalisation, public response 
 | Risk or limitation | Current treatment | Release consequence |
 | --- | --- | --- |
 | Hosted demo has no ClamAV because of footprint | Record `not_scanned_demo`, show reviewers, use fictional data only, still sanitise supported files | Production must refuse this scanner mode. |
-| Fluent Hausa, Igbo, and Yoruba review is not yet recorded | Label non-reviewed text `machine_assisted` or `unavailable` | Final demo review remains open; no false `reviewed` label. |
+| Hausa, Igbo, and Yoruba have maintainer review but no independent second-language review | Keep the named maintainer and review date in locale metadata; do not describe this as independent review | Independent language review remains a production requirement. |
 | Source availability and publisher terms can change | Preserve permitted metadata/version/hash and checked date; do not bypass access controls | UI must show unavailability/staleness without rewriting history. |
 | External provider retention/region/contract settings are not yet evidenced | Provider interface and minimum-data allowlist only | Production closed until settings and agreements are reviewed. |
 | Numeric private-data retention and backup expiry are not approved | Fictional demo data only; teardown purge; owners and deletion mechanics defined above | Production startup must fail without approved configuration/policy. |

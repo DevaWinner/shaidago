@@ -32,7 +32,7 @@ Keep commits small enough to review. Never commit secrets, real report data, unv
 5. Review the diff for public/private data leaks, unsupported claims, localisation gaps, accessibility regressions, and accidental files.
 6. Update documentation and [`docs/AI_BUILD_LOG.md`](docs/AI_BUILD_LOG.md) when setup, behaviour, architecture, or material AI assistance changes.
 
-The repository is currently pre-scaffold. Commands in the implementation plan are intended interfaces until Gate 1 adds them. Once present, `make verify` is the canonical judge-facing gate; stack-specific commands remain in their own package configuration.
+`make verify` is the canonical repository gate. Stack-specific commands remain in their package configuration for focused development and diagnosis. A targeted check does not replace the full gate when a change can affect both stacks.
 
 ## Pull requests
 

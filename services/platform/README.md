@@ -1,8 +1,8 @@
 # ShaidaGo platform service
 
-The private FastAPI modular monolith that owns every domain, authorisation, visibility, and publication rule for ShaidaGo. The API entry point exists; the Dramatiq worker lifecycle is added by its later build gate.
+This is ShaidaGo's private FastAPI modular monolith. It owns domain policy, authorisation, visibility, citations, reports, review, publication, and audit history. The same package provides the API and Dramatiq worker entry points.
 
-**Status:** the backend is under active, task-gated implementation. See [`docs/BACKEND_BUILD_ORDER.md`](../../docs/BACKEND_BUILD_ORDER.md) for verified capabilities and open gates.
+**Status:** implemented and deployed to staging for the fictional-data proof of concept. The deterministic backend gate, container checks, staging smoke, and remaining production blockers are linked from the repository [documentation index](../../docs/README.md).
 
 ## Toolchain
 
@@ -26,10 +26,10 @@ Every route declares a stable operation ID. `make frontend-contract-generate` re
 UI state fixtures; `make frontend-contract-check` is part of the backend gate. Browser/BFF rules
 are frozen in `docs/FRONTEND_BACKEND_CONTRACT.md`.
 
-`POST /v1/projects/{slug}/questions` is the private-API boundary for grounded public questions. It accepts one bounded JSON `question`, takes the requested locale from the trusted BFF header, searches only approved source chunks for that public project, and returns a short validated answer with resolvable citations or the exact insufficient-evidence fallback. Responses and errors are `no-store`; requests are rate-limited per BFF-supplied client pseudonym. Operational rows retain counts, outcome, duration, and model/prompt/schema versions, never the question, prompt, passage, client pseudonym, or IP address. Replay mode is the default deterministic provider path; live mode requires the configured OpenAI key.
+`POST /v1/projects/{slug}/questions` is the private-API boundary for grounded public questions. It accepts one bounded JSON `question`, takes the requested locale from the trusted BFF header, searches only approved source chunks for that public project, and returns a short validated answer with resolvable citations or the exact insufficient-evidence fallback. Responses and errors are `no-store`; requests are rate-limited per BFF-supplied client pseudonym. Operational rows retain counts, outcome, duration, and model/prompt/schema versions, never the question, prompt, passage, client pseudonym, or IP address. Replay mode is the deterministic default; live mode requires `GROQ_API_KEY`.
 
-`uv run python -m shaidago.retrieval.evaluation` runs the checked-in 44-case English, Hausa, Igbo, and Yoruba citation/policy evaluation without a key or network access. Its locale copy is machine-assisted and every human-review record remains explicitly pending. The separate `--live` mode is an opt-in maintainer workflow documented in `data/qa-evaluation/README.md`; it must not be run as part of deterministic verification.
+`uv run python -m shaidago.retrieval.evaluation` runs the checked-in 44-case English, Hausa, Igbo, and Yoruba citation and policy evaluation without a key or network access. The corpus records the maintainer's review for all four locales; this is not an independent language review. The separate `--live` mode is an opt-in maintainer workflow documented in `data/qa-evaluation/README.md` and is excluded from deterministic verification.
 
 ## Layout
 
-`src/shaidago/` holds the package. Domain modules are added by their owning circle (see build order section 2); test directories under `tests/` are split by layer (`unit`, `integration`, `contract`, `security`, `evaluation`, `fixtures`).
+`src/shaidago/` contains the domain modules. Tests are split by layer under `tests/`: unit, integration, contract, security, evaluation, and fixtures.

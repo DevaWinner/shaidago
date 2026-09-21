@@ -1,7 +1,7 @@
 # Privacy and safety controls
 
-- **Status:** implemented prototype controls, reviewed 19 September 2026
-- **Scope:** backend and its frontend handoff contract
+- **Status:** implemented prototype controls, updated 20 September 2026
+- **Scope:** backend, worker, frontend, and BFF
 - **Production status:** closed to real report data
 
 This is a technical control summary, not a legal-compliance claim. The authoritative asset and
@@ -32,8 +32,8 @@ publishes text. A reviewer must author a separate update, inspect the exact publ
 confirm its digest; the transaction rechecks citations, report version, and private-reference
 guards before publication.
 
-Reviewer access is capability-based. Sessions are opaque, rotated/revocable, idle/absolute
-bounded, and represented in the browser by a secure `HttpOnly` cookie through the future BFF.
+Reviewer access is capability-based. Sessions are opaque, rotated and revocable, idle and absolute
+bounded, and represented in the browser by a secure `HttpOnly` cookie through the BFF.
 Reviewer mutations require origin enforcement in the BFF and a separate CSRF token at the API.
 Evidence downloads are authorised and audited on every request; no object-store URL is exposed.
 
@@ -41,11 +41,11 @@ Evidence downloads are authorised and audited on every request; no object-store 
 
 The web app sets at most three first-party cookies, all `SameSite=Lax`, none read by a third party:
 
-| Cookie | Purpose | Contents | Lifetime | Readable by page script |
-| --- | --- | --- | --- | --- |
-| `NEXT_LOCALE` | Remembers the chosen language so `/` redirects to it | One of `en`, `ha`, `ig`, `yo` | 1 year | Yes (a preference, not a secret) |
-| `sg_session` / `__Host-sg_session` | Reviewer session (reviewers only) | Opaque token | Session policy from the API | No (`HttpOnly`) |
-| `sg_csrf` / `__Host-sg_csrf` | Reviewer CSRF token, forwarded server-side | Opaque token | Same as the session | No (`HttpOnly`) |
+| Cookie                             | Purpose                                              | Contents                      | Lifetime                    | Readable by page script          |
+| ---------------------------------- | ---------------------------------------------------- | ----------------------------- | --------------------------- | -------------------------------- |
+| `NEXT_LOCALE`                      | Remembers the chosen language so `/` redirects to it | One of `en`, `ha`, `ig`, `yo` | 1 year                      | Yes (a preference, not a secret) |
+| `sg_session` / `__Host-sg_session` | Reviewer session (reviewers only)                    | Opaque token                  | Session policy from the API | No (`HttpOnly`)                  |
+| `sg_csrf` / `__Host-sg_csrf`       | Reviewer CSRF token, forwarded server-side           | Opaque token                  | Same as the session         | No (`HttpOnly`)                  |
 
 Residents who only read pages or submit anonymous reports receive only the language cookie, and only
 after they open a locale-prefixed page. It contains no identifier, no contact detail, and no report
@@ -103,17 +103,19 @@ Exact commands and current results are recorded in [`AI_BUILD_LOG.md`](AI_BUILD_
 
 ## Known limitations and production blockers
 
-- Human review of English, Hausa, Igbo, and Yoruba Q&A evaluation copy is pending.
+- English, Hausa, Igbo, and Yoruba have maintainer review. Hausa, Igbo, and Yoruba have no
+  independent second-language review.
 - Three of six source-register projects have no verified fact because their candidate pages were
-  access-restricted. A fresh manual audit of all six project records and reuse terms is pending.
+  access-restricted. The maintainer reviewed the register, but no independent source or reuse audit
+  has been completed.
 - The hosted demo uses `SCANNER_MODE=not_deployed`; sanitised attachments are visibly marked
   `not_scanned_demo`. Production refuses this mode and needs a deployed malware scanner.
-- Live Groq/Brave interoperability was exercised once (see BE-097). Provider-side retention and terms have not been reviewed.
-- The complete fictional staging smoke journey is pending private-network access through a
-  maintainer-registered Railway SSH key.
+- Live Groq and Brave interoperability was exercised once (see BE-097). Provider-side retention and
+  terms have not been reviewed.
+- The hosted public journey passed the recorded smoke checks. Hosted reviewer steps were skipped
+  because no reviewer credential was supplied to that run; the complete reviewer journey passed
+  against the staging API in the backend smoke.
+- The manual screen-reader pass and an independent security review have not been completed.
 - Production has not been created. Legal basis, privacy notice, real retention periods, backup and
-  restore operations, incident staffing, provider agreements, access review, and an independent
-  security/operational review remain mandatory before real data.
-- The Next.js BFF and browser application are built and tested locally but not deployed, so cookie
-  setting, same-origin/CSRF enforcement, client cache behaviour, accessibility, localisation, and
-  low-bandwidth behaviour have no deployed evidence.
+  restore operations, incident staffing, provider agreements, access review, verified referral
+  routes, and an independent security and operational review remain mandatory before real data.

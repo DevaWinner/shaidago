@@ -1,62 +1,61 @@
-# Documentation index
+# ShaidaGo documentation
 
-This directory contains the evidence, decisions, and operating rules needed to build and judge ShaidaGo. Keep documents specific, link to authoritative details instead of duplicating them, and update affected documents in the same pull request as a behaviour change.
+The root [`README.md`](../README.md) is the starting point for judges. It links to the hosted prototype, explains what to try, and provides the verified local setup. This index separates the short reviewer path from the engineering records behind it.
 
-## Source-of-truth order
+## Reviewer path
 
-When documents overlap, use this order:
+| Document                                                               | What it answers                                                                                 |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| [`PRODUCT.md`](../PRODUCT.md)                                          | Who is ShaidaGo for, what does it do, and where does the proof of concept stop?                 |
+| [`PRODUCT_BRIEF.md`](PRODUCT_BRIEF.md)                                 | Which user journeys, trust rules, and acceptance criteria shaped the product?                   |
+| [`../DESIGN.md`](../DESIGN.md)                                         | How does the shipped Field Ledger interface support trust, accessibility, and low-data use?     |
+| [`SOURCE_REGISTER.md`](SOURCE_REGISTER.md)                             | Which public passages support the seeded records, and where is evidence unavailable?            |
+| [`PRIVACY_AND_SAFETY.md`](PRIVACY_AND_SAFETY.md)                       | Which privacy controls are implemented, and what still blocks real reporting?                   |
+| [`evidence/FE-162-hosted-smoke.md`](evidence/FE-162-hosted-smoke.md)   | What worked on the hosted web application, and which reviewer checks were skipped?              |
+| [`evidence/BE-114-staging-smoke.md`](evidence/BE-114-staging-smoke.md) | What worked across the API, worker, database, reporting, review, Q&A, and Source Scout journey? |
 
-1. [`PRODUCT.md`](../PRODUCT.md) for product identity, pilot scope, users, capabilities, and non-goals.
-2. [`PRODUCT_BRIEF.md`](PRODUCT_BRIEF.md) for detailed journeys, trust model, requirements, and acceptance criteria.
-3. [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) for accepted technical choices, boundaries, data model, quality gates, and build order.
-4. [`BACKEND_BUILD_ORDER.md`](BACKEND_BUILD_ORDER.md) and [`FRONTEND_BUILD_ORDER.md`](FRONTEND_BUILD_ORDER.md) for task-level execution. They operationalise the implementation plan and do not override it.
-5. The generated OpenAPI contract for implemented HTTP shapes once `contracts/openapi.json` exists.
-6. Migrations and executable tests for implemented behaviour.
+The reviewer path is deliberately short. It distinguishes implemented behaviour from requirements, and it keeps prototype limits beside the evidence rather than hiding them in a final disclaimer.
 
-If implementation reveals a conflict, do not silently choose one version. Correct the higher-level document or record the decision, then update code and tests together.
+## Engineering reference
 
-## Current documents
+| Document                                                       | Purpose                                                                            |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md)             | Architecture, stack decisions, data model, security boundaries, and proof strategy |
+| [`API.md`](API.md)                                             | Private API conventions and implemented operation groups                           |
+| [`FRONTEND_BACKEND_CONTRACT.md`](FRONTEND_BACKEND_CONTRACT.md) | Browser, BFF, generated-client, and backend ownership boundaries                   |
+| [`THREAT_MODEL.md`](THREAT_MODEL.md)                           | Assets, trust boundaries, abuse cases, and required controls                       |
+| [`CONTROLLED_VOCABULARY.md`](CONTROLLED_VOCABULARY.md)         | Generated state machines, actors, events, visibility rules, and error codes        |
+| [`DEPLOYMENT.md`](DEPLOYMENT.md)                               | Railway service topology and deployment procedure                                  |
+| [`RUNBOOKS.md`](RUNBOOKS.md)                                   | Rotation, rollback, failure, and recovery procedures                               |
+| [`decisions/`](decisions/README.md)                            | Accepted architecture decisions and their consequences                             |
 
-| Document | Status | Owner question |
-| --- | --- | --- |
-| [`PRODUCT_BRIEF.md`](PRODUCT_BRIEF.md) | Active | What problem and user outcome are we building? |
-| [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) | Accepted architecture | How will the separate frontend/BFF and backend stacks deliver it safely? |
-| [`BACKEND_BUILD_ORDER.md`](BACKEND_BUILD_ORDER.md) | Execution specification | In what exact order should the API, worker, persistence, security, and operations be implemented and proven? |
-| [`FRONTEND_BUILD_ORDER.md`](FRONTEND_BUILD_ORDER.md) | Execution specification | In what exact order should the UI/BFF, visual system, four-language experience, PWA, and reviewer surfaces be implemented and proven? |
-| [`REQUIREMENTS_TRACEABILITY.md`](REQUIREMENTS_TRACEABILITY.md) | Active control | Which backend task and proof owns every accepted capability, acceptance criterion, journey, and non-goal? |
-| [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md) | Demonstration script | What is the sub-four-minute signed-out path through the product, and what must a presenter not claim? |
-| [`../DESIGN.md`](../DESIGN.md) | Design record | What does the shipped visual system look like, with measured values, and what would break its identity? |
-| [`FRONTEND_HARDENING_AUDIT.md`](FRONTEND_HARDENING_AUDIT.md) | Audit record | What accessibility, language, device, privacy, performance, and recovery evidence exists for the frontend, and what still needs a person? |
-| [`FRONTEND_REQUIREMENTS_TRACEABILITY.md`](FRONTEND_REQUIREMENTS_TRACEABILITY.md) | Active control | Which frontend task, route, operation, data class, cache rule, and proof owns every user-facing requirement? |
-| [`FRONTEND_ROUTE_MATRIX.md`](FRONTEND_ROUTE_MATRIX.md) | Active control | What does each route do, how is it rendered/cached/localised, which operations does it call, and where does it hand off? |
-| [`FRONTEND_STATE_MATRIX.md`](FRONTEND_STATE_MATRIX.md) | Active control | Which stable fixtures and recovery behavior must every async public, report, tracking, reviewer, and discovery surface implement? |
-| [`FRONTEND_CONTENT_RANGE_INVENTORY.md`](FRONTEND_CONTENT_RANGE_INVENTORY.md) | Active control | Which safe minimum, typical, and maximum content fixtures must frontend surfaces survive before component implementation? |
-| [`FRONTEND_BFF_OPERATION_MAP.md`](FRONTEND_BFF_OPERATION_MAP.md) | Active control | Which typed server read or exact same-origin BFF route owns each frontend operation and its security/cache boundary? |
-| [`FRONTEND_VISUAL_DIRECTION.md`](FRONTEND_VISUAL_DIRECTION.md) | Accepted pre-implementation direction | Which human-approved visual world, trust constraints, and execution contract must frontend work honour before `DESIGN.md` can describe the shipped result? |
-| [`decisions/`](decisions/README.md) | Accepted decision records | Which hard-to-reverse backend choices are binding, what was rejected, and which tasks enforce them? |
-| [`THREAT_MODEL.md`](THREAT_MODEL.md) | Design contract | Which data is private or secret, where may it flow, how is it deleted, and which task proves each control? |
-| [`PRIVACY_AND_SAFETY.md`](PRIVACY_AND_SAFETY.md) | Implemented prototype controls | Which privacy controls exist, what evidence proves them, and what still blocks production? |
-| [`CONTROLLED_VOCABULARY.md`](CONTROLLED_VOCABULARY.md) | Generated active contract | Which machine values, actors, transitions, audit events, visibility rules, and failure codes are permitted? |
-| [`API.md`](API.md) | Active | How is the private API called, what does it return on error, and how is the OpenAPI contract generated and checked? |
-| [`KEY_MANAGEMENT.md`](KEY_MANAGEMENT.md) | Active | How are private-field keys held, rotated, destroyed, and later moved to a managed KMS? |
-| [`SOURCE_REGISTER.md`](SOURCE_REGISTER.md) | Generated, active | Which real sources support each seed fact, with exact passages, dates, availability, and gaps? |
-| [`AI_BUILD_LOG.md`](AI_BUILD_LOG.md) | Active log | Where did AI assist, what was reviewed, and what was the result? |
-| [`../.claude/commands/`](../.claude/commands/) | Active developer workflow | How do unattended backend and frontend build loops select, prove, record, and commit one build-order task at a time? |
+The route, state, content-range, requirements, and BFF-operation matrices are implementation controls. They are useful when reviewing a particular boundary, but they are not required reading for the product story.
 
-## Planned evidence documents
+## Build and verification history
 
-Create these when the corresponding build gate produces real evidence; do not add empty placeholders:
+[`BACKEND_BUILD_ORDER.md`](BACKEND_BUILD_ORDER.md) and [`FRONTEND_BUILD_ORDER.md`](FRONTEND_BUILD_ORDER.md) record the work in the order it was completed. Status statements inside an earlier task describe that point in time; later gate entries and evidence files supersede them.
 
-- `TRUST_MODEL.md` when the frontend trust explanation and presentation are implemented and tested. `THREAT_MODEL.md` is the design contract; `PRIVACY_AND_SAFETY.md` records implemented backend controls and limitations.
-- `DEMO_SCRIPT.md` when the end-to-end scenario is working.
-- further architecture decision records under `decisions/` when a durable choice changes the accepted plan.
+[`AI_BUILD_LOG.md`](AI_BUILD_LOG.md) records material AI assistance, maintainer decisions, verification results, and known gaps. It is a chronological audit log, not a product narrative.
 
-## Documentation standards
+The final backend review is in [`evidence/BE-122-final-backend-review.md`](evidence/BE-122-final-backend-review.md). Accessibility, responsive behaviour, privacy, and performance evidence for the frontend is in [`FRONTEND_HARDENING_AUDIT.md`](FRONTEND_HARDENING_AUDIT.md).
 
-- Use repository-relative links and meaningful link text.
-- State dates as absolute dates and record `Africa/Lagos` for local operational time; store application timestamps in UTC.
-- Separate verified facts, design decisions, assumptions, open questions, and future work.
-- Cite the exact public source supporting each seeded project fact. A resolved URL alone is not evidence of the claim.
-- Never copy private report content, contact data, secrets, tracking codes, raw prompts containing sensitive data, or exploit details into public documentation.
-- Mark fictional demo records and replayed provider responses prominently.
-- Do not claim a command, test, deployment, or feature works until it has been run and the result has been checked.
+## Authority order
+
+When documents disagree, use this order:
+
+1. [`PRODUCT.md`](../PRODUCT.md) for product scope and non-goals.
+2. [`PRODUCT_BRIEF.md`](PRODUCT_BRIEF.md) for detailed requirements.
+3. [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) and accepted [decision records](decisions/README.md) for architecture.
+4. The generated [`contracts/openapi.json`](../contracts/openapi.json) for implemented HTTP shapes.
+5. Migrations and executable tests for implemented behaviour.
+
+Build orders and audit logs explain how the repository reached its current state. They do not override the product, architecture, contract, or tests.
+
+## Documentation rules
+
+- Separate sourced facts, product decisions, assumptions, and open work.
+- Cite the exact public passage behind each seeded project fact. A URL alone is not evidence.
+- Use fictional reports in documentation and tests.
+- Never include contacts, tracking codes, credentials, signed URLs, private report text, or exploit details.
+- Record commands only after they have been run, with failures and skipped checks stated plainly.
+- Use absolute dates for evidence and operational records.

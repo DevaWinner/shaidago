@@ -4,6 +4,8 @@
 **Prepared:** 19 September 2026
 **Pilot:** Abuja — AMAC and Bwari Area Councils
 
+**Current state:** the proof of concept is implemented and deployed to staging. This document explains the decisions that shaped it; current verification and production blockers are linked from [`README.md`](../README.md) and [`docs/README.md`](README.md).
+
 AMAC and Bwari are the initial judge dataset, not a product boundary. Localities are configured data; product identity, global navigation, shared routes, and reusable interface copy remain location-neutral.
 **Public languages:** English, Hausa, Igbo, and Yoruba
 **Source brief:** [`docs/PRODUCT_BRIEF.md`](PRODUCT_BRIEF.md)
@@ -122,8 +124,7 @@ shaidago/
 │   ├── PRIVACY_AND_SAFETY.md
 │   ├── THREAT_MODEL.md
 │   ├── AI_BUILD_LOG.md
-│   ├── API.md
-│   └── DEMO_SCRIPT.md
+│   └── API.md
 ├── infra/
 │   ├── docker/
 │   └── railway/
@@ -143,7 +144,7 @@ shaidago/
 └── README.md
 ```
 
-The stacks stay separate: pnpm controls `apps/web`; `uv` controls `services/platform`. The root `Makefile` only provides memorable orchestration commands such as `make setup`, `make dev`, `make seed`, `make test`, and `make verify`.
+The stacks stay separate: pnpm controls `apps/web`; `uv` controls `services/platform`. The root `Makefile` provides cross-stack commands such as `make setup`, `make seed-demo`, `make backend-verify`, `make web-verify-full`, and `make verify`.
 
 ## 5. Frontend plan
 
@@ -561,14 +562,14 @@ This section is the milestone summary. Use [`BACKEND_BUILD_ORDER.md`](BACKEND_BU
 
 **Gate:** all mandatory checks are green; any accepted limitation is specific, visible, and documented.
 
-### Gate 8 — judge package (4 hours plus recording)
+### Gate 8 — reviewer-ready repository
 
-1. Finish the README, architecture/trust/privacy/threat docs, AI build log, API docs, screenshots, limitations, and source acknowledgements.
-2. Write and rehearse a sub-four-minute scenario spanning public, private, reviewer, and discovery flows.
-3. Record the video, export the PDF deck, and complete the written summary using the same six-project narrative.
-4. Test clean setup and every public link in a signed-out browser; tag the submitted commit.
+1. Finish the README, architecture, trust, privacy, threat, API, source, limitation, and AI-assistance records.
+2. Record hosted smoke evidence for the public journey and the protected reviewer journey.
+3. Test clean setup and every public link in a signed-out browser.
+4. Confirm that the hosted environment contains only public sources and fictional reporting data.
 
-**Gate:** a fresh reviewer can understand, run, test, and watch the complete product without oral explanation.
+**Gate:** a fresh reviewer can understand, run, test, and inspect the product without oral explanation.
 
 ### Scope cut order if time slips
 
@@ -630,15 +631,15 @@ The repository should make quality visible before a judge runs the app:
 - Storing full third-party pages without explicit rights.
 - Production handling of real sensitive reports until legal/privacy assessment, operational staffing, incident response, key management, retention/deletion policy, and independent security review exist.
 
-## 15. Inputs still required
+## 15. Current prototype limits
 
-Architecture is no longer blocked, but implementation needs:
+The architecture and implementation are complete for the hackathon proof of concept. These items remain open:
 
-1. Six verified AMAC/Bwari projects and their public source passages.
-2. Reviewed Abuja escalation routes and the prominent non-emergency disclaimer.
-3. Human review for Hausa, Igbo, and Yoruba safety/product copy.
-4. Railway, R2, Brave Search, and Groq credentials for the hosted demo.
-5. A visual-direction choice before UI implementation; the standing comp-first/code-first preference is intentionally not stored until confirmed.
+1. Three candidate projects have no verified fact because their source pages could not be retrieved.
+2. Hausa, Igbo, and Yoruba have maintainer review but no independent second-language review.
+3. The scripted manual screen-reader pass has not been completed.
+4. The hosted demo uses replay providers and does not run a malware scanner.
+5. Real reporting requires legal and privacy review, production key management, incident response, verified referral routes, access review, backups, and an independent security assessment.
 
 ## 16. Current primary references
 

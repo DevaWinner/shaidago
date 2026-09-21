@@ -1,4 +1,4 @@
-# ShaidaGo
+# ShaidaGo (shy-dah-go)
 
 > Track promises. Verify progress. Take action.
 

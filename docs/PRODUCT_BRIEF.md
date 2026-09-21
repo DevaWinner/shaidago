@@ -1,5 +1,7 @@
 # ShaidaGo
 
+This is the accepted product requirements brief. For the current implementation status and verification evidence, start with the [repository README](../README.md) and [documentation index](README.md).
+
 ## Civic Project Accountability and Safe Reporting Platform
 
 ### Detailed Product and Technical Build Brief
@@ -769,8 +771,8 @@ Do not label a project corrupt, fraudulent, abandoned, or completed unless relia
 
 - A fresh reviewer can follow the README and run the application.
 - Seed data loads with one documented command.
-- Demo credentials contain no real secret and work only with demonstration data.
-- The complete public-to-private-to-review flow can be shown in under four minutes.
+- No credential or real report data is stored in the repository.
+- The public, private-report, and reviewer workflows use fictional demonstration data.
 
 ## 19. Build sequence for the invention sprint
 
@@ -808,38 +810,42 @@ Do not label a project corrupt, fraudulent, abandoned, or completed unless relia
 5. Replace all placeholder copy and check every source link.
 6. Test unsafe URLs, prompt injection in retrieved pages, duplicate sources, conflicting claims, stale pages, and accidental inclusion of private fields in search queries.
 
-### Phase 5: Prepare the submission
+### Phase 5: Prepare the public repository
 
-1. Finalise the public GitHub repository and README.
-2. Record a short demo video.
-3. Export the pitch deck as PDF.
-4. Write the summary covering the tracks, information sources, trust model, and AI-tool usage.
-5. Test every submission link in a private or signed-out browser window.
+1. Finalise the public GitHub repository and reviewer README.
+2. Confirm that the hosted demonstration uses only public sources and fictional reports.
+3. Run the documented verification and smoke-test workflows.
+4. Check every public link in a private or signed-out browser window.
 
 ## 20. Repository structure
 
 ```text
 shaidago/
 ├── apps/
-│   ├── web/
-│   └── api/
+│   └── web/
+├── services/
+│   └── platform/
+├── contracts/
 ├── data/
-│   ├── seed-projects.json
-│   └── source-notes/
+│   ├── discovery-fixtures/
+│   ├── embeddings/
+│   ├── qa-evaluation/
+│   └── qa-fixtures/
 ├── docs/
 │   ├── PRODUCT_BRIEF.md
-│   ├── TRUST_MODEL.md
+│   ├── IMPLEMENTATION_PLAN.md
 │   ├── PRIVACY_AND_SAFETY.md
-│   ├── AI_BUILD_LOG.md
-│   └── DEMO_SCRIPT.md
-├── tests/
+│   └── AI_BUILD_LOG.md
+├── infra/
+│   └── docker/
+├── scripts/
 ├── .env.example
-├── docker-compose.yml
+├── Makefile
 ├── LICENSE
 └── README.md
 ```
 
-A simpler two-folder structure is acceptable if it makes delivery faster. The README must remain the single starting point for judges.
+The root README is the starting point for reviewers. Stack-specific setup details remain in the web and platform READMEs.
 
 ## 21. README requirements
 
@@ -849,7 +855,7 @@ The public README should include:
 2. The community problem.
 3. Target users.
 4. Selected hackathon tracks.
-5. Screenshots or a short visual walkthrough.
+5. A link to the hosted proof of concept.
 6. How the solution works.
 7. How information is sourced and verified.
 8. Privacy and safety decisions.
@@ -861,74 +867,9 @@ The public README should include:
 14. Test instructions.
 15. Known limitations.
 16. Future development.
-17. Demo link and video link.
+17. Hosted demonstration link.
 
-## 22. Demo-video narrative
-
-Keep the video direct and evidence-led.
-
-1. **Problem:** Local residents struggle to connect public promises with reliable, current evidence and safe reporting channels.
-2. **Project discovery:** Search for a local project.
-3. **Trust:** Show the plain-language facts, source labels, citations, and last-checked date.
-4. **Grounded AI:** Ask a question and open the cited source.
-5. **Protection:** Submit a fictional anonymous report and show the privacy protections.
-6. **Accountability:** Use the tracking code, then show the reviewer workflow and safe public update.
-7. **Source discovery:** Run Source Scout for the project, show its privacy-safe query, cited summary, conflicting or missing information, and one useful follow-up question.
-8. **Impact:** Explain how the model can be adapted to another LGA by changing the project data, local sources, language, and escalation directory.
-9. **AI coding usage:** Briefly show the build log and tests produced with AI assistance and developer review.
-
-## 23. Pitch-deck outline
-
-1. Title and one-sentence value proposition.
-2. The local information and safety problem.
-3. Intended users and a short real-world scenario.
-4. Why existing channels are insufficient.
-5. Product workflow.
-6. Trust and verification model.
-7. Privacy and safe-reporting model.
-8. Low-bandwidth, language, and accessibility design.
-9. Working proof-of-concept screenshots.
-10. Technical architecture and AI usage.
-11. Pilot scope and early validation plan.
-12. Scalability across local governments and countries.
-13. Limitations and responsible next steps.
-14. Closing impact statement.
-
-## 24. Written-summary outline
-
-### Track
-
-State that the project is cross-track, combining Transparency & Accountability with Safety, Reporting & Protection.
-
-### Community problem
-
-Describe the selected pilot community and the specific difficulty people face when trying to verify local project promises or report concerns.
-
-### Solution
-
-Explain the project registry, source-backed project pages, grounded explanations, private reports, tracking codes, and human review.
-
-### Information sources
-
-List the official and credible independent sources used, how each was checked, how update dates are displayed, and how Source Scout discovers additional public information without automatically verifying it.
-
-### Trust and accuracy
-
-Explain source labels, verification states, citation requirements, insufficient-evidence behaviour, discovery-result labelling, contradiction handling, and human review.
-
-### Safety and privacy
-
-Explain anonymous-first reporting, separated contact information, attachment sanitisation, private-by-default reports, safe-query generation, external-search data minimisation, and controlled public summaries.
-
-### AI tools
-
-Separate user-facing AI from AI coding assistance. State that the core idea came from the developer's selected community problem. Explain how AI coding tools supported implementation, testing, debugging, documentation, and review.
-
-### Scalability
-
-Explain that each new location can provide a source registry, local institution directory, language pack, project dataset, and escalation pathways while keeping the core platform unchanged.
-
-## 25. Judging alignment
+## 22. Judging alignment
 
 ### Uniqueness
 
@@ -942,34 +883,30 @@ The platform is location-configurable. Project categories, authorities, language
 
 The AI build log, test coverage, architecture decisions, code-review history, and clear explanation of what the developer accepted or changed will demonstrate meaningful usage.
 
-### Presentation
+## 23. Key risks and mitigations
 
-Use one coherent scenario across the application, video, deck, README, and summary. Every claim in the presentation should be visible in the working proof of concept.
+| Risk                                               | Mitigation                                                                                                                                                          |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unverified accusations cause harm                  | Keep reports private; require human review; publish only neutral, evidence-backed summaries.                                                                        |
+| Reporter identity is exposed                       | Anonymous-first design, separated optional contact data, metadata stripping, minimal logs, and access controls.                                                     |
+| Official information is outdated                   | Display publication and last-checked dates; mark stale or unavailable sources.                                                                                      |
+| AI invents an answer                               | Retrieval limited to approved sources, mandatory citations, and explicit insufficient-evidence responses.                                                           |
+| Public-web discovery repeats a false allegation    | Label results as unverified, distinguish reported claims from supported facts, require citations, and require human review before publication.                      |
+| Search queries expose a reporter                   | Generate reduced privacy-safe queries, show them before incident searches, and never send private fields or attachments externally.                                 |
+| A malicious page attempts prompt injection         | Treat retrieved text as untrusted data, isolate it from instructions, use structured extraction, and prohibit tool or publication actions from page content.        |
+| The fetcher accesses an unsafe internal address    | Allow only public HTTP/HTTPS destinations and block private, loopback, link-local, and metadata-service networks.                                                   |
+| Scope becomes too large                            | One Abuja judge dataset across AMAC and Bwari, five to eight candidate projects, and five complete user journeys, with Source Scout limited to ten results per run. |
+| Demo depends on live third-party sites             | Store permitted excerpts and metadata locally while linking to the original source.                                                                                 |
+| Poor connectivity breaks reporting                 | Small payloads, retry states, progress feedback, and local draft support with a shared-device warning.                                                              |
+| The prototype is mistaken for an emergency service | Prominent disclaimer and direct referral to appropriate official emergency or support channels.                                                                     |
 
-## 26. Key risks and mitigations
-
-| Risk                                               | Mitigation                                                                                                                                                   |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Unverified accusations cause harm                  | Keep reports private; require human review; publish only neutral, evidence-backed summaries.                                                                 |
-| Reporter identity is exposed                       | Anonymous-first design, separated optional contact data, metadata stripping, minimal logs, and access controls.                                              |
-| Official information is outdated                   | Display publication and last-checked dates; mark stale or unavailable sources.                                                                               |
-| AI invents an answer                               | Retrieval limited to approved sources, mandatory citations, and explicit insufficient-evidence responses.                                                    |
-| Public-web discovery repeats a false allegation    | Label results as unverified, distinguish reported claims from supported facts, require citations, and require human review before publication.               |
-| Search queries expose a reporter                   | Generate reduced privacy-safe queries, show them before incident searches, and never send private fields or attachments externally.                          |
-| A malicious page attempts prompt injection         | Treat retrieved text as untrusted data, isolate it from instructions, use structured extraction, and prohibit tool or publication actions from page content. |
-| The fetcher accesses an unsafe internal address    | Allow only public HTTP/HTTPS destinations and block private, loopback, link-local, and metadata-service networks.                                            |
-| Scope becomes too large                            | One pilot locality, five to eight projects, and five complete user journeys, with Source Scout limited to ten results per run in the proof of concept.       |
-| Demo depends on live third-party sites             | Store permitted excerpts and metadata locally while linking to the original source.                                                                          |
-| Poor connectivity breaks reporting                 | Small payloads, retry states, progress feedback, and local draft support with a shared-device warning.                                                       |
-| The prototype is mistaken for an emergency service | Prominent disclaimer and direct referral to appropriate official emergency or support channels.                                                              |
-
-## 27. Definition of done
+## 24. Definition of done
 
 The proof of concept is ready to submit when:
 
 - the public GitHub repository can be opened by judges;
 - setup instructions work from a clean environment;
-- at least five projects have traceable public sources;
+- every displayed project fact has a traceable public source, while unsupported candidate facts stay out of the public record;
 - the end-to-end public project journey works;
 - the AI answers only from project sources and cites them;
 - Source Scout can find a small set of public results, preserve provenance, remove duplicates, and create a cited summary;
@@ -980,17 +917,11 @@ The proof of concept is ready to submit when:
 - an authorised reviewer can process the report;
 - no private report data is exposed publicly;
 - mobile, accessibility, low-data, and failure states have been tested;
-- the demo video, PDF deck, and written summary are complete; and
-- every public link has been tested before 21 September 2026 at 23:59 UTC.
-
-## 28. Master instruction for an AI coding agent
-
-Use the following after selecting the pilot location and collecting the seed sources:
-
-> Build a polished hackathon proof of concept for ShaidaGo, a low-bandwidth platform that helps residents understand and monitor local government projects and safely report concerns. Use the tagline “Track promises. Verify progress. Take action.” Follow `PRODUCT.md`, this brief, and `docs/IMPLEMENTATION_PLAN.md` in the precedence documented by `AGENTS.md`. Use a strict TypeScript Next.js frontend and browser-facing BFF; use FastAPI, Pydantic, PostgreSQL, and a Python worker for the separate domain backend. Generate the browser client from the backend OpenAPI contract instead of duplicating types. Prioritise five complete flows: browse a project, verify its sources, ask a grounded source-linked question, submit and review a protected report, and use Source Scout to discover related public information. Source Scout must create a privacy-safe query, search only permitted public sources, preserve provenance, remove duplicates, label results as unverified, produce a neutral cited summary, identify contradictions and information gaps, and ask up to five targeted follow-up questions. Never send reporter identities, contact data, private attachments, tracking codes, internal notes, or unnecessary precise locations to an external search provider. Treat retrieved web content as untrusted input, defend against unsafe URLs and prompt injection, and require human review before discovered information changes any public status. Keep reports private by default, make anonymous reporting available without an account, strip image metadata, separate optional contact details, use secure random tracking codes, and never expose reports to the public AI retrieval layer. The AI question-answering feature must use only approved project sources, include citations, and return an explicit insufficient-evidence response when the sources do not support an answer. Make the application mobile-first, accessible, useful on unreliable connections, and complete in English, Hausa, Igbo, and Yoruba. Seed it with five to eight cited projects across AMAC and Bwari and fictional reporting data. Do not add unrelated features or make accusations not supported by sources. Include tests, `.env.example`, seed instructions, an AI build log, and a README that a judge can follow from a clean environment. Work in small, verifiable milestones and run relevant tests after each milestone.
+- the hosted public flow and staging API reviewer flow have recorded smoke-test evidence; and
+- every public link has been tested from a private or signed-out browser window.
 
 ---
 
-## Final positioning statement
+## Product summary
 
-ShaidaGo helps communities move from rumours and scattered documents to evidence, understanding, and safer action. It makes local government project information easier to verify, gives residents a protected way to contribute what they observe, and creates a transparent human-reviewed path from report to public accountability: **Track promises. Verify progress. Take action.**
+ShaidaGo brings cited project records, grounded explanations, private reporting, tracking, and human review into one workflow. The proof of concept demonstrates that workflow with public sources and fictional reports. It does not claim field impact or production readiness.

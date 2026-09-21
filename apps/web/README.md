@@ -1,9 +1,8 @@
 # ShaidaGo web
 
-This is the independently tooled Next.js presentation/BFF stack. Its foundation provides a
-semantic English-source shell, safe root/route recovery surfaces, metadata, and robots policy;
-product routes, the Field Ledger design system, locale routing, and BFF handlers arrive only in
-their owning build-order tasks.
+This is ShaidaGo's independently tooled Next.js presentation and BFF stack. It contains the public project experience, private reporting and tracking flows, reviewer workspace, Source Scout interface, four-language catalogues, offline public-record support, and purpose-built same-origin Route Handlers.
+
+The browser calls only this application. Server Components and Route Handlers reach the private FastAPI service through the generated OpenAPI client, while domain policy remains in FastAPI.
 
 ## Quality commands
 
@@ -40,24 +39,20 @@ workflow repeats frozen install, formatting, lint, types, unit/component, contra
 checks, then installs the pinned browsers for E2E and axe. It uploads no browser, coverage, or
 test artifacts.
 
-The automated tooling is development-only: ESLint checks Next.js, TypeScript, import,
-accessibility, and security rules; Prettier owns formatting; Vitest provides deterministic
-unit/component/coverage execution; MSW provides fixture-backed request interception; and
-Playwright plus axe-core owns browser and accessibility smoke tests. The pnpm install policy
-allows only reviewed `msw` and `unrs-resolver` install hooks. MSW's hook has no effect until a
-future task configures a worker directory; `unrs-resolver` prepares the platform resolver used by
-the ESLint import path.
+The automated tooling is development-only: ESLint checks Next.js, TypeScript, imports,
+accessibility, and security rules; Prettier owns formatting; Vitest provides deterministic unit,
+component, and coverage runs; MSW provides fixture-backed request interception; and Playwright
+with axe-core runs browser and accessibility checks. The pnpm install policy allows only the
+reviewed `msw` and `unrs-resolver` install hooks.
 
-Tailwind CSS 4.3.3 and `@tailwindcss/postcss` 4.3.3 are MIT-licensed, build-time-only CSS tools.
-They compile the Field Ledger semantic token layer through `postcss.config.mjs`; they add no
-browser runtime, external font request, or third-party asset. `start:standalone` copies Next's
-compiled static assets (and a future `public/` directory when present) into the standalone output
-before browser tests or a local production preview, so those checks exercise the same CSS assets
-served in deployment.
+Tailwind CSS 4.3.3 and `@tailwindcss/postcss` 4.3.3 are MIT-licensed build tools. They compile the
+Field Ledger token layer through `postcss.config.mjs` and add no browser runtime, external font
+request, or third-party asset. `start:standalone` copies Next's compiled static assets and the
+`public/` directory into the standalone output before browser tests or a local production preview.
 
 ## Runtime boundary
 
-`next build` must work when `API_INTERNAL_URL` is unreachable. Server Components later call the
+`next build` must work when `API_INTERNAL_URL` is unreachable. Server Components call the
 private API through a server-only generated client; browsers call only purpose-built same-origin
 Route Handlers. Do not add direct browser API, database, provider, or storage access.
 
@@ -69,10 +64,9 @@ explicit public schema rejects every other `NEXT_PUBLIC_*` name and names that l
 for the internal URL, service credentials, provider keys, storage keys, and server-only module
 markers.
 
-The root document uses English source copy temporarily. FE-050 owns `en`, `ha`, `ig`, and `yo`
-locale routing, message parity, and human review status; do not add a second locale layout or a
-silent fallback before then. Recovery views accept only a canonical UUID request ID, never raw
-error text or backend detail, and unknown routes disclose nothing about a private record.
+Public routes use `en`, `ha`, `ig`, and `yo` catalogues with matching keys and ICU variables.
+Recovery views accept only a canonical UUID request ID, never raw error text or backend detail,
+and unknown routes disclose nothing about a private record.
 
 ## Generated API client
 
@@ -143,15 +137,17 @@ rotates daily.
 Public pages live under `/en`, `/ha`, `/ig`, and `/yo`. `proxy.ts` (next-intl) redirects unprefixed
 paths using the `NEXT_LOCALE` cookie, then `Accept-Language`, else `en`, keeping the query; it skips
 `/api`, `/_next`, and any path with a file extension. `REVIEWED_LOCALES` in `src/i18n/routing.ts`
-lists the languages with reviewed copy (currently `en`); other locales serve the English original,
-declare `lang="en"`, and show a visible notice, so English is never presented as Hausa, Igbo, or
-Yoruba. Add a locale to that list only when fluent, reviewed copy for every critical string exists.
+is derived from `messages/status.json`. All four catalogues currently pass the repository's
+maintainer-review gate. Hausa, Igbo, and Yoruba have not received an independent second-language
+review, and the public documentation says so.
 
 ## Messages
 
 Copy lives in `messages/{en,ha,ig,yo}.json` by domain, with `messages/status.json` recording each
-locale's per-domain review status. English is the source. All four locales are currently `reviewed` (the maintainer is the self-reported reviewer). A value is `null` while a translation is pending; set a domain to `reviewed` (or `machine_assisted`) only with a named
-reviewer and date. `pnpm run messages:check` (also part of `make web-contract`) enforces identical
+locale's per-domain review status. English is the source. All four locales are marked `reviewed`
+by the maintainer; this does not claim independent language review. A value is `null` while a
+translation is pending; set a domain to `reviewed` or `machine_assisted` only with a named reviewer
+and date. `pnpm run messages:check` (also part of `make web-contract`) enforces identical
 keys, valid ICU, the same variables and types, identical `select` branches, and consistent status.
 `resolveDomain` in `src/i18n/catalogue.ts` serves a locale's text only when its domain is reviewed
 and complete; otherwise it returns the flagged English original and the page says so.
@@ -159,10 +155,9 @@ and complete; otherwise it returns the flagged English original and the page say
 ## Adding a key
 
 Add it to `messages/en.json` and to `ha.json`, `ig.json`, and `yo.json` with the value `null`, then run
-`pnpm run messages:check`; it lists every key still waiting for translation. While
-`pendingKeysAllowed` is `true` in `messages/status.json` that is allowed; at the end of the build set it
-to `false` and the check fails on any remaining `null`. Prefer a new domain for a new feature, because
-a served domain with a `null` key falls back, flagged, to English.
+`pnpm run messages:check`. The current `pendingKeysAllowed: false` setting makes any missing
+translation fail the check. Prefer a new domain for a new feature because a served domain with a
+`null` key falls back to visibly labelled English.
 
 ## Language switching
 
