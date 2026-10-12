@@ -95,7 +95,7 @@ durations, versions, and outcome classes only.
 - Restricted-role, horizontal/vertical authorisation, CSRF, session revocation, rate-limit,
   citation, publication, SSRF, sanitation, migration, contract-fuzzing, and failure-injection tests.
 - Whole-history Gitleaks, Ruff security rules, Bandit, `pip-audit`, Semgrep, CodeQL workflow, and
-  container Trivy workflow.
+  local container Trivy verification. The hosted container-scan workflow is currently disabled.
 - A canonical deterministic gate with an 85% minimum backend branch-coverage threshold.
 
 Exact commands and current results are recorded in [`AI_BUILD_LOG.md`](AI_BUILD_LOG.md) and
