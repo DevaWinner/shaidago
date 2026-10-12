@@ -2923,3 +2923,14 @@ For each entry, record the task, prompt summary, material suggestion, human revi
 - **AI assistance used:** Applied the Impeccable UI workflow, reorganized information architecture and components, migrated iconography, fixed forced-colour and 200% zoom regressions, updated localized test targeting, and verified rendered output.
 - **Prompt summary:** Retain the Field Ledger visual identity while making every page modern, aligned, location-neutral, navigable, icon-consistent, and complete across the four languages.
 - **Human review:** Pending pull-request review by the maintainer.
+
+## 2026-10-12 — Remove the failing hosted container scan
+
+- **Task:** Remove the GitHub Actions container-build-and-Trivy job at the maintainer's direction.
+- **Outcome delivered:** The recurring `security` workflow retains Gitleaks, Semgrep, and CodeQL, but no longer builds the backend container or runs Trivy in GitHub Actions.
+- **Privacy/security impact:** This removes hosted container vulnerability detection. The local `make container-verify` path remains available; the untriaged 2026-10-12 hosted Trivy failure is recorded in `docs/SECURITY_SCAN_TRIAGE.md` rather than represented as a pass.
+- **Commands run and results:** Inspected failed GitHub Actions run `38246047195`; only `Container build and Trivy` failed. `git diff --check` passed and the edited workflow parsed with Ruby's YAML parser.
+- **Commit/PR:** pending.
+- **AI assistance used:** Identified the failing job from its hosted run, removed it, and updated the live security documentation to preserve an accurate limitation.
+- **Prompt summary:** Shut down the repository process that runs and fails.
+- **Human review:** Pending pull-request review by the maintainer.
